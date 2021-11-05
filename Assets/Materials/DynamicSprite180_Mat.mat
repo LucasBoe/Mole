@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DynamicSprite_Mat
+  m_Name: DynamicSprite180_Mat
   m_Shader: {fileID: -6465566751694194690, guid: 81c681c242542f04ead5dbc03363d44f, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -38,6 +38,7 @@ Material:
     m_Floats:
     - Vector1_1cd158b47675495580d95843ae64b010: 0.45
     - Vector1_5d2e055c262444eab3a40dfd7fd2ee98: 90
+    - Vector1_a1fa2f5662ce4b0997d453d57a22a8ae: 180
     - Vector1_f14a92d04d5b44fea4745d222af528b1: -0.45
     m_Colors: []
   m_BuildTextureStacks: []
