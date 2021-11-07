@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteAlways]
-public class PlayerController : MonoBehaviour
+public class DynamicPlayerController : MonoBehaviour
 {
     [SerializeField] PlayerCollisionCheck footCheck, leftCheck, rightCheck, ceilingCheck;
     [SerializeField] bool grounded;
     [SerializeField] Limb leg1, leg2, arm1, arm2;
-    [SerializeField] PlayerBody body;
+    [SerializeField] DynamicPlayerBody body;
 
     private void Start()
     {

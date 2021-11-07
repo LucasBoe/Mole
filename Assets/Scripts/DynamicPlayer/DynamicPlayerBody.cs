@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerBody : MonoBehaviour
+public class DynamicPlayerBody : MonoBehaviour
 {
     Vector2 localPositionTarget;
     float rotationTarget;
