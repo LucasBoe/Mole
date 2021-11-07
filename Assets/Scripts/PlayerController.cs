@@ -11,6 +11,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Limb leg1, leg2, arm1, arm2;
     [SerializeField] PlayerBody body;
 
+    private void Start()
+    {
+        leg1.Parner = leg2;
+        leg2.Parner = leg1;
+
+        arm1.Parner = arm2;
+        arm2.Parner = arm1;
+
+        leg1.Current = leg2.Target;
+        arm1.Current = arm2.Target;
+    }
+
     private void Update()
     {
         footCheck.Update(transform);
@@ -22,11 +34,16 @@ public class PlayerController : MonoBehaviour
         rigidbody2D = GetComponent<Rigidbody2D>();
         rigidbody2D.gravityScale = leftCheck.IsDetecting || rightCheck.IsDetecting || ceilingCheck.IsDetecting ? 0 : 1;
 
-        rigidbody2D.AddForce(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) * Time.deltaTime ,ForceMode2D.Impulse);
+        Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+
+        if (footCheck.IsDetecting || leftCheck.IsDetecting || rightCheck.IsDetecting || ceilingCheck.IsDetecting)
+            rigidbody2D.velocity = Vector2.Lerp(rigidbody2D.velocity, input * 2, 0.5f);
+
+        //rigidbody2D.AddForce(input * Time.deltaTime *100f ,ForceMode2D.Impulse);
 
 
 
-        body.UpdateBody(footCheck, leftCheck, rightCheck, ceilingCheck);
+        body.UpdateBody(footCheck, leftCheck, rightCheck, ceilingCheck, input.x);
 
         if (footCheck.IsDetecting)
         {
@@ -37,7 +54,8 @@ public class PlayerController : MonoBehaviour
             {
                 float x = leftCheck.IsDetecting ? Mathf.Floor(transform.position.x) : Mathf.Ceil(transform.position.x);
                 ArmsToWall(x);
-            } else
+            }
+            else
             {
                 arm1.Free(transform);
                 arm2.Free(transform);
@@ -144,14 +162,24 @@ public class PlayerCollisionCheck
 [System.Serializable]
 public class Limb
 {
+    public Limb Parner;
     public Transform Origin;
     public Vector2 Target;
     public Vector2 Current;
 
+    public bool IsCorrecting = false;
+
     public void Update()
     {
-        if (Vector2.Distance(Current, Target) > 1)
-            Current = Target;
+        if (Vector2.Distance(Current, Target) > 0.5f && Parner.IsCorrecting == false)
+            IsCorrecting = true;
+
+        if (IsCorrecting)
+        {
+            Current = Vector2.MoveTowards(Current, Target, Time.deltaTime * 4f);
+            if (Vector2.Distance(Current, Target) < 0.01f)
+                IsCorrecting = false;
+        }
 
         Origin.up = (Origin.position - (Vector3)Current).normalized;
     }

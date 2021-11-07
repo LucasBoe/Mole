@@ -7,10 +7,14 @@ public class PlayerBody : MonoBehaviour
 {
     Vector2 localPositionTarget;
     float rotationTarget;
+    bool turnedRight = false;
 
-    public void UpdateBody(PlayerCollisionCheck footCheck, PlayerCollisionCheck leftCheck, PlayerCollisionCheck rightCheck, PlayerCollisionCheck ceilingCheck)
+    public void UpdateBody(PlayerCollisionCheck footCheck, PlayerCollisionCheck leftCheck, PlayerCollisionCheck rightCheck, PlayerCollisionCheck ceilingCheck, float xVelocity)
     {
         rotationTarget = 0;
+
+        if (xVelocity != 0)
+            turnedRight = xVelocity > 0;
 
         if (footCheck.IsDetecting)
         {
@@ -33,7 +37,7 @@ public class PlayerBody : MonoBehaviour
                 }
                 else
                 {
-                    rotationTarget = 90f;
+                    rotationTarget = turnedRight ? -90: 90f;
                 }
             }
         }
