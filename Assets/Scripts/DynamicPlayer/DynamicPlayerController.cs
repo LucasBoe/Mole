@@ -151,7 +151,9 @@ public class PlayerCollisionCheck
 {
     public LayerMask LayerMask;
     public Vector2 Pos, Size = Vector2.one;
-    public bool IsDetecting = false;
+    public bool IsDetecting => colliders != null && colliders.Length > 0;
+
+    private Collider2D[] colliders;
 
     public PlayerCollisionCheck(float posX, float posY, float sizeX, float sizeY, LayerMask layerMask)
     {
@@ -169,7 +171,20 @@ public class PlayerCollisionCheck
 
     public void Update(Transform player)
     {
-        IsDetecting = Physics2D.OverlapBox((Vector2)player.position + Pos, Size, 0, LayerMask) != null;
+        colliders = Physics2D.OverlapBoxAll((Vector2)player.position + Pos, Size, 0, LayerMask);
+    }
+
+    public IHangable[] GetHangables()
+    {
+        List<IHangable> hangables = new List<IHangable>();
+        foreach (Collider2D collider in colliders)
+        {
+            var hangable = collider.GetComponent<IHangable>();
+            if (hangable != null)
+                hangables.Add(hangable);
+        }
+
+        return hangables.ToArray();
     }
 }
 
