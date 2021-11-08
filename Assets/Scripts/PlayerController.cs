@@ -6,9 +6,7 @@ using UnityEngine;
 
 public enum PlayerMovementState
 {
-    Idle,
-    Walk,
-    Run,
+    Default,
     Climb,
 }
 
@@ -86,7 +84,7 @@ public class PlayerController : MonoBehaviour
 
                 //player tries to walk on the ground
                 if (IsColliding(CheckType.Ground) && triesMoveLeftRight)
-                    SetState(PlayerMovementState.Walk);
+                    SetState(PlayerMovementState.Default);
 
                 if (isJumping)
                     JumpOff(input);
@@ -103,7 +101,7 @@ public class PlayerController : MonoBehaviour
 
                         //player loses connection to wall
                         if (!isCollidingToAnyWall)
-                            SetState(PlayerMovementState.Walk);
+                            SetState(PlayerMovementState.Default);
 
                         break;
 
@@ -130,7 +128,7 @@ public class PlayerController : MonoBehaviour
                         if (IsColliding(CheckType.Body))
                             rigidbody.MovePosition((Vector2)transform.position + Vector2.up * Time.deltaTime * pullUpSpeed);
                         else
-                            SetState(PlayerMovementState.Walk);
+                            SetState(PlayerMovementState.Default);
                         break;
 
                     case PlayerClimbState.DropDown:
@@ -218,7 +216,7 @@ public class PlayerController : MonoBehaviour
 
         switch (moveState)
         {
-            case PlayerMovementState.Walk:
+            case PlayerMovementState.Default:
                 dropDownTimer = 0f;
                 break;
 
@@ -241,7 +239,7 @@ public class PlayerController : MonoBehaviour
 
     private void JumpOff(Vector2 input)
     {
-        SetState(PlayerMovementState.Walk);
+        SetState(PlayerMovementState.Default);
         rigidbody.velocity = input;
     }
 
