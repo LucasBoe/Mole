@@ -44,8 +44,8 @@ public class PlayerController : MonoBehaviour
         //base
         collisionChecks.Add(CheckType.Ground, new PlayerCollisionCheck(0f, -1.125f, 0.75f, 0.25f, LayerMask.GetMask("Default")));
         collisionChecks.Add(CheckType.Hangable, new PlayerCollisionCheck(0f, 1.5f, 1.5f, 1f, LayerMask.GetMask("Hangable")));
-        collisionChecks.Add(CheckType.WallLeft, new PlayerCollisionCheck(-0.75f, 0.5f, 0.5f, 1f, LayerMask.GetMask("Default")));
-        collisionChecks.Add(CheckType.WallRight, new PlayerCollisionCheck(0.75f, 0.5f, 0.5f, 1f, LayerMask.GetMask("Default")));
+        collisionChecks.Add(CheckType.WallLeft, new PlayerCollisionCheck(-0.625f, 0.5f, 0.25f, 1f, LayerMask.GetMask("Default")));
+        collisionChecks.Add(CheckType.WallRight, new PlayerCollisionCheck(0.625f, 0.5f, 0.25f, 1f, LayerMask.GetMask("Default")));
         collisionChecks.Add(CheckType.Ceiling, new PlayerCollisionCheck(0f, 1f, 0.75f, 0.25f, LayerMask.GetMask("Default")));
 
         //details
@@ -71,6 +71,7 @@ public class PlayerController : MonoBehaviour
 
         bool triesMoveLeftRight = input.x != 0;
         bool triesMoveUpDown = input.y != 0f;
+        bool isJumping = Input.GetButton("Jump");
         bool isCollidingToAnyWall = IsColliding(CheckType.WallLeft) || IsColliding(CheckType.WallRight);
 
         switch (moveState)
@@ -80,6 +81,9 @@ public class PlayerController : MonoBehaviour
                 //player tries to walk on the ground
                 if (IsColliding(CheckType.Ground) && triesMoveLeftRight)
                     SetState(PlayerMovementState.Walk);
+
+                if (isJumping)
+                    JumpOff(input);
 
                 switch (climbState)
                 {
@@ -108,6 +112,7 @@ public class PlayerController : MonoBehaviour
                         //transition to wall climb
                         if (isCollidingToAnyWall && triesMoveUpDown)
                             SetState(PlayerClimbState.Wall);
+
                         break;
                 }
 
@@ -125,7 +130,7 @@ public class PlayerController : MonoBehaviour
 
                 if (IsColliding(CheckType.Ground))
                 {
-                    if (!jumpBlocker && Input.GetButton("Jump"))
+                    if (!jumpBlocker && isJumping)
                     {
                         jumpBlocker = true;
                         rigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
@@ -138,6 +143,12 @@ public class PlayerController : MonoBehaviour
                 }
                 break;
         }
+    }
+
+    private void JumpOff(Vector2 input)
+    {
+        SetState(PlayerMovementState.Walk);
+        rigidbody.velocity = input;
     }
 
     private Vector2 GetClosestHangablePosition(Vector2 position, Vector2 input)
