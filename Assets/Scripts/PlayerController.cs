@@ -18,7 +18,8 @@ public enum PlayerClimbState
     Wall,
     Ceiling,
     Hanging,
-    Transition,
+    PullUp,
+    DropDown,
 }
 
 public class PlayerController : MonoBehaviour
@@ -27,30 +28,35 @@ public class PlayerController : MonoBehaviour
     [SerializeField] PlayerMovementState moveState;
     [SerializeField] Vector2 hangableOffset;
 
-    [SerializeField] bool jumpBlocker = false;
+    bool jumpBlocker = false;
+    float dropDownTimer = 0f;
 
     Dictionary<CheckType, PlayerCollisionCheck> collisionChecks = new Dictionary<CheckType, PlayerCollisionCheck>();
 
     Rigidbody2D rigidbody;
 
-    [SerializeField] private float jumpForce, walkForce, wallClimbForce, additionalGravityForce;
+    [SerializeField] private float jumpForce, walkForce, wallClimbForce, additionalGravityForce, pullUpSpeed, dropDownSpeed;
 
     public System.Action<PlayerMovementState, PlayerClimbState> OnStateChange;
+    public System.Action<PlayerMovementState, PlayerClimbState, PlayerMovementState, PlayerClimbState> OnStateChangePrevious;
 
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
 
         //base
-        collisionChecks.Add(CheckType.Ground, new PlayerCollisionCheck(0f, -1.125f, 0.75f, 0.25f, LayerMask.GetMask("Default")));
+        collisionChecks.Add(CheckType.Ground, new PlayerCollisionCheck(0f, -1.125f, 0.75f, 0.25f, LayerMask.GetMask("Default", "Hangable")));
         collisionChecks.Add(CheckType.Hangable, new PlayerCollisionCheck(0f, 1.5f, 1.5f, 1f, LayerMask.GetMask("Hangable")));
         collisionChecks.Add(CheckType.WallLeft, new PlayerCollisionCheck(-0.625f, 0.5f, 0.25f, 1f, LayerMask.GetMask("Default")));
         collisionChecks.Add(CheckType.WallRight, new PlayerCollisionCheck(0.625f, 0.5f, 0.25f, 1f, LayerMask.GetMask("Default")));
         collisionChecks.Add(CheckType.Ceiling, new PlayerCollisionCheck(0f, 1f, 0.75f, 0.25f, LayerMask.GetMask("Default")));
+        collisionChecks.Add(CheckType.Body, new PlayerCollisionCheck(0f, 0, 1f, 2f, LayerMask.GetMask("Default", "Hangable")));
 
         //details
         collisionChecks.Add(CheckType.HangableLeft, new PlayerCollisionCheck(-0.75f, 1.5125f, .5f, 1.25f, LayerMask.GetMask("Hangable")));
         collisionChecks.Add(CheckType.HangableRight, new PlayerCollisionCheck(0.75f, 1.5125f, .5f, 1.25f, LayerMask.GetMask("Hangable")));
+        collisionChecks.Add(CheckType.HangableAboveAir, new PlayerCollisionCheck(0f, 3f, 1f, 2f, LayerMask.GetMask("Default", "Hangable")));
+        collisionChecks.Add(CheckType.HangableBelow, new PlayerCollisionCheck(0, -1.25f, 0.5f, 1.5f, LayerMask.GetMask("Hangable")));
     }
 
     // Start is called before the first frame update
@@ -89,7 +95,7 @@ public class PlayerController : MonoBehaviour
                 {
                     case PlayerClimbState.Wall:
                         //up down movement
-                        rigidbody.AddForce(Vector2.up * input.y * Time.deltaTime * 1000f * wallClimbForce, ForceMode2D.Impulse);
+                        rigidbody.velocity = new Vector2(rigidbody.velocity.x, input.y * wallClimbForce);
 
                         //transition to hanging
                         if (IsColliding(CheckType.Hangable) && triesMoveLeftRight)
@@ -98,14 +104,13 @@ public class PlayerController : MonoBehaviour
                         //player loses connection to wall
                         if (!isCollidingToAnyWall)
                             SetState(PlayerMovementState.Walk);
-                            
+
                         break;
 
                     case PlayerClimbState.Hanging:
 
                         //clamp xinput by hangable
                         float xinput = Mathf.Clamp(input.x, IsColliding(CheckType.HangableLeft) ? -1 : 0, IsColliding(CheckType.HangableRight) ? 1 : 0);
-
                         Vector2 hangPosition = GetClosestHangablePosition((Vector2)transform.position + hangableOffset, input * Time.deltaTime * 100f);
                         rigidbody.MovePosition(Vector2.MoveTowards(transform.position, hangPosition - hangableOffset, Time.deltaTime * 10f));
 
@@ -113,6 +118,26 @@ public class PlayerController : MonoBehaviour
                         if (isCollidingToAnyWall && triesMoveUpDown)
                             SetState(PlayerClimbState.Wall);
 
+                        //pulling up
+                        if (!IsColliding(CheckType.HangableAboveAir) && input.y > 0.9f && !triesMoveLeftRight)
+                        {
+                            SetState(PlayerClimbState.PullUp);
+                        }
+
+                        break;
+
+                    case PlayerClimbState.PullUp:
+                        if (IsColliding(CheckType.Body))
+                            rigidbody.MovePosition((Vector2)transform.position + Vector2.up * Time.deltaTime * pullUpSpeed);
+                        else
+                            SetState(PlayerMovementState.Walk);
+                        break;
+
+                    case PlayerClimbState.DropDown:
+                        if (!IsColliding(CheckType.Hangable))
+                            rigidbody.MovePosition((Vector2)transform.position + Vector2.down * Time.deltaTime * dropDownSpeed);
+                        else
+                            SetState(PlayerClimbState.Hanging);
                         break;
                 }
 
@@ -121,7 +146,7 @@ public class PlayerController : MonoBehaviour
             default:
 
                 if (input.x != 0)
-                    rigidbody.AddForce(Vector2.right * input.x * 1000f * walkForce * Time.deltaTime);
+                    rigidbody.velocity = new Vector2(input.x * walkForce, rigidbody.velocity.y);
 
                 if (isCollidingToAnyWall && triesMoveUpDown)
                 {
@@ -130,16 +155,85 @@ public class PlayerController : MonoBehaviour
 
                 if (IsColliding(CheckType.Ground))
                 {
+                    //jumping
                     if (!jumpBlocker && isJumping)
                     {
                         jumpBlocker = true;
                         rigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
                         Invoke("ResetJumpBlocker", 0.5f);
                     }
+
+                    //dropping down
+                    if (IsColliding(CheckType.HangableBelow) && input.y < -0.9f)
+                    {
+                        dropDownTimer += Time.deltaTime;
+                        if (dropDownTimer > 0.5f)
+                        {
+                            dropDownTimer = 0f;
+                            SetState(PlayerClimbState.DropDown);
+                        }
+                    }
+                    else
+                    {
+                        dropDownTimer = 0f;
+                    }
                 }
                 else
                 {
+                    //gravity
                     rigidbody.AddForce(new Vector2(0, -Time.deltaTime * 1000f * additionalGravityForce));
+
+                    //autograp to hangable
+                    if (IsColliding(CheckType.Hangable) && input.y > 0.25f)
+                        SetState(PlayerClimbState.Hanging);
+                }
+                break;
+        }
+    }
+
+    private void ExitState(PlayerMovementState moveState, PlayerClimbState climbState)
+    {
+        switch (moveState)
+        {
+            case PlayerMovementState.Climb:
+
+                switch (climbState)
+                {
+                    case PlayerClimbState.PullUp:
+                    case PlayerClimbState.DropDown:
+                        rigidbody.GetComponent<Collider2D>().enabled = true;
+                        break;
+
+                    default:
+                        //
+                        break;
+                }
+                break;
+        }
+    }
+
+    private void EnterState(PlayerMovementState moveState, PlayerClimbState climbState)
+    {
+        rigidbody.gravityScale = moveState == PlayerMovementState.Climb ? 0 : 2;
+
+        switch (moveState)
+        {
+            case PlayerMovementState.Walk:
+                dropDownTimer = 0f;
+                break;
+
+            case PlayerMovementState.Climb:
+
+                switch (climbState)
+                {
+                    case PlayerClimbState.PullUp:
+                    case PlayerClimbState.DropDown:
+                        rigidbody.GetComponent<Collider2D>().enabled = false;
+                        break;
+
+                    default:
+                        //
+                        break;
                 }
                 break;
         }
@@ -190,7 +284,7 @@ public class PlayerController : MonoBehaviour
         }
 
         return position;
-       
+
     }
 
     public void SetState(PlayerClimbState climbState)
@@ -198,26 +292,18 @@ public class PlayerController : MonoBehaviour
         SetState(PlayerMovementState.Climb, climbState);
     }
 
-    public void SetState(PlayerMovementState moveState, PlayerClimbState climbState = PlayerClimbState.None)
+    public void SetState(PlayerMovementState newMoveState, PlayerClimbState newClimbState = PlayerClimbState.None)
     {
-        rigidbody.gravityScale = moveState == PlayerMovementState.Climb ? 0 : 2;
 
-        switch (moveState)
-        {
-            case PlayerMovementState.Climb:
+        ExitState(moveState, climbState);
+        EnterState(newMoveState, newClimbState);
 
-                switch (climbState)
-                {
-                    default:
-                        //
-                        break;
-                }
-                break;
-        }
+        OnStateChangePrevious?.Invoke(moveState, climbState, newMoveState, newClimbState);
+        OnStateChange?.Invoke(newMoveState, newClimbState);
 
-        this.moveState = moveState;
-        this.climbState = climbState;
-        OnStateChange?.Invoke(this.moveState, this.climbState);
+        moveState = newMoveState;
+        climbState = newClimbState;
+
     }
 
     private bool IsColliding(CheckType checkType)
@@ -265,5 +351,8 @@ namespace PlayerCollisionCheckType
         Hangable,
         HangableLeft,
         HangableRight,
+        HangableAboveAir,
+        Body,
+        HangableBelow,
     }
 }
