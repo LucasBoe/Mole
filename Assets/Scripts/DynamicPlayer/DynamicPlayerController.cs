@@ -142,20 +142,34 @@ public class DynamicPlayerController : MonoBehaviour
     private void DrawCollisionCheck(PlayerCollisionCheck toDraw, Color c)
     {
         Gizmos.color = c;
-        Gizmos.DrawWireCube((Vector2)transform.position + toDraw.pos, toDraw.size);
+        Gizmos.DrawWireCube((Vector2)transform.position + toDraw.Pos, toDraw.Size);
     }
 }
 
 [System.Serializable]
 public class PlayerCollisionCheck
 {
-    public LayerMask layerMask;
-    public Vector2 pos, size = Vector2.one;
+    public LayerMask LayerMask;
+    public Vector2 Pos, Size = Vector2.one;
     public bool IsDetecting = false;
+
+    public PlayerCollisionCheck(float posX, float posY, float sizeX, float sizeY, LayerMask layerMask)
+    {
+        Pos = new Vector2(posX, posY);
+        Size = new Vector2(sizeX, sizeY);
+        LayerMask = layerMask;
+    }
+
+    public PlayerCollisionCheck (Vector2 pos, Vector2 size, LayerMask layerMask)
+    {
+        Pos = pos;
+        Size = size;
+        LayerMask = layerMask;
+    }
 
     public void Update(Transform player)
     {
-        IsDetecting = Physics2D.OverlapBox((Vector2)player.position + pos, size, 0, layerMask) != null;
+        IsDetecting = Physics2D.OverlapBox((Vector2)player.position + Pos, Size, 0, LayerMask) != null;
     }
 }
 
