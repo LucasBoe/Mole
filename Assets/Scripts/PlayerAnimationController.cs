@@ -21,9 +21,11 @@ public class PlayerAnimationController : MonoBehaviour
     private void OnStateChangePrevious(PlayerBaseState previousBase, PlayerClimbState previousClimb, PlayerBaseState newBase, PlayerClimbState newClimb)
     {
         animator.SetBool(previousBase.ToString(), false);
-        animator.SetBool(previousClimb.ToString(), false);
+        if (previousClimb != PlayerClimbState.None)
+            animator.SetBool(previousClimb.ToString(), false);
         animator.SetBool(newBase.ToString(), true);
-        animator.SetBool(newClimb.ToString(), true);
+        if (newClimb != PlayerClimbState.None)
+            animator.SetBool(newClimb.ToString(), true);
     }
 
     private void Update()

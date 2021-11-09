@@ -31,7 +31,6 @@ public class PlayerState
 
     protected void SetCollisionActive(bool active)
     {
-        Debug.LogWarning("Set collision active: " + active);
         context.Rigidbody.GetComponent<Collider2D>().enabled = active;
     }
 
@@ -158,11 +157,14 @@ public class PullUpState : PlayerState
         t = 0;
         int i = 0;
 
-        Vector2 toCheck = startPos + Vector2.up;
-        while ((Physics2D.OverlapBoxAll(toCheck, new Vector2(1, 0.25f), 0).Length > 0) || i < 10)
+        Vector2 toCheck = context.PlayerPos + Vector2.up;
+        bool blocked = true;
+        while (blocked && i < 25)
         {
+            Collider2D[] colliders = Physics2D.OverlapBoxAll(toCheck, new Vector2(1, 1.5f), 0, LayerMask.GetMask("Hangable"));
+            blocked = colliders.Length != 0;
+            Debug.DrawLine(toCheck + Vector2.left * 0.1f, toCheck + Vector2.right * 0.1f, blocked ? Color.red : Color.green, 10);
             toCheck += new Vector2(0, 0.25f);
-            Debug.DrawLine(toCheck - Vector2.left, toCheck + Vector2.right, Color.blue, 5);
             i++;
         }
 
