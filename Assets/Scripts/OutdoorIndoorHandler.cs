@@ -2,17 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OutdoorIndoorHandler : MonoBehaviour
+public class OutdoorIndoorHandler : SingletonBehaviour<OutdoorIndoorHandler>
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] GameObject indoor, outdoor;
 
-    // Update is called once per frame
-    void Update()
+    public bool Switch()
     {
-        
+        bool indoorActive = indoor.activeSelf;
+        indoor.SetActive(!indoorActive);
+        outdoor.SetActive(indoorActive);
+        return !indoorActive;
     }
 }
