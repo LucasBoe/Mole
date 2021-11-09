@@ -5265,7 +5265,7 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.25}
+  m_Offset: {x: 0, y: -0.375}
   m_Size: {x: 1, y: 2}
   m_Direction: 0
 --- !u!4 &1189029867
@@ -5297,7 +5297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ClimbState: 0
-  MoveState: 0
+  BaseState: 0
   jumpForce: 30
   walkForce: 8
   wallClimbForce: 6

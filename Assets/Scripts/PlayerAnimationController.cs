@@ -18,7 +18,7 @@ public class PlayerAnimationController : MonoBehaviour
         player.OnStateChangePrevious += OnStateChangePrevious;
     }
 
-    private void OnStateChangePrevious(PlayerMovementState previousBase, PlayerClimbState previousClimb, PlayerMovementState newBase, PlayerClimbState newClimb)
+    private void OnStateChangePrevious(PlayerBaseState previousBase, PlayerClimbState previousClimb, PlayerBaseState newBase, PlayerClimbState newClimb)
     {
         animator.SetTrigger(newBase.ToString());
         animator.SetTrigger(newClimb.ToString());

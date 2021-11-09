@@ -24,14 +24,21 @@ public class PlayerState
         context.PlayerController.SetState(climbState);
     }
 
-    protected void SetState(PlayerMovementState moveState)
+    protected void SetState(PlayerBaseState moveState)
     {
         context.PlayerController.SetState(moveState);
     }
 
     protected void SetCollisionActive(bool active)
     {
-        context.Rigidbody.GetComponent<Collider2D>().enabled = false;
+        Debug.LogWarning("Set collision active: " + active);
+        context.Rigidbody.GetComponent<Collider2D>().enabled = active;
+    }
+
+    protected void JumpOff(Vector2 input)
+    {
+        SetState(PlayerBaseState.Default);
+        context.Rigidbody.velocity = input;
     }
 
     public PlayerState(PlayerContext playerContext)
@@ -40,22 +47,138 @@ public class PlayerState
     }
 }
 
+public class DefaultState : PlayerState
+{
+    float walkForce = 8f, jumpForce = 30f, additionalGravityForce = 3f;
+
+    float lastJumpTime = 0;
+    float dropDownTimer = 0f;
+
+    bool jumpBlocker => Time.time - 0.2f < lastJumpTime;
+
+    public DefaultState(PlayerContext playerContext) : base(playerContext) { }
+
+    public override void Enter()
+    {
+        dropDownTimer = 0;
+    }
+
+    public override void Update()
+    {
+        if (context.Input.x != 0)
+            context.Rigidbody.velocity = new Vector2(context.Input.x * walkForce, context.Rigidbody.velocity.y);
+
+        if (context.IsCollidingToAnyWall && context.TriesMoveUpDown)
+        {
+            SetState(PlayerClimbState.Wall);
+        }
+
+        if (IsColliding(CheckType.Ground))
+        {
+            //jumping
+            if (!jumpBlocker && context.IsJumping)
+            {
+                lastJumpTime = Time.time;
+                context.Rigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            }
+
+            //dropping down
+            if (IsColliding(CheckType.HangableBelow) && context.Input.y < -0.9f)
+            {
+                dropDownTimer += Time.deltaTime;
+                if (dropDownTimer > 0.5f)
+                {
+                    dropDownTimer = 0f;
+                    SetState(PlayerClimbState.DropDown);
+                }
+
+                
+            }
+            else
+            {
+                dropDownTimer = 0f;
+            }
+        }
+        else
+        {
+            //gravity
+            context.Rigidbody.AddForce(new Vector2(0, -Time.deltaTime * 1000f * additionalGravityForce));
+
+            //autograp to hangable
+            if (IsColliding(CheckType.Hangable) && context.Input.y > 0.25f)
+                SetState(PlayerClimbState.Hanging);
+        }
+    }
+}
+public class ClimbState : PlayerState
+{
+    public ClimbState(PlayerContext playerContext) : base(playerContext) { }
+
+    public override void Enter()
+    {
+        context.Rigidbody.gravityScale = 0;
+        context.PlayerController.EnterState(context.PlayerController.ClimbState);
+    }
+
+    public override void Update()
+    {
+        //player tries to walk on the ground transition to Default
+        if (IsColliding(CheckType.Ground) && context.TriesMoveLeftRight)
+            SetState(PlayerBaseState.Default);
+
+        //jump
+        if (context.IsJumping)
+            JumpOff(context.Input);
+
+        context.PlayerController.UpdateState(context.PlayerController.ClimbState);
+    }
+
+    public override void Exit()
+    {
+        context.PlayerController.ExitState(context.PlayerController.ClimbState);
+        context.Rigidbody.gravityScale = 2;
+    }
+}
+
 public class PullUpState : PlayerState
 {
-    float pullUpSpeed = 8f;
+    float t = 0;
+    float duration = 0.5f;
+
+    AnimationCurve positionOverTimeCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+    Vector2 startPos, targetPos;
 
     public PullUpState(PlayerContext playerContext) : base(playerContext) { }
 
     public override void Enter()
     {
         SetCollisionActive(false);
+
+        t = 0;
+        int i = 0;
+
+        Vector2 toCheck = startPos + Vector2.up;
+        while ((Physics2D.OverlapBoxAll(toCheck, new Vector2(1, 0.25f), 0).Length > 0) || i < 10)
+        {
+            toCheck += new Vector2(0, 0.25f);
+            Debug.DrawLine(toCheck - Vector2.left, toCheck + Vector2.right, Color.blue, 5);
+            i++;
+        }
+
+        startPos = context.PlayerPos;
+        targetPos = toCheck;
     }
     public override void Update()
     {
-        if (IsColliding(CheckType.Body))
-            context.Rigidbody.MovePosition(context.PlayerPos + Vector2.up * Time.deltaTime * pullUpSpeed);
+        t += Time.deltaTime;
+
+        if (t < duration)
+        {
+            context.Rigidbody.MovePosition(Vector2.Lerp(startPos, targetPos, positionOverTimeCurve.Evaluate(t / duration)));
+        }
         else
-            SetState(PlayerMovementState.Default);
+            SetState(PlayerBaseState.Default);
     }
     public override void Exit()
     {
@@ -103,7 +226,7 @@ public class WallState : PlayerState
 
         //player loses connection to wall
         if (!context.IsCollidingToAnyWall)
-            SetState(PlayerMovementState.Default);
+            SetState(PlayerBaseState.Default);
     }
 }
 

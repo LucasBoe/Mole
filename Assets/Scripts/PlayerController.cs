@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using PlayerCollisionCheckType;
 using UnityEngine;
 
-public enum PlayerMovementState
+public enum PlayerBaseState
 {
     Default,
     Climb,
@@ -23,19 +23,19 @@ public enum PlayerClimbState
 public class PlayerController : MonoBehaviour
 {
     public PlayerClimbState ClimbState;
-    public PlayerMovementState MoveState;
+    public PlayerBaseState BaseState;
 
     PlayerContext context;
 
     bool jumpBlocker = false;
-    float dropDownTimer = 0f;
 
     [SerializeField] private float jumpForce, walkForce, wallClimbForce, additionalGravityForce, pullUpSpeed, dropDownSpeed;
 
-    public System.Action<PlayerMovementState, PlayerClimbState> OnStateChange;
-    public System.Action<PlayerMovementState, PlayerClimbState, PlayerMovementState, PlayerClimbState> OnStateChangePrevious;
+    public System.Action<PlayerBaseState, PlayerClimbState> OnStateChange;
+    public System.Action<PlayerBaseState, PlayerClimbState, PlayerBaseState, PlayerClimbState> OnStateChangePrevious;
 
     public Dictionary<PlayerClimbState, PlayerState> climbStateDictionary = new Dictionary<PlayerClimbState, PlayerState>();
+    public Dictionary<PlayerBaseState, PlayerState> baseStateDictionary = new Dictionary<PlayerBaseState, PlayerState>();
 
     private void Awake()
     {
@@ -44,19 +44,24 @@ public class PlayerController : MonoBehaviour
         context.PlayerController = this;
 
         //base
-        context.CollisionChecks.Add(CheckType.Ground, new PlayerCollisionCheck(0f, -1.125f, 0.75f, 0.25f, LayerMask.GetMask("Default", "Hangable")));
-        context.CollisionChecks.Add(CheckType.Hangable, new PlayerCollisionCheck(0f, 1.5f, 1.5f, 1f, LayerMask.GetMask("Hangable")));
-        context.CollisionChecks.Add(CheckType.WallLeft, new PlayerCollisionCheck(-0.65f, 0.4f, 0.25f, 1f, LayerMask.GetMask("Default")));
-        context.CollisionChecks.Add(CheckType.WallRight, new PlayerCollisionCheck(0.625f, 0.4f, 0.25f, 1f, LayerMask.GetMask("Default")));
-        context.CollisionChecks.Add(CheckType.Ceiling, new PlayerCollisionCheck(0f, 1f, 0.75f, 0.25f, LayerMask.GetMask("Default")));
-        context.CollisionChecks.Add(CheckType.Body, new PlayerCollisionCheck(0f, 0f, 1f, 1.5f, LayerMask.GetMask("Default", "Hangable")));
+        context.CollisionChecks.Add(CheckType.Ground, new PlayerCollisionCheck(0f, -1.25f, 0.75f, 0.25f, LayerMask.GetMask("Default", "Hangable")));
+        context.CollisionChecks.Add(CheckType.Hangable, new PlayerCollisionCheck(0f, 1.375f, 1.5f, 1f, LayerMask.GetMask("Hangable")));
+        context.CollisionChecks.Add(CheckType.WallLeft, new PlayerCollisionCheck(-0.65f, 0.275f, 0.25f, 1f, LayerMask.GetMask("Default")));
+        context.CollisionChecks.Add(CheckType.WallRight, new PlayerCollisionCheck(0.625f, 0.275f, 0.25f, 1f, LayerMask.GetMask("Default")));
+        context.CollisionChecks.Add(CheckType.Ceiling, new PlayerCollisionCheck(0f, 0.875f, 0.75f, 0.25f, LayerMask.GetMask("Default")));
+        context.CollisionChecks.Add(CheckType.Body, new PlayerCollisionCheck(0f, 0f, 0.875f, 1.5f, LayerMask.GetMask("Default", "Hangable")));
 
         //details
-        context.CollisionChecks.Add(CheckType.HangableLeft, new PlayerCollisionCheck(-0.75f, 1.5125f, .5f, 1.25f, LayerMask.GetMask("Hangable")));
-        context.CollisionChecks.Add(CheckType.HangableRight, new PlayerCollisionCheck(0.75f, 1.5125f, .5f, 1.25f, LayerMask.GetMask("Hangable")));
-        context.CollisionChecks.Add(CheckType.HangableAboveAir, new PlayerCollisionCheck(0f, 3f, 1f, 2f, LayerMask.GetMask("Default", "Hangable")));
-        context.CollisionChecks.Add(CheckType.HangableBelow, new PlayerCollisionCheck(0, -1.25f, 0.5f, 1f, LayerMask.GetMask("Hangable")));
+        context.CollisionChecks.Add(CheckType.HangableLeft, new PlayerCollisionCheck(-0.75f, 1.5f, .5f, 1.25f, LayerMask.GetMask("Hangable")));
+        context.CollisionChecks.Add(CheckType.HangableRight, new PlayerCollisionCheck(0.75f, 1.5f, .5f, 1.25f, LayerMask.GetMask("Hangable")));
+        context.CollisionChecks.Add(CheckType.HangableAboveAir, new PlayerCollisionCheck(0f, 2.875f, 1f, 2f, LayerMask.GetMask("Default", "Hangable")));
+        context.CollisionChecks.Add(CheckType.HangableBelow, new PlayerCollisionCheck(0, -1.5f, 0.5f, 1f, LayerMask.GetMask("Hangable")));
 
+        //base states
+        baseStateDictionary.Add(PlayerBaseState.Default, new DefaultState(context));
+        baseStateDictionary.Add(PlayerBaseState.Climb, new ClimbState(context));
+
+        //climb states
         climbStateDictionary.Add(PlayerClimbState.PullUp, new PullUpState(context));
         climbStateDictionary.Add(PlayerClimbState.DropDown, new DropDownState(context));
         climbStateDictionary.Add(PlayerClimbState.Hanging, new HangingState(context));
@@ -83,153 +88,57 @@ public class PlayerController : MonoBehaviour
         bool isJumping = context.IsJumping;
         bool isCollidingToAnyWall = context.IsCollidingToAnyWall;
 
-        switch (MoveState)
-        {
-            case PlayerMovementState.Climb:
-
-                //player tries to walk on the ground
-                if (IsColliding(CheckType.Ground) && triesMoveLeftRight)
-                    SetState(PlayerMovementState.Default);
-
-                if (isJumping)
-                    JumpOff(context.Input);
-
-                switch (ClimbState)
-                {
-                    case PlayerClimbState.Wall:
-                    case PlayerClimbState.Hanging:
-                    case PlayerClimbState.PullUp:
-                    case PlayerClimbState.DropDown:
-                        UpdateState(ClimbState);
-                        break;
-                }
-
-                break;
-
-            default:
-
-                if (context.Input.x != 0)
-                    context.Rigidbody.velocity = new Vector2(context.Input.x * walkForce, context.Rigidbody.velocity.y);
-
-                if (isCollidingToAnyWall && triesMoveUpDown)
-                {
-                    SetState(PlayerClimbState.Wall);
-                }
-
-                if (IsColliding(CheckType.Ground))
-                {
-                    //jumping
-                    if (!jumpBlocker && isJumping)
-                    {
-                        jumpBlocker = true;
-                        context.Rigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-                        Invoke("ResetJumpBlocker", 0.5f);
-                    }
-
-                    //dropping down
-                    if (IsColliding(CheckType.HangableBelow) && context.Input.y < -0.9f)
-                    {
-                        dropDownTimer += Time.deltaTime;
-                        if (dropDownTimer > 0.5f)
-                        {
-                            dropDownTimer = 0f;
-                            SetState(PlayerClimbState.DropDown);
-                        }
-                    }
-                    else
-                    {
-                        dropDownTimer = 0f;
-                    }
-                }
-                else
-                {
-                    //gravity
-                    context.Rigidbody.AddForce(new Vector2(0, -Time.deltaTime * 1000f * additionalGravityForce));
-
-                    //autograp to hangable
-                    if (IsColliding(CheckType.Hangable) && context.Input.y > 0.25f)
-                        SetState(PlayerClimbState.Hanging);
-                }
-                break;
-        }
+        UpdateState(BaseState);
     }
 
-    private void UpdateState(PlayerClimbState climbState)
+    public void EnterState(PlayerBaseState baseState)
+    {
+        baseStateDictionary[baseState].Enter();
+    }
+
+    public void EnterState(PlayerClimbState climbState)
+    {
+        climbStateDictionary[climbState].Enter();
+    }
+
+    public void UpdateState(PlayerBaseState baseState)
+    {
+        baseStateDictionary[baseState].Update();
+    }
+
+    public void UpdateState(PlayerClimbState climbState)
     {
         climbStateDictionary[climbState].Update();
     }
 
-    private void ExitState(PlayerMovementState moveState, PlayerClimbState climbState)
+    public void ExitState(PlayerBaseState baseState)
     {
-        switch (moveState)
-        {
-            case PlayerMovementState.Climb:
-
-                switch (climbState)
-                {
-                    case PlayerClimbState.PullUp:
-                    case PlayerClimbState.DropDown:
-                        context.Rigidbody.GetComponent<Collider2D>().enabled = true;
-                        break;
-
-                    default:
-                        //
-                        break;
-                }
-                break;
-        }
+        baseStateDictionary[baseState].Exit();
     }
 
-    private void EnterState(PlayerMovementState moveState, PlayerClimbState climbState)
+    public void ExitState(PlayerClimbState climbState)
     {
-        context.Rigidbody.gravityScale = moveState == PlayerMovementState.Climb ? 0 : 2;
-        dropDownTimer = 0f;
-
-        switch (moveState)
-        {
-            case PlayerMovementState.Default:
-                break;
-
-            case PlayerMovementState.Climb:
-
-                switch (climbState)
-                {
-                    case PlayerClimbState.PullUp:
-                    case PlayerClimbState.DropDown:
-                        climbStateDictionary[climbState].Enter();
-                        break;
-
-                    default:
-                        //
-                        break;
-                }
-                break;
-        }
-    }
-
-    private void JumpOff(Vector2 input)
-    {
-        SetState(PlayerMovementState.Default);
-        context.Rigidbody.velocity = input;
+        climbStateDictionary[climbState].Exit();
     }
 
     public void SetState(PlayerClimbState climbState)
     {
-        SetState(PlayerMovementState.Climb, climbState);
+        SetState(PlayerBaseState.Climb, climbState);
     }
 
-    public void SetState(PlayerMovementState newMoveState, PlayerClimbState newClimbState = PlayerClimbState.None)
+    public void SetState(PlayerBaseState newMoveState, PlayerClimbState newClimbState = PlayerClimbState.None)
     {
 
-        ExitState(MoveState, ClimbState);
-        EnterState(newMoveState, newClimbState);
+        ExitState(BaseState);
 
-        Debug.Log($"Change state from: {MoveState} ({ClimbState}) to {newMoveState}({newClimbState}).");
-        OnStateChangePrevious?.Invoke(MoveState, ClimbState, newMoveState, newClimbState);
+        Debug.Log($"Change state from: {BaseState} ({ClimbState}) to {newMoveState}({newClimbState}).");
+        OnStateChangePrevious?.Invoke(BaseState, ClimbState, newMoveState, newClimbState);
         OnStateChange?.Invoke(newMoveState, newClimbState);
 
-        MoveState = newMoveState;
+        BaseState = newMoveState;
         ClimbState = newClimbState;
+
+        EnterState(newMoveState);
 
     }
 
@@ -260,7 +169,7 @@ public class PlayerController : MonoBehaviour
         //    GUI.Label(rect, pcc.Key.ToString() + " (" + pcc.Value.LayerMask.ToString() + ")");
         //}
 
-        GUILayout.Box(MoveState + " : " + ClimbState);
+        GUILayout.Box(BaseState + " : " + ClimbState);
     }
 
     private void ResetJumpBlocker()
