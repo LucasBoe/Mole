@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using PlayerCollisionCheckType;
 
+//Player State Base Class with common and abstract functions 
 public class PlayerState
 {
     protected PlayerContext context;
@@ -146,23 +147,18 @@ public class IdleState : PlayerState
 {
     public IdleState(PlayerContext playerContext) : base(playerContext) { }
 }
-
 public class WalkState : PlayerState
 {
     public WalkState(PlayerContext playerContext) : base(playerContext) { }
 }
-
 public class JumpState : PlayerState
 {
     public JumpState(PlayerContext playerContext) : base(playerContext) { }
 }
-
 public class FallState : PlayerState
 {
     public FallState(PlayerContext playerContext) : base(playerContext) { }
 }
-
-
 
 
 //Cimb States
@@ -214,7 +210,6 @@ public class PullUpState : PlayerState
         SetCollisionActive(true);
     }
 }
-
 public class DropDownState : PlayerState
 {
     float dropDownSpeed = 25f;
@@ -237,7 +232,6 @@ public class DropDownState : PlayerState
         SetCollisionActive(true);
     }
 }
-
 public class WallState : PlayerState
 {
     float wallClimbVelocity = 6;
@@ -258,7 +252,6 @@ public class WallState : PlayerState
             SetState(PlayerBaseState.Default);
     }
 }
-
 public class HangingState : PlayerState
 {
     public Vector2 HangableOffset = new Vector2(0, 1.25f);
