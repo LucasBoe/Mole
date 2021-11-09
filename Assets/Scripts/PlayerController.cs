@@ -98,7 +98,8 @@ public class PlayerController : MonoBehaviour
 
     public void EnterState(PlayerClimbState climbState)
     {
-        climbStateDictionary[climbState].Enter();
+        if (climbState != PlayerClimbState.None)
+            climbStateDictionary[climbState].Enter();
     }
 
     public void UpdateState(PlayerBaseState baseState)
@@ -108,7 +109,8 @@ public class PlayerController : MonoBehaviour
 
     public void UpdateState(PlayerClimbState climbState)
     {
-        climbStateDictionary[climbState].Update();
+        if (climbState != PlayerClimbState.None)
+            climbStateDictionary[climbState].Update();
     }
 
     public void ExitState(PlayerBaseState baseState)
@@ -118,7 +120,8 @@ public class PlayerController : MonoBehaviour
 
     public void ExitState(PlayerClimbState climbState)
     {
-        climbStateDictionary[climbState].Exit();
+        if (climbState != PlayerClimbState.None)
+            climbStateDictionary[climbState].Exit();
     }
 
     public void SetState(PlayerClimbState climbState)
@@ -149,6 +152,9 @@ public class PlayerController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (context == null || context.CollisionChecks == null)
+            return;
+
         foreach (PlayerCollisionCheck pcc in context.CollisionChecks.Values)
         {
             Gizmos.color = pcc.IsDetecting ? Color.yellow : Color.white;
