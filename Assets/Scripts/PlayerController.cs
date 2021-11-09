@@ -20,6 +20,14 @@ public enum PlayerClimbState
     DropDown,
 }
 
+public enum PlayerMoveState
+{
+    Idle,
+    Walk,
+    Jump,
+    Fall
+}
+
 public class PlayerController : MonoBehaviour
 {
     public PlayerClimbState ClimbState;
@@ -34,8 +42,9 @@ public class PlayerController : MonoBehaviour
     public System.Action<PlayerBaseState, PlayerClimbState> OnStateChange;
     public System.Action<PlayerBaseState, PlayerClimbState, PlayerBaseState, PlayerClimbState> OnStateChangePrevious;
 
-    public Dictionary<PlayerClimbState, PlayerState> climbStateDictionary = new Dictionary<PlayerClimbState, PlayerState>();
     public Dictionary<PlayerBaseState, PlayerState> baseStateDictionary = new Dictionary<PlayerBaseState, PlayerState>();
+    public Dictionary<PlayerMoveState, PlayerState> moveStateDictionary = new Dictionary<PlayerMoveState, PlayerState>();
+    public Dictionary<PlayerClimbState, PlayerState> climbStateDictionary = new Dictionary<PlayerClimbState, PlayerState>();
 
     private void Awake()
     {
@@ -61,6 +70,12 @@ public class PlayerController : MonoBehaviour
         baseStateDictionary.Add(PlayerBaseState.Default, new DefaultState(context));
         baseStateDictionary.Add(PlayerBaseState.Climb, new ClimbState(context));
 
+        //move states
+        moveStateDictionary.Add(PlayerMoveState.Idle, new IdleState(context));
+        moveStateDictionary.Add(PlayerMoveState.Walk, new WalkState(context));
+        moveStateDictionary.Add(PlayerMoveState.Jump, new JumpState(context));
+        moveStateDictionary.Add(PlayerMoveState.Fall, new FallState(context));
+
         //climb states
         climbStateDictionary.Add(PlayerClimbState.PullUp, new PullUpState(context));
         climbStateDictionary.Add(PlayerClimbState.DropDown, new DropDownState(context));
@@ -72,63 +87,68 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         foreach (PlayerCollisionCheck pcc in context.CollisionChecks.Values)
-        {
             pcc.Update(transform);
-        }
 
         context.PlayerPos = transform.position;
-        context.Input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         context.IsCollidingToAnyWall = IsColliding(CheckType.WallLeft) || IsColliding(CheckType.WallRight);
+        context.Input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         context.TriesMoveLeftRight = context.Input.x != 0;
         context.TriesMoveUpDown = context.Input.y != 0f;
         context.IsJumping = Input.GetButton("Jump");
 
-        bool triesMoveLeftRight = context.TriesMoveLeftRight;
-        bool triesMoveUpDown = context.TriesMoveUpDown;
-        bool isJumping = context.IsJumping;
-        bool isCollidingToAnyWall = context.IsCollidingToAnyWall;
-
         UpdateState(BaseState);
     }
 
+    //Enter Methods
     public void EnterState(PlayerBaseState baseState)
     {
         baseStateDictionary[baseState].Enter();
     }
-
+    public void EnterState(PlayerMoveState moveState)
+    {
+        moveStateDictionary[moveState].Enter();
+    }
     public void EnterState(PlayerClimbState climbState)
     {
         if (climbState != PlayerClimbState.None)
             climbStateDictionary[climbState].Enter();
     }
 
+    //Update Methods
     public void UpdateState(PlayerBaseState baseState)
     {
         baseStateDictionary[baseState].Update();
     }
-
+    public void UpdateState(PlayerMoveState moveState)
+    {
+        moveStateDictionary[moveState].Update();
+    }
     public void UpdateState(PlayerClimbState climbState)
     {
         if (climbState != PlayerClimbState.None)
             climbStateDictionary[climbState].Update();
     }
 
+    //Exit Methods
     public void ExitState(PlayerBaseState baseState)
     {
         baseStateDictionary[baseState].Exit();
     }
-
+    public void ExitState(PlayerMoveState moveState)
+    {
+        moveStateDictionary[moveState].Exit();
+    }
     public void ExitState(PlayerClimbState climbState)
     {
         if (climbState != PlayerClimbState.None)
             climbStateDictionary[climbState].Exit();
     }
 
+
     public void SetState(PlayerClimbState climbState)
     {
         SetState(PlayerBaseState.Climb, climbState);
     }
-
     public void SetState(PlayerBaseState newMoveState, PlayerClimbState newClimbState = PlayerClimbState.None)
     {
 
@@ -164,7 +184,6 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = Color.magenta;
         Gizmos.DrawWireSphere((Vector2)transform.position + (climbStateDictionary[PlayerClimbState.Hanging] as HangingState).HangableOffset, 0.25f);
     }
-
     private void OnGUI()
     {
         //foreach (KeyValuePair<CheckType, PlayerCollisionCheck> pcc in context.CollisionChecks)

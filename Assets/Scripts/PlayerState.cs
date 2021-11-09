@@ -46,6 +46,7 @@ public class PlayerState
     }
 }
 
+//Base States
 public class DefaultState : PlayerState
 {
     float walkForce = 8f, jumpForce = 30f, additionalGravityForce = 3f;
@@ -91,7 +92,7 @@ public class DefaultState : PlayerState
                     SetState(PlayerClimbState.DropDown);
                 }
 
-                
+
             }
             else
             {
@@ -139,6 +140,32 @@ public class ClimbState : PlayerState
     }
 }
 
+
+//Walk States (Idle, Walk, Jump, Fall)
+public class IdleState : PlayerState
+{
+    public IdleState(PlayerContext playerContext) : base(playerContext) { }
+}
+
+public class WalkState : PlayerState
+{
+    public WalkState(PlayerContext playerContext) : base(playerContext) { }
+}
+
+public class JumpState : PlayerState
+{
+    public JumpState(PlayerContext playerContext) : base(playerContext) { }
+}
+
+public class FallState : PlayerState
+{
+    public FallState(PlayerContext playerContext) : base(playerContext) { }
+}
+
+
+
+
+//Cimb States
 public class PullUpState : PlayerState
 {
     float t = 0;
