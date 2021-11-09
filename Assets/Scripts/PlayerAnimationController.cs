@@ -26,7 +26,8 @@ public class PlayerAnimationController : MonoBehaviour
 
     private void Update()
     {
-        spriteRenderer.flipX = playerRigidbody.velocity.x < 0.01f;
+        if (player.ClimbState != PlayerClimbState.Wall)
+            spriteRenderer.flipX = playerRigidbody.velocity.x < 0.01f;
         animator.SetFloat("speed", playerRigidbody.velocity.magnitude);
     }
 
