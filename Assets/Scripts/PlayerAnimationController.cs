@@ -20,10 +20,14 @@ public class PlayerAnimationController : MonoBehaviour
 
     private void OnStateChangePrevious(PlayerMovementState previousBase, PlayerClimbState previousClimb, PlayerMovementState newBase, PlayerClimbState newClimb)
     {
-        spriteRenderer.flipX = playerRigidbody.velocity.x < 0.01f;
-        animator.SetFloat("speed", playerRigidbody.velocity.magnitude);
         animator.SetTrigger(newBase.ToString());
         animator.SetTrigger(newClimb.ToString());
+    }
+
+    private void Update()
+    {
+        spriteRenderer.flipX = playerRigidbody.velocity.x < 0.01f;
+        animator.SetFloat("speed", playerRigidbody.velocity.magnitude);
     }
 
     private void OnDisable()
