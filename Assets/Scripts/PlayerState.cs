@@ -57,59 +57,15 @@ public class DefaultState : PlayerState
     float walkForce = 8f, jumpForce = 30f, additionalGravityForce = 3f;
 
     float lastJumpTime = 0;
-    float dropDownTimer = 0f;
 
     bool jumpBlocker => Time.time - 0.2f < lastJumpTime;
 
     public DefaultState(PlayerContext playerContext) : base(playerContext) { }
 
-    public override void Enter()
-    {
-        dropDownTimer = 0;
-    }
-
     public override void Update()
     {
-        if (context.Input.x != 0)
-            context.Rigidbody.velocity = new Vector2(context.Input.x * walkForce, context.Rigidbody.velocity.y);
-
         if (context.IsCollidingToAnyWall && context.TriesMoveUpDown)
-        {
             SetState(PlayerClimbState.Wall);
-        }
-
-        if (IsColliding(CheckType.Ground))
-        {
-            //jumping
-            if (!jumpBlocker && context.IsJumping)
-            {
-                SetState(PlayerMoveState.Jump);
-            }
-
-            //dropping down
-            if (IsColliding(CheckType.HangableBelow) && context.Input.y < -0.9f)
-            {
-                dropDownTimer += Time.deltaTime;
-                if (dropDownTimer > 0.5f)
-                {
-                    dropDownTimer = 0f;
-                    SetState(PlayerClimbState.DropDown);
-                }
-            }
-            else
-            {
-                dropDownTimer = 0f;
-            }
-        }
-        else
-        {
-            //gravity
-            context.Rigidbody.AddForce(new Vector2(0, -Time.deltaTime * 1000f * additionalGravityForce));
-
-            //autograp to hangable
-            if (IsColliding(CheckType.Hangable) && context.Input.y > 0.25f)
-                SetState(PlayerClimbState.Hanging);
-        }
     }
 }
 public class ClimbState : PlayerState
@@ -146,11 +102,59 @@ public class ClimbState : PlayerState
 //Walk States (Idle, Walk, Jump, Fall)
 public class IdleState : PlayerState
 {
+    float dropDownTimer = 0f;
+
     public IdleState(PlayerContext playerContext) : base(playerContext) { }
+
+    public override void Enter()
+    {
+        dropDownTimer = 0;
+    }
+
+    public override void Update()
+    {
+        if (context.Input.x != 0)
+            SetState(PlayerMoveState.Walk);
+
+        //jumping
+        if (context.IsJumping)
+            SetState(PlayerMoveState.Jump);
+
+        //dropping down
+        if (IsColliding(CheckType.HangableBelow) && context.Input.y < -0.9f)
+        {
+            dropDownTimer += Time.deltaTime;
+            if (dropDownTimer > 0.5f)
+            {
+                dropDownTimer = 0f;
+                SetState(PlayerClimbState.DropDown);
+            }
+        }
+        else
+        {
+            dropDownTimer = 0f;
+        }
+    }
 }
 public class WalkState : PlayerState
 {
     public WalkState(PlayerContext playerContext) : base(playerContext) { }
+
+    public override void Update()
+    {
+        context.Rigidbody.velocity = new Vector2(context.Input.x * walkForce, context.Rigidbody.velocity.y);
+
+        if (context.Input.x == 0)
+            SetState(PlayerMoveState.Idle);
+
+        if (!context.IsColliding(CheckType.Ground))
+            SetState(PlayerMoveState.Fall);
+
+        if (context.IsJumping)
+            SetState(PlayerMoveState.Jump);
+
+
+    }
 }
 public class JumpState : PlayerState
 {
@@ -161,10 +165,32 @@ public class JumpState : PlayerState
         lastJumpTime = Time.time;
         context.Rigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
+
+    public override void Update()
+    {
+        //gravity
+        context.Rigidbody.AddForce(new Vector2(0, -Time.deltaTime * 1000f * additionalGravityForce));
+
+        //autograp to hangable
+        if (IsColliding(CheckType.Hangable) && context.Input.y > 0.25f)
+            SetState(PlayerClimbState.Hanging);
+
+        if (context.Rigidbody.velocity.y < 0)
+            SetState(PlayerMoveState.Fall);
+    }
 }
 public class FallState : PlayerState
 {
     public FallState(PlayerContext playerContext) : base(playerContext) { }
+
+    public override void Update()
+    {
+        //gravity
+        context.Rigidbody.AddForce(new Vector2(0, -Time.deltaTime * 1000f * additionalGravityForce));
+
+        if (context.IsColliding(CheckType.Ground))
+            SetState(PlayerMoveState.Idle);
+    }
 }
 
 
