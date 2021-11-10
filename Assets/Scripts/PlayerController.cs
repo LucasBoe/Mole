@@ -108,7 +108,8 @@ public class PlayerController : MonoBehaviour
     }
     public void EnterState(PlayerMoveState moveState)
     {
-        moveStateDictionary[moveState].Enter();
+        if (moveState != PlayerMoveState.None)
+            moveStateDictionary[moveState].Enter();
     }
     public void EnterState(PlayerClimbState climbState)
     {
@@ -123,7 +124,8 @@ public class PlayerController : MonoBehaviour
     }
     public void UpdateState(PlayerMoveState moveState)
     {
-        moveStateDictionary[moveState].Update();
+        if (moveState != PlayerMoveState.None)
+            moveStateDictionary[moveState].Update();
     }
     public void UpdateState(PlayerClimbState climbState)
     {
@@ -138,7 +140,8 @@ public class PlayerController : MonoBehaviour
     }
     public void ExitState(PlayerMoveState moveState)
     {
-        moveStateDictionary[moveState].Exit();
+        if (moveState != PlayerMoveState.None)
+            moveStateDictionary[moveState].Exit();
     }
     public void ExitState(PlayerClimbState climbState)
     {
@@ -159,13 +162,15 @@ public class PlayerController : MonoBehaviour
     {
 
         ExitState(BaseState);
-
-        Debug.Log($"Change state from: {BaseState} ({((BaseState == PlayerBaseState.Default) ? MoveState.ToString() : ClimbState.ToString())}) to {newBaseState}({((newBaseState == PlayerBaseState.Default) ? newMoveState.ToString() : newClimbState.ToString())}}).");
+        string from = (BaseState == PlayerBaseState.Default) ? MoveState.ToString() : ClimbState.ToString();
+        string to = (newBaseState == PlayerBaseState.Default) ? newMoveState.ToString() : newClimbState.ToString();
+        Debug.Log($"Change state from: {BaseState} ({from}) to {newBaseState}({to}).");
         OnStateChangePrevious?.Invoke(BaseState, ClimbState, newBaseState, newClimbState);
         OnStateChange?.Invoke(newBaseState, newClimbState);
 
         BaseState = newBaseState;
         ClimbState = newClimbState;
+        MoveState = newMoveState;
 
         EnterState(newBaseState);
 

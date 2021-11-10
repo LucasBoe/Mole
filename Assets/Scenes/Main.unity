@@ -5297,6 +5297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ClimbState: 0
+  MoveState: 1
   BaseState: 0
   jumpForce: 30
   walkForce: 8

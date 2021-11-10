@@ -41,8 +41,13 @@ public class PlayerState
 
     protected void JumpOff(Vector2 input)
     {
-        SetState(PlayerBaseState.Default);
+        SetState(PlayerMoveState.Fall);
         context.Rigidbody.velocity = input;
+    }
+
+    protected void ApplyGravity()
+    {
+        context.Rigidbody.AddForce(new Vector2(0, -Time.deltaTime * 1000f * 3));
     }
 
     public PlayerState(PlayerContext playerContext)
@@ -62,10 +67,22 @@ public class DefaultState : PlayerState
 
     public DefaultState(PlayerContext playerContext) : base(playerContext) { }
 
+    public override void Enter()
+    {
+        context.PlayerController.EnterState(context.PlayerController.MoveState);
+    }
+
     public override void Update()
     {
         if (context.IsCollidingToAnyWall && context.TriesMoveUpDown)
             SetState(PlayerClimbState.Wall);
+
+        context.PlayerController.UpdateState(context.PlayerController.MoveState);
+    }
+
+    public override void Exit()
+    {
+        context.PlayerController.ExitState(context.PlayerController.MoveState);
     }
 }
 public class ClimbState : PlayerState
@@ -138,6 +155,7 @@ public class IdleState : PlayerState
 }
 public class WalkState : PlayerState
 {
+    float walkForce = 8f;
     public WalkState(PlayerContext playerContext) : base(playerContext) { }
 
     public override void Update()
@@ -147,7 +165,7 @@ public class WalkState : PlayerState
         if (context.Input.x == 0)
             SetState(PlayerMoveState.Idle);
 
-        if (!context.IsColliding(CheckType.Ground))
+        if (!IsColliding(CheckType.Ground))
             SetState(PlayerMoveState.Fall);
 
         if (context.IsJumping)
@@ -158,18 +176,22 @@ public class WalkState : PlayerState
 }
 public class JumpState : PlayerState
 {
+    float jumpForce = 30f;
+    float straveForce = 6f;
     public JumpState(PlayerContext playerContext) : base(playerContext) { }
 
     public override void Enter()
     {
-        lastJumpTime = Time.time;
         context.Rigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
 
     public override void Update()
     {
         //gravity
-        context.Rigidbody.AddForce(new Vector2(0, -Time.deltaTime * 1000f * additionalGravityForce));
+        ApplyGravity();
+
+        //strave
+        context.Rigidbody.velocity = new Vector2(context.Input.x * straveForce, context.Rigidbody.velocity.y);
 
         //autograp to hangable
         if (IsColliding(CheckType.Hangable) && context.Input.y > 0.25f)
@@ -181,14 +203,22 @@ public class JumpState : PlayerState
 }
 public class FallState : PlayerState
 {
+    float straveForce = 6f;
     public FallState(PlayerContext playerContext) : base(playerContext) { }
 
     public override void Update()
     {
         //gravity
-        context.Rigidbody.AddForce(new Vector2(0, -Time.deltaTime * 1000f * additionalGravityForce));
+        ApplyGravity();
 
-        if (context.IsColliding(CheckType.Ground))
+        //autograp to hangable
+        if (IsColliding(CheckType.Hangable) && context.Input.y > 0.25f)
+            SetState(PlayerClimbState.Hanging);
+
+        //strave
+        context.Rigidbody.velocity = new Vector2(context.Input.x * straveForce, context.Rigidbody.velocity.y);
+
+        if (IsColliding(CheckType.Ground))
             SetState(PlayerMoveState.Idle);
     }
 }
@@ -236,7 +266,7 @@ public class PullUpState : PlayerState
             context.Rigidbody.MovePosition(Vector2.Lerp(startPos, targetPos, positionOverTimeCurve.Evaluate(t / duration)));
         }
         else
-            SetState(PlayerBaseState.Default);
+            SetState(PlayerMoveState.Idle);
     }
     public override void Exit()
     {
@@ -282,7 +312,7 @@ public class WallState : PlayerState
 
         //player loses connection to wall
         if (!context.IsCollidingToAnyWall)
-            SetState(PlayerBaseState.Default);
+            SetState(PlayerMoveState.Fall);
     }
 }
 public class HangingState : PlayerState
