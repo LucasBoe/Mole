@@ -24,10 +24,14 @@ public class PlayerState
     {
         context.PlayerController.SetState(climbState);
     }
-
-    protected void SetState(PlayerBaseState moveState)
+    protected void SetState(PlayerMoveState moveState)
     {
         context.PlayerController.SetState(moveState);
+    }
+
+    protected void SetState(PlayerBaseState baseState)
+    {
+        context.PlayerController.SetState(baseState);
     }
 
     protected void SetCollisionActive(bool active)
@@ -79,8 +83,7 @@ public class DefaultState : PlayerState
             //jumping
             if (!jumpBlocker && context.IsJumping)
             {
-                lastJumpTime = Time.time;
-                context.Rigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+                SetState(PlayerMoveState.Jump);
             }
 
             //dropping down
@@ -92,8 +95,6 @@ public class DefaultState : PlayerState
                     dropDownTimer = 0f;
                     SetState(PlayerClimbState.DropDown);
                 }
-
-
             }
             else
             {
@@ -154,6 +155,12 @@ public class WalkState : PlayerState
 public class JumpState : PlayerState
 {
     public JumpState(PlayerContext playerContext) : base(playerContext) { }
+
+    public override void Enter()
+    {
+        lastJumpTime = Time.time;
+        context.Rigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+    }
 }
 public class FallState : PlayerState
 {

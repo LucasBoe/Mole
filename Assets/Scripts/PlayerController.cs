@@ -22,6 +22,7 @@ public enum PlayerClimbState
 
 public enum PlayerMoveState
 {
+    None,
     Idle,
     Walk,
     Jump,
@@ -31,6 +32,7 @@ public enum PlayerMoveState
 public class PlayerController : MonoBehaviour
 {
     public PlayerClimbState ClimbState;
+    public PlayerMoveState MoveState;
     public PlayerBaseState BaseState;
 
     PlayerContext context;
@@ -144,24 +146,28 @@ public class PlayerController : MonoBehaviour
             climbStateDictionary[climbState].Exit();
     }
 
+    public void SetState(PlayerMoveState moveState)
+    {
+        SetState(PlayerBaseState.Default, newMoveState: moveState);
+    }
 
     public void SetState(PlayerClimbState climbState)
     {
-        SetState(PlayerBaseState.Climb, climbState);
+        SetState(PlayerBaseState.Climb, newClimbState: climbState);
     }
-    public void SetState(PlayerBaseState newMoveState, PlayerClimbState newClimbState = PlayerClimbState.None)
+    public void SetState(PlayerBaseState newBaseState, PlayerClimbState newClimbState = PlayerClimbState.None, PlayerMoveState newMoveState = PlayerMoveState.None)
     {
 
         ExitState(BaseState);
 
-        Debug.Log($"Change state from: {BaseState} ({ClimbState}) to {newMoveState}({newClimbState}).");
-        OnStateChangePrevious?.Invoke(BaseState, ClimbState, newMoveState, newClimbState);
-        OnStateChange?.Invoke(newMoveState, newClimbState);
+        Debug.Log($"Change state from: {BaseState} ({((BaseState == PlayerBaseState.Default) ? MoveState.ToString() : ClimbState.ToString())}) to {newBaseState}({((newBaseState == PlayerBaseState.Default) ? newMoveState.ToString() : newClimbState.ToString())}}).");
+        OnStateChangePrevious?.Invoke(BaseState, ClimbState, newBaseState, newClimbState);
+        OnStateChange?.Invoke(newBaseState, newClimbState);
 
-        BaseState = newMoveState;
+        BaseState = newBaseState;
         ClimbState = newClimbState;
 
-        EnterState(newMoveState);
+        EnterState(newBaseState);
 
     }
 
