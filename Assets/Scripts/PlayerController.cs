@@ -41,8 +41,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private float jumpForce, walkForce, wallClimbForce, additionalGravityForce, pullUpSpeed, dropDownSpeed;
 
-    public System.Action<PlayerBaseState, PlayerClimbState> OnStateChange;
-    public System.Action<PlayerBaseState, PlayerClimbState, PlayerBaseState, PlayerClimbState> OnStateChangePrevious;
+    public System.Action<PlayerBaseState, PlayerMoveState, PlayerClimbState> OnStateChange;
+    public System.Action<PlayerBaseState, PlayerMoveState, PlayerClimbState, PlayerBaseState, PlayerMoveState, PlayerClimbState> OnStateChangePrevious;
 
     public Dictionary<PlayerBaseState, PlayerState> baseStateDictionary = new Dictionary<PlayerBaseState, PlayerState>();
     public Dictionary<PlayerMoveState, PlayerState> moveStateDictionary = new Dictionary<PlayerMoveState, PlayerState>();
@@ -162,11 +162,12 @@ public class PlayerController : MonoBehaviour
     {
 
         ExitState(BaseState);
+
         string from = (BaseState == PlayerBaseState.Default) ? MoveState.ToString() : ClimbState.ToString();
         string to = (newBaseState == PlayerBaseState.Default) ? newMoveState.ToString() : newClimbState.ToString();
         Debug.Log($"Change state from: {BaseState} ({from}) to {newBaseState}({to}).");
-        OnStateChangePrevious?.Invoke(BaseState, ClimbState, newBaseState, newClimbState);
-        OnStateChange?.Invoke(newBaseState, newClimbState);
+        OnStateChangePrevious?.Invoke(BaseState, MoveState, ClimbState, newBaseState, newMoveState, newClimbState);
+        OnStateChange?.Invoke(newBaseState, newMoveState, newClimbState);
 
         BaseState = newBaseState;
         ClimbState = newClimbState;
