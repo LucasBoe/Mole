@@ -1,7 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using PlayerCollisionCheckType;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum PlayerBaseState
@@ -39,7 +37,7 @@ public class PlayerController : MonoBehaviour
 
     bool jumpBlocker = false;
 
-    [SerializeField] private float jumpForce, walkForce, wallClimbForce, additionalGravityForce, pullUpSpeed, dropDownSpeed;
+    [SerializeField] PlayerValues playerValues;
 
     public System.Action<PlayerBaseState, PlayerMoveState, PlayerClimbState> OnStateChange;
     public System.Action<PlayerBaseState, PlayerMoveState, PlayerClimbState, PlayerBaseState, PlayerMoveState, PlayerClimbState> OnStateChangePrevious;
@@ -53,6 +51,7 @@ public class PlayerController : MonoBehaviour
         context = new PlayerContext();
         context.Rigidbody = GetComponent<Rigidbody2D>();
         context.PlayerController = this;
+        context.Values = playerValues;
 
         //base
         context.CollisionChecks.Add(CheckType.Ground, new PlayerCollisionCheck(0f, -1.25f, 0.75f, 0.25f, LayerMask.GetMask("Default", "Hangable")));
@@ -194,7 +193,7 @@ public class PlayerController : MonoBehaviour
         }
 
         Gizmos.color = Color.magenta;
-        Gizmos.DrawWireSphere((Vector2)transform.position + (climbStateDictionary[PlayerClimbState.Hanging] as HangingState).HangableOffset, 0.25f);
+        Gizmos.DrawWireSphere((Vector2)transform.position + playerValues.HangableOffset, 0.25f);
     }
     private void OnGUI()
     {

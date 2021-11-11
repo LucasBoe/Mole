@@ -59,12 +59,6 @@ public class PlayerState
 //Base States
 public class DefaultState : PlayerState
 {
-    float walkForce = 8f, jumpForce = 30f, additionalGravityForce = 3f;
-
-    float lastJumpTime = 0;
-
-    bool jumpBlocker => Time.time - 0.2f < lastJumpTime;
-
     public DefaultState(PlayerContext playerContext) : base(playerContext) { }
 
     public override void Enter()
@@ -99,7 +93,7 @@ public class ClimbState : PlayerState
     {
         //player tries to walk on the ground transition to Default
         if (IsColliding(CheckType.Ground) && context.TriesMoveLeftRight)
-            SetState(PlayerBaseState.Default);
+            SetState(PlayerMoveState.Idle);
 
         //jump
         if (context.IsJumping)
@@ -155,12 +149,11 @@ public class IdleState : PlayerState
 }
 public class WalkState : PlayerState
 {
-    float walkForce = 8f;
     public WalkState(PlayerContext playerContext) : base(playerContext) { }
 
     public override void Update()
     {
-        context.Rigidbody.velocity = new Vector2(context.Input.x * walkForce, context.Rigidbody.velocity.y);
+        context.Rigidbody.velocity = new Vector2(context.Input.x * context.Values.walkXvelocity, context.Rigidbody.velocity.y);
 
         if (context.Input.x == 0)
             SetState(PlayerMoveState.Idle);
@@ -176,13 +169,11 @@ public class WalkState : PlayerState
 }
 public class JumpState : PlayerState
 {
-    float jumpForce = 30f;
-    float straveForce = 6f;
     public JumpState(PlayerContext playerContext) : base(playerContext) { }
 
     public override void Enter()
     {
-        context.Rigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        context.Rigidbody.AddForce(Vector2.up * context.Values.JumpForce, ForceMode2D.Impulse);
     }
 
     public override void Update()
@@ -191,7 +182,7 @@ public class JumpState : PlayerState
         ApplyGravity();
 
         //strave
-        context.Rigidbody.velocity = new Vector2(context.Input.x * straveForce, context.Rigidbody.velocity.y);
+        context.Rigidbody.velocity = new Vector2(context.Input.x * context.Values.StraveXVelocity, context.Rigidbody.velocity.y);
 
         //autograp to hangable
         if (IsColliding(CheckType.Hangable) && context.Input.y > 0.25f)
@@ -203,7 +194,6 @@ public class JumpState : PlayerState
 }
 public class FallState : PlayerState
 {
-    float straveForce = 6f;
     public FallState(PlayerContext playerContext) : base(playerContext) { }
 
     public override void Update()
@@ -216,7 +206,7 @@ public class FallState : PlayerState
             SetState(PlayerClimbState.Hanging);
 
         //strave
-        context.Rigidbody.velocity = new Vector2(context.Input.x * straveForce, context.Rigidbody.velocity.y);
+        context.Rigidbody.velocity = new Vector2(context.Input.x * context.Values.StraveXVelocity, context.Rigidbody.velocity.y);
 
         if (IsColliding(CheckType.Ground))
             SetState(PlayerMoveState.Idle);
@@ -228,9 +218,8 @@ public class FallState : PlayerState
 public class PullUpState : PlayerState
 {
     float t = 0;
-    float duration = 0.5f;
 
-    AnimationCurve positionOverTimeCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    AnimationCurve curve;
 
     Vector2 startPos, targetPos;
 
@@ -238,6 +227,7 @@ public class PullUpState : PlayerState
 
     public override void Enter()
     {
+        curve = context.Values.PullUpCurve;
         SetCollisionActive(false);
 
         t = 0;
@@ -261,9 +251,9 @@ public class PullUpState : PlayerState
     {
         t += Time.deltaTime;
 
-        if (t < duration)
+        if (t < context.Values.PullUpDuration)
         {
-            context.Rigidbody.MovePosition(Vector2.Lerp(startPos, targetPos, positionOverTimeCurve.Evaluate(t / duration)));
+            context.Rigidbody.MovePosition(Vector2.Lerp(startPos, targetPos, curve.Evaluate(t / context.Values.PullUpDuration)));
         }
         else
             SetState(PlayerMoveState.Idle);
@@ -275,8 +265,6 @@ public class PullUpState : PlayerState
 }
 public class DropDownState : PlayerState
 {
-    float dropDownSpeed = 25f;
-
     public DropDownState(PlayerContext playerContext) : base(playerContext) { }
 
     public override void Enter()
@@ -286,7 +274,7 @@ public class DropDownState : PlayerState
     public override void Update()
     {
         if (!IsColliding(CheckType.Hangable))
-            context.Rigidbody.MovePosition(context.PlayerPos + Vector2.down * Time.deltaTime * dropDownSpeed);
+            context.Rigidbody.MovePosition(context.PlayerPos + Vector2.down * Time.deltaTime * context.Values.DropDownSpeed);
         else
             SetState(PlayerClimbState.Hanging);
     }
@@ -297,17 +285,16 @@ public class DropDownState : PlayerState
 }
 public class WallState : PlayerState
 {
-    float wallClimbVelocity = 6;
-
     public WallState(PlayerContext playerContext) : base(playerContext) { }
 
     public override void Update()
     {
         //up down movement
-        context.Rigidbody.velocity = new Vector2(context.Rigidbody.velocity.x, context.Input.y * wallClimbVelocity);
+        context.Rigidbody.velocity = new Vector2(context.Rigidbody.velocity.x, context.Input.y * context.Values.WallClimbYvelocity);
 
         //transition to hanging
-        if (IsColliding(CheckType.Hangable) && context.TriesMoveLeftRight)
+        if (IsColliding(CheckType.Hangable)
+            && ((!IsColliding(CheckType.WallLeft) && context.Input.x < 0) || (!IsColliding(CheckType.WallRight) && context.Input.x > 0)))
             SetState(PlayerClimbState.Hanging);
 
         //player loses connection to wall
@@ -317,7 +304,6 @@ public class WallState : PlayerState
 }
 public class HangingState : PlayerState
 {
-    public Vector2 HangableOffset = new Vector2(0, 1.25f);
     public HangingState(PlayerContext playerContext) : base(playerContext) { }
 
     public override void Update()
@@ -333,8 +319,8 @@ public class HangingState : PlayerState
         }
         else
         {
-            Vector2 hangPosition = GetClosestHangablePosition(context.PlayerPos + HangableOffset, context.Input * Time.deltaTime * 100f);
-            Vector2 toMoveTo = hangPosition - HangableOffset;
+            Vector2 hangPosition = GetClosestHangablePosition(context.PlayerPos + context.Values.HangableOffset, context.Input * Time.deltaTime * 100f);
+            Vector2 toMoveTo = hangPosition - context.Values.HangableOffset;
 
             Debug.DrawLine(context.PlayerPos, toMoveTo, Color.cyan);
             context.Rigidbody.MovePosition(Vector2.MoveTowards(context.PlayerPos, toMoveTo, Time.deltaTime * 10f));

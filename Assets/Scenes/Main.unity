@@ -5299,12 +5299,7 @@ MonoBehaviour:
   ClimbState: 0
   MoveState: 1
   BaseState: 0
-  jumpForce: 30
-  walkForce: 8
-  wallClimbForce: 6
-  additionalGravityForce: 3
-  pullUpSpeed: 9
-  dropDownSpeed: 25
+  playerValues: {fileID: 11400000, guid: f123c62d2a8706d499bb4afc1f292e52, type: 2}
 --- !u!50 &1189029869
 Rigidbody2D:
   serializedVersion: 4
