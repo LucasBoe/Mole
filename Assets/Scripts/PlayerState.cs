@@ -285,7 +285,10 @@ public class DropDownState : PlayerState
 }
 public class WallState : PlayerState
 {
+    public bool IsLeft => IsColliding(CheckType.WallLeft);
+
     public WallState(PlayerContext playerContext) : base(playerContext) { }
+
 
     public override void Update()
     {

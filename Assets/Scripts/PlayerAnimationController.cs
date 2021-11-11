@@ -34,13 +34,21 @@ public class PlayerAnimationController : MonoBehaviour
             animator.SetBool(newMove.ToString(), true);
 
         if (newClimb != PlayerClimbState.None)
+        {
             animator.SetBool(newClimb.ToString(), true);
+
+            if (newClimb == PlayerClimbState.Wall)
+            {
+                spriteRenderer.flipX = (player.climbStateDictionary[newClimb] as WallState).IsLeft;
+            }
+        }
     }
 
     private void Update()
     {
         if (player.ClimbState != PlayerClimbState.Wall)
             spriteRenderer.flipX = playerRigidbody.velocity.x < 0.01f;
+
         animator.SetFloat("speed", playerRigidbody.velocity.magnitude);
     }
 
