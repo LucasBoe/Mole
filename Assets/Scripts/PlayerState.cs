@@ -47,7 +47,7 @@ public class PlayerState
 
     protected void ApplyGravity()
     {
-        context.Rigidbody.AddForce(new Vector2(0, -Time.deltaTime * 1000f * 3));
+        context.Rigidbody.AddForce(new Vector2(0, -Time.deltaTime * 1000f * context.Values.AdditionalGravityForce));
     }
 
     public PlayerState(PlayerContext playerContext)

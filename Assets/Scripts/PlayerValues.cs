@@ -10,6 +10,7 @@ public class PlayerValues : ScriptableObject
     public float WallClimbYvelocity = 6f;
 
     public float JumpForce = 30f;
+    public float AdditionalGravityForce = 4f;
 
     public float PullUpDuration = 0.5f;
 
@@ -19,4 +20,5 @@ public class PlayerValues : ScriptableObject
 
 
     public Vector2 HangableOffset = new Vector2(0, 1.25f);
+
 }
