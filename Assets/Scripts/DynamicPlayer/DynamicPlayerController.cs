@@ -147,48 +147,6 @@ public class DynamicPlayerController : MonoBehaviour
 }
 
 [System.Serializable]
-public class PlayerCollisionCheck
-{
-    public LayerMask LayerMask;
-    public Vector2 Pos, Size = Vector2.one;
-    public bool IsDetecting => colliders != null && colliders.Length > 0;
-
-    private Collider2D[] colliders;
-
-    public PlayerCollisionCheck(float posX, float posY, float sizeX, float sizeY, LayerMask layerMask)
-    {
-        Pos = new Vector2(posX, posY);
-        Size = new Vector2(sizeX, sizeY);
-        LayerMask = layerMask;
-    }
-
-    public PlayerCollisionCheck (Vector2 pos, Vector2 size, LayerMask layerMask)
-    {
-        Pos = pos;
-        Size = size;
-        LayerMask = layerMask;
-    }
-
-    public void Update(Transform player)
-    {
-        colliders = Physics2D.OverlapBoxAll((Vector2)player.position + Pos, Size, 0, LayerMask);
-    }
-
-    public IHangable[] GetHangables()
-    {
-        List<IHangable> hangables = new List<IHangable>();
-        foreach (Collider2D collider in colliders)
-        {
-            var hangable = collider.GetComponent<IHangable>();
-            if (hangable != null)
-                hangables.Add(hangable);
-        }
-
-        return hangables.ToArray();
-    }
-}
-
-[System.Serializable]
 public class Limb
 {
     public Limb Parner;

@@ -54,18 +54,18 @@ public class PlayerController : MonoBehaviour
         context.Values = playerValues;
 
         //base
-        context.CollisionChecks.Add(CheckType.Ground, new PlayerCollisionCheck(0f, -1.25f, 0.75f, 0.25f, LayerMask.GetMask("Default", "Hangable")));
+        context.CollisionChecks.Add(CheckType.Ground, new PlayerCollisionCheck(0f, -1.25f, 0.75f, 0.25f, LayerMask.GetMask("Default", "Hangable", "OneDirectionalFloor")));
         context.CollisionChecks.Add(CheckType.Hangable, new PlayerCollisionCheck(0f, 1.375f, 1.5f, 1f, LayerMask.GetMask("Hangable")));
         context.CollisionChecks.Add(CheckType.WallLeft, new PlayerCollisionCheck(-0.65f, 0.275f, 0.25f, 1f, LayerMask.GetMask("Default")));
         context.CollisionChecks.Add(CheckType.WallRight, new PlayerCollisionCheck(0.625f, 0.275f, 0.25f, 1f, LayerMask.GetMask("Default")));
-        context.CollisionChecks.Add(CheckType.Ceiling, new PlayerCollisionCheck(0f, 0.875f, 0.75f, 0.25f, LayerMask.GetMask("Default")));
+        context.CollisionChecks.Add(CheckType.Ceiling, new PlayerCollisionCheck(0f, 0.875f, 0.75f, 0.25f, LayerMask.GetMask("Default", "OneDirectionalFloor")));
         context.CollisionChecks.Add(CheckType.Body, new PlayerCollisionCheck(0f, 0f, 0.875f, 1.5f, LayerMask.GetMask("Default", "Hangable")));
 
         //details
         context.CollisionChecks.Add(CheckType.HangableLeft, new PlayerCollisionCheck(-0.75f, 1.5f, .5f, 1.25f, LayerMask.GetMask("Hangable")));
         context.CollisionChecks.Add(CheckType.HangableRight, new PlayerCollisionCheck(0.75f, 1.5f, .5f, 1.25f, LayerMask.GetMask("Hangable")));
         context.CollisionChecks.Add(CheckType.HangableAboveAir, new PlayerCollisionCheck(0f, 2.875f, 1f, 2f, LayerMask.GetMask("Default", "Hangable")));
-        context.CollisionChecks.Add(CheckType.HangableBelow, new PlayerCollisionCheck(0, -1.5f, 0.5f, 1f, LayerMask.GetMask("Hangable")));
+        context.CollisionChecks.Add(CheckType.DropDownable, new PlayerCollisionCheck(0, -1.5f, 0.5f, 1f, LayerMask.GetMask("Hangable","OneDirectionalFloor")));
 
         //base states
         baseStateDictionary.Add(PlayerBaseState.Default, new DefaultState(context));
@@ -227,6 +227,6 @@ namespace PlayerCollisionCheckType
         HangableRight,
         HangableAboveAir,
         Body,
-        HangableBelow,
+        DropDownable,
     }
 }

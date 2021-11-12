@@ -132,7 +132,7 @@ public class IdleState : PlayerState
             SetState(PlayerMoveState.Jump);
 
         //dropping down
-        if (IsColliding(CheckType.HangableBelow) && context.Input.y < -0.9f)
+        if (IsColliding(CheckType.DropDownable) && context.Input.y < -0.9f)
         {
             dropDownTimer += Time.deltaTime;
             if (dropDownTimer > 0.5f)
@@ -265,17 +265,40 @@ public class PullUpState : PlayerState
 }
 public class DropDownState : PlayerState
 {
+    private DropDownMode mode;
+
+    IFloor[] floors;
+
+    private enum DropDownMode
+    {
+        Hangable,
+        Floor,
+    }
+
     public DropDownState(PlayerContext playerContext) : base(playerContext) { }
 
     public override void Enter()
     {
-        SetCollisionActive(false);
+        //Is the player dropping down from a hangable or through a oneDir. floor?
+        floors = context.CollisionChecks[CheckType.DropDownable].GetFloor();
+        mode = floors.Length > 0 ? DropDownMode.Floor : DropDownMode.Hangable;
+
+        if (mode == DropDownMode.Hangable)
+        {
+            SetCollisionActive(false);
+        } else
+        {
+            foreach (IFloor floor in floors)
+                floor.DeactivateUntilPlayerIsAboveAgain(context.PlayerController);
+
+            SetState(PlayerMoveState.Fall);
+        }
     }
     public override void Update()
     {
-        if (!IsColliding(CheckType.Hangable))
-            context.Rigidbody.MovePosition(context.PlayerPos + Vector2.down * Time.deltaTime * context.Values.DropDownSpeed);
-        else
+        context.Rigidbody.MovePosition(context.PlayerPos + Vector2.down * Time.deltaTime * context.Values.DropDownSpeed);
+
+        if (IsColliding(CheckType.Hangable))
             SetState(PlayerClimbState.Hanging);
     }
     public override void Exit()
