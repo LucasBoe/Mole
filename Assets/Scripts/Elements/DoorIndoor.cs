@@ -10,7 +10,7 @@ public class DoorIndoor : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
 
-        if (collision.CompareTag("Player"))
+        if (collision.IsPlayer())
         {
             spriteRenderer.sprite = open;
             shadowCaster2D.enabled = false;

@@ -27,4 +27,17 @@ public static class Util
             return lineStart + AB * distance;
         }
     }
+
+    public static Vector3[] ToVector3Array (this Vector2[] v2s)
+    {
+        List<Vector3> v3s = new List<Vector3>();
+        foreach (Vector2 v2 in v2s)
+            v3s.Add(v2);
+        return v3s.ToArray();
+    }
+
+    public static bool IsPlayer(this Collider2D collision)
+    {
+        return collision.CompareTag("Player");
+    }
 }
