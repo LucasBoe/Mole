@@ -15,13 +15,35 @@ public class SimpleEnemy : MonoBehaviour, IEnemy
 
     [SerializeField] EnemyViewcone EnemyViewcone;
 
+    [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] Sprite passive, active;
+    [SerializeField] GameObject indicator;
+
     public void PlayerEnteredViewcone(Collider2D player)
     {
-        transform.position = player.transform.position;
+        StopAllCoroutines();
+        StartCoroutine(AlertRoutine());
     }
 
     internal void UpdateViewcone()
     {
         EnemyViewcone.UpdateBounds(eyePosition, viewConeDistance, viewConeHeight);
+    }
+    private IEnumerator AlertRoutine()
+    {
+        bool _switch = true;
+        while (true)
+        {
+            SetIndicatorActive(_switch);
+            _switch = !_switch;
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+
+    private void SetIndicatorActive(bool act)
+    {
+        spriteRenderer.sprite = act ? active : passive;
+        indicator.SetActive(act);
     }
 }
