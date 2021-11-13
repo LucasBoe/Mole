@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     public PlayerMoveState MoveState;
     public PlayerBaseState BaseState;
 
-    PlayerContext context;
+    [SerializeField] PlayerContext context;
 
     bool jumpBlocker = false;
 
@@ -59,8 +59,8 @@ public class PlayerController : MonoBehaviour
         context.CollisionChecks.Add(CheckType.Hangable, new PlayerCollisionCheck(0f, 1.375f, 1.5f, 1f, LayerMask.GetMask("Hangable")));
         context.CollisionChecks.Add(CheckType.HangableJumpInLeft, new PlayerCollisionCheck(-0.7f, 0.2f, 0.3f, 1.5f, LayerMask.GetMask("Hangable")));
         context.CollisionChecks.Add(CheckType.HangableJumpInRight, new PlayerCollisionCheck(0.7f, 0.2f, 0.3f, 1.5f, LayerMask.GetMask("Hangable")));
-        context.CollisionChecks.Add(CheckType.WallLeft, new PlayerCollisionCheck(-0.65f, 0.275f, 0.25f, 1f, LayerMask.GetMask("Default")));
-        context.CollisionChecks.Add(CheckType.WallRight, new PlayerCollisionCheck(0.625f, 0.275f, 0.25f, 1f, LayerMask.GetMask("Default")));
+        context.CollisionChecks.Add(CheckType.WallLeft, new PlayerCollisionCheck(-0.55f, 0, 0.45f, 1f, LayerMask.GetMask("Default")));
+        context.CollisionChecks.Add(CheckType.WallRight, new PlayerCollisionCheck(0.55f, 0, 0.45f, 1f, LayerMask.GetMask("Default")));
         context.CollisionChecks.Add(CheckType.Ceiling, new PlayerCollisionCheck(0f, 0.875f, 0.75f, 0.25f, LayerMask.GetMask("Default", "OneDirectionalFloor")));
         context.CollisionChecks.Add(CheckType.Body, new PlayerCollisionCheck(0f, 0f, 0.875f, 1.5f, LayerMask.GetMask("Default", "Hangable")));
 
@@ -91,17 +91,20 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        foreach (PlayerCollisionCheck pcc in context.CollisionChecks.Values)
-            pcc.Update(transform);
-
         context.PlayerPos = transform.position;
         context.IsCollidingToAnyWall = IsColliding(CheckType.WallLeft) || IsColliding(CheckType.WallRight);
         context.Input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         context.TriesMoveLeftRight = context.Input.x != 0;
         context.TriesMoveUpDown = context.Input.y != 0f;
-        context.IsJumping = Input.GetButton("Jump");
+        context.IsJumping = Input.GetButtonDown("Jump");
 
         UpdateState(BaseState);
+    }
+
+    private void FixedUpdate()
+    {
+        foreach (PlayerCollisionCheck pcc in context.CollisionChecks.Values)
+            pcc.Update(transform);
     }
 
     //Enter Methods

@@ -5,7 +5,16 @@ using PlayerCollisionCheckType;
 
 public class MoveBaseState : PlayerState
 {
-    protected bool triesMovingIntoWall => (IsColliding(CheckType.WallLeft) && context.Input.x < 0) || (IsColliding(CheckType.WallRight) && context.Input.x > 0);
+    string lastT = "";
+    protected bool triesMovingIntoWall
+    {
+        get
+        {
+            bool wallToLeft = IsColliding(CheckType.WallLeft);
+            bool wallToRight = IsColliding(CheckType.WallRight);
+            return (wallToLeft && context.Input.x < 0) || (wallToRight && context.Input.x > 0);
+        }
+    }
     public MoveBaseState(PlayerContext playerContext) : base(playerContext) { }
 }
 
@@ -107,7 +116,7 @@ public class FallState : MoveBaseState
         if (IsColliding(CheckType.Hangable) && context.Input.y > 0.25f)
             SetState(PlayerClimbState.Hanging);
 
-        if ((IsColliding(CheckType.HangableJumpInLeft) && context.Input.x < 0.1f) || (IsColliding(CheckType.HangableJumpInRight) && context.Input.x < -0.1f))
+        if ((IsColliding(CheckType.HangableJumpInLeft) && context.Input.x < 0.1f) || (IsColliding(CheckType.HangableJumpInRight) && context.Input.x > -0.1f))
             SetState(PlayerClimbState.JumpToHanging);
 
         if (triesMovingIntoWall)

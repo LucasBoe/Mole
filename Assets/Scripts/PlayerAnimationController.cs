@@ -9,51 +9,88 @@ public class PlayerAnimationController : MonoBehaviour
     PlayerController player;
     Animator animator;
     SpriteRenderer spriteRenderer;
+    WallState wallState;
+
+   [SerializeField] StateToAnimationHolder stateToAnimationHolder;
     private void OnEnable()
     {
         player = GetComponentInParent<PlayerController>();
         playerRigidbody = GetComponentInParent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        player.OnStateChangePrevious += OnStateChangePrevious;
+        player.OnStateChange += OnStateChange;
     }
 
-    private void OnStateChangePrevious(PlayerBaseState previousBase, PlayerMoveState previousMove, PlayerClimbState previousClimb, PlayerBaseState newBase, PlayerMoveState newMove, PlayerClimbState newClimb)
+    private void Start()
     {
-        animator.SetBool(previousBase.ToString(), false);
+        wallState = (player.climbStateDictionary[PlayerClimbState.Wall] as WallState);
+    }
 
-        if (previousMove != PlayerMoveState.None)
-            animator.SetBool(previousMove.ToString(), false);
-
-        if (previousClimb != PlayerClimbState.None)
-            animator.SetBool(previousClimb.ToString(), false);
-
-        animator.SetBool(newBase.ToString(), true);
-
-        if (newMove != PlayerMoveState.None)
-            animator.SetBool(newMove.ToString(), true);
-
-        if (newClimb != PlayerClimbState.None)
-        {
-            animator.SetBool(newClimb.ToString(), true);
-
-            if (newClimb == PlayerClimbState.Wall)
-            {
-                spriteRenderer.flipX = (player.climbStateDictionary[newClimb] as WallState).IsLeft;
-            }
-        }
+    private void OnStateChange(PlayerBaseState baseState, PlayerMoveState move, PlayerClimbState climb)
+    {
+        AnimationClip toPlay = stateToAnimationHolder.GetClip(baseState, move, climb);
+        if (toPlay != null)
+            animator.Play(toPlay.name);
     }
 
     private void Update()
     {
-        if (player.ClimbState != PlayerClimbState.Wall)
-            spriteRenderer.flipX = playerRigidbody.velocity.x < 0.01f;
+        bool flip = playerRigidbody.velocity.x < 0.01f;
 
+        if (player.ClimbState == PlayerClimbState.Wall)
+        {
+            
+            flip = wallState.IsLeft;
+        }
+
+        spriteRenderer.flipX = flip;
         animator.SetFloat("speed", playerRigidbody.velocity.magnitude);
     }
 
     private void OnDisable()
     {
-        player.OnStateChangePrevious -= OnStateChangePrevious;
+        player.OnStateChange -= OnStateChange;
     }
+}
+
+[System.Serializable]
+public class StateToAnimationHolder
+{
+    public MoveStateAnimationPair[] moveStateAnimationPairs;
+    public ClimbStateAnimationPair[] climbStateAnimationPairs;
+
+    internal AnimationClip GetClip(PlayerBaseState baseState, PlayerMoveState move, PlayerClimbState climb)
+    {
+        if (baseState == PlayerBaseState.Climb)
+        {
+            foreach (ClimbStateAnimationPair pair in climbStateAnimationPairs)
+            {
+                if (pair.ClimbState == climb)
+                    return pair.AnimationClip;
+            }
+        } else
+        {
+            foreach (MoveStateAnimationPair pair in moveStateAnimationPairs)
+            {
+                if (pair.MoveState == move)
+                    return pair.AnimationClip;
+            }
+        }
+
+        return null;
+    }
+}
+
+[System.Serializable]
+public class MoveStateAnimationPair
+{
+    public PlayerMoveState MoveState;
+    public AnimationClip AnimationClip;
+}
+
+[System.Serializable]
+public class ClimbStateAnimationPair
+{
+    public PlayerClimbState ClimbState;
+    public AnimationClip AnimationClip;
 }

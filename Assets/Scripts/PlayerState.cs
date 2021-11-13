@@ -209,7 +209,17 @@ public class DropDownState : PlayerState
 }
 public class WallState : PlayerState
 {
-    public bool IsLeft => IsColliding(CheckType.WallLeft);
+    public bool IsLeft
+    {
+        get
+        {
+            bool left = IsColliding(CheckType.WallLeft);
+            //bool right = IsColliding(CheckType.WallRight);
+            //Debug.Log("there is a wall to " + (left ? "the left " : " the ") + (right ? " right " : ""));
+            return left;
+        }
+    }
+
 
     public WallState(PlayerContext playerContext) : base(playerContext) { }
 

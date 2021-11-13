@@ -45,6 +45,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a5f963d3553f404db304ec023c4b165, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stateToAnimationHolder:
+    moveStateAnimationPairs:
+    - MoveState: 1
+      AnimationClip: {fileID: 7400000, guid: 74989ddfd9cf47940bcb2e90fd52d01d, type: 2}
+    - MoveState: 2
+      AnimationClip: {fileID: 7400000, guid: 9883227c547328446b4a1edecb1850ef, type: 2}
+    - MoveState: 3
+      AnimationClip: {fileID: 7400000, guid: 3601cfa8b7b5afe40b4bdd04a21aa6b6, type: 2}
+    - MoveState: 4
+      AnimationClip: {fileID: 7400000, guid: a8dc118b09b031945ae01062517894f1, type: 2}
+    climbStateAnimationPairs:
+    - ClimbState: 1
+      AnimationClip: {fileID: 7400000, guid: 49c4c3ddc0e34d04f961d11f4a5f8e93, type: 2}
+    - ClimbState: 3
+      AnimationClip: {fileID: 7400000, guid: 2cc595aca30d5fa4383844d45a9a3542, type: 2}
+    - ClimbState: 4
+      AnimationClip: {fileID: 7400000, guid: 390b6048933a94041a100a52939eb2a8, type: 2}
+    - ClimbState: 5
+      AnimationClip: {fileID: 7400000, guid: 3601cfa8b7b5afe40b4bdd04a21aa6b6, type: 2}
+    - ClimbState: 6
+      AnimationClip: {fileID: 7400000, guid: 4ac335baa950df04abb496bce6e9f79e, type: 2}
 --- !u!212 &5582010506033126746
 SpriteRenderer:
   m_ObjectHideFlags: 0
