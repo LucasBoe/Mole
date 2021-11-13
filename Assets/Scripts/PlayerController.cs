@@ -16,6 +16,7 @@ public enum PlayerClimbState
     Hanging,
     PullUp,
     DropDown,
+    JumpToHanging,
 }
 
 public enum PlayerMoveState
@@ -56,6 +57,8 @@ public class PlayerController : MonoBehaviour
         //base
         context.CollisionChecks.Add(CheckType.Ground, new PlayerCollisionCheck(0f, -1.25f, 0.75f, 0.25f, LayerMask.GetMask("Default", "Hangable", "OneDirectionalFloor")));
         context.CollisionChecks.Add(CheckType.Hangable, new PlayerCollisionCheck(0f, 1.375f, 1.5f, 1f, LayerMask.GetMask("Hangable")));
+        context.CollisionChecks.Add(CheckType.HangableJumpInLeft, new PlayerCollisionCheck(-0.7f, 0.2f, 0.3f, 1.5f, LayerMask.GetMask("Hangable")));
+        context.CollisionChecks.Add(CheckType.HangableJumpInRight, new PlayerCollisionCheck(0.7f, 0.2f, 0.3f, 1.5f, LayerMask.GetMask("Hangable")));
         context.CollisionChecks.Add(CheckType.WallLeft, new PlayerCollisionCheck(-0.65f, 0.275f, 0.25f, 1f, LayerMask.GetMask("Default")));
         context.CollisionChecks.Add(CheckType.WallRight, new PlayerCollisionCheck(0.625f, 0.275f, 0.25f, 1f, LayerMask.GetMask("Default")));
         context.CollisionChecks.Add(CheckType.Ceiling, new PlayerCollisionCheck(0f, 0.875f, 0.75f, 0.25f, LayerMask.GetMask("Default", "OneDirectionalFloor")));
@@ -81,6 +84,7 @@ public class PlayerController : MonoBehaviour
         climbStateDictionary.Add(PlayerClimbState.PullUp, new PullUpState(context));
         climbStateDictionary.Add(PlayerClimbState.DropDown, new DropDownState(context));
         climbStateDictionary.Add(PlayerClimbState.Hanging, new HangingState(context));
+        climbStateDictionary.Add(PlayerClimbState.JumpToHanging, new JumpToHangingState(context));
         climbStateDictionary.Add(PlayerClimbState.Wall, new WallState(context));
     }
 
@@ -225,6 +229,8 @@ namespace PlayerCollisionCheckType
         Hangable,
         HangableLeft,
         HangableRight,
+        HangableJumpInLeft,
+        HangableJumpInRight,
         HangableAboveAir,
         Body,
         DropDownable,

@@ -43,7 +43,7 @@ public class PlayerCollisionCheck
         return hangables.ToArray();
     }
 
-    public IFloor[] GetFloor()
+    public IFloor[] GetFloors()
     {
         List<IFloor> floors = new List<IFloor>();
         foreach (Collider2D collider in colliders)
