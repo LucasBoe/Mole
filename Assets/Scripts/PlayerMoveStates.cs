@@ -84,7 +84,8 @@ public class JumpState : MoveBaseState
 
     public override void Enter()
     {
-        context.Rigidbody.AddForce(Vector2.up * context.Values.JumpForce, ForceMode2D.Impulse);
+        Vector2 dir = context.Input.magnitude < 0.1f ? Vector2.up : context.Input.normalized;
+        context.Rigidbody.AddForce(dir * context.Values.JumpForce, ForceMode2D.Impulse);
     }
 
     public override void Update()
