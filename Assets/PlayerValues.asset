@@ -13,11 +13,34 @@ MonoBehaviour:
   m_Name: PlayerValues
   m_EditorClassIdentifier: 
   walkXvelocity: 9
-  StraveXVelocity: 7
+  StraveXVelocity: 10
   WallClimbYvelocity: 6
   EdgeHelperUpwardsImpulse: 1
-  JumpForce: 40
-  AdditionalGravityForce: 4
+  JumpForce: 50
+  AdditionalGravityForce:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 2
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 4
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 0
+    m_RotationOrder: 4
   PullUpDuration: 0.5
   PullUpCurve:
     serializedVersion: 2
@@ -45,3 +68,5 @@ MonoBehaviour:
     m_RotationOrder: 4
   DropDownSpeed: 25
   HangableOffset: {x: 0, y: 1.33}
+  WallPushVelocity: 0.1
+  JumpOffVelocity: 1.5

@@ -56,13 +56,13 @@ public class PlayerState
 
     protected void JumpOff(Vector2 input)
     {
+        context.Rigidbody.velocity = input * context.Values.JumpOffVelocity;
         SetState(PlayerMoveState.Fall);
-        context.Rigidbody.velocity = input;
     }
 
-    protected void ApplyGravity()
+    protected void ApplyGravity(float time)
     {
-        context.Rigidbody.AddForce(new Vector2(0, -Time.deltaTime * 1000f * context.Values.AdditionalGravityForce));
+        context.Rigidbody.AddForce(new Vector2(0, -Time.deltaTime * 1000f * context.Values.AdditionalGravityForce.Evaluate(Mathf.Clamp(time,0f,4f))));
     }
 
     public PlayerState(PlayerContext playerContext)

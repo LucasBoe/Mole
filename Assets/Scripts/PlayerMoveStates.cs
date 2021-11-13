@@ -89,8 +89,7 @@ public class JumpState : MoveBaseState
 
     public override void Update()
     {
-        //gravity
-        ApplyGravity();
+        ApplyGravity(0f);
 
         //strave
         context.Rigidbody.velocity = new Vector2(context.Input.x * context.Values.StraveXVelocity, context.Rigidbody.velocity.y);
@@ -105,12 +104,18 @@ public class JumpState : MoveBaseState
 }
 public class FallState : MoveBaseState
 {
+    float startFallTime;
     public FallState(PlayerContext playerContext) : base(playerContext) { }
+
+    public override void Enter()
+    {
+        startFallTime = Time.time;
+    }
 
     public override void Update()
     {
         //gravity
-        ApplyGravity();
+        ApplyGravity(Time.time - startFallTime);
 
         //autograp to hangable
         if (IsColliding(CheckType.Hangable) && context.Input.y > 0.25f)
