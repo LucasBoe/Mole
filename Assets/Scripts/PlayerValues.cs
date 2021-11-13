@@ -22,4 +22,6 @@ public class PlayerValues : ScriptableObject
 
     public Vector2 HangableOffset = new Vector2(0, 1.25f);
 
+    //pushes the player to the wall while in wall state
+    public float WallPushVelocity = 0.1f;
 }

@@ -238,7 +238,7 @@ public class WallState : PlayerState
     public override void Update()
     {
         //up down movement
-        context.Rigidbody.velocity = new Vector2(context.Rigidbody.velocity.x, context.Input.y * context.Values.WallClimbYvelocity);
+        context.Rigidbody.velocity = new Vector2(context.Rigidbody.velocity.x + (IsLeft ? -1f:1f) * context.Values.WallPushVelocity, context.Input.y * context.Values.WallClimbYvelocity);
 
         //transition to hanging
         if (IsColliding(CheckType.Hangable)
