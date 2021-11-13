@@ -122,6 +122,14 @@ public class FallState : MoveBaseState
         if (triesMovingIntoWall)
             SetState(PlayerClimbState.Wall);
 
+        bool isCollidingEdgeHelper = IsColliding(CheckType.EdgeHelperLeft, CheckType.EdgeHelperRight);
+        bool isNotCollidingWall = !IsColliding(CheckType.WallLeft, CheckType.WallRight);
+
+        if ((context.TriesMoveLeftRight || context.Input.y > 0.1f) && isCollidingEdgeHelper && isNotCollidingWall)
+        {
+            context.Rigidbody.AddForce(Vector2.up * context.Values.EdgeHelperUpwardsImpulse, ForceMode2D.Impulse);
+        }
+
         //strave
         context.Rigidbody.velocity = new Vector2(context.Input.x * context.Values.StraveXVelocity, context.Rigidbody.velocity.y);
 

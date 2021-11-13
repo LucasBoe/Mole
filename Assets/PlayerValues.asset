@@ -15,7 +15,9 @@ MonoBehaviour:
   walkXvelocity: 9
   StraveXVelocity: 7
   WallClimbYvelocity: 6
+  EdgeHelperUpwardsImpulse: 1
   JumpForce: 40
+  AdditionalGravityForce: 4
   PullUpDuration: 0.5
   PullUpCurve:
     serializedVersion: 2

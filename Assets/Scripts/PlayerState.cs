@@ -19,6 +19,17 @@ public class PlayerState
     {
         return context.CollisionChecks[type].IsDetecting;
     }
+
+    protected bool IsColliding(params CheckType[] types)
+    {
+        foreach (var type in types)
+        {
+            if (context.CollisionChecks[type].IsDetecting)
+                return true;
+        }
+
+        return false;
+    }
     protected PlayerCollisionCheck GetCheck(CheckType type)
     {
         return context.CollisionChecks[type];
@@ -72,7 +83,7 @@ public class DefaultState : PlayerState
 
     public override void Update()
     {
-        if (context.IsCollidingToAnyWall && context.TriesMoveUpDown)
+        if (context.IsCollidingToAnyWall && context.TriesMoveUpDown && !context.TriesMoveLeftRight)
             SetState(PlayerClimbState.Wall);
 
         context.PlayerController.UpdateState(context.PlayerController.MoveState);

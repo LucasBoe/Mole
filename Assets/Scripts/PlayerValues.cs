@@ -8,6 +8,7 @@ public class PlayerValues : ScriptableObject
     public float walkXvelocity = 8f;
     public float StraveXVelocity = 6f;
     public float WallClimbYvelocity = 6f;
+    public float EdgeHelperUpwardsImpulse = 1f;
 
     public float JumpForce = 30f;
     public float AdditionalGravityForce = 4f;
