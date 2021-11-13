@@ -11,7 +11,7 @@ public class PlayerValues : ScriptableObject
     public float EdgeHelperUpwardsImpulse = 1f;
 
     public float JumpForce = 30f;
-    public float AdditionalGravityForce = 4f;
+    public AnimationCurve AdditionalGravityForce = AnimationCurve.Linear(0,1,2,4);
 
     public float PullUpDuration = 0.5f;
 
