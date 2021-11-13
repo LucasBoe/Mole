@@ -17,26 +17,36 @@ MonoBehaviour:
   WallClimbYvelocity: 6
   EdgeHelperUpwardsImpulse: 1
   JumpForce: 50
+  DirectionalJumpAmount: 0.5
   AdditionalGravityForce:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 2
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 34
+      value: 3.5
+      inSlope: 1.8293527
+      outSlope: 1.8293527
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.33333334
+      outWeight: 0.07977265
     - serializedVersion: 3
-      time: 1
-      value: 4
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 34
+      time: 2.5
+      value: 6.041077
+      inSlope: 0.53277636
+      outSlope: 0.53277636
+      tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
+      inWeight: 0.62659097
+      outWeight: 0.59322834
+    - serializedVersion: 3
+      time: 4
+      value: 6.416667
+      inSlope: 0.04178335
+      outSlope: 0.04178335
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.31966996
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 0
