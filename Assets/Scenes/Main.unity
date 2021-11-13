@@ -31638,18 +31638,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: AnimationController
       objectReference: {fileID: 0}
-    - target: {fileID: 5582010506033126746, guid: 2aefe6deeaddf5f43a6cdc665d55d3f5, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 9035533153464598671, guid: 8b2ab7bb857a5eb4d9fbeda250a74c38, type: 3}
-    - target: {fileID: 5582010506033126746, guid: 2aefe6deeaddf5f43a6cdc665d55d3f5, type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5582010506033126747, guid: 2aefe6deeaddf5f43a6cdc665d55d3f5, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2aefe6deeaddf5f43a6cdc665d55d3f5, type: 3}
 --- !u!1001 &5734799595297008213

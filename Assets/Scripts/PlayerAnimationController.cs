@@ -39,7 +39,6 @@ public class PlayerAnimationController : MonoBehaviour
 
         if (player.ClimbState == PlayerClimbState.Wall)
         {
-            
             flip = wallState.IsLeft;
         }
 
