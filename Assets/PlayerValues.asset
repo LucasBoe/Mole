@@ -15,7 +15,7 @@ MonoBehaviour:
   walkXvelocity: 9
   StraveXVelocity: 10
   WallClimbYvelocity: 6
-  EdgeHelperUpwardsImpulse: 1
+  EdgeHelperUpwardsImpulse: 1.5
   JumpForce: 50
   DirectionalJumpAmount: 0.5
   AdditionalGravityForce:
