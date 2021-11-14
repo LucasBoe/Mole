@@ -301,7 +301,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5582010506033126745}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a5f963d3553f404db304ec023c4b165, type: 3}
+  m_Script: {fileID: 11500000, guid: 4fe9c9de1f5a89d4eb3f0db56e3eee80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   stateToAnimationHolder:
@@ -320,11 +320,11 @@ MonoBehaviour:
     - ClimbState: 1
       AnimationClip: {fileID: 7400000, guid: 49c4c3ddc0e34d04f961d11f4a5f8e93, type: 2}
     - ClimbState: 3
-      AnimationClip: {fileID: 7400000, guid: 2cc595aca30d5fa4383844d45a9a3542, type: 2}
+      AnimationClip: {fileID: 7400000, guid: 4ac335baa950df04abb496bce6e9f79e, type: 2}
     - ClimbState: 4
       AnimationClip: {fileID: 7400000, guid: 390b6048933a94041a100a52939eb2a8, type: 2}
     - ClimbState: 5
-      AnimationClip: {fileID: 7400000, guid: 3601cfa8b7b5afe40b4bdd04a21aa6b6, type: 2}
+      AnimationClip: {fileID: 7400000, guid: a8dc118b09b031945ae01062517894f1, type: 2}
     - ClimbState: 6
       AnimationClip: {fileID: 7400000, guid: 4ac335baa950df04abb496bce6e9f79e, type: 2}
 --- !u!212 &5582010506033126746
@@ -670,16 +670,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 9031940380163258740}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7f8feac210358040b9e69d3328701c1, type: 3}
+  m_Script: {fileID: 11500000, guid: f230afe73fb2252498d583f41ed19e0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coatBase: {fileID: 6540392402128254844}
+  coatBase: {fileID: 2902717534882602906}
   coatElements:
-  - {fileID: 6302076014914271641}
   - {fileID: 1837576132666007705}
   - {fileID: 887156394466771395}
-  KeepMaxDistance: 1
-  MaxDistanceToKeep: 1.5
+  - {fileID: 255148927343140446}
+  KeepMaxDistance: 0
+  MaxDistanceToKeep: 1
 --- !u!120 &640083578989379481
 LineRenderer:
   m_ObjectHideFlags: 0
