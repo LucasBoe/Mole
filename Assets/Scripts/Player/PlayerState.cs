@@ -49,6 +49,11 @@ public class PlayerState
         context.PlayerController.SetState(baseState);
     }
 
+    protected bool StateIs(PlayerMoveState moveState)
+    {
+        return context.PlayerController.MoveState == moveState;
+    }
+
     protected void SetCollisionActive(bool active)
     {
         context.Rigidbody.GetComponent<Collider2D>().enabled = active;

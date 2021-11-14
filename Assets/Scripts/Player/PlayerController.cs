@@ -25,7 +25,8 @@ public enum PlayerMoveState
     Idle,
     Walk,
     Jump,
-    Fall
+    Fall,
+    WalkPush
 }
 
 public class PlayerController : MonoBehaviour
@@ -72,6 +73,10 @@ public class PlayerController : MonoBehaviour
         context.CollisionChecks.Add(CheckType.EdgeHelperLeft, new CollisionCheck(-0.5f, -0.75f, 0.5f, 0.75f, LayerMask.GetMask("Default", "Hangable")));
         context.CollisionChecks.Add(CheckType.EdgeHelperRight, new CollisionCheck(0.5f, -0.75f, 0.5f, 0.75f, LayerMask.GetMask("Default", "Hangable")));
 
+        //pushable
+        context.CollisionChecks.Add(CheckType.PushableLeft, new CollisionCheck(-0.75f, 0f, 0.5f, 0.75f, LayerMask.GetMask("Pushable")));
+        context.CollisionChecks.Add(CheckType.PushableRight, new CollisionCheck(0.75f, 0f, 0.5f, 0.75f, LayerMask.GetMask("Pushable")));
+
         //base states
         baseStateDictionary.Add(PlayerBaseState.Default, new DefaultState(context));
         baseStateDictionary.Add(PlayerBaseState.Climb, new ClimbState(context));
@@ -79,6 +84,7 @@ public class PlayerController : MonoBehaviour
         //move states
         moveStateDictionary.Add(PlayerMoveState.Idle, new IdleState(context));
         moveStateDictionary.Add(PlayerMoveState.Walk, new WalkState(context));
+        moveStateDictionary.Add(PlayerMoveState.WalkPush, new WalkPushState(context));
         moveStateDictionary.Add(PlayerMoveState.Jump, new JumpState(context));
         moveStateDictionary.Add(PlayerMoveState.Fall, new FallState(context));
 
@@ -241,5 +247,7 @@ namespace PlayerCollisionCheckType
         DropDownable,
         EdgeHelperLeft,
         EdgeHelperRight,
+        PushableLeft,
+        PushableRight,
     }
 }
