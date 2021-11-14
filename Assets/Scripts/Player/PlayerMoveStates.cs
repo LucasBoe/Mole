@@ -45,7 +45,7 @@ public class IdleState : MoveBaseState
         if (IsColliding(CheckType.DropDownable) && context.Input.y < -0.9f)
         {
             dropDownTimer += Time.deltaTime;
-            if (dropDownTimer > 0.5f)
+            if (dropDownTimer > context.Values.KeyPressTimeToDropDown)
             {
                 dropDownTimer = 0f;
                 SetState(PlayerClimbState.DropDown);
