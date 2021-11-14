@@ -3,24 +3,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAIBehaviour : MonoBehaviour
+public class EnemyAIRoutineModule : MonoBehaviour
 {
-    public List<EnemyAIState> EnemyAIStates = new List<EnemyAIState>();
+    public List<EnemyAIRoutineState> EnemyAIStates = new List<EnemyAIRoutineState>();
 
-    private void Start()
+    private void OnEnable()
     {
-        foreach (EnemyAIState state in EnemyAIStates)
+        foreach (EnemyAIRoutineState state in EnemyAIStates)
         {
             if (state.Type == AIStateType.GoTo)
             {
                 state.WorldPos = transform.TransformPoint(state.Pos);
             }
         }
-
-        StartCoroutine(ProcessAIRoutine());
     }
 
-    private IEnumerator ProcessAIRoutine()
+    public void StartRoutine()
+    {
+        StartCoroutine(ProcessRoutineAIRoutine());
+    }
+
+    public void StopRoutine()
+    {
+        StopAllCoroutines();
+    }
+
+    private IEnumerator ProcessRoutineAIRoutine()
     {
         int stateIndex = 0;
         while (true)
@@ -55,7 +63,7 @@ public class EnemyAIBehaviour : MonoBehaviour
         {
             Gizmos.color = Color.Lerp(Color.red, Color.yellow, 0.5f);
             Vector2 fromPos = transform.position;
-            foreach (EnemyAIState state in EnemyAIStates)
+            foreach (EnemyAIRoutineState state in EnemyAIStates)
             {
                 if (state.Type == AIStateType.GoTo)
                 {

@@ -19,11 +19,19 @@ public class SimpleEnemy : MonoBehaviour, IEnemy
     [SerializeField] Sprite passive, active;
     [SerializeField] GameObject indicator;
 
-    [SerializeField] EnemyAIBehaviour aiBehaviour;
+    [SerializeField] EnemyAIRoutineModule routineModule;
+    [SerializeField] EnemyAIMoveModule moveModule;
+
+    private void Start()
+    {
+        StopAllCoroutines();
+        routineModule.StartRoutine();
+    }
 
     public void PlayerEnteredViewcone(Collider2D player)
     {
-        StopAllCoroutines();
+        routineModule.StopRoutine();
+        moveModule.MoveTo(player.transform.position, Start);
         StartCoroutine(AlertRoutine());
     }
 

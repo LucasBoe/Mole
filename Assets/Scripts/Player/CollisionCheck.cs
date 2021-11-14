@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class PlayerCollisionCheck
+public class CollisionCheck
 {
     public LayerMask LayerMask;
     public Vector2 Pos, Size = Vector2.one;
@@ -11,14 +11,14 @@ public class PlayerCollisionCheck
 
     private Collider2D[] colliders;
 
-    public PlayerCollisionCheck(float posX, float posY, float sizeX, float sizeY, LayerMask layerMask)
+    public CollisionCheck(float posX, float posY, float sizeX, float sizeY, LayerMask layerMask)
     {
         Pos = new Vector2(posX, posY);
         Size = new Vector2(sizeX, sizeY);
         LayerMask = layerMask;
     }
 
-    public PlayerCollisionCheck(Vector2 pos, Vector2 size, LayerMask layerMask)
+    public CollisionCheck(Vector2 pos, Vector2 size, LayerMask layerMask)
     {
         Pos = pos;
         Size = size;

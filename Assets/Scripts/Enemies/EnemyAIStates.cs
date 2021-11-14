@@ -12,7 +12,7 @@ public enum AIStateType
 }
 
 [System.Serializable]
-public class EnemyAIState
+public class EnemyAIRoutineState
 {
     public AIStateType Type;
     public bool Right;
@@ -26,7 +26,7 @@ public class EnemyAIState
         waitTimer = 0f;
     }
 
-    public bool Update(EnemyAIBehaviour enemyAIBehaviour)
+    public bool Update(EnemyAIRoutineModule enemyAIBehaviour)
     {
         switch (Type)
         {
@@ -44,8 +44,8 @@ public class EnemyAIState
     }
 }
 
-[CustomPropertyDrawer(typeof(EnemyAIState))]
-public class EnemyAIStateDrawer : PropertyDrawer
+[CustomPropertyDrawer(typeof(EnemyAIRoutineState))]
+public class EnemyAIRoutineStateDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {

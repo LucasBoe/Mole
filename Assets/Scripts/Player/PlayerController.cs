@@ -55,22 +55,22 @@ public class PlayerController : MonoBehaviour
         context.Values = playerValues;
 
         //base
-        context.CollisionChecks.Add(CheckType.Ground, new PlayerCollisionCheck(0f, -1.25f, 0.5f, 0.25f, LayerMask.GetMask("Default", "Hangable", "OneDirectionalFloor")));
-        context.CollisionChecks.Add(CheckType.Hangable, new PlayerCollisionCheck(0f, 1.375f, 1.5f, 1f, LayerMask.GetMask("Hangable")));
-        context.CollisionChecks.Add(CheckType.HangableJumpInLeft, new PlayerCollisionCheck(-0.7f, 0.2f, 0.3f, 1.5f, LayerMask.GetMask("Hangable")));
-        context.CollisionChecks.Add(CheckType.HangableJumpInRight, new PlayerCollisionCheck(0.7f, 0.2f, 0.3f, 1.5f, LayerMask.GetMask("Hangable")));
-        context.CollisionChecks.Add(CheckType.WallLeft, new PlayerCollisionCheck(-0.55f, 0, 0.45f, 1f, LayerMask.GetMask("Default")));
-        context.CollisionChecks.Add(CheckType.WallRight, new PlayerCollisionCheck(0.55f, 0, 0.45f, 1f, LayerMask.GetMask("Default")));
-        context.CollisionChecks.Add(CheckType.Ceiling, new PlayerCollisionCheck(0f, 0.875f, 0.75f, 0.25f, LayerMask.GetMask("Default", "OneDirectionalFloor")));
-        context.CollisionChecks.Add(CheckType.Body, new PlayerCollisionCheck(0f, 0f, 0.875f, 1.5f, LayerMask.GetMask("Default", "Hangable")));
+        context.CollisionChecks.Add(CheckType.Ground, new CollisionCheck(0f, -1.25f, 0.5f, 0.25f, LayerMask.GetMask("Default", "Hangable", "OneDirectionalFloor")));
+        context.CollisionChecks.Add(CheckType.Hangable, new CollisionCheck(0f, 1.375f, 1.5f, 1f, LayerMask.GetMask("Hangable")));
+        context.CollisionChecks.Add(CheckType.HangableJumpInLeft, new CollisionCheck(-0.7f, 0.2f, 0.3f, 1.5f, LayerMask.GetMask("Hangable")));
+        context.CollisionChecks.Add(CheckType.HangableJumpInRight, new CollisionCheck(0.7f, 0.2f, 0.3f, 1.5f, LayerMask.GetMask("Hangable")));
+        context.CollisionChecks.Add(CheckType.WallLeft, new CollisionCheck(-0.55f, 0, 0.45f, 1f, LayerMask.GetMask("Default")));
+        context.CollisionChecks.Add(CheckType.WallRight, new CollisionCheck(0.55f, 0, 0.45f, 1f, LayerMask.GetMask("Default")));
+        context.CollisionChecks.Add(CheckType.Ceiling, new CollisionCheck(0f, 0.875f, 0.75f, 0.25f, LayerMask.GetMask("Default", "OneDirectionalFloor")));
+        context.CollisionChecks.Add(CheckType.Body, new CollisionCheck(0f, 0f, 0.875f, 1.5f, LayerMask.GetMask("Default", "Hangable")));
 
         //details
-        context.CollisionChecks.Add(CheckType.HangableLeft, new PlayerCollisionCheck(-0.75f, 1.5f, .5f, 1.25f, LayerMask.GetMask("Hangable")));
-        context.CollisionChecks.Add(CheckType.HangableRight, new PlayerCollisionCheck(0.75f, 1.5f, .5f, 1.25f, LayerMask.GetMask("Hangable")));
-        context.CollisionChecks.Add(CheckType.HangableAboveAir, new PlayerCollisionCheck(0f, 2.875f, 1f, 2f, LayerMask.GetMask("Default", "Hangable")));
-        context.CollisionChecks.Add(CheckType.DropDownable, new PlayerCollisionCheck(0, -1.5f, 0.5f, 1f, LayerMask.GetMask("Hangable","OneDirectionalFloor")));
-        context.CollisionChecks.Add(CheckType.EdgeHelperLeft, new PlayerCollisionCheck(-0.5f, -0.75f, 0.5f, 0.75f, LayerMask.GetMask("Default", "Hangable")));
-        context.CollisionChecks.Add(CheckType.EdgeHelperRight, new PlayerCollisionCheck(0.5f, -0.75f, 0.5f, 0.75f, LayerMask.GetMask("Default", "Hangable")));
+        context.CollisionChecks.Add(CheckType.HangableLeft, new CollisionCheck(-0.75f, 1.5f, .5f, 1.25f, LayerMask.GetMask("Hangable")));
+        context.CollisionChecks.Add(CheckType.HangableRight, new CollisionCheck(0.75f, 1.5f, .5f, 1.25f, LayerMask.GetMask("Hangable")));
+        context.CollisionChecks.Add(CheckType.HangableAboveAir, new CollisionCheck(0f, 2.875f, 1f, 2f, LayerMask.GetMask("Default", "Hangable")));
+        context.CollisionChecks.Add(CheckType.DropDownable, new CollisionCheck(0, -1.5f, 0.5f, 1f, LayerMask.GetMask("Hangable","OneDirectionalFloor")));
+        context.CollisionChecks.Add(CheckType.EdgeHelperLeft, new CollisionCheck(-0.5f, -0.75f, 0.5f, 0.75f, LayerMask.GetMask("Default", "Hangable")));
+        context.CollisionChecks.Add(CheckType.EdgeHelperRight, new CollisionCheck(0.5f, -0.75f, 0.5f, 0.75f, LayerMask.GetMask("Default", "Hangable")));
 
         //base states
         baseStateDictionary.Add(PlayerBaseState.Default, new DefaultState(context));
@@ -105,7 +105,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        foreach (PlayerCollisionCheck pcc in context.CollisionChecks.Values)
+        foreach (CollisionCheck pcc in context.CollisionChecks.Values)
             pcc.Update(transform);
     }
 
@@ -195,15 +195,15 @@ public class PlayerController : MonoBehaviour
         if (context == null || context.CollisionChecks == null)
             return;
 
-        foreach (PlayerCollisionCheck pcc in context.CollisionChecks.Values)
+        foreach (CollisionCheck pcc in context.CollisionChecks.Values)
         {
-            Gizmos.color = pcc.IsDetecting ? Color.yellow : Color.white;
-            Gizmos.DrawWireCube((Vector2)transform.position + pcc.Pos, pcc.Size);
+            Util.GizmoDrawCollisionCheck(pcc, transform.position);
         }
 
         Gizmos.color = Color.magenta;
         Gizmos.DrawWireSphere((Vector2)transform.position + playerValues.HangableOffset, 0.25f);
     }
+
     private void OnGUI()
     {
         //foreach (KeyValuePair<CheckType, PlayerCollisionCheck> pcc in context.CollisionChecks)
