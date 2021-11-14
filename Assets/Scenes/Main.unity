@@ -35250,6 +35250,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: AnimationController
       objectReference: {fileID: 0}
+    - target: {fileID: 6540392402128254844, guid: 2aefe6deeaddf5f43a6cdc665d55d3f5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.062
+      objectReference: {fileID: 0}
+    - target: {fileID: 6540392402128254844, guid: 2aefe6deeaddf5f43a6cdc665d55d3f5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.436
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2aefe6deeaddf5f43a6cdc665d55d3f5, type: 3}
 --- !u!1001 &5734799595297008213
