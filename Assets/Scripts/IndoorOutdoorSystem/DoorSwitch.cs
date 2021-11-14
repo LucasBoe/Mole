@@ -10,13 +10,13 @@ public class DoorSwitch : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.IsPlayer())
-            UpdateIndoorOutdoor(collision.transform.position, false);
+            UpdateIndoorOutdoor(collision.transform.position, Right);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.IsPlayer())
-            UpdateIndoorOutdoor(collision.transform.position, true);
+            UpdateIndoorOutdoor(collision.transform.position, !Right);
     }
     private void UpdateIndoorOutdoor(Vector3 position, bool leaving)
     {
