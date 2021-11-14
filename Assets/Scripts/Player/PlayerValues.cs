@@ -26,7 +26,6 @@ public class PlayerValues : ScriptableObject
 
     //pushes the player to the wall while in wall state
     public float WallPushVelocity = 0.1f;
-
     public float JumpOffVelocity = 1.5f;
-
+    public float KeyPressTimeToDropDown = 0.5f;
 }
