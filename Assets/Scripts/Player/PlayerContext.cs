@@ -5,7 +5,7 @@ using PlayerCollisionCheckType;
 
 public class PlayerContext
 {
-    public Dictionary<CheckType, PlayerCollisionCheck> CollisionChecks = new Dictionary<CheckType, PlayerCollisionCheck>();
+    public Dictionary<CheckType, CollisionCheck> CollisionChecks = new Dictionary<CheckType, CollisionCheck>();
     internal Vector2 Input;
     public PlayerController PlayerController;
     public PlayerValues Values;

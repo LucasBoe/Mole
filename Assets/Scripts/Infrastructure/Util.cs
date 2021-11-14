@@ -44,6 +44,11 @@ public static class Util
         }
         //Gizmos.DrawLine(fromPos + up * 0.5f, toPos + up * 0.5f);
     }
+    public static void GizmoDrawCollisionCheck(CollisionCheck pcc, Vector2 pos)
+    {
+        Gizmos.color = pcc.IsDetecting ? Color.yellow : Color.white;
+        Gizmos.DrawWireCube(pos + pcc.Pos, pcc.Size);
+    }
 
     public static Vector3[] ToVector3Array(this Vector2[] v2s)
     {

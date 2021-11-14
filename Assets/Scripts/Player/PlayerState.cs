@@ -30,7 +30,7 @@ public class PlayerState
 
         return false;
     }
-    protected PlayerCollisionCheck GetCheck(CheckType type)
+    protected CollisionCheck GetCheck(CheckType type)
     {
         return context.CollisionChecks[type];
     }

@@ -72,9 +72,9 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 5.09, y: 2.3600001}
+    - - {x: 12.09, y: 3.3600001}
       - {x: 0.09, y: 0.36}
-      - {x: 5.09, y: -1.64}
+      - {x: 12.09, y: -2.6399999}
 --- !u!120 &5463310171432811502
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -116,9 +116,9 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 5.09, y: 2.3600001, z: 0}
+  - {x: 12.09, y: 3.3600001, z: 0}
   - {x: 0.09, y: 0.36, z: 0}
-  - {x: 5.09, y: -1.64, z: 0}
+  - {x: 12.09, y: -2.6399999, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -188,7 +188,9 @@ GameObject:
   - component: {fileID: 5463310171811055217}
   - component: {fileID: 5463310171811055216}
   - component: {fileID: 240406577}
-  m_Layer: 0
+  - component: {fileID: 3247816852702654270}
+  - component: {fileID: 240406578}
+  m_Layer: 10
   m_Name: SimpleEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -291,14 +293,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eyePosition: {x: 0.09, y: 0.36}
-  viewConeDistance: 5
-  viewConeHeight: 4
+  viewConeDistance: 12
+  viewConeHeight: 6
   EnemyViewcone: {fileID: 5463310171432811503}
   spriteRenderer: {fileID: 5463310171811055501}
   passive: {fileID: -8628593106324732981, guid: a0ca7b2cbd2329d4fa0c5021b0aab64d, type: 3}
   active: {fileID: -7565814667854835759, guid: a0ca7b2cbd2329d4fa0c5021b0aab64d, type: 3}
   indicator: {fileID: 5773524614431842692}
-  aiBehaviour: {fileID: 240406577}
+  routineModule: {fileID: 240406577}
+  moveModule: {fileID: 240406578}
 --- !u!114 &5463310171811055216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330,24 +333,6 @@ MonoBehaviour:
     WorldPos: {x: 0, y: 0}
     Speed: 1
     Duration: 2
-  - Type: 1
-    Right: 0
-    Pos: {x: 3.67, y: -1.21}
-    WorldPos: {x: 0, y: 0}
-    Speed: 3
-    Duration: 0
-  - Type: 1
-    Right: 0
-    Pos: {x: 6.15, y: -1.13}
-    WorldPos: {x: 0, y: 0}
-    Speed: 3
-    Duration: 2
-  - Type: 2
-    Right: 1
-    Pos: {x: 0, y: 0}
-    WorldPos: {x: 0, y: 0}
-    Speed: 0
-    Duration: 0
   - Type: 0
     Right: 0
     Pos: {x: 0, y: 0}
@@ -360,24 +345,45 @@ MonoBehaviour:
     WorldPos: {x: 0, y: 0}
     Speed: 1
     Duration: 2
-  - Type: 1
-    Right: 0
-    Pos: {x: 3.67, y: -1.21}
-    WorldPos: {x: 0, y: 0}
-    Speed: 3
-    Duration: 2
-  - Type: 1
-    Right: 0
-    Pos: {x: 0, y: 0}
-    WorldPos: {x: 0, y: 0}
-    Speed: 3
-    Duration: 2
   - Type: 0
     Right: 0
     Pos: {x: 0, y: 0}
     WorldPos: {x: 0, y: 0}
     Speed: 1
     Duration: 2
+--- !u!50 &3247816852702654270
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5463310171811055500}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 10
+  m_AngularDrag: 0.05
+  m_GravityScale: 10
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
+--- !u!114 &240406578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5463310171811055500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6916cd96ed7001140bea8d60aa8deb1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5773524614431842692
 GameObject:
   m_ObjectHideFlags: 0
