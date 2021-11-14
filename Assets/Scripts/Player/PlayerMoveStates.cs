@@ -129,16 +129,29 @@ public class FallState : MoveBaseState
         if (triesMovingIntoWall)
             SetState(PlayerClimbState.Wall);
 
+        //strave
+        if (context.TriesMoveLeftRight)
+            context.Rigidbody.velocity = new Vector2(context.Input.x * context.Values.StraveXVelocity, context.Rigidbody.velocity.y);
+
         bool isCollidingEdgeHelper = IsColliding(CheckType.EdgeHelperLeft, CheckType.EdgeHelperRight);
         bool isNotCollidingWall = !IsColliding(CheckType.WallLeft, CheckType.WallRight);
+        bool triesMovingUp = context.Input.y > 0.1f;
 
-        if ((context.TriesMoveLeftRight || context.Input.y > 0.1f) && isCollidingEdgeHelper && isNotCollidingWall)
+        if ((context.TriesMoveLeftRight || triesMovingUp) && isCollidingEdgeHelper && isNotCollidingWall)
         {
-            context.Rigidbody.AddForce(Vector2.up * context.Values.EdgeHelperUpwardsImpulse, ForceMode2D.Impulse);
+            Vector2 dir = Vector2.up;
+
+            if (triesMovingUp)
+            {
+                dir += IsColliding(CheckType.EdgeHelperLeft) ? Vector2.left : Vector2.right;
+                dir = dir.normalized;
+            }
+
+            Debug.LogWarning(dir);
+
+            context.Rigidbody.AddForce(dir * context.Values.EdgeHelperUpwardsImpulse, ForceMode2D.Impulse);
         }
 
-        //strave
-        context.Rigidbody.velocity = new Vector2(context.Input.x * context.Values.StraveXVelocity, context.Rigidbody.velocity.y);
 
         if (IsColliding(CheckType.Ground))
             SetState(PlayerMoveState.Idle);
