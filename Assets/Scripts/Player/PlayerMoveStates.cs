@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using PlayerCollisionCheckType;
+using System;
 
 public class MoveBaseState : PlayerState
 {
@@ -59,7 +60,6 @@ public class IdleState : MoveBaseState
 public class WalkState : MoveBaseState
 {
     public WalkState(PlayerContext playerContext) : base(playerContext) { }
-
     public override void Update()
     {
         float xInput = context.Input.x;
@@ -75,9 +75,23 @@ public class WalkState : MoveBaseState
         if (context.IsJumping)
             SetState(PlayerMoveState.Jump);
 
-
+        if (!StateIs(PlayerMoveState.WalkPush) && ((xInput < 0 && IsColliding(CheckType.PushableLeft)) || (xInput > 0 && IsColliding(CheckType.PushableRight))))
+            SetState(PlayerMoveState.WalkPush);
     }
 }
+
+public class WalkPushState : WalkState
+{
+    public WalkPushState(PlayerContext playerContext) : base(playerContext) { }
+    public override void Update()
+    {
+        base.Update();
+
+        if (!IsColliding(CheckType.PushableLeft) && !IsColliding(CheckType.PushableRight))
+            SetState(PlayerMoveState.Walk);
+    }
+}
+
 public class JumpState : MoveBaseState
 {
     public JumpState(PlayerContext playerContext) : base(playerContext) { }

@@ -314,6 +314,8 @@ MonoBehaviour:
       AnimationClip: {fileID: 7400000, guid: 3601cfa8b7b5afe40b4bdd04a21aa6b6, type: 2}
     - MoveState: 4
       AnimationClip: {fileID: 7400000, guid: a8dc118b09b031945ae01062517894f1, type: 2}
+    - MoveState: 5
+      AnimationClip: {fileID: 7400000, guid: b0a89260f3d45ab43b90d7ba686d537f, type: 2}
     climbStateAnimationPairs:
     - ClimbState: 1
       AnimationClip: {fileID: 7400000, guid: 49c4c3ddc0e34d04f961d11f4a5f8e93, type: 2}
