@@ -19,6 +19,8 @@ public class SimpleEnemy : MonoBehaviour, IEnemy
     [SerializeField] Sprite passive, active;
     [SerializeField] GameObject indicator;
 
+    [SerializeField] EnemyAIBehaviour aiBehaviour;
+
     public void PlayerEnteredViewcone(Collider2D player)
     {
         StopAllCoroutines();

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,7 +29,23 @@ public static class Util
         }
     }
 
-    public static Vector3[] ToVector3Array (this Vector2[] v2s)
+    internal static void GizmoDrawArrowLine(Vector2 fromPos, Vector2 toPos)
+    {
+        float distance = Vector2.Distance(fromPos, toPos);
+        Vector2 forward = (toPos - fromPos).normalized * 0.25f;
+        Vector2 up = Vector2.Perpendicular(forward);
+
+        for (int i = 0; i < distance; i++)
+        {
+            Vector2 arrowPos = Vector2.Lerp(fromPos, toPos, i / distance) + up;
+            Gizmos.DrawLine(arrowPos + forward, arrowPos + up);
+            Gizmos.DrawLine(arrowPos - forward, arrowPos + forward * 0.5f);
+            Gizmos.DrawLine(arrowPos + forward, arrowPos - up);
+        }
+        //Gizmos.DrawLine(fromPos + up * 0.5f, toPos + up * 0.5f);
+    }
+
+    public static Vector3[] ToVector3Array(this Vector2[] v2s)
     {
         List<Vector3> v3s = new List<Vector3>();
         foreach (Vector2 v2 in v2s)
