@@ -2,13 +2,7 @@ using PlayerCollisionCheckType;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PlayerBaseState
-{
-    Default,
-    Climb,
-}
-
-public enum PlayerClimbState
+public enum PlayerState
 {
     None,
     Wall,
@@ -17,23 +11,16 @@ public enum PlayerClimbState
     PullUp,
     DropDown,
     JumpToHanging,
-}
-
-public enum PlayerMoveState
-{
-    None,
     Idle,
     Walk,
     Jump,
     Fall,
-    WalkPush
+    WalkPush,
 }
 
 public class PlayerController : MonoBehaviour
 {
-    public PlayerClimbState ClimbState;
-    public PlayerMoveState MoveState;
-    public PlayerBaseState BaseState;
+    public PlayerState CurrentState;
 
     [SerializeField] PlayerContext context;
 
@@ -41,12 +28,10 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] PlayerValues playerValues;
 
-    public System.Action<PlayerBaseState, PlayerMoveState, PlayerClimbState> OnStateChange;
-    public System.Action<PlayerBaseState, PlayerMoveState, PlayerClimbState, PlayerBaseState, PlayerMoveState, PlayerClimbState> OnStateChangePrevious;
+    public System.Action<PlayerState> OnStateChange;
+    public System.Action<PlayerState, PlayerState> OnStateChangePrevious;
 
-    public Dictionary<PlayerBaseState, PlayerState> baseStateDictionary = new Dictionary<PlayerBaseState, PlayerState>();
-    public Dictionary<PlayerMoveState, PlayerState> moveStateDictionary = new Dictionary<PlayerMoveState, PlayerState>();
-    public Dictionary<PlayerClimbState, PlayerState> climbStateDictionary = new Dictionary<PlayerClimbState, PlayerState>();
+    public Dictionary<PlayerState, PlayerStateBase> stateDictionary = new Dictionary<PlayerState, PlayerStateBase>();
 
     private void Awake()
     {
@@ -78,23 +63,19 @@ public class PlayerController : MonoBehaviour
         context.CollisionChecks.Add(CheckType.PushableLeft, new CollisionCheck(-0.75f, 0f, 0.5f, 0.75f, LayerMask.GetMask("Pushable")));
         context.CollisionChecks.Add(CheckType.PushableRight, new CollisionCheck(0.75f, 0f, 0.5f, 0.75f, LayerMask.GetMask("Pushable")));
 
-        //base states
-        baseStateDictionary.Add(PlayerBaseState.Default, new DefaultState(context));
-        baseStateDictionary.Add(PlayerBaseState.Climb, new ClimbState(context));
-
         //move states
-        moveStateDictionary.Add(PlayerMoveState.Idle, new IdleState(context));
-        moveStateDictionary.Add(PlayerMoveState.Walk, new WalkState(context));
-        moveStateDictionary.Add(PlayerMoveState.WalkPush, new WalkPushState(context));
-        moveStateDictionary.Add(PlayerMoveState.Jump, new JumpState(context));
-        moveStateDictionary.Add(PlayerMoveState.Fall, new FallState(context));
+        stateDictionary.Add(PlayerState.Idle, new IdleState(context));
+        stateDictionary.Add(PlayerState.Walk, new WalkState(context));
+        stateDictionary.Add(PlayerState.WalkPush, new WalkPushState(context));
+        stateDictionary.Add(PlayerState.Jump, new JumpState(context));
+        stateDictionary.Add(PlayerState.Fall, new FallState(context));
 
         //climb states
-        climbStateDictionary.Add(PlayerClimbState.PullUp, new PullUpState(context));
-        climbStateDictionary.Add(PlayerClimbState.DropDown, new DropDownState(context));
-        climbStateDictionary.Add(PlayerClimbState.Hanging, new HangingState(context));
-        climbStateDictionary.Add(PlayerClimbState.JumpToHanging, new JumpToHangingState(context));
-        climbStateDictionary.Add(PlayerClimbState.Wall, new WallState(context));
+        stateDictionary.Add(PlayerState.PullUp, new PullUpState(context));
+        stateDictionary.Add(PlayerState.DropDown, new DropDownState(context));
+        stateDictionary.Add(PlayerState.Hanging, new HangingState(context));
+        stateDictionary.Add(PlayerState.JumpToHanging, new JumpToHangingState(context));
+        stateDictionary.Add(PlayerState.Wall, new WallState(context));
     }
 
     // Update is called once per frame
@@ -107,7 +88,7 @@ public class PlayerController : MonoBehaviour
         context.TriesMoveUpDown = context.Input.y != 0f;
         context.IsJumping = Input.GetButtonDown("Jump");
 
-        UpdateState(BaseState);
+        UpdateState(CurrentState);
     }
 
     private void FixedUpdate()
@@ -116,79 +97,39 @@ public class PlayerController : MonoBehaviour
             pcc.Update(transform);
     }
 
-    //Enter Methods
-    public void EnterState(PlayerBaseState baseState)
+    public void EnterState(PlayerState newState)
     {
-        baseStateDictionary[baseState].Enter();
-    }
-    public void EnterState(PlayerMoveState moveState)
-    {
-        if (moveState != PlayerMoveState.None)
-            moveStateDictionary[moveState].Enter();
-    }
-    public void EnterState(PlayerClimbState climbState)
-    {
-        if (climbState != PlayerClimbState.None)
-            climbStateDictionary[climbState].Enter();
+        if (newState != PlayerState.None)
+            stateDictionary[newState].Enter();
     }
 
-    //Update Methods
-    public void UpdateState(PlayerBaseState baseState)
+    public void UpdateState(PlayerState newState)
     {
-        baseStateDictionary[baseState].Update();
-    }
-    public void UpdateState(PlayerMoveState moveState)
-    {
-        if (moveState != PlayerMoveState.None)
-            moveStateDictionary[moveState].Update();
-    }
-    public void UpdateState(PlayerClimbState climbState)
-    {
-        if (climbState != PlayerClimbState.None)
-            climbStateDictionary[climbState].Update();
+        if (newState != PlayerState.None)
+            stateDictionary[newState].Update();
     }
 
     //Exit Methods
-    public void ExitState(PlayerBaseState baseState)
+    public void ExitState(PlayerState newState)
     {
-        baseStateDictionary[baseState].Exit();
-    }
-    public void ExitState(PlayerMoveState moveState)
-    {
-        if (moveState != PlayerMoveState.None)
-            moveStateDictionary[moveState].Exit();
-    }
-    public void ExitState(PlayerClimbState climbState)
-    {
-        if (climbState != PlayerClimbState.None)
-            climbStateDictionary[climbState].Exit();
+        if (newState != PlayerState.None)
+            stateDictionary[newState].Exit();
     }
 
-    public void SetState(PlayerMoveState moveState)
-    {
-        SetState(PlayerBaseState.Default, newMoveState: moveState);
-    }
-
-    public void SetState(PlayerClimbState climbState)
-    {
-        SetState(PlayerBaseState.Climb, newClimbState: climbState);
-    }
-    public void SetState(PlayerBaseState newBaseState, PlayerClimbState newClimbState = PlayerClimbState.None, PlayerMoveState newMoveState = PlayerMoveState.None)
+    public void SetState(PlayerState newState)
     {
 
-        ExitState(BaseState);
+        ExitState(CurrentState);
 
-        string from = (BaseState == PlayerBaseState.Default) ? MoveState.ToString() : ClimbState.ToString();
-        string to = (newBaseState == PlayerBaseState.Default) ? newMoveState.ToString() : newClimbState.ToString();
-        Debug.Log($"Change state from: {BaseState} ({from}) to {newBaseState}({to}).");
-        OnStateChangePrevious?.Invoke(BaseState, MoveState, ClimbState, newBaseState, newMoveState, newClimbState);
-        OnStateChange?.Invoke(newBaseState, newMoveState, newClimbState);
+        string from = CurrentState.ToString();
+        string to = newState.ToString();
+        Debug.Log($"Change state from: ({from}) to ({newState})");
+        OnStateChangePrevious?.Invoke(CurrentState, newState);
+        OnStateChange?.Invoke(newState);
 
-        BaseState = newBaseState;
-        ClimbState = newClimbState;
-        MoveState = newMoveState;
+        CurrentState = newState;
 
-        EnterState(newBaseState);
+        EnterState(newState);
 
     }
 
@@ -221,12 +162,7 @@ public class PlayerController : MonoBehaviour
         //    GUI.Label(rect, pcc.Key.ToString() + " (" + pcc.Value.LayerMask.ToString() + ")");
         //}
 
-        GUILayout.Box(BaseState + " : " + ClimbState);
-    }
-
-    private void ResetJumpBlocker()
-    {
-        jumpBlocker = false;
+        GUILayout.Box(CurrentState.ToString());
     }
 }
 

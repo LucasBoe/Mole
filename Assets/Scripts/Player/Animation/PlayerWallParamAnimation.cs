@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerWallParamAnimation : ParameterBasedAnimationBase
 {
-    private const PlayerClimbState associatedState = PlayerClimbState.Wall;
+    private const PlayerState associatedState = PlayerState.Wall;
     private WallState wallState;
 
     [SerializeField] Sprite baseSprite;
@@ -16,7 +16,7 @@ public class PlayerWallParamAnimation : ParameterBasedAnimationBase
 
     public override void Init(PlayerController playerController)
     {
-        wallState = playerController.climbStateDictionary[associatedState] as WallState;
+        wallState = playerController.stateDictionary[associatedState] as WallState;
     }
 
     public override Sprite Update()

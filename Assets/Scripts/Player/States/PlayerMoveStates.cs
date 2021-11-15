@@ -4,7 +4,7 @@ using UnityEngine;
 using PlayerCollisionCheckType;
 using System;
 
-public class MoveBaseState : PlayerState
+public class MoveBaseState : PlayerStateBase
 {
     string lastT = "";
     protected bool triesMovingIntoWall
@@ -17,6 +17,12 @@ public class MoveBaseState : PlayerState
         }
     }
     public MoveBaseState(PlayerContext playerContext) : base(playerContext) { }
+
+    public override void Update()
+    {
+        if (context.IsCollidingToAnyWall && context.TriesMoveUpDown && !context.TriesMoveLeftRight)
+            SetState(PlayerState.Wall);
+    }
 }
 
 
@@ -34,12 +40,14 @@ public class IdleState : MoveBaseState
 
     public override void Update()
     {
+        base.Update();
+
         if (context.Input.x != 0 && !triesMovingIntoWall)
-            SetState(PlayerMoveState.Walk);
+            SetState(PlayerState.Walk);
 
         //jumping
         if (context.IsJumping)
-            SetState(PlayerMoveState.Jump);
+            SetState(PlayerState.Jump);
 
         //dropping down
         if (IsColliding(CheckType.DropDownable) && context.Input.y < -0.9f)
@@ -48,7 +56,7 @@ public class IdleState : MoveBaseState
             if (dropDownTimer > context.Values.KeyPressTimeToDropDown)
             {
                 dropDownTimer = 0f;
-                SetState(PlayerClimbState.DropDown);
+                SetState(PlayerState.DropDown);
             }
         }
         else
@@ -62,21 +70,23 @@ public class WalkState : MoveBaseState
     public WalkState(PlayerContext playerContext) : base(playerContext) { }
     public override void Update()
     {
+        base.Update();
+
         float xInput = context.Input.x;
 
         context.Rigidbody.velocity = new Vector2(xInput * context.Values.walkXvelocity, context.Rigidbody.velocity.y);
 
         if (xInput == 0 || triesMovingIntoWall)
-            SetState(PlayerMoveState.Idle);
+            SetState(PlayerState.Idle);
 
         if (!IsColliding(CheckType.Ground))
-            SetState(PlayerMoveState.Fall);
+            SetState(PlayerState.Fall);
 
         if (context.IsJumping)
-            SetState(PlayerMoveState.Jump);
+            SetState(PlayerState.Jump);
 
-        if (!StateIs(PlayerMoveState.WalkPush) && ((xInput < 0 && IsColliding(CheckType.PushableLeft)) || (xInput > 0 && IsColliding(CheckType.PushableRight))))
-            SetState(PlayerMoveState.WalkPush);
+        if (!StateIs(PlayerState.WalkPush) && ((xInput < 0 && IsColliding(CheckType.PushableLeft)) || (xInput > 0 && IsColliding(CheckType.PushableRight))))
+            SetState(PlayerState.WalkPush);
     }
 }
 
@@ -88,7 +98,7 @@ public class WalkPushState : WalkState
         base.Update();
 
         if (!IsColliding(CheckType.PushableLeft) && !IsColliding(CheckType.PushableRight))
-            SetState(PlayerMoveState.Walk);
+            SetState(PlayerState.Walk);
     }
 }
 
@@ -105,6 +115,8 @@ public class JumpState : MoveBaseState
 
     public override void Update()
     {
+        base.Update();
+
         ApplyGravity(0f);
 
         //strave
@@ -112,10 +124,10 @@ public class JumpState : MoveBaseState
 
         //autograp to hangable
         if (IsColliding(CheckType.Hangable) && context.Input.y > 0.25f)
-            SetState(PlayerClimbState.Hanging);
+            SetState(PlayerState.Hanging);
 
         if (context.Rigidbody.velocity.y < 0)
-            SetState(PlayerMoveState.Fall);
+            SetState(PlayerState.Fall);
     }
 }
 public class FallState : MoveBaseState
@@ -130,18 +142,20 @@ public class FallState : MoveBaseState
 
     public override void Update()
     {
+        base.Update();
+
         //gravity
         ApplyGravity(Time.time - startFallTime);
 
         //autograp to hangable
         if (IsColliding(CheckType.Hangable) && context.Input.y > 0.25f)
-            SetState(PlayerClimbState.Hanging);
+            SetState(PlayerState.Hanging);
 
         if ((IsColliding(CheckType.HangableJumpInLeft) && context.Input.x < 0.1f) || (IsColliding(CheckType.HangableJumpInRight) && context.Input.x > -0.1f))
-            SetState(PlayerClimbState.JumpToHanging);
+            SetState(PlayerState.JumpToHanging);
 
         if (triesMovingIntoWall)
-            SetState(PlayerClimbState.Wall);
+            SetState(PlayerState.Wall);
 
         //strave
         if (context.TriesMoveLeftRight)
@@ -166,6 +180,6 @@ public class FallState : MoveBaseState
 
 
         if (IsColliding(CheckType.Ground))
-            SetState(PlayerMoveState.Idle);
+            SetState(PlayerState.Idle);
     }
 }

@@ -3,8 +3,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class ClimbStateBase : PlayerStateBase
+{
+    public ClimbStateBase(PlayerContext playerContext) : base(playerContext) { }
+
+    public override void Enter()
+    {
+        context.Rigidbody.gravityScale = 0;
+    }
+
+    public override void Update()
+    {
+        //player tries to walk on the ground transition to Idle
+        if (IsColliding(CheckType.Ground) && context.TriesMoveLeftRight && !context.TriesMoveUpDown)
+            SetState(PlayerState.Walk);
+
+        //jump
+        if (context.IsJumping)
+            JumpOff(context.Input);
+    }
+
+    public override void Exit()
+    {
+        context.Rigidbody.gravityScale = 2;
+    }
+}
+
+
 //Cimb States
-public class PullUpState : PlayerState
+public class PullUpState : ClimbStateBase
 {
     float t = 0;
 
@@ -16,6 +43,8 @@ public class PullUpState : PlayerState
 
     public override void Enter()
     {
+        base.Enter();
+
         curve = context.Values.PullUpCurve;
         SetCollisionActive(false);
 
@@ -45,14 +74,15 @@ public class PullUpState : PlayerState
             context.Rigidbody.MovePosition(Vector2.Lerp(startPos, targetPos, curve.Evaluate(t / context.Values.PullUpDuration)));
         }
         else
-            SetState(PlayerMoveState.Idle);
+            SetState(PlayerState.Idle);
     }
     public override void Exit()
     {
+        base.Exit();
         SetCollisionActive(true);
     }
 }
-public class DropDownState : PlayerState
+public class DropDownState : ClimbStateBase
 {
     private DropDownMode mode;
 
@@ -68,6 +98,8 @@ public class DropDownState : PlayerState
 
     public override void Enter()
     {
+        base.Enter();
+
         //Is the player dropping down from a hangable or through a oneDir. floor?
         floors = GetCheck(CheckType.DropDownable).GetFloors();
         mode = floors.Length > 0 ? DropDownMode.Floor : DropDownMode.Hangable;
@@ -81,7 +113,7 @@ public class DropDownState : PlayerState
             foreach (IFloor floor in floors)
                 floor.DeactivateUntilPlayerIsAboveAgain(context.PlayerController);
 
-            SetState(PlayerMoveState.Fall);
+            SetState(PlayerState.Fall);
         }
     }
     public override void Update()
@@ -89,14 +121,15 @@ public class DropDownState : PlayerState
         context.Rigidbody.MovePosition(context.PlayerPos + Vector2.down * Time.deltaTime * context.Values.DropDownSpeed);
 
         if (IsColliding(CheckType.Hangable))
-            SetState(PlayerClimbState.Hanging);
+            SetState(PlayerState.Hanging);
     }
     public override void Exit()
     {
+        base.Exit();
         SetCollisionActive(true);
     }
 }
-public class WallState : PlayerState
+public class WallState : ClimbStateBase
 {
     public bool IsMoving;
     public float DistanceFromTop;
@@ -104,9 +137,10 @@ public class WallState : PlayerState
 
     public WallState(PlayerContext playerContext) : base(playerContext) { }
 
-
     public override void Update()
     {
+        base.Update();
+
         //up down movement
         context.Rigidbody.velocity = new Vector2(context.Rigidbody.velocity.x + (IsLeft ? -1f : 1f) * context.Values.WallPushVelocity, context.Input.y * context.Values.WallClimbYvelocity);
 
@@ -127,15 +161,15 @@ public class WallState : PlayerState
         //transition to hanging
         if (IsColliding(CheckType.Hangable)
             && ((!IsColliding(CheckType.WallLeft) && context.Input.x < 0) || (!IsColliding(CheckType.WallRight) && context.Input.x > 0)))
-            SetState(PlayerClimbState.Hanging);
+            SetState(PlayerState.Hanging);
 
         //player loses connection to wall
         if (!context.IsCollidingToAnyWall)
-            SetState(PlayerMoveState.Fall);
+            SetState(PlayerState.Fall);
     }
 }
 
-public class HangingBaseState : PlayerState
+public class HangingBaseState : ClimbStateBase
 {
     public HangingBaseState(PlayerContext playerContext) : base(playerContext) { }
     protected Vector2 GetClosestHangablePosition(Vector2 position, Vector2 input, CheckType[] checkTypes)
@@ -181,14 +215,16 @@ public class HangingState : HangingBaseState
 
     public override void Update()
     {
+        base.Update();
+
         //transition to wall climb
         if (context.IsCollidingToAnyWall && context.TriesMoveUpDown)
-            SetState(PlayerClimbState.Wall);
+            SetState(PlayerState.Wall);
 
         //pulling up
         if (!IsColliding(CheckType.HangableAboveAir) && context.Input.y > 0.5f && !context.TriesMoveLeftRight)
         {
-            SetState(PlayerClimbState.PullUp);
+            SetState(PlayerState.PullUp);
         }
         else
         {
@@ -209,6 +245,8 @@ public class JumpToHangingState : HangingBaseState
 
     public override void Enter()
     {
+        base.Enter();
+
         SetCollisionActive(false);
 
         CheckType[] checkTypes = new CheckType[] { CheckType.HangableJumpInLeft, CheckType.HangableJumpInRight };
@@ -217,15 +255,18 @@ public class JumpToHangingState : HangingBaseState
 
     public override void Update()
     {
+        base.Update();
+
         Vector2 pos = Vector2.MoveTowards(context.PlayerPos, target, Time.deltaTime * 30f);
         context.Rigidbody.MovePosition(pos);
 
         if (IsColliding(CheckType.Hangable))
-            SetState(PlayerClimbState.Hanging);
+            SetState(PlayerState.Hanging);
     }
 
     public override void Exit()
     {
+        base.Exit();
         SetCollisionActive(true);
     }
 }

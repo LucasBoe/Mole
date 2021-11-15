@@ -25,22 +25,22 @@ public class PlayerAnimationController : MonoBehaviour
 
     private void Start()
     {
-        wallState = (player.climbStateDictionary[PlayerClimbState.Wall] as WallState);
+        wallState = (player.stateDictionary[PlayerState.Wall] as WallState);
 
         foreach (ClimbStateParamAnimationPair param in stateToAnimationHolder.climbStateParamAnimationPairs)
             param.ParamAnimation.Init(player);
     }
 
-    private void OnStateChange(PlayerBaseState baseState, PlayerMoveState move, PlayerClimbState climb)
+    private void OnStateChange(PlayerState climb)
     {
-        current = stateToAnimationHolder.GetClip(climb);
+        current = stateToAnimationHolder.GetClipParam(climb);
 
         if (current == null)
         {
             if (!animator.isActiveAndEnabled)
                 animator.enabled = true;
 
-            AnimationClip toPlay = stateToAnimationHolder.GetClip(baseState, move, climb);
+            AnimationClip toPlay = stateToAnimationHolder.GetClip(climb);
             if (toPlay != null)
                 animator.Play(toPlay.name);
         }
@@ -55,7 +55,7 @@ public class PlayerAnimationController : MonoBehaviour
     {
         bool flip = playerRigidbody.velocity.x < 0.01f;
 
-        if (player.ClimbState == PlayerClimbState.Wall)
+        if (player.CurrentState == PlayerState.Wall)
         {
             flip = wallState.IsLeft;
         }
@@ -79,38 +79,27 @@ public class PlayerAnimationController : MonoBehaviour
 public class StateToAnimationHolder
 {
     public MoveStateAnimationPair[] moveStateAnimationPairs;
-    public ClimbStateAnimationPair[] climbStateAnimationPairs;
     public ClimbStateParamAnimationPair[] climbStateParamAnimationPairs;
 
-    internal AnimationClip GetClip(PlayerBaseState baseState, PlayerMoveState move, PlayerClimbState climb)
+    internal AnimationClip GetClip(PlayerState state)
     {
-        if (baseState == PlayerBaseState.Climb)
+
+        foreach (MoveStateAnimationPair pair in moveStateAnimationPairs)
         {
-            foreach (ClimbStateAnimationPair pair in climbStateAnimationPairs)
-            {
-                if (pair.ClimbState == climb)
-                    return pair.AnimationClip;
-            }
-        }
-        else
-        {
-            foreach (MoveStateAnimationPair pair in moveStateAnimationPairs)
-            {
-                if (pair.MoveState == move)
-                    return pair.AnimationClip;
-            }
+            if (pair.MoveState == state)
+                return pair.AnimationClip;
         }
 
         return null;
     }
 
-    internal ParameterBasedAnimationBase GetClip(PlayerClimbState climb)
+    internal ParameterBasedAnimationBase GetClipParam(PlayerState state)
     {
         foreach (ClimbStateParamAnimationPair pair in climbStateParamAnimationPairs)
         {
-            Debug.LogWarning("compare "+ climb + " to "+ pair.ClimbState);
+            Debug.LogWarning("compare " + state + " to " + pair.ClimbState);
 
-            if (pair.ClimbState == climb)
+            if (pair.ClimbState == state)
                 return pair.ParamAnimation;
         }
 
@@ -121,20 +110,13 @@ public class StateToAnimationHolder
 [System.Serializable]
 public class MoveStateAnimationPair
 {
-    public PlayerMoveState MoveState;
-    public AnimationClip AnimationClip;
-}
-
-[System.Serializable]
-public class ClimbStateAnimationPair
-{
-    public PlayerClimbState ClimbState;
+    public PlayerState MoveState;
     public AnimationClip AnimationClip;
 }
 
 [System.Serializable]
 public class ClimbStateParamAnimationPair
 {
-    public PlayerClimbState ClimbState;
+    public PlayerState ClimbState;
     public ParameterBasedAnimationBase ParamAnimation;
 }
