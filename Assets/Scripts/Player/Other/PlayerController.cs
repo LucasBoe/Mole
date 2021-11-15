@@ -62,6 +62,7 @@ public class PlayerController : MonoBehaviour
         context.CollisionChecks.Add(CheckType.HangableJumpInRight, new CollisionCheck(0.7f, 0.2f, 0.3f, 1.5f, LayerMask.GetMask("Hangable")));
         context.CollisionChecks.Add(CheckType.WallLeft, new CollisionCheck(-0.55f, 0, 0.45f, 1f, LayerMask.GetMask("Default")));
         context.CollisionChecks.Add(CheckType.WallRight, new CollisionCheck(0.55f, 0, 0.45f, 1f, LayerMask.GetMask("Default")));
+        context.CollisionChecks.Add(CheckType.WallAbove, new CollisionCheck(0, 1.1f, 1.5f, 0.2f, LayerMask.GetMask("Default")));
         context.CollisionChecks.Add(CheckType.Ceiling, new CollisionCheck(0f, 0.875f, 0.75f, 0.25f, LayerMask.GetMask("Default", "OneDirectionalFloor")));
         context.CollisionChecks.Add(CheckType.Body, new CollisionCheck(0f, 0f, 0.875f, 1.5f, LayerMask.GetMask("Default", "Hangable")));
 
@@ -249,5 +250,6 @@ namespace PlayerCollisionCheckType
         EdgeHelperRight,
         PushableLeft,
         PushableRight,
+        WallAbove,
     }
 }

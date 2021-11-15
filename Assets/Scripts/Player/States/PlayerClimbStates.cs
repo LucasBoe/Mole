@@ -98,6 +98,8 @@ public class DropDownState : PlayerState
 }
 public class WallState : PlayerState
 {
+    public bool IsMoving;
+    public float DistanceFromTop;
     public bool IsLeft => IsColliding(CheckType.WallLeft);
 
     public WallState(PlayerContext playerContext) : base(playerContext) { }
@@ -107,6 +109,20 @@ public class WallState : PlayerState
     {
         //up down movement
         context.Rigidbody.velocity = new Vector2(context.Rigidbody.velocity.x + (IsLeft ? -1f : 1f) * context.Values.WallPushVelocity, context.Input.y * context.Values.WallClimbYvelocity);
+
+        DistanceFromTop = 0;
+        IsMoving = context.Rigidbody.velocity.y != 0;
+
+        if (!IsColliding(CheckType.WallAbove))
+        {
+            Vector2 origin = context.PlayerPos + Vector2.up + (IsLeft ? Vector2.left : Vector2.right);
+            RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down, 2, LayerMask.GetMask("Default"));
+            if (hit == true)
+            {
+                DistanceFromTop = Vector2.Distance(origin, hit.point);
+                Debug.DrawLine(origin, hit.point, Color.red);
+            }
+        }
 
         //transition to hanging
         if (IsColliding(CheckType.Hangable)
