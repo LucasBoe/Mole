@@ -66,23 +66,3 @@ public class PlayerStateBase
         context = playerContext;
     }
 }
-public class ClimbState : PlayerStateBase
-{
-    public ClimbState(PlayerContext playerContext) : base(playerContext) { }
-
-    public override void Enter()
-    {
-        context.PlayerController.EnterState(context.PlayerController.CurrentState);
-    }
-
-    public override void Update()
-    {
-        context.PlayerController.UpdateState(context.PlayerController.CurrentState);
-    }
-
-    public override void Exit()
-    {
-        context.PlayerController.ExitState(context.PlayerController.CurrentState);
-        context.Rigidbody.gravityScale = 2;
-    }
-}

@@ -327,6 +327,8 @@ MonoBehaviour:
     climbStateParamAnimationPairs:
     - ClimbState: 1
       ParamAnimation: {fileID: 11400000, guid: 3afece717e8f78a45848be079c1a3a43, type: 2}
+    - ClimbState: 7
+      ParamAnimation: {fileID: 11400000, guid: c12ad59d003d60041be1ee949107159c, type: 2}
 --- !u!212 &5582010506033126746
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -677,7 +679,6 @@ MonoBehaviour:
   coatElements:
   - {fileID: 1837576132666007705}
   - {fileID: 887156394466771395}
-  - {fileID: 255148927343140446}
   KeepMaxDistance: 0
   MaxDistanceToKeep: 1
 --- !u!120 &640083578989379481

@@ -97,8 +97,6 @@ public class StateToAnimationHolder
     {
         foreach (ClimbStateParamAnimationPair pair in climbStateParamAnimationPairs)
         {
-            Debug.LogWarning("compare " + state + " to " + pair.ClimbState);
-
             if (pair.ClimbState == state)
                 return pair.ParamAnimation;
         }

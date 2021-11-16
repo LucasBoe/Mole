@@ -6,7 +6,6 @@ using System;
 
 public class MoveBaseState : PlayerStateBase
 {
-    string lastT = "";
     protected bool triesMovingIntoWall
     {
         get
@@ -29,12 +28,14 @@ public class MoveBaseState : PlayerStateBase
 //Move States (Idle, Walk, Jump, Fall)
 public class IdleState : MoveBaseState
 {
+    public bool IsAtWall;
     float dropDownTimer = 0f;
 
     public IdleState(PlayerContext playerContext) : base(playerContext) { }
 
     public override void Enter()
     {
+        IsAtWall = IsColliding(CheckType.WallLeft) || IsColliding(CheckType.WallRight);
         dropDownTimer = 0;
     }
 
@@ -157,13 +158,19 @@ public class FallState : MoveBaseState
         if (triesMovingIntoWall)
             SetState(PlayerState.Wall);
 
-        //strave
-        if (context.TriesMoveLeftRight)
-            context.Rigidbody.velocity = new Vector2(context.Input.x * context.Values.StraveXVelocity, context.Rigidbody.velocity.y);
-
-        bool isCollidingEdgeHelper = IsColliding(CheckType.EdgeHelperLeft, CheckType.EdgeHelperRight);
+        bool isCollidingEdgeHelperLeft = IsColliding(CheckType.EdgeHelperLeft);
+        bool isCollidingEdgeHelperRight = IsColliding(CheckType.EdgeHelperRight);
+        bool isCollidingEdgeHelper = isCollidingEdgeHelperLeft || isCollidingEdgeHelperRight;
         bool isNotCollidingWall = !IsColliding(CheckType.WallLeft, CheckType.WallRight);
         bool triesMovingUp = context.Input.y > 0.1f;
+
+        //strave
+        if (context.TriesMoveLeftRight)
+        {
+            float clampedInputX = Mathf.Clamp(context.Input.x, isCollidingEdgeHelperLeft ? 0f : -1f, isCollidingEdgeHelperRight ? 0f : 1f);
+            context.Rigidbody.velocity = new Vector2(clampedInputX * context.Values.StraveXVelocity, context.Rigidbody.velocity.y);
+        }
+
 
         if ((context.TriesMoveLeftRight || triesMovingUp) && isCollidingEdgeHelper && isNotCollidingWall)
         {
@@ -175,6 +182,7 @@ public class FallState : MoveBaseState
                 dir = dir.normalized;
             }
 
+            Debug.LogWarning("Add Force: " + dir);
             context.Rigidbody.AddForce(dir * context.Values.EdgeHelperUpwardsImpulse, ForceMode2D.Impulse);
         }
 
