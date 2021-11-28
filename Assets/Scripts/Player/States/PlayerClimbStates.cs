@@ -205,23 +205,26 @@ public class WallStretchState : ClimbStateBase
         {
             Distance = Vector2.Distance(context.PlayerPos, hit.point);
             Debug.DrawLine(context.PlayerPos, hit.point, Color.red);
-            Debug.LogWarning(Distance);
         }
 
+        float minimalWallDistance = 0.55f;
+        bool moveUpDownThenLeftRight = Mathf.Abs(context.Input.y) > Mathf.Abs(context.Input.x);
+
         //tries to move up down
-        if (Mathf.Abs(context.Input.y) > Mathf.Abs(context.Input.x))
+        if (moveUpDownThenLeftRight)
         {
-            float minimalWallDistance = 0.45f;
             context.Rigidbody.velocity = new Vector2(directionToWall * context.Values.WallSnapXVelocity * (Distance - minimalWallDistance), context.Input.y * context.Values.WallClimbYvelocity * 0.5f);
-            if (context.IsCollidingToAnyWall && Distance < minimalWallDistance)
-                SetState(PlayerState.Wall);
         }
+        //clamped left right
         else
         {
             bool reachedMax = Distance > 1.375f;
             float floatClampedX = Mathf.Clamp(context.Input.x, (reachedMax && directionToWall > 0) ? 0 : -1, (reachedMax && directionToWall < 0) ? 0 : 1);
             context.Rigidbody.velocity = new Vector2(floatClampedX * context.Values.WallClimbYvelocity, context.Rigidbody.velocity.y);
         }
+
+        if (moveUpDownThenLeftRight && context.IsCollidingToAnyWall && Distance < 0.65)
+            SetState(PlayerState.Wall);
     }
 }
 

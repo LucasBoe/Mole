@@ -19,17 +19,17 @@ MonoBehaviour:
   - {fileID: 727621372476338951, guid: 8b2ab7bb857a5eb4d9fbeda250a74c38, type: 3}
   - {fileID: -6231916540473946744, guid: 8b2ab7bb857a5eb4d9fbeda250a74c38, type: 3}
   ledgeClimbing:
-  - Distance: 0
+  - Value: 0
     Sprite: {fileID: -7993800175402930989, guid: e98507d64cb453b43afb714aa9bab3f9, type: 3}
-  - Distance: 0.5
+  - Value: 0.5
     Sprite: {fileID: -7213118415042857688, guid: e98507d64cb453b43afb714aa9bab3f9, type: 3}
-  - Distance: 0.75
+  - Value: 0.75
     Sprite: {fileID: 3312601250585677668, guid: e98507d64cb453b43afb714aa9bab3f9, type: 3}
-  - Distance: 0.85
+  - Value: 0.85
     Sprite: {fileID: -7413400826379858543, guid: e98507d64cb453b43afb714aa9bab3f9, type: 3}
-  - Distance: 1.1
+  - Value: 1.1
     Sprite: {fileID: -6084594529464883459, guid: e98507d64cb453b43afb714aa9bab3f9, type: 3}
-  - Distance: 1.4
+  - Value: 1.4
     Sprite: {fileID: -4833265704872355373, guid: e98507d64cb453b43afb714aa9bab3f9, type: 3}
-  - Distance: 2
+  - Value: 2
     Sprite: {fileID: 65875843058290105, guid: e98507d64cb453b43afb714aa9bab3f9, type: 3}
