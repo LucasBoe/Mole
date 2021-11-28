@@ -157,7 +157,14 @@ public class WallState : ClimbStateBase
 
         //transition to wall stretch
         bool triesMoveAwayFromWall = ((IsLeft && context.Input.x > 0) || (!IsLeft && context.Input.x < 0));
-        if (triesMoveAwayFromWall) SetState(PlayerState.WallStretch);
+        if (triesMoveAwayFromWall)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(context.PlayerPos, new Vector2(IsLeft ? -1 : 1, 0), 2, LayerMask.GetMask("Default"));
+            if (hit == true)
+            {
+                SetState(PlayerState.WallStretch);
+            }
+        }
 
         //up down movement
         context.Rigidbody.velocity = new Vector2(context.Rigidbody.velocity.x + (IsLeft ? -1f : 1f) * context.Values.WallPushVelocity, context.Input.y * context.Values.WallClimbYvelocity);
@@ -192,17 +199,26 @@ public class WallStretchState : ClimbStateBase
         base.Update();
 
         float directionToWall = enterStateX < context.PlayerPos.x ? -1f : 1f;
-        Distance = Mathf.Abs(enterStateX - context.PlayerPos.x);
 
+        RaycastHit2D hit = Physics2D.Raycast(context.PlayerPos, new Vector2(directionToWall, 0), 2, LayerMask.GetMask("Default"));
+        if (hit == true)
+        {
+            Distance = Vector2.Distance(context.PlayerPos, hit.point);
+            Debug.DrawLine(context.PlayerPos, hit.point, Color.red);
+            Debug.LogWarning(Distance);
+        }
+
+        //tries to move up down
         if (Mathf.Abs(context.Input.y) > Mathf.Abs(context.Input.x))
         {
-            context.Rigidbody.velocity = new Vector2(directionToWall * context.Values.WallSnapXVelocity, context.Input.y * context.Values.WallClimbYvelocity);
-            if (context.IsCollidingToAnyWall)
+            float minimalWallDistance = 0.45f;
+            context.Rigidbody.velocity = new Vector2(directionToWall * context.Values.WallSnapXVelocity * (Distance - minimalWallDistance), context.Input.y * context.Values.WallClimbYvelocity * 0.5f);
+            if (context.IsCollidingToAnyWall && Distance < minimalWallDistance)
                 SetState(PlayerState.Wall);
         }
         else
         {
-            bool reachedMax = Distance > 1f;
+            bool reachedMax = Distance > 1.375f;
             float floatClampedX = Mathf.Clamp(context.Input.x, (reachedMax && directionToWall > 0) ? 0 : -1, (reachedMax && directionToWall < 0) ? 0 : 1);
             context.Rigidbody.velocity = new Vector2(floatClampedX * context.Values.WallClimbYvelocity, context.Rigidbody.velocity.y);
         }
