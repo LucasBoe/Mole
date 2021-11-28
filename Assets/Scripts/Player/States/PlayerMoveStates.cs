@@ -182,7 +182,6 @@ public class FallState : MoveBaseState
                 dir = dir.normalized;
             }
 
-            Debug.LogWarning("Add Force: " + dir);
             context.Rigidbody.AddForce(dir * context.Values.EdgeHelperUpwardsImpulse, ForceMode2D.Impulse);
         }
 

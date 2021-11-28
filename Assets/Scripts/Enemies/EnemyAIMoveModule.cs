@@ -23,13 +23,13 @@ public class EnemyAIMoveModule : MonoBehaviour
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
 
-        jumpHelperLeft = new CollisionCheck(-0.3f, -0.73f, 0.3f, 0.3f, LayerMask.GetMask("Default", "Hangable"));
+        jumpHelperLeft = new CollisionCheck(-0.3f, -0.73f, 0.3f, 0.3f, LayerMask.GetMask("Default", "Hangable"), Color.yellow);
         collisionChecks.Add(jumpHelperLeft);
 
-        jumpHelperRight = new CollisionCheck(0.3f, -0.73f, 0.3f, 0.3f, LayerMask.GetMask("Default", "Hangable"));
+        jumpHelperRight = new CollisionCheck(0.3f, -0.73f, 0.3f, 0.3f, LayerMask.GetMask("Default", "Hangable"), Color.yellow);
         collisionChecks.Add(jumpHelperRight);
 
-        ground = new CollisionCheck(0f, -1f, 0.5f, 0.2f, LayerMask.GetMask("Default", "Hangable"));
+        ground = new CollisionCheck(0f, -1f, 0.5f, 0.2f, LayerMask.GetMask("Default", "Hangable"), Color.yellow);
         collisionChecks.Add(ground);
     }
 

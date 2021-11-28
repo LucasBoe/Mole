@@ -15,3 +15,10 @@ public class ParameterBasedAnimationBase : ScriptableObject
         return null;
     }
 }
+
+[System.Serializable]
+public class FloatSpritePair
+{
+    public float Value;
+    public Sprite Sprite;
+}

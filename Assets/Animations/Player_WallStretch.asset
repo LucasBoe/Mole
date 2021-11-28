@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f57a4bf9b53c244a931f322bb168062, type: 3}
+  m_Name: Player_WallStretch
+  m_EditorClassIdentifier: 
+  wallStretch:
+  - Value: 0.15
+    Sprite: {fileID: -2242605536246085105, guid: bc6cf0cc582dc5143971cca77ede71ad, type: 3}
+  - Value: 0.3
+    Sprite: {fileID: -8976556241168161125, guid: bc6cf0cc582dc5143971cca77ede71ad, type: 3}
+  - Value: 0.75
+    Sprite: {fileID: -6142169474021274036, guid: bc6cf0cc582dc5143971cca77ede71ad, type: 3}
+  - Value: 1.5
+    Sprite: {fileID: 2324192968427160565, guid: bc6cf0cc582dc5143971cca77ede71ad, type: 3}

@@ -9,7 +9,7 @@ public class PlayerWallParamAnimation : ParameterBasedAnimationBase
 
     [SerializeField] Sprite baseSprite;
     [SerializeField] Sprite[] climbing;
-    [SerializeField] DistanceSpritePair[] ledgeClimbing;
+    [SerializeField] FloatSpritePair[] ledgeClimbing;
 
     float animSpeed;
 
@@ -23,9 +23,9 @@ public class PlayerWallParamAnimation : ParameterBasedAnimationBase
     {
         if (wallState.DistanceFromTop > 0)
         {
-            foreach (DistanceSpritePair pair in ledgeClimbing)
+            foreach (FloatSpritePair pair in ledgeClimbing)
             {
-                if (wallState.DistanceFromTop < pair.Distance)
+                if (wallState.DistanceFromTop < pair.Value)
                     return pair.Sprite;
             }
 
@@ -39,12 +39,5 @@ public class PlayerWallParamAnimation : ParameterBasedAnimationBase
             return baseSprite;
         }
     }
-}
-
-[System.Serializable]
-public class DistanceSpritePair
-{
-    public float Distance;
-    public Sprite Sprite;
 }
 

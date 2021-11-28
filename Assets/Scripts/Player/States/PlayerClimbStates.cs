@@ -141,12 +141,8 @@ public class WallState : ClimbStateBase
     {
         base.Update();
 
-        //up down movement
-        context.Rigidbody.velocity = new Vector2(context.Rigidbody.velocity.x + (IsLeft ? -1f : 1f) * context.Values.WallPushVelocity, context.Input.y * context.Values.WallClimbYvelocity);
-
+        //Calculate Parameters for animation
         DistanceFromTop = 0;
-        IsMoving = context.Rigidbody.velocity.y != 0;
-
         if (!IsColliding(CheckType.WallAbove))
         {
             Vector2 origin = context.PlayerPos + Vector2.up + (IsLeft ? Vector2.left : Vector2.right);
@@ -157,6 +153,14 @@ public class WallState : ClimbStateBase
                 Debug.DrawLine(origin, hit.point, Color.red);
             }
         }
+        IsMoving = context.Rigidbody.velocity.y != 0;
+
+        //transition to wall stretch
+        bool triesMoveAwayFromWall = ((IsLeft && context.Input.x > 0) || (!IsLeft && context.Input.x < 0));
+        if (triesMoveAwayFromWall) SetState(PlayerState.WallStretch);
+
+        //up down movement
+        context.Rigidbody.velocity = new Vector2(context.Rigidbody.velocity.x + (IsLeft ? -1f : 1f) * context.Values.WallPushVelocity, context.Input.y * context.Values.WallClimbYvelocity);
 
         //transition to hanging
         if (IsColliding(CheckType.Hangable)
@@ -166,6 +170,42 @@ public class WallState : ClimbStateBase
         //player loses connection to wall
         if (!context.IsCollidingToAnyWall)
             SetState(PlayerState.Fall);
+    }
+}
+
+public class WallStretchState : ClimbStateBase
+{
+    float enterStateX = 0;
+
+    public float Distance = 0;
+
+    public WallStretchState(PlayerContext playerContext) : base(playerContext) { }
+
+    public override void Enter()
+    {
+        base.Enter();
+        enterStateX = context.PlayerPos.x;
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        float directionToWall = enterStateX < context.PlayerPos.x ? -1f : 1f;
+        Distance = Mathf.Abs(enterStateX - context.PlayerPos.x);
+
+        if (Mathf.Abs(context.Input.y) > Mathf.Abs(context.Input.x))
+        {
+            context.Rigidbody.velocity = new Vector2(directionToWall * context.Values.WallSnapXVelocity, context.Input.y * context.Values.WallClimbYvelocity);
+            if (context.IsCollidingToAnyWall)
+                SetState(PlayerState.Wall);
+        }
+        else
+        {
+            bool reachedMax = Distance > 1f;
+            float floatClampedX = Mathf.Clamp(context.Input.x, (reachedMax && directionToWall > 0) ? 0 : -1, (reachedMax && directionToWall < 0) ? 0 : 1);
+            context.Rigidbody.velocity = new Vector2(floatClampedX * context.Values.WallClimbYvelocity, context.Rigidbody.velocity.y);
+        }
     }
 }
 

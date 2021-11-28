@@ -53,14 +53,18 @@ public class PlayerAnimationController : MonoBehaviour
 
     private void Update()
     {
-        bool flip = playerRigidbody.velocity.x < 0.01f;
-
-        if (player.CurrentState == PlayerState.Wall)
+        if (player.CurrentState != PlayerState.WallStretch)
         {
-            flip = wallState.IsLeft;
+            bool flip = playerRigidbody.velocity.x < 0.01f;
+
+            if (player.CurrentState == PlayerState.Wall)
+            {
+                flip = wallState.IsLeft;
+            }
+
+            spriteRenderer.flipX = flip;
         }
 
-        spriteRenderer.flipX = flip;
         animator.SetFloat("speed", playerRigidbody.velocity.magnitude);
 
         if (current != null)

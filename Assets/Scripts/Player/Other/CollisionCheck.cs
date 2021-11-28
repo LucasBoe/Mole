@@ -7,15 +7,17 @@ public class CollisionCheck
 {
     public LayerMask LayerMask;
     public Vector2 Pos, Size = Vector2.one;
+    public Color DebugColor;
     public bool IsDetecting => colliders != null && colliders.Length > 0;
 
     private Collider2D[] colliders;
 
-    public CollisionCheck(float posX, float posY, float sizeX, float sizeY, LayerMask layerMask)
+    public CollisionCheck(float posX, float posY, float sizeX, float sizeY, LayerMask layerMask, Color debugColor)
     {
         Pos = new Vector2(posX, posY);
         Size = new Vector2(sizeX, sizeY);
         LayerMask = layerMask;
+        DebugColor = debugColor;
     }
 
     public CollisionCheck(Vector2 pos, Vector2 size, LayerMask layerMask)
