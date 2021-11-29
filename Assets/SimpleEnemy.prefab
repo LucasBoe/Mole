@@ -72,9 +72,9 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 12.09, y: 3.3600001}
+    - - {x: 10.09, y: 1.86}
       - {x: 0.09, y: 0.36}
-      - {x: 12.09, y: -2.6399999}
+      - {x: 10.09, y: -1.14}
 --- !u!120 &5463310171432811502
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -116,9 +116,9 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 12.09, y: 3.3600001, z: 0}
+  - {x: 10.09, y: 1.86, z: 0}
   - {x: 0.09, y: 0.36, z: 0}
-  - {x: 12.09, y: -2.6399999, z: 0}
+  - {x: 10.09, y: -1.14, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -227,8 +227,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eyePosition: {x: 0.09, y: 0.36}
-  viewConeDistance: 12
-  viewConeHeight: 6
+  viewConeDistance: 10
+  viewConeHeight: 3
   spriteRenderer: {fileID: 5463310171811055501}
   passive: {fileID: -8628593106324732981, guid: a0ca7b2cbd2329d4fa0c5021b0aab64d, type: 3}
   active: {fileID: -7565814667854835759, guid: a0ca7b2cbd2329d4fa0c5021b0aab64d, type: 3}
@@ -237,6 +237,7 @@ MonoBehaviour:
   routineModule: {fileID: 240406577}
   moveModule: {fileID: 240406578}
   noiseListenerModule: {fileID: 3645852911571192369}
+  Current: 0
 --- !u!114 &5463310171811055216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -304,6 +305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6916cd96ed7001140bea8d60aa8deb1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMoving: 0
 --- !u!114 &3645852911571192369
 MonoBehaviour:
   m_ObjectHideFlags: 0
