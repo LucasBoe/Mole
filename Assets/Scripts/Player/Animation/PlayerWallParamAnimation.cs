@@ -2,30 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerWallParamAnimation : ParameterBasedAnimationBase
+public class PlayerWallParamAnimation : ParameterBasedAnimation<WallState>
 {
-    private const PlayerState associatedState = PlayerState.Wall;
-    private WallState wallState;
-
     [SerializeField] Sprite baseSprite;
     [SerializeField] Sprite[] climbing;
     [SerializeField] FloatSpritePair[] ledgeClimbing;
 
     float animSpeed;
 
-
-    public override void Init(PlayerController playerController)
+    public override void Init(PlayerStateMachine playerStateMachine)
     {
-        wallState = playerController.stateDictionary[associatedState] as WallState;
+        StateType = PlayerState.Wall;
+        base.Init(playerStateMachine);
     }
 
     public override Sprite Update()
     {
-        if (wallState.DistanceFromTop > 0)
+        if (State.DistanceFromTop > 0)
         {
             foreach (FloatSpritePair pair in ledgeClimbing)
             {
-                if (wallState.DistanceFromTop < pair.Value)
+                if (State.DistanceFromTop < pair.Value)
                     return pair.Sprite;
             }
 
@@ -33,7 +30,7 @@ public class PlayerWallParamAnimation : ParameterBasedAnimationBase
         }
         else
         {
-            if (wallState.IsMoving)
+            if (State.IsMoving)
                 return climbing[(int)(Mathf.Floor(Time.time * (climbing.Length + 0.5f)) % climbing.Length)];
 
             return baseSprite;

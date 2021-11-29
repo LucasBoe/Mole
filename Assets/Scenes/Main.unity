@@ -29574,6 +29574,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1189029867}
+  - component: {fileID: 1189029870}
   - component: {fileID: 1189029868}
   - component: {fileID: 1189029866}
   - component: {fileID: 1189029869}
@@ -29631,7 +29632,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ca0f6d194138264789084f5a62f81f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentState: 10
   playerValues: {fileID: 11400000, guid: f123c62d2a8706d499bb4afc1f292e52, type: 2}
 --- !u!50 &1189029869
 Rigidbody2D:
@@ -29654,6 +29654,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &1189029870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1189029865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b9ec1cfcc6e57341891deb6ec9805df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurrentState: 10
 --- !u!1 &1189590687
 GameObject:
   m_ObjectHideFlags: 0
@@ -31228,6 +31241,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc41940897d23f34db8be1611a92cc6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lines: []
 --- !u!4 &1500207255 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1482603712404808884, guid: 5834c0eb76e870d4bb2d05de8dbabc89, type: 3}

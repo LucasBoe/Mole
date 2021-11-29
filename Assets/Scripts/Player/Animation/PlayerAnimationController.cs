@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerAnimationController : MonoBehaviour
 {
     Rigidbody2D playerRigidbody;
-    PlayerController player;
+    PlayerStateMachine player;
     Animator animator;
     SpriteRenderer spriteRenderer;
     WallState wallState;
@@ -16,7 +16,7 @@ public class PlayerAnimationController : MonoBehaviour
     [SerializeField] StateToAnimationHolder stateToAnimationHolder;
     private void OnEnable()
     {
-        player = GetComponentInParent<PlayerController>();
+        player = GetComponentInParent<PlayerStateMachine>();
         playerRigidbody = GetComponentInParent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();

@@ -37,12 +37,12 @@ public class PlayerStateBase
 
     protected void SetState(PlayerState state)
     {
-        context.PlayerController.SetState(state);
+        PlayerStateMachine.Instance.SetState(state);
     }
 
     protected bool StateIs(PlayerState state)
     {
-        return context.PlayerController.CurrentState == state;
+        return PlayerStateMachine.Instance.CurrentState == state;
     }
 
     protected void SetCollisionActive(bool active)

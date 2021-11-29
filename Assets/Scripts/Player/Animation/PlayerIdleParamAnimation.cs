@@ -2,22 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerIdleParamAnimation : ParameterBasedAnimationBase
+public class PlayerIdleParamAnimation : ParameterBasedAnimation<IdleState>
 {
-    private IdleState idleState;
-
     [SerializeField] Sprite atWallSprite;
     [SerializeField] Sprite[] climbing;
 
-
-    public override void Init(PlayerController playerController)
+    public override void Init(PlayerStateMachine playerStateMachine)
     {
-        idleState = playerController.stateDictionary[PlayerState.Idle] as IdleState;
+        StateType = PlayerState.Idle;
+        base.Init(playerStateMachine);
     }
 
     public override Sprite Update()
     {
-        if (idleState.IsAtWall)
+        if (State.IsAtWall)
             return atWallSprite;
 
         return climbing[(int)(Mathf.Floor(Time.time * (climbing.Length + 0.5f)) % climbing.Length)];

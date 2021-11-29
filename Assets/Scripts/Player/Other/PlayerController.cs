@@ -1,28 +1,12 @@
 using PlayerCollisionCheckType;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public enum PlayerState
-{
-    None,
-    Wall,
-    Ceiling,
-    Hanging,
-    PullUp,
-    DropDown,
-    JumpToHanging,
-    Idle,
-    Walk,
-    Jump,
-    Fall,
-    WalkPush,
-    WallStretch,
-}
+
 
 public class PlayerController : MonoBehaviour
 {
-    public PlayerState CurrentState;
-
     [SerializeField] PlayerContext context;
 
     bool jumpBlocker = false;
@@ -30,14 +14,10 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] PlayerValues playerValues;
 
-    public System.Action<PlayerState> OnStateChange;
-    public System.Action<PlayerState, PlayerState> OnStateChangePrevious;
-
-    public Dictionary<PlayerState, PlayerStateBase> stateDictionary = new Dictionary<PlayerState, PlayerStateBase>();
-
     private void Awake()
     {
         playerComponents = GetComponentsInChildren<IPlayerComponent>();
+        playerComponents = playerComponents.OrderBy(c => -c.UpdatePrio).ToArray();
 
         context = new PlayerContext();
         context.Input = new PlayerInput();
@@ -68,20 +48,8 @@ public class PlayerController : MonoBehaviour
         context.CollisionChecks.Add(CheckType.PushableLeft, new CollisionCheck(-0.75f, 0f, 0.5f, 0.75f, LayerMask.GetMask("Pushable"), Color.red));
         context.CollisionChecks.Add(CheckType.PushableRight, new CollisionCheck(0.75f, 0f, 0.5f, 0.75f, LayerMask.GetMask("Pushable"), Color.red));
 
-        //move states
-        stateDictionary.Add(PlayerState.Idle, new IdleState(context));
-        stateDictionary.Add(PlayerState.Walk, new WalkState(context));
-        stateDictionary.Add(PlayerState.WalkPush, new WalkPushState(context));
-        stateDictionary.Add(PlayerState.Jump, new JumpState(context));
-        stateDictionary.Add(PlayerState.Fall, new FallState(context));
-
-        //climb states
-        stateDictionary.Add(PlayerState.PullUp, new PullUpState(context));
-        stateDictionary.Add(PlayerState.DropDown, new DropDownState(context));
-        stateDictionary.Add(PlayerState.Hanging, new HangingState(context));
-        stateDictionary.Add(PlayerState.JumpToHanging, new JumpToHangingState(context));
-        stateDictionary.Add(PlayerState.Wall, new WallState(context));
-        stateDictionary.Add(PlayerState.WallStretch, new WallStretchState(context));
+        foreach (IPlayerComponent component in playerComponents)
+            component.Init(context);
     }
 
     // Update is called once per frame
@@ -101,49 +69,12 @@ public class PlayerController : MonoBehaviour
         foreach (IPlayerComponent component in playerComponents)
             component.UpdatePlayerComponent(context);
 
-        UpdateState(CurrentState);
     }
 
     private void FixedUpdate()
     {
         foreach (CollisionCheck pcc in context.CollisionChecks.Values)
             pcc.Update(transform);
-    }
-
-    public void EnterState(PlayerState newState)
-    {
-        if (newState != PlayerState.None)
-            stateDictionary[newState].Enter();
-    }
-
-    public void UpdateState(PlayerState newState)
-    {
-        if (newState != PlayerState.None)
-            stateDictionary[newState].Update();
-    }
-
-    //Exit Methods
-    public void ExitState(PlayerState newState)
-    {
-        if (newState != PlayerState.None)
-            stateDictionary[newState].Exit();
-    }
-
-    public void SetState(PlayerState newState)
-    {
-
-        ExitState(CurrentState);
-
-        string from = CurrentState.ToString();
-        string to = newState.ToString();
-        Debug.Log($"Change state from: ({from}) to ({newState})");
-        OnStateChangePrevious?.Invoke(CurrentState, newState);
-        OnStateChange?.Invoke(newState);
-
-        CurrentState = newState;
-
-        EnterState(newState);
-
     }
 
     private bool IsColliding(CheckType checkType)
@@ -163,19 +94,6 @@ public class PlayerController : MonoBehaviour
 
         Gizmos.color = Color.magenta;
         Gizmos.DrawWireSphere((Vector2)transform.position + playerValues.HangableOffset, 0.25f);
-    }
-
-    private void OnGUI()
-    {
-        //foreach (KeyValuePair<CheckType, PlayerCollisionCheck> pcc in context.CollisionChecks)
-        //{
-        //    Vector3 offsetFromSize = new Vector3(0.1f + ((Vector3)(pcc.Value.Size / 2f)).x, ((Vector3)(pcc.Value.Size / 2f)).y);
-        //    Vector2 screenPos = Camera.main.WorldToScreenPoint(transform.position + (Vector3)pcc.Value.Pos + offsetFromSize);
-        //    Rect rect = new Rect(screenPos.x, Screen.height - screenPos.y, 150, 50);
-        //    GUI.Label(rect, pcc.Key.ToString() + " (" + pcc.Value.LayerMask.ToString() + ")");
-        //}
-
-        GUILayout.Box(CurrentState.ToString());
     }
 }
 

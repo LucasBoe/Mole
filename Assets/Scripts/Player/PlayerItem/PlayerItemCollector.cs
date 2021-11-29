@@ -5,7 +5,9 @@ using UnityEngine;
 
 public interface IPlayerComponent
 {
+    int UpdatePrio { get; }
     void UpdatePlayerComponent(PlayerContext context);
+    void Init(PlayerContext context);
 }
 
 public class PlayerItemCollector : MonoBehaviour, IPlayerComponent
@@ -14,6 +16,12 @@ public class PlayerItemCollector : MonoBehaviour, IPlayerComponent
 
     CollectablePlayerItem item;
 
+    public int UpdatePrio => 100;
+
+    public void Init(PlayerContext context)
+    {
+        //
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         CollectablePlayerItem c = collision.GetComponent<CollectablePlayerItem>();
@@ -36,4 +44,5 @@ public class PlayerItemCollector : MonoBehaviour, IPlayerComponent
             Destroy(item.gameObject);
         }
     }
+
 }

@@ -2,24 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerWallStretchParamAnimation : ParameterBasedAnimationBase
+public class PlayerWallStretchParamAnimation : ParameterBasedAnimation<WallStretchState>
 {
-    private const PlayerState associatedState = PlayerState.WallStretch;
-    private WallStretchState wallState;
-
     [SerializeField] FloatSpritePair[] wallStretch;
 
-
-    public override void Init(PlayerController playerController)
+    public override void Init(PlayerStateMachine playerStateMachine)
     {
-        wallState = playerController.stateDictionary[associatedState] as WallStretchState;
+        StateType = PlayerState.WallStretch;
+        base.Init(playerStateMachine);
     }
 
     public override Sprite Update()
     {
         foreach (FloatSpritePair pair in wallStretch)
         {
-            if (wallState.Distance < pair.Value)
+            if (State.Distance < pair.Value)
                 return pair.Sprite;
         }
 

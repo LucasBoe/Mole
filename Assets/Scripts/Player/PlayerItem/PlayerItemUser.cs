@@ -17,6 +17,10 @@ public class PlayerItemUser : MonoBehaviour, IPlayerComponent
 
     LineRenderer aimLine;
 
+    public int UpdatePrio => 100;
+
+    public void Init(PlayerContext context) { }
+
     public void UpdatePlayerComponent(PlayerContext context)
     {
         if (inHand)
@@ -54,7 +58,7 @@ public class PlayerItemUser : MonoBehaviour, IPlayerComponent
         if (context.Input.Interact && inHand.AimInteract(context ,this))
             SetItemInHand(null, drop: false);
 
-        if (aimLine != null)
+        if (aimLine != null && inHand)
             inHand.AimUpdate(context, aimLine);
 
     }
