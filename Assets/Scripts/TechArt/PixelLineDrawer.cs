@@ -23,7 +23,7 @@ public class PixelLineDrawer : SingletonBehaviour<PixelLineDrawer>
     public const int sizeX = 160;
     public const int sizeY = 90;
 
-    List<PixelLine> lines = new List<PixelLine>();
+    [SerializeField] List<PixelLine> lines = new List<PixelLine>();
 
     void Start()
     {
@@ -57,28 +57,32 @@ public class PixelLineDrawer : SingletonBehaviour<PixelLineDrawer>
 
         foreach (PixelLine line in lines)
         {
-
-            List<Vector2Int> pointBuffer = new List<Vector2Int>();
-            foreach (var item in line.GetSegments())
+            if (line != null
+                && line.Points != null
+                && line.Points.Length > 1)
             {
-                Vector2 start = item.Start;
-                Vector2 end = item.End;
-
-                if (!OutOfBounds(start) && !OutOfBounds(end))
+                List<Vector2Int> pointBuffer = new List<Vector2Int>();
+                foreach (var item in line.GetSegments())
                 {
-                    int distance = (int)Vector2.Distance(start, end);
-                    for (int i = 0; i < distance; i++)
+                    Vector2 start = item.Start;
+                    Vector2 end = item.End;
+
+                    if (!OutOfBounds(start) && !OutOfBounds(end))
                     {
-                        Vector2 point = Vector2.Lerp(start, end, (float)i / distance);
-                        Vector2Int pointInt = new Vector2Int((int)point.x, (int)point.y);
-                        pointBuffer.Add(pointInt);
+                        int distance = (int)Vector2.Distance(start, end);
+                        for (int i = 0; i < distance; i++)
+                        {
+                            Vector2 point = Vector2.Lerp(start, end, (float)i / distance);
+                            Vector2Int pointInt = new Vector2Int((int)point.x, (int)point.y);
+                            pointBuffer.Add(pointInt);
+                        }
                     }
                 }
-            }
 
-            foreach (var item in pointBuffer)
-            {
-                texture.SetPixel(item.x, item.y, Color.white);
+                foreach (var item in pointBuffer)
+                {
+                    texture.SetPixel(item.x, item.y, Color.white);
+                }
             }
         }
 

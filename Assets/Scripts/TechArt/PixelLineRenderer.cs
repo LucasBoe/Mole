@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PixelLineRenderer : MonoBehaviour
 {
-    public PixelLine Line;
+    public PixelLine Line = new PixelLine();
 
     private void Start()
     {

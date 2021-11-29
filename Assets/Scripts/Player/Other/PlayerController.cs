@@ -87,14 +87,16 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        context.Input.Axis = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        context.Input.Back = Input.GetButtonDown("Back");
+        context.Input.Jump = Input.GetButtonDown("Jump");
+        context.Input.Interact = Input.GetButtonDown("Interact");
+        context.Input.Use = Input.GetButtonDown("Use");
+
         context.PlayerPos = transform.position;
         context.IsCollidingToAnyWall = IsColliding(CheckType.WallLeft) || IsColliding(CheckType.WallRight);
-        context.InputAxis = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        context.Input.Back = Input.GetButtonDown("Back");
-        context.TriesMoveLeftRight = context.InputAxis.x != 0;
-        context.TriesMoveUpDown = context.InputAxis.y != 0f;
-        context.IsJumping = Input.GetButtonDown("Jump");
-        context.IsInteracting = Input.GetButtonDown("Interact");
+        context.TriesMoveLeftRight = context.Input.Axis.x != 0;
+        context.TriesMoveUpDown = context.Input.Axis.y != 0f;
 
         foreach (IPlayerComponent component in playerComponents)
             component.UpdatePlayerComponent(context);

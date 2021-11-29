@@ -31,7 +31,7 @@ public class PlayerItemCollector : MonoBehaviour, IPlayerComponent
     public void UpdatePlayerComponent(PlayerContext context)
     {
         //use jump input as collection action
-        if (context.IsInteracting && item && itemUser.TryOverrideActiveItem(item.Item))
+        if (context.Input.Interact && item && itemUser.TryOverrideActiveItem(item.Item))
         {
             Destroy(item.gameObject);
         }

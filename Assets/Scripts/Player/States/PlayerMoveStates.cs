@@ -12,7 +12,7 @@ public class MoveBaseState : PlayerStateBase
         {
             bool wallToLeft = IsColliding(CheckType.WallLeft);
             bool wallToRight = IsColliding(CheckType.WallRight);
-            return (wallToLeft && context.InputAxis.x < 0) || (wallToRight && context.InputAxis.x > 0);
+            return (wallToLeft && context.Input.Axis.x < 0) || (wallToRight && context.Input.Axis.x > 0);
         }
     }
     public MoveBaseState(PlayerContext playerContext) : base(playerContext) { }
@@ -43,15 +43,15 @@ public class IdleState : MoveBaseState
     {
         base.Update();
 
-        if (context.InputAxis.x != 0 && !triesMovingIntoWall)
+        if (context.Input.Axis.x != 0 && !triesMovingIntoWall)
             SetState(PlayerState.Walk);
 
         //jumping
-        if (context.IsJumping)
+        if (context.Input.Jump)
             SetState(PlayerState.Jump);
 
         //dropping down
-        if (IsColliding(CheckType.DropDownable) && context.InputAxis.y < -0.9f)
+        if (IsColliding(CheckType.DropDownable) && context.Input.Axis.y < -0.9f)
         {
             dropDownTimer += Time.deltaTime;
             if (dropDownTimer > context.Values.KeyPressTimeToDropDown)
@@ -73,7 +73,7 @@ public class WalkState : MoveBaseState
     {
         base.Update();
 
-        float xInput = context.InputAxis.x;
+        float xInput = context.Input.Axis.x;
 
         context.Rigidbody.velocity = new Vector2(xInput * context.Values.walkXvelocity, context.Rigidbody.velocity.y);
 
@@ -83,7 +83,7 @@ public class WalkState : MoveBaseState
         if (!IsColliding(CheckType.Ground))
             SetState(PlayerState.Fall);
 
-        if (context.IsJumping)
+        if (context.Input.Jump)
             SetState(PlayerState.Jump);
 
         if (!StateIs(PlayerState.WalkPush) && ((xInput < 0 && IsColliding(CheckType.PushableLeft)) || (xInput > 0 && IsColliding(CheckType.PushableRight))))
@@ -109,7 +109,7 @@ public class JumpState : MoveBaseState
 
     public override void Enter()
     {
-        Vector2 dir = context.InputAxis.magnitude < 0.1f ? Vector2.up : context.InputAxis;
+        Vector2 dir = context.Input.Axis.magnitude < 0.1f ? Vector2.up : context.Input.Axis;
         dir = Vector2.Lerp(Vector2.up, dir, context.Values.DirectionalJumpAmount);
         context.Rigidbody.AddForce(dir.normalized * context.Values.JumpForce, ForceMode2D.Impulse);
     }
@@ -121,10 +121,10 @@ public class JumpState : MoveBaseState
         ApplyGravity(0f);
 
         //strave
-        context.Rigidbody.velocity = new Vector2(context.InputAxis.x * context.Values.StraveXVelocity, context.Rigidbody.velocity.y);
+        context.Rigidbody.velocity = new Vector2(context.Input.Axis.x * context.Values.StraveXVelocity, context.Rigidbody.velocity.y);
 
         //autograp to hangable
-        if (IsColliding(CheckType.Hangable) && context.InputAxis.y > 0.25f)
+        if (IsColliding(CheckType.Hangable) && context.Input.Axis.y > 0.25f)
             SetState(PlayerState.Hanging);
 
         if (context.Rigidbody.velocity.y < 0)
@@ -149,10 +149,10 @@ public class FallState : MoveBaseState
         ApplyGravity(Time.time - startFallTime);
 
         //autograp to hangable
-        if (IsColliding(CheckType.Hangable) && context.InputAxis.y > 0.25f)
+        if (IsColliding(CheckType.Hangable) && context.Input.Axis.y > 0.25f)
             SetState(PlayerState.Hanging);
 
-        if ((IsColliding(CheckType.HangableJumpInLeft) && context.InputAxis.x < 0.1f) || (IsColliding(CheckType.HangableJumpInRight) && context.InputAxis.x > -0.1f))
+        if ((IsColliding(CheckType.HangableJumpInLeft) && context.Input.Axis.x < 0.1f) || (IsColliding(CheckType.HangableJumpInRight) && context.Input.Axis.x > -0.1f))
             SetState(PlayerState.JumpToHanging);
 
         if (triesMovingIntoWall)
@@ -162,12 +162,12 @@ public class FallState : MoveBaseState
         bool isCollidingEdgeHelperRight = IsColliding(CheckType.EdgeHelperRight);
         bool isCollidingEdgeHelper = isCollidingEdgeHelperLeft || isCollidingEdgeHelperRight;
         bool isNotCollidingWall = !IsColliding(CheckType.WallLeft, CheckType.WallRight);
-        bool triesMovingUp = context.InputAxis.y > 0.1f;
+        bool triesMovingUp = context.Input.Axis.y > 0.1f;
 
         //strave
         if (context.TriesMoveLeftRight)
         {
-            float clampedInputX = Mathf.Clamp(context.InputAxis.x, isCollidingEdgeHelperLeft ? 0f : -1f, isCollidingEdgeHelperRight ? 0f : 1f);
+            float clampedInputX = Mathf.Clamp(context.Input.Axis.x, isCollidingEdgeHelperLeft ? 0f : -1f, isCollidingEdgeHelperRight ? 0f : 1f);
             context.Rigidbody.velocity = new Vector2(clampedInputX * context.Values.StraveXVelocity, context.Rigidbody.velocity.y);
         }
 
