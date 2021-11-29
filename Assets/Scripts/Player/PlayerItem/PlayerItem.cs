@@ -4,5 +4,6 @@ using UnityEngine;
 
 public class PlayerItem : ScriptableObject
 {
-
+    public Sprite Sprite;
+    public CollectablePlayerItem Prefab;
 }

@@ -20,7 +20,7 @@ public class ClimbStateBase : PlayerStateBase
 
         //jump
         if (context.IsJumping)
-            JumpOff(context.Input);
+            JumpOff(context.InputAxis);
     }
 
     public override void Exit()
@@ -156,7 +156,7 @@ public class WallState : ClimbStateBase
         IsMoving = context.Rigidbody.velocity.y != 0;
 
         //transition to wall stretch
-        bool triesMoveAwayFromWall = ((IsLeft && context.Input.x > 0) || (!IsLeft && context.Input.x < 0));
+        bool triesMoveAwayFromWall = ((IsLeft && context.InputAxis.x > 0) || (!IsLeft && context.InputAxis.x < 0));
         if (triesMoveAwayFromWall)
         {
             RaycastHit2D hit = Physics2D.Raycast(context.PlayerPos, new Vector2(IsLeft ? -1 : 1, 0), 2, LayerMask.GetMask("Default"));
@@ -167,11 +167,11 @@ public class WallState : ClimbStateBase
         }
 
         //up down movement
-        context.Rigidbody.velocity = new Vector2(context.Rigidbody.velocity.x + (IsLeft ? -1f : 1f) * context.Values.WallPushVelocity, context.Input.y * context.Values.WallClimbYvelocity);
+        context.Rigidbody.velocity = new Vector2(context.Rigidbody.velocity.x + (IsLeft ? -1f : 1f) * context.Values.WallPushVelocity, context.InputAxis.y * context.Values.WallClimbYvelocity);
 
         //transition to hanging
         if (IsColliding(CheckType.Hangable)
-            && ((!IsColliding(CheckType.WallLeft) && context.Input.x < 0) || (!IsColliding(CheckType.WallRight) && context.Input.x > 0)))
+            && ((!IsColliding(CheckType.WallLeft) && context.InputAxis.x < 0) || (!IsColliding(CheckType.WallRight) && context.InputAxis.x > 0)))
             SetState(PlayerState.Hanging);
 
         //player loses connection to wall
@@ -208,18 +208,18 @@ public class WallStretchState : ClimbStateBase
         }
 
         float minimalWallDistance = 0.55f;
-        bool moveUpDownThenLeftRight = Mathf.Abs(context.Input.y) > Mathf.Abs(context.Input.x);
+        bool moveUpDownThenLeftRight = Mathf.Abs(context.InputAxis.y) > Mathf.Abs(context.InputAxis.x);
 
         //tries to move up down
         if (moveUpDownThenLeftRight)
         {
-            context.Rigidbody.velocity = new Vector2(directionToWall * context.Values.WallSnapXVelocity * (Distance - minimalWallDistance), context.Input.y * context.Values.WallClimbYvelocity * 0.5f);
+            context.Rigidbody.velocity = new Vector2(directionToWall * context.Values.WallSnapXVelocity * (Distance - minimalWallDistance), context.InputAxis.y * context.Values.WallClimbYvelocity * 0.5f);
         }
         //clamped left right
         else
         {
             bool reachedMax = Distance > 1.375f;
-            float floatClampedX = Mathf.Clamp(context.Input.x, (reachedMax && directionToWall > 0) ? 0 : -1, (reachedMax && directionToWall < 0) ? 0 : 1);
+            float floatClampedX = Mathf.Clamp(context.InputAxis.x, (reachedMax && directionToWall > 0) ? 0 : -1, (reachedMax && directionToWall < 0) ? 0 : 1);
             context.Rigidbody.velocity = new Vector2(floatClampedX * context.Values.WallClimbYvelocity, context.Rigidbody.velocity.y);
         }
 
@@ -281,14 +281,14 @@ public class HangingState : HangingBaseState
             SetState(PlayerState.Wall);
 
         //pulling up
-        if (!IsColliding(CheckType.HangableAboveAir) && context.Input.y > 0.5f && !context.TriesMoveLeftRight)
+        if (!IsColliding(CheckType.HangableAboveAir) && context.InputAxis.y > 0.5f && !context.TriesMoveLeftRight)
         {
             SetState(PlayerState.PullUp);
         }
         else
         {
             CheckType[] checkTypes = new CheckType[] { CheckType.Hangable, CheckType.HangableLeft, CheckType.HangableRight };
-            Vector2 hangPosition = GetClosestHangablePosition(context.PlayerPos + context.Values.HangableOffset, context.Input * Time.deltaTime * 100f, checkTypes);
+            Vector2 hangPosition = GetClosestHangablePosition(context.PlayerPos + context.Values.HangableOffset, context.InputAxis * Time.deltaTime * 100f, checkTypes);
             Vector2 toMoveTo = hangPosition - context.Values.HangableOffset;
 
             Debug.DrawLine(context.PlayerPos, toMoveTo, Color.cyan);
@@ -309,7 +309,7 @@ public class JumpToHangingState : HangingBaseState
         SetCollisionActive(false);
 
         CheckType[] checkTypes = new CheckType[] { CheckType.HangableJumpInLeft, CheckType.HangableJumpInRight };
-        target = GetClosestHangablePosition(context.PlayerPos, context.Input, checkTypes) - context.Values.HangableOffset;
+        target = GetClosestHangablePosition(context.PlayerPos, context.InputAxis, checkTypes) - context.Values.HangableOffset;
     }
 
     public override void Update()

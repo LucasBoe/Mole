@@ -25,7 +25,7 @@ public class Window : MonoBehaviour
 
     private void Update()
     {
-        if (isAbove && Input.GetKeyDown(KeyCode.E))
+        if (isAbove && Input.GetButton("Interact"))
         {
             isAbove = false;
             bool isInside = OutdoorIndoorHandler.Instance.Switch();

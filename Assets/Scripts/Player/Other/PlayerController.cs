@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] PlayerContext context;
 
     bool jumpBlocker = false;
+    IPlayerComponent[] playerComponents;
 
     [SerializeField] PlayerValues playerValues;
 
@@ -36,7 +37,10 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        playerComponents = GetComponentsInChildren<IPlayerComponent>();
+
         context = new PlayerContext();
+        context.Input = new PlayerInput();
         context.Rigidbody = GetComponent<Rigidbody2D>();
         context.PlayerController = this;
         context.Values = playerValues;
@@ -56,7 +60,7 @@ public class PlayerController : MonoBehaviour
         context.CollisionChecks.Add(CheckType.HangableLeft, new CollisionCheck(-0.75f, 1.5f, .5f, 1.25f, LayerMask.GetMask("Hangable"), Color.yellow));
         context.CollisionChecks.Add(CheckType.HangableRight, new CollisionCheck(0.75f, 1.5f, .5f, 1.25f, LayerMask.GetMask("Hangable"), Color.yellow));
         context.CollisionChecks.Add(CheckType.HangableAboveAir, new CollisionCheck(0f, 2.875f, 1f, 2f, LayerMask.GetMask("Default", "Hangable"), Color.yellow));
-        context.CollisionChecks.Add(CheckType.DropDownable, new CollisionCheck(0, -1.5f, 0.5f, 1f, LayerMask.GetMask("Hangable","OneDirectionalFloor"), Color.cyan));
+        context.CollisionChecks.Add(CheckType.DropDownable, new CollisionCheck(0, -1.5f, 0.5f, 1f, LayerMask.GetMask("Hangable", "OneDirectionalFloor"), Color.cyan));
         context.CollisionChecks.Add(CheckType.EdgeHelperLeft, new CollisionCheck(-0.5f, -0.75f, 0.5f, 0.75f, LayerMask.GetMask("Default", "Hangable", "Pushable"), Color.cyan));
         context.CollisionChecks.Add(CheckType.EdgeHelperRight, new CollisionCheck(0.5f, -0.75f, 0.5f, 0.75f, LayerMask.GetMask("Default", "Hangable", "Pushable"), Color.cyan));
 
@@ -85,10 +89,15 @@ public class PlayerController : MonoBehaviour
     {
         context.PlayerPos = transform.position;
         context.IsCollidingToAnyWall = IsColliding(CheckType.WallLeft) || IsColliding(CheckType.WallRight);
-        context.Input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        context.TriesMoveLeftRight = context.Input.x != 0;
-        context.TriesMoveUpDown = context.Input.y != 0f;
+        context.InputAxis = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        context.Input.Back = Input.GetButtonDown("Back");
+        context.TriesMoveLeftRight = context.InputAxis.x != 0;
+        context.TriesMoveUpDown = context.InputAxis.y != 0f;
         context.IsJumping = Input.GetButtonDown("Jump");
+        context.IsInteracting = Input.GetButtonDown("Interact");
+
+        foreach (IPlayerComponent component in playerComponents)
+            component.UpdatePlayerComponent(context);
 
         UpdateState(CurrentState);
     }
