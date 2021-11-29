@@ -13,9 +13,11 @@ public class EnemyViewcone : MonoBehaviour
 
     internal void UpdateBounds(Vector2 eyePosition, float viewConeDistance, float viewConeHeight)
     {
-        Vector2[] points = new Vector2[] { eyePosition + Vector2.right * viewConeDistance + Vector2.up * (viewConeHeight / 2f),
-            eyePosition,
-            eyePosition + Vector2.right * viewConeDistance + Vector2.down * (viewConeHeight / 2f) };
+        transform.localPosition = eyePosition;
+
+        Vector2[] points = new Vector2[] { Vector2.right * viewConeDistance + Vector2.up * (viewConeHeight / 2f),
+            Vector2.zero,
+            Vector2.right * viewConeDistance + Vector2.down * (viewConeHeight / 2f) };
 
         polygonCollider2D.points = points;
         viewConeLines.positionCount = points.Length;

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EnemyBehaviorState
+public enum EnemyStateType
 {
     Routine,
     Alert,
@@ -16,84 +16,67 @@ public class SimpleEnemy : MonoBehaviour
     [SerializeField] Vector2 eyePosition;
     [SerializeField] float viewConeDistance, viewConeHeight;
 
-
-    [SerializeField] SpriteRenderer spriteRenderer;
-    [SerializeField] Sprite passive, active;
-    [SerializeField] GameObject indicator;
-
+    //Modules
+    EnemyAIRoutineModule routineModule;
+    EnemyAIMoveModule moveModule;
+    NoiseListener noiseListenerModule;
     [SerializeField] EnemyViewcone viewconeModule;
-    [SerializeField] EnemyAIRoutineModule routineModule;
-    [SerializeField] EnemyAIMoveModule moveModule;
-    [SerializeField] NoiseListener noiseListenerModule;
 
-    [SerializeField] EnemyBehaviorState Current;
-    EnemyMemory memory;
+    [SerializeField] EnemyStateType Current;
+    EnemyBaseState CurrentState;
+    public System.Action<EnemyStateType> OnStateChange;
+
+    private Dictionary<EnemyStateType, EnemyBaseState> stateDictionary = new Dictionary<EnemyStateType, EnemyBaseState>();
+
+    public EnemyMemory memory;
 
     private void Start()
     {
+        memory = new EnemyMemory();
+        memory.Callback = ReachedTarget;
+
+        routineModule = GetComponent<EnemyAIRoutineModule>();
+        moveModule = GetComponent<EnemyAIMoveModule>();
+        noiseListenerModule = GetComponent<NoiseListener>();
+
         viewconeModule.OnPlayerEntered += AlertMoveTo;
         noiseListenerModule.OnNoise += AlertMoveTo;
-        SetState(EnemyBehaviorState.Routine);
+
+        stateDictionary.Add(EnemyStateType.Routine, new EnemyRoutineState(routineModule));
+        stateDictionary.Add(EnemyStateType.Alert, new EnemyAlertState(moveModule, memory, this));
+
+        SetState(EnemyStateType.Routine);
     }
 
-    private void SetState(EnemyBehaviorState behaviorState)
+    private void SetState(EnemyStateType behaviorState)
     {
-        if (Current == EnemyBehaviorState.Routine)
-            routineModule.StopRoutine();
-        else
-            StopAllCoroutines();
-
-        SetIndicatorActive(false);
+        stateDictionary[Current].Exit();
 
         Current = behaviorState;
+        OnStateChange?.Invoke(Current);
 
-        switch (Current)
-        {
-            case EnemyBehaviorState.Routine:
-                routineModule.StartRoutine();
-                break;
-
-            case EnemyBehaviorState.Alert:
-                StartCoroutine(AlertRoutine());
-                moveModule.MoveTo(memory.target, ReachedTarget);
-                break;
-        }
+        stateDictionary[behaviorState].Enter();
     }
 
     public void AlertMoveTo(Vector2 pos)
     {
-        memory.target = pos;
-        SetState(EnemyBehaviorState.Alert);
+        memory.Target = pos;
+        SetState(EnemyStateType.Alert);
     }
 
     public void ReachedTarget ()
     {
-        SetState(EnemyBehaviorState.Routine);
+        SetState(EnemyStateType.Routine);
     }
 
-
-    private IEnumerator AlertRoutine()
-    {
-        bool _switch = true;
-        while (true)
-        {
-            SetIndicatorActive(_switch);
-            _switch = !_switch;
-            yield return new WaitForSeconds(0.5f);
-        }
-    }
     internal void UpdateViewcone()
     {
         viewconeModule.UpdateBounds(eyePosition, viewConeDistance, viewConeHeight);
     }
-    private void SetIndicatorActive(bool act)
-    {
-        spriteRenderer.sprite = act ? active : passive;
-        indicator.SetActive(act);
-    }
 }
 
-public struct EnemyMemory
+public class EnemyMemory
 {
-    public Vector2 target;
+    public Vector2 Target;
+    public System.Action Callback;
 }
