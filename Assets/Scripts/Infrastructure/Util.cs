@@ -14,7 +14,7 @@ public static class Util
         float ABAPproduct = Vector2.Dot(AP, AB);    //The DOT product of a_to_p and a_to_b     
         float distance = ABAPproduct / magnitudeAB; //The normalized "distance" from a to your closest point  
 
-        if (distance < 0)     //Check if P projection is over vectorAB     
+        if (distance < 0)     //Check if point projection is over vectorAB     
         {
             return lineStart;
 
@@ -29,7 +29,58 @@ public static class Util
         }
     }
 
-    internal static void GizmoDrawArrowLine(Vector2 fromPos, Vector2 toPos)
+    public static bool CheckLineOfSight(Vector2 from, Vector2 to, string layer)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(from, (to - from).normalized, Vector2.Distance(from, to), LayerMask.GetMask(layer));
+        if (hit == true)
+        {
+            Debug.DrawLine(from, hit.point, Color.yellow, 5f);
+            Debug.DrawLine(hit.point, to, Color.red, 5f);
+            DebugDrawCross(hit.point, Color.red, 0.5f, 5f);
+            return false;
+        }
+        else
+        {
+            Debug.DrawLine(from, to, Color.green, 5f);
+        }
+
+        return true;
+    }
+    public static void DebugDrawCircle(Vector3 position, Color color, float size, int segmentLength = 15, float lifetime = -1f)
+    {
+        Vector3 lastPosition = Vector3.zero;
+
+        for (int i = 0; i <= 360; i += segmentLength)
+        {
+            Vector2 positionXY = new Vector2(Mathf.Sin(i * Mathf.Deg2Rad), Mathf.Cos(i * Mathf.Deg2Rad));
+            Vector3 positionxyz = new Vector3(position.x + positionXY.x * size, position.y, position.z + positionXY.y * size);
+
+            if (lastPosition != Vector3.zero)
+            {
+                if (lifetime < 0)
+                    Debug.DrawLine(lastPosition, positionxyz, color);
+                else
+                    Debug.DrawLine(lastPosition, positionxyz, color, lifetime);
+            }
+
+            lastPosition = positionxyz;
+        }
+    }
+
+    public static void DebugDrawCross(Vector2 position, Color color, float size, float lifetime = -1f)
+    {
+        if (lifetime < 0)
+        {
+            Debug.DrawLine(position + new Vector2(size / 2, size / 2), position + new Vector2(-size / 2, -size / 2), color);
+            Debug.DrawLine(position + new Vector2(-size / 2, size / 2), position + new Vector2(size / 2, -size / 2), color);
+        } else
+        {
+            Debug.DrawLine(position + new Vector2(size / 2, size / 2), position + new Vector2(-size / 2, -size / 2), color, lifetime);
+            Debug.DrawLine(position + new Vector2(-size / 2, size / 2), position + new Vector2(size / 2, -size / 2), color, lifetime);
+        }
+    }
+
+    public static void GizmoDrawArrowLine(Vector2 fromPos, Vector2 toPos)
     {
         float distance = Vector2.Distance(fromPos, toPos);
         Vector2 forward = (toPos - fromPos).normalized * 0.25f;
