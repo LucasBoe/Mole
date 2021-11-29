@@ -105,6 +105,41 @@ public static class Util
 
     }
 
+    public static float GetLongestAxis(this Vector3 vector3)
+    {
+        float absX = Mathf.Abs(vector3.x);
+        float absY = Mathf.Abs(vector3.y);
+        float absZ = Mathf.Abs(vector3.z);
+
+        if (absX > absY && absX > absZ)
+        {
+            return vector3.x;
+        }
+        else if (absY > absX && absY > absZ)
+        {
+            return vector3.y;
+        }
+        else
+        {
+            return vector3.z;
+        }
+    }
+
+    public static float GetLongestAxis(this Vector2 vector3)
+    {
+        float absX = Mathf.Abs(vector3.x);
+        float absY = Mathf.Abs(vector3.y);
+
+        if (absX > absY)
+        {
+            return vector3.x;
+        }
+        else
+        {
+            return vector3.y;
+        }
+    }
+
     public static Vector3[] ToVector3Array(this Vector2[] v2s)
     {
         List<Vector3> v3s = new List<Vector3>();

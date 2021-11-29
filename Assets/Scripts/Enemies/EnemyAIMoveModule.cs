@@ -19,6 +19,8 @@ public class EnemyAIMoveModule : MonoBehaviour
     System.Action targetReachedCallback;
     Rigidbody2D rigidbody2D;
 
+    public bool isMoving;
+
     private void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
@@ -37,12 +39,14 @@ public class EnemyAIMoveModule : MonoBehaviour
     {
         moveTarget = position;
         targetReachedCallback = callback;
+        isMoving = true;
     }
     private void StopMoving()
     {
         targetReachedCallback?.Invoke();
         moveTarget = Vector2.zero;
         targetReachedCallback = null;
+        isMoving = false;
     }
 
 
@@ -54,13 +58,14 @@ public class EnemyAIMoveModule : MonoBehaviour
         foreach (CollisionCheck cc in collisionChecks)
             cc.Update(transform);
 
+
         Vector2 dir = (moveTarget - (Vector2)transform.position).normalized;
         rigidbody2D.AddForce((dir.x > 0 ? Vector2.right : Vector2.left) * 4000f * Time.deltaTime);
 
         if ((dir.x > 0 && jumpHelperRight.IsDetecting) || (dir.x < 0 && jumpHelperLeft.IsDetecting))
             rigidbody2D.AddForce(Vector2.up, ForceMode2D.Impulse);
 
-        if (Vector2.Distance(transform.position, moveTarget) < 1f)
+        if (Mathf.Abs(transform.position.x - moveTarget.x) < 0.1f)
             StopMoving();
     }
 

@@ -8,12 +8,8 @@ public class EnemyViewcone : MonoBehaviour
     [SerializeField] LineRenderer viewConeLines;
     [SerializeField] PolygonCollider2D polygonCollider2D;
 
-    IEnemy enemy;
+    public System.Action<Vector2> OnPlayerEntered;
 
-    private void OnEnable()
-    {
-        enemy = GetComponentInParent<IEnemy>();
-    }
 
     internal void UpdateBounds(Vector2 eyePosition, float viewConeDistance, float viewConeHeight)
     {
@@ -29,6 +25,6 @@ public class EnemyViewcone : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.IsPlayer())
-            enemy.PlayerEnteredViewcone(collision);
+            OnPlayerEntered?.Invoke(collision.transform.position);
     }
 }

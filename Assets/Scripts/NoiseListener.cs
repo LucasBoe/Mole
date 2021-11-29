@@ -7,7 +7,7 @@ public class NoiseListener : MonoBehaviour
     [SerializeField] float radius = 10f;
     [SerializeField] float volumeThreshold = 0f;
 
-    System.Action<Vector2> OnNoise;
+    public System.Action<Vector2> OnNoise;
     private void OnNoiseReceive(Vector2 position, float volume)
     {
         if (Vector2.Distance(transform.position, position) > radius)

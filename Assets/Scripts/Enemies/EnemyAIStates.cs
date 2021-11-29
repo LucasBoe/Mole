@@ -21,17 +21,19 @@ public class EnemyAIRoutineState
     public float Speed;
     public float Duration;
     private float waitTimer;
-    public void Enter()
+    public void Enter(EnemyAIMoveModule moveModule)
     {
         waitTimer = 0f;
+        if (Type == AIStateType.GoTo)
+            moveModule.MoveTo(WorldPos, null);
     }
 
-    public bool Update(EnemyAIRoutineModule enemyAIBehaviour)
+    public bool Update(EnemyAIRoutineModule enemyAIBehaviour, EnemyAIMoveModule moveModule)
     {
         switch (Type)
         {
             case AIStateType.GoTo:
-                return enemyAIBehaviour.MoveTowards(WorldPos, Speed);
+                return !moveModule.isMoving;
 
             case AIStateType.Look:
                 return enemyAIBehaviour.Look(Right ? Vector2.right : Vector2.left);
@@ -84,7 +86,7 @@ public class EnemyAIRoutineStateDrawer : PropertyDrawer
         switch (type)
         {
             case AIStateType.GoTo:
-                if (name == "Pos" || name == "Speed")
+                if (name == "Pos" || name == "Speed" || name == "WorldPos")
                     return true;
                 break;
 

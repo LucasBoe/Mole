@@ -7,8 +7,12 @@ public class EnemyAIRoutineModule : MonoBehaviour
 {
     public List<EnemyAIRoutineState> EnemyAIStates = new List<EnemyAIRoutineState>();
 
+    EnemyAIMoveModule moveModule;
+
     private void OnEnable()
     {
+        moveModule = GetComponent<EnemyAIMoveModule>();
+
         foreach (EnemyAIRoutineState state in EnemyAIStates)
         {
             if (state.Type == AIStateType.GoTo)
@@ -33,8 +37,8 @@ public class EnemyAIRoutineModule : MonoBehaviour
         int stateIndex = 0;
         while (true)
         {
-            EnemyAIStates[stateIndex].Enter();
-            while (!EnemyAIStates[stateIndex].Update(this))
+            EnemyAIStates[stateIndex].Enter(moveModule);
+            while (!EnemyAIStates[stateIndex].Update(this, moveModule))
             {
                 yield return null;
             }
