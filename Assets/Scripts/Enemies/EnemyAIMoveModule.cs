@@ -15,6 +15,7 @@ public class EnemyAIMoveModule : MonoBehaviour
 
     List<CollisionCheck> collisionChecks = new List<CollisionCheck>();
 
+    Transform followTarget;
     Vector2 moveTarget;
     System.Action targetReachedCallback;
     Rigidbody2D rigidbody2D;
@@ -35,15 +36,28 @@ public class EnemyAIMoveModule : MonoBehaviour
         collisionChecks.Add(ground);
     }
 
+    internal void FollowTransform(Transform targetTransform, Action callback)
+    {
+        followTarget = targetTransform;
+        targetReachedCallback = callback;
+        isMoving = true;
+        float xDir = Mathf.Sign(moveTarget.x - transform.position.x);
+        transform.localScale = new Vector3(xDir, transform.localScale.y, transform.localScale.z);
+    }
+
     public void MoveTo(Vector2 position, System.Action callback)
     {
+
         moveTarget = position;
         targetReachedCallback = callback;
         isMoving = true;
+        float xDir = Mathf.Sign(moveTarget.x - transform.position.x);
+        transform.localScale = new Vector3(xDir, transform.localScale.y, transform.localScale.z);
     }
-    private void StopMoving()
+    public void StopMoving()
     {
         targetReachedCallback?.Invoke();
+        followTarget = null;
         moveTarget = Vector2.zero;
         targetReachedCallback = null;
         isMoving = false;
@@ -58,6 +72,8 @@ public class EnemyAIMoveModule : MonoBehaviour
         foreach (CollisionCheck cc in collisionChecks)
             cc.Update(transform);
 
+        if (followTarget != null)
+            moveTarget = followTarget.position;
 
         Vector2 dir = (moveTarget - (Vector2)transform.position).normalized;
         rigidbody2D.AddForce((dir.x > 0 ? Vector2.right : Vector2.left) * 4000f * Time.deltaTime);

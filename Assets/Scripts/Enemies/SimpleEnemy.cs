@@ -9,6 +9,7 @@ public enum EnemyStateType
     Alert,
     Return,
     Attack,
+    CheckEnvironment,
 }
 
 public class SimpleEnemy : MonoBehaviour
@@ -39,14 +40,17 @@ public class SimpleEnemy : MonoBehaviour
         moveModule = GetComponent<EnemyAIMoveModule>();
         noiseListenerModule = GetComponent<NoiseListener>();
 
-        viewconeModule.OnPlayerEntered += AlertMoveTo;
+        viewconeModule.OnPlayerEnter += AlertFollow;
+        viewconeModule.OnPlayerExit += AlertStopFollow;
         noiseListenerModule.OnNoise += AlertMoveTo;
 
         stateDictionary.Add(EnemyStateType.Routine, new EnemyRoutineState(routineModule));
         stateDictionary.Add(EnemyStateType.Alert, new EnemyAlertState(moveModule, memory, this));
+        stateDictionary.Add(EnemyStateType.CheckEnvironment, new EnemyLookAroundState(memory, viewconeModule, this));
 
         SetState(EnemyStateType.Routine);
     }
+
 
     private void SetState(EnemyStateType behaviorState)
     {
@@ -60,13 +64,27 @@ public class SimpleEnemy : MonoBehaviour
 
     public void AlertMoveTo(Vector2 pos)
     {
-        memory.Target = pos;
+        memory.SetTarget(pos);
+        memory.FollowupState = EnemyStateType.CheckEnvironment;
         SetState(EnemyStateType.Alert);
     }
 
-    public void ReachedTarget ()
+    public void AlertFollow(Transform trans)
     {
-        SetState(EnemyStateType.Routine);
+        memory.SetTarget(trans);
+        memory.FollowupState = EnemyStateType.CheckEnvironment;
+        SetState(EnemyStateType.Alert);
+    }
+    private void AlertStopFollow(Vector2 lastFollowPos)
+    {
+        memory.SetTarget(lastFollowPos);
+        SetState(EnemyStateType.CheckEnvironment);
+    }
+
+    public void ReachedTarget()
+    {
+        SetState(memory.FollowupState);
+        memory.FollowupState = EnemyStateType.Routine;
     }
 
     internal void UpdateViewcone()
@@ -77,6 +95,29 @@ public class SimpleEnemy : MonoBehaviour
 
 public class EnemyMemory
 {
-    public Vector2 Target;
+    public EnemyMemoryTargetType TargetType;
+    public Transform TargetTransform;
+    public Vector2 TargetPos;
+    public bool TargetIsTransform => TargetType == EnemyMemoryTargetType.Tranform;
     public System.Action Callback;
+    public EnemyStateType FollowupState;
+
+
+    public void SetTarget (Transform target)
+    {
+        TargetType = EnemyMemoryTargetType.Tranform;
+        TargetTransform = target;
+    }
+
+    public void SetTarget(Vector2 target)
+    {
+        TargetType = EnemyMemoryTargetType.Vector2;
+        TargetPos = target;
+    }
+
+    public enum EnemyMemoryTargetType
+    {
+        Tranform,
+        Vector2,
+    }
 }

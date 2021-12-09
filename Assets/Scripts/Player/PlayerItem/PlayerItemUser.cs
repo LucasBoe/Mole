@@ -51,7 +51,7 @@ public class PlayerItemUser : MonoBehaviour, IPlayerComponent
     {
         aimLine = gameObject.AddComponent<LineRenderer>();
         aimLine.useWorldSpace = true;
-        aimLine.widthCurve = AnimationCurve.Constant(0, 1, 0.2f);
+        aimLine.widthCurve = AnimationCurve.Constant(0, 1, 0.125f);
     }
     private void AimUpdate(PlayerContext context)
     {

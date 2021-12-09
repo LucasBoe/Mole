@@ -11,7 +11,7 @@ public class EnemyBaseState
 public class EnemyRoutineState : EnemyBaseState
 {
     EnemyAIRoutineModule routineModule;
-    public EnemyRoutineState (EnemyAIRoutineModule module)
+    public EnemyRoutineState(EnemyAIRoutineModule module)
     {
         routineModule = module;
     }
@@ -42,6 +42,36 @@ public class EnemyAlertState : EnemyBaseState
 
     public override void Enter()
     {
-        moveModule.MoveTo(memoryModule.Target, memoryModule.Callback);
+        if (memoryModule.TargetIsTransform)
+            moveModule.FollowTransform(memoryModule.TargetTransform, memoryModule.Callback);
+        else
+            moveModule.MoveTo(memoryModule.TargetPos, memoryModule.Callback);
+    }
+}
+public class EnemyLookAroundState : EnemyBaseState
+{
+    EnemyMemory memoryModule;
+    EnemyViewcone viewconeModule;
+    SimpleEnemy stateMachine;
+
+    public EnemyLookAroundState(EnemyMemory memory, EnemyViewcone viewcone, SimpleEnemy stateMachine)
+    {
+        memoryModule = memory;
+        viewconeModule = viewcone;
+        this.stateMachine = stateMachine;
+    }
+
+    public override void Enter()
+    {
+        Vector2 target = memoryModule.TargetIsTransform ? (Vector2)memoryModule.TargetTransform.position : memoryModule.TargetPos;
+        float xDir = Mathf.Sign(target.x - stateMachine.transform.position.x);
+        stateMachine.transform.localScale = new Vector3(xDir, stateMachine.transform.localScale.y, stateMachine.transform.localScale.z);
+
+        viewconeModule.LookTo(memoryModule.TargetPos, andBack: true, Callback);
+    }
+
+    public void Callback()
+    {
+        stateMachine.ReachedTarget();
     }
 }

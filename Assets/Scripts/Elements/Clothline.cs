@@ -7,7 +7,7 @@ public class Clothline : MonoBehaviour
 {
     [SerializeField] HingeJoint2D start, end;
     [SerializeField] HingeJoint2D lineElementPrefab;
-    [SerializeField] PixelLineRenderer lineRenderer;
+    [SerializeField] LineRenderer lineRenderer;
 
     Transform[] elements;
 
@@ -47,16 +47,15 @@ public class Clothline : MonoBehaviour
 
     private void Update()
     {
+        lineRenderer.positionCount = elements.Length;
         if (elements != null && lineRenderer != null)
         {
-            Debug.Log(elements != null);
-
             Vector3[] pos = new Vector3[elements.Length];
 
             for (int i = 0; i < elements.Length; i++)
                 pos[i] = elements[i].position;
 
-            lineRenderer.Line.Points = pos;
+            lineRenderer.SetPositions(pos);
         }
     }
 
