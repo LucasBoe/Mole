@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: PlayerValues
   m_EditorClassIdentifier: 
   walkXvelocity: 9
+  crouchXvelocity: 5
   StraveXVelocity: 10
   WallClimbYvelocity: 6
   EdgeHelperUpwardsImpulse: 2

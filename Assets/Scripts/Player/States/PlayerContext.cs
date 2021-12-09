@@ -23,5 +23,5 @@ public class PlayerInput
     public bool Jump;
     public bool Interact;
     public bool Use;
-
+    public bool Sprint;
 }

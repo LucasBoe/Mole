@@ -25,7 +25,6 @@ public class MoveBaseState : PlayerStateBase
 }
 
 
-//Move States (Idle, Walk, Jump, Fall)
 public class IdleState : MoveBaseState
 {
     public bool IsAtWall;
@@ -68,14 +67,17 @@ public class IdleState : MoveBaseState
 }
 public class WalkState : MoveBaseState
 {
+    public bool IsSprinting;
+
     public WalkState(PlayerContext playerContext) : base(playerContext) { }
     public override void Update()
     {
         base.Update();
 
+        IsSprinting = context.Input.Sprint;
         float xInput = context.Input.Axis.x;
 
-        context.Rigidbody.velocity = new Vector2(xInput * context.Values.walkXvelocity, context.Rigidbody.velocity.y);
+        context.Rigidbody.velocity = new Vector2(xInput * (IsSprinting ? context.Values.walkXvelocity : context.Values.crouchXvelocity), context.Rigidbody.velocity.y);
 
         if (xInput == 0 || triesMovingIntoWall)
             SetState(PlayerState.Idle);

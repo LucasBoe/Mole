@@ -60,6 +60,7 @@ public class PlayerController : MonoBehaviour
         context.Input.Jump = Input.GetButtonDown("Jump");
         context.Input.Interact = Input.GetButtonDown("Interact");
         context.Input.Use = Input.GetButtonDown("Use");
+        context.Input.Sprint = Input.GetKey(KeyCode.LeftShift);
 
         context.PlayerPos = transform.position;
         context.IsCollidingToAnyWall = IsColliding(CheckType.WallLeft) || IsColliding(CheckType.WallRight);

@@ -316,8 +316,6 @@ MonoBehaviour:
       AnimationClip: {fileID: 7400000, guid: 4ac335baa950df04abb496bce6e9f79e, type: 2}
     - MoveState: 7
       AnimationClip: {fileID: 7400000, guid: 74989ddfd9cf47940bcb2e90fd52d01d, type: 2}
-    - MoveState: 8
-      AnimationClip: {fileID: 7400000, guid: 9883227c547328446b4a1edecb1850ef, type: 2}
     - MoveState: 9
       AnimationClip: {fileID: 7400000, guid: 3601cfa8b7b5afe40b4bdd04a21aa6b6, type: 2}
     - MoveState: 10
@@ -331,6 +329,8 @@ MonoBehaviour:
       ParamAnimation: {fileID: 11400000, guid: c12ad59d003d60041be1ee949107159c, type: 2}
     - ClimbState: 12
       ParamAnimation: {fileID: 11400000, guid: 7df0d3a36875589468a9cb466a16cfd5, type: 2}
+    - ClimbState: 8
+      ParamAnimation: {fileID: 11400000, guid: bbb05537a851a8744a9b2af5a0bd73a3, type: 2}
 --- !u!212 &5582010506033126746
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -634,7 +634,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9031940380163258740}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.062, y: 0.436, z: 0}
+  m_LocalPosition: {x: 0.062, y: 0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2902717534882602906}
