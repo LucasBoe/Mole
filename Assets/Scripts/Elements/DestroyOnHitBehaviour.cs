@@ -21,7 +21,7 @@ public class DestroyOnHitBehaviour : MonoBehaviour
     private void DestroyAndReplace()
     {
         if (prefab != null)
-            Instantiate(prefab, transform.position, Quaternion.identity);
+            Destroy(Instantiate(prefab, transform.position, Quaternion.identity), 10);
 
         Destroy(gameObject);
     }
