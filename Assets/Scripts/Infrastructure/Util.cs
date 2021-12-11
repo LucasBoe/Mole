@@ -158,6 +158,12 @@ public static class Util
         return v3s.ToArray();
     }
 
+    public static Quaternion ToRotation (this Vector2 dir)
+    {
+        float angle = Vector2.Angle(dir.normalized, Vector2.right);
+        return Quaternion.Euler(0, 0, angle);
+    }
+
     public static bool IsPlayer(this Collider2D collision)
     {
         return collision.CompareTag("Player");

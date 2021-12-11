@@ -28,12 +28,10 @@ public class PlayerInput
     public bool Sprint;
 
     public Vector3 VirtualCursorToScreenCenter => (VirtualCursor - new Vector2(Screen.width / 2, Screen.height / 2)) / new Vector2(Screen.width, Screen.height).InvertY();
+    public Vector3 VirtualCursorToWorldPos => CameraController.ScreenToWorldPoint(VirtualCursor);
 
     internal Vector2 VirtualCursorToDir(Vector2 position)
     {
-        Vector2 cursorToWorld = CameraController.ScreenToWorldPoint(VirtualCursor);
-        Debug.DrawLine(position, cursorToWorld);
-
-        return (cursorToWorld - position).normalized;
+        return ((Vector2)VirtualCursorToWorldPos - position).normalized;
     }
 }

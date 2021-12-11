@@ -12,6 +12,7 @@ public enum ItemUserState
 public class PlayerItemUser : MonoBehaviour, IPlayerComponent
 {
     [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] Material lineRendererMat;
     PlayerItem inHand;
     ItemUserState userState;
 
@@ -52,15 +53,28 @@ public class PlayerItemUser : MonoBehaviour, IPlayerComponent
         aimLine = gameObject.AddComponent<LineRenderer>();
         aimLine.useWorldSpace = true;
         aimLine.widthCurve = AnimationCurve.Constant(0, 1, 0.125f);
+        aimLine.material = lineRendererMat;
     }
     private void AimUpdate(PlayerContext context)
     {
-        if (context.Input.Interact && inHand.AimInteract(context ,this))
-            SetItemInHand(null, drop: false);
+        if (context.Input.Interact)
+        {
+            PlayerItemUseResult useResult = inHand.AimInteract(context, this);
+
+            switch (useResult.ResultType)
+            {
+                case PlayerItemUseResult.Type.Destroy:
+                    SetItemInHand(null, drop: false);
+                    break;
+
+                case PlayerItemUseResult.Type.Function:
+                    useResult.ResultFunction?.Invoke();
+                    break;
+            }
+        }
 
         if (aimLine != null && inHand)
             inHand.AimUpdate(this, context, aimLine);
-
     }
     private void AimExit()
     {

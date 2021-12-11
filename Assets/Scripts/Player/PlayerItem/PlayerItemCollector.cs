@@ -44,5 +44,4 @@ public class PlayerItemCollector : MonoBehaviour, IPlayerComponent
             Destroy(item.gameObject);
         }
     }
-
 }

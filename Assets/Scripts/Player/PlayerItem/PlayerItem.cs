@@ -8,35 +8,41 @@ public class PlayerItem : ScriptableObject
     public Sprite Sprite;
     public CollectablePlayerItem Prefab;
     public bool IsUseable;
-    public float Force = 2;
 
-    internal void AimUpdate(PlayerItemUser playerItemUser, PlayerContext context, LineRenderer aimLine)
+    public virtual void AimUpdate(PlayerItemUser playerItemUser, PlayerContext context, LineRenderer aimLine) { }
+
+    public virtual PlayerItemUseResult AimInteract(PlayerContext context, PlayerItemUser playerItemUser)
     {
-        Vector2 origin = (Vector2)aimLine.transform.position + Vector2.up;
-        Vector2 dir = context.Input.VirtualCursorToDir(playerItemUser.transform.position);
+        return new PlayerItemUseResult();
+    }
+}
 
-        int visualizationPointCount = 100;
-        float divisor = 10f;
+public class PlayerItemUseResult
+{
+    public Type ResultType;
+    public Action ResultFunction;
 
-        Vector2[] points = new Vector2[visualizationPointCount];
-
-        for (int i = 0; i < visualizationPointCount; i++)
-        {
-            Vector2 point = origin + (dir * Force * i/ divisor + Vector2.down * Mathf.Pow(0.5f * 0.981f * i / divisor, 2));
-            points[i] = point;
-        }
-
-        aimLine.positionCount = visualizationPointCount;
-        aimLine.SetPositions(points.ToVector3Array());
+    public PlayerItemUseResult ()
+    {
+        ResultType = Type.Fail;
     }
 
-    internal bool AimInteract(PlayerContext context, PlayerItemUser playerItemUser)
+    public PlayerItemUseResult(Type type)
     {
-        Debug.LogWarning("Throw!");
+        ResultType = type;
+    }
 
-        var playerPos = playerItemUser.transform.position;
-        CollectablePlayerItem item = Instantiate(Prefab, playerPos + Vector3.up, Quaternion.identity);
-        item.GetComponent<Rigidbody2D>().velocity = (context.Input.VirtualCursorToDir(playerPos) * Force * 5f);
-        return true;
+    public PlayerItemUseResult(Action resultFunction)
+    {
+        ResultType = Type.Function;
+        ResultFunction = resultFunction;
+    }
+
+    public enum Type
+    {
+        None,
+        Fail,
+        Destroy,
+        Function,
     }
 }
