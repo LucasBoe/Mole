@@ -125,18 +125,23 @@ public static class Util
         }
     }
 
-    public static float GetLongestAxis(this Vector2 vector3)
+    public static Vector2 Clamp(this Vector2 vector2, Vector2 min, Vector2 max)
     {
-        float absX = Mathf.Abs(vector3.x);
-        float absY = Mathf.Abs(vector3.y);
+        return new Vector2(Mathf.Clamp(vector2.x, min.x, max.x), Mathf.Clamp(vector2.y, min.y, max.y));
+    }
+
+    public static float GetLongestAxis(this Vector2 vector2)
+    {
+        float absX = Mathf.Abs(vector2.x);
+        float absY = Mathf.Abs(vector2.y);
 
         if (absX > absY)
         {
-            return vector3.x;
+            return vector2.x;
         }
         else
         {
-            return vector3.y;
+            return vector2.y;
         }
     }
 

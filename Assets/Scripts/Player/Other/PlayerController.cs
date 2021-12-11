@@ -1,4 +1,5 @@
 using PlayerCollisionCheckType;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -55,7 +56,15 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Stick 1 / WASD
         context.Input.Axis = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+
+        //Stick 2 / Mouse
+        if (new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0)
+            context.Input.VirtualCursor = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
+        else
+            context.Input.VirtualCursor = ModifyVirtualCursor(context.Input.VirtualCursor, new Vector2(Input.GetAxis("StickRight X"), Input.GetAxis("StickRight Y")));
+
         context.Input.Back = Input.GetButtonDown("Back");
         context.Input.Jump = Input.GetButtonDown("Jump");
         context.Input.Interact = Input.GetButtonDown("Interact");
@@ -70,6 +79,11 @@ public class PlayerController : MonoBehaviour
         foreach (IPlayerComponent component in playerComponents)
             component.UpdatePlayerComponent(context);
 
+    }
+
+    private Vector2 ModifyVirtualCursor(Vector2 before, Vector2 mouseAxis)
+    {
+        return (before + mouseAxis * 10).Clamp(Vector2.zero, new Vector2(Screen.width, Screen.height));
     }
 
     private void FixedUpdate()
@@ -95,6 +109,11 @@ public class PlayerController : MonoBehaviour
 
         Gizmos.color = Color.magenta;
         Gizmos.DrawWireSphere((Vector2)transform.position + playerValues.HangableOffset, 0.25f);
+    }
+
+    private void OnGUI()
+    {
+        GUI.Box(new Rect(context.Input.VirtualCursor.x, context.Input.VirtualCursor.y, 10, 10), "");
     }
 }
 

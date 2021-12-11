@@ -19,9 +19,11 @@ public class PlayerContext
 public class PlayerInput
 {
     public Vector2 Axis;
+    public Vector2 VirtualCursor;
     public bool Back;
     public bool Jump;
     public bool Interact;
     public bool Use;
     public bool Sprint;
+
 }
