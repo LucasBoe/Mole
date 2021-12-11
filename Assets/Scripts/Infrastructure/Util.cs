@@ -145,6 +145,11 @@ public static class Util
         }
     }
 
+    public static Vector2 InvertY(this Vector2 vector2)
+    {
+        return new Vector2(vector2.x, -vector2.y);
+    }
+
     public static Vector3[] ToVector3Array(this Vector2[] v2s)
     {
         List<Vector3> v3s = new List<Vector3>();

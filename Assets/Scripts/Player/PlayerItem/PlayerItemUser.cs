@@ -59,7 +59,7 @@ public class PlayerItemUser : MonoBehaviour, IPlayerComponent
             SetItemInHand(null, drop: false);
 
         if (aimLine != null && inHand)
-            inHand.AimUpdate(context, aimLine);
+            inHand.AimUpdate(this, context, aimLine);
 
     }
     private void AimExit()

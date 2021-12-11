@@ -10,10 +10,10 @@ public class PlayerItem : ScriptableObject
     public bool IsUseable;
     public float Force = 2;
 
-    internal void AimUpdate(PlayerContext context, LineRenderer aimLine)
+    internal void AimUpdate(PlayerItemUser playerItemUser, PlayerContext context, LineRenderer aimLine)
     {
         Vector2 origin = (Vector2)aimLine.transform.position + Vector2.up;
-        Vector2 dir = context.Input.Axis;
+        Vector2 dir = context.Input.VirtualCursorToDir(playerItemUser.transform.position);
 
         int visualizationPointCount = 100;
         float divisor = 10f;
@@ -28,14 +28,15 @@ public class PlayerItem : ScriptableObject
 
         aimLine.positionCount = visualizationPointCount;
         aimLine.SetPositions(points.ToVector3Array());
-        context.Input.Axis = Vector2.zero;
     }
 
     internal bool AimInteract(PlayerContext context, PlayerItemUser playerItemUser)
     {
         Debug.LogWarning("Throw!");
-        CollectablePlayerItem item = Instantiate(Prefab, playerItemUser.transform.position + Vector3.up, Quaternion.identity);
-        item.GetComponent<Rigidbody2D>().velocity = (context.Input.Axis * Force * 5f);
+
+        var playerPos = playerItemUser.transform.position;
+        CollectablePlayerItem item = Instantiate(Prefab, playerPos + Vector3.up, Quaternion.identity);
+        item.GetComponent<Rigidbody2D>().velocity = (context.Input.VirtualCursorToDir(playerPos) * Force * 5f);
         return true;
     }
 }
