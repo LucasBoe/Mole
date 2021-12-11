@@ -21,8 +21,10 @@ public class CrossbowItem : PlayerItem
     public override PlayerItemUseResult AimInteract(PlayerContext context, PlayerItemUser playerItemUser)
     {
         var playerPos = playerItemUser.transform.position;
+        var dir = context.Input.VirtualCursorToDir(playerPos);
         GameObject instance = Instantiate(ProjectilePrefab, playerPos + Vector3.up, Quaternion.identity);
-        instance.GetComponent<Rigidbody2D>().velocity = (context.Input.VirtualCursorToDir(playerPos) * ProjectileForce);
+        instance.transform.right = dir;
+        instance.GetComponent<Rigidbody2D>().velocity = (dir * ProjectileForce);
 
         return new PlayerItemUseResult(PlayerItemUseResult.Type.None);
     }

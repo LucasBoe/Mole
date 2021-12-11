@@ -15,5 +15,5 @@ MonoBehaviour:
   Sprite: {fileID: 21300000, guid: 8731e56bcd2ca6f4cbb8c630a43cc94b, type: 3}
   Prefab: {fileID: 0}
   IsUseable: 1
-  ProjectilePrefab: {fileID: 5322391908145038696, guid: 9188a09b2f626c547b0d810c54fd390f, type: 3}
-  ProjectileForce: 50
+  ProjectilePrefab: {fileID: 7406866824899919524, guid: 9904e4e868e04d744aa824d60ce216ff, type: 3}
+  ProjectileForce: 25
