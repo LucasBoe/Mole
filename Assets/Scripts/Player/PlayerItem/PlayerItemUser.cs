@@ -18,6 +18,7 @@ public class PlayerItemUser : MonoBehaviour, IPlayerComponent
 
     LineRenderer aimLine;
 
+    public bool IsAiming => userState == ItemUserState.Aim;
     public int UpdatePrio => 100;
 
     public void Init(PlayerContext context) { }
@@ -102,7 +103,7 @@ public class PlayerItemUser : MonoBehaviour, IPlayerComponent
     {
         if (inHand != null)
         {
-            if (drop)
+            if (drop && inHand.Prefab != null)
                 Instantiate(inHand.Prefab, transform.position, Quaternion.identity);
             SetUserState(ItemUserState.Idle);
         }

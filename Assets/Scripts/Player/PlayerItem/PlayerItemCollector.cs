@@ -14,7 +14,7 @@ public class PlayerItemCollector : MonoBehaviour, IPlayerComponent
 {
     [SerializeField] PlayerItemUser itemUser;
 
-    CollectablePlayerItem item;
+    List<CollectablePlayerItem> items = new List<CollectablePlayerItem>();
 
     public int UpdatePrio => 100;
 
@@ -26,22 +26,26 @@ public class PlayerItemCollector : MonoBehaviour, IPlayerComponent
     {
         CollectablePlayerItem c = collision.GetComponent<CollectablePlayerItem>();
         if (c != null)
-            item = c;
+            items.Add(c);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         CollectablePlayerItem c = collision.GetComponent<CollectablePlayerItem>();
-        if (c != null && c == item)
-            item = null;
+        if (c != null && items.Contains(c))
+            items.Remove(c);
     }
 
     public void UpdatePlayerComponent(PlayerContext context)
     {
-        //use jump input as collection action
-        if (context.Input.Interact && item && itemUser.TryOverrideActiveItem(item.Item))
+        if (context.Input.Interact && !itemUser.IsAiming && items.Count > 0)
         {
-            Destroy(item.gameObject);
+            CollectablePlayerItem firstItemInList = items[0];
+            if (itemUser.TryOverrideActiveItem(firstItemInList.Item))
+            {
+                items.RemoveAt(0);
+                Destroy(firstItemInList.gameObject);
+            }
         }
     }
 }
