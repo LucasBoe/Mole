@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
         playerComponents = playerComponents.OrderBy(c => -c.UpdatePrio).ToArray();
 
         context = new PlayerContext();
-        context.Input = new PlayerInput();
+        context.Input = PlayerInputHandler.PlayerInput;
         context.Rigidbody = GetComponent<Rigidbody2D>();
         context.PlayerController = this;
         context.Values = playerValues;
@@ -56,21 +56,6 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Stick 1 / WASD
-        context.Input.Axis = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-
-        //Stick 2 / Mouse
-        if (new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0)
-            context.Input.VirtualCursor = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
-        else
-            context.Input.VirtualCursor = ModifyVirtualCursor(context.Input.VirtualCursor, new Vector2(Input.GetAxis("StickRight X"), Input.GetAxis("StickRight Y")));
-
-        context.Input.Back = Input.GetButtonDown("Back");
-        context.Input.Jump = Input.GetButtonDown("Jump");
-        context.Input.Interact = Input.GetButtonDown("Interact");
-        context.Input.Use = Input.GetButtonDown("Use");
-        context.Input.Sprint = Input.GetKey(KeyCode.LeftShift);
-
         context.PlayerPos = transform.position;
         context.IsCollidingToAnyWall = IsColliding(CheckType.WallLeft) || IsColliding(CheckType.WallRight);
         context.TriesMoveLeftRight = context.Input.Axis.x != 0;
@@ -79,11 +64,6 @@ public class PlayerController : MonoBehaviour
         foreach (IPlayerComponent component in playerComponents)
             component.UpdatePlayerComponent(context);
 
-    }
-
-    private Vector2 ModifyVirtualCursor(Vector2 before, Vector2 mouseAxis)
-    {
-        return (before + mouseAxis * 10).Clamp(Vector2.zero, new Vector2(Screen.width, Screen.height));
     }
 
     private void FixedUpdate()
