@@ -21,17 +21,18 @@ public class PlayerInput
 {
     public Vector2 Axis;
     public Vector2 VirtualCursor;
+    public Vector3 VirtualCursorToScreenCenter => (VirtualCursor - new Vector2(Screen.width / 2, Screen.height / 2)) / new Vector2(Screen.width, Screen.height).InvertY();
+    public Vector3 VirtualCursorToWorldPos => CameraController.ScreenToWorldPoint(VirtualCursor);
+    public Vector2 VirtualCursorToDir(Vector2 position) { return ((Vector2)VirtualCursorToWorldPos - position).normalized; }
+
+    public bool DPadUp;
+    public bool DPadDown;
+    public bool JustPressedOpenInventoryButton;
+
     public bool Back;
     public bool Jump;
     public bool Interact;
     public bool Use;
     public bool Sprint;
 
-    public Vector3 VirtualCursorToScreenCenter => (VirtualCursor - new Vector2(Screen.width / 2, Screen.height / 2)) / new Vector2(Screen.width, Screen.height).InvertY();
-    public Vector3 VirtualCursorToWorldPos => CameraController.ScreenToWorldPoint(VirtualCursor);
-
-    internal Vector2 VirtualCursorToDir(Vector2 position)
-    {
-        return ((Vector2)VirtualCursorToWorldPos - position).normalized;
-    }
 }

@@ -9,7 +9,7 @@ public enum ItemUserState
     Aim,
 }
 
-public class PlayerItemUser : MonoBehaviour, IPlayerComponent
+public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerComponent
 {
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Material lineRendererMat;

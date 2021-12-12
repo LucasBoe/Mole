@@ -168,4 +168,17 @@ public static class Util
     {
         return collision.CompareTag("Player");
     }
+
+    public static T GetComponentInChildrenExcludeOwn<T>(this Component origin)
+    {
+        T own = origin.GetComponent<T>();
+
+        foreach (T component in origin.GetComponentsInChildren<T>())
+        {
+            if ((object)component != (object)own)
+                return component;
+        }
+
+        return own;
+    }
 }

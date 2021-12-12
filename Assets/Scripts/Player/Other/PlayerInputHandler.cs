@@ -6,6 +6,8 @@ public class PlayerInputHandler : SingletonBehaviour<PlayerInputHandler>
 {
     public static PlayerInput PlayerInput = new PlayerInput();
 
+    bool DPadLock = false;
+
     private void Update()
     {
         //Stick 1 / WASD
@@ -17,9 +19,17 @@ public class PlayerInputHandler : SingletonBehaviour<PlayerInputHandler>
         else
             PlayerInput.VirtualCursor = ModifyVirtualCursor(PlayerInput.VirtualCursor, new Vector2(Input.GetAxis("StickRight X"), Input.GetAxis("StickRight Y")));
 
+        PlayerInput.DPadUp = Input.GetAxis("Cross Y") > 0.1f && !DPadLock;
+        PlayerInput.DPadDown = Input.GetAxis("Cross Y") < -0.1f && !DPadLock;
+
+        if (PlayerInput.DPadUp || PlayerInput.DPadDown) DPadLock = true;
+        if (DPadLock && Input.GetAxis("Cross Y") == 0) DPadLock = false;
+
+        PlayerInput.JustPressedOpenInventoryButton = Input.GetKeyDown(KeyCode.I) || Input.GetAxis("Cross Y") != 0;
+
         PlayerInput.Back = Input.GetButtonDown("Back");
         PlayerInput.Jump = Input.GetButtonDown("Jump");
-        PlayerInput.Interact = Input.GetButtonDown("Interact");
+        PlayerInput.Interact = Input.GetButtonDown("Submit");
         PlayerInput.Use = Input.GetButtonDown("Use");
         PlayerInput.Sprint = Input.GetKey(KeyCode.LeftShift);
     }
