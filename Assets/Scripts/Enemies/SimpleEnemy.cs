@@ -12,41 +12,33 @@ public enum EnemyStateType
     CheckEnvironment,
 }
 
-public class SimpleEnemy : MonoBehaviour
+public class SimpleEnemy : EnemyBase
 {
     [SerializeField] Vector2 eyePosition;
     [SerializeField] float viewConeDistance, viewConeHeight;
 
     //Modules
-    EnemyAIRoutineModule routineModule;
-    EnemyAIMoveModule moveModule;
+    EnemyRoutineModule routineModule;
+    EnemyMoveModule moveModule;
     NoiseListener noiseListenerModule;
-    [SerializeField] EnemyViewcone viewconeModule;
+    [SerializeField] EnemyViewconeModule viewconeModule;
 
     [SerializeField] EnemyStateType Current;
-    EnemyBaseState CurrentState;
     public System.Action<EnemyStateType> OnStateChange;
 
-    private Dictionary<EnemyStateType, EnemyBaseState> stateDictionary = new Dictionary<EnemyStateType, EnemyBaseState>();
-
-    public EnemyMemory memory;
+    public EnemyMemoryModule memory;
 
     private void Start()
     {
-        memory = new EnemyMemory();
         memory.Callback = ReachedTarget;
 
-        routineModule = GetComponent<EnemyAIRoutineModule>();
-        moveModule = GetComponent<EnemyAIMoveModule>();
+        routineModule = GetComponent<EnemyRoutineModule>();
+        moveModule = GetComponent<EnemyMoveModule>();
         noiseListenerModule = GetComponent<NoiseListener>();
 
         viewconeModule.OnPlayerEnter += AlertFollow;
         viewconeModule.OnPlayerExit += AlertStopFollow;
         noiseListenerModule.OnNoise += AlertMoveTo;
-
-        stateDictionary.Add(EnemyStateType.Routine, new EnemyRoutineState(routineModule));
-        stateDictionary.Add(EnemyStateType.Alert, new EnemyAlertState(moveModule, memory, this));
-        stateDictionary.Add(EnemyStateType.CheckEnvironment, new EnemyLookAroundState(memory, viewconeModule, this));
 
         SetState(EnemyStateType.Routine);
     }
@@ -54,12 +46,12 @@ public class SimpleEnemy : MonoBehaviour
 
     private void SetState(EnemyStateType behaviorState)
     {
-        stateDictionary[Current].Exit();
-
-        Current = behaviorState;
-        OnStateChange?.Invoke(Current);
-
-        stateDictionary[behaviorState].Enter();
+        //stateDictionary[Current].Exit();
+        //
+        //Current = behaviorState;
+        //OnStateChange?.Invoke(Current);
+        //
+        //stateDictionary[behaviorState].Enter();
     }
 
     public void AlertMoveTo(Vector2 pos)
@@ -90,34 +82,5 @@ public class SimpleEnemy : MonoBehaviour
     internal void UpdateViewcone()
     {
         viewconeModule.UpdateBounds(eyePosition, viewConeDistance, viewConeHeight);
-    }
-}
-
-public class EnemyMemory
-{
-    public EnemyMemoryTargetType TargetType;
-    public Transform TargetTransform;
-    public Vector2 TargetPos;
-    public bool TargetIsTransform => TargetType == EnemyMemoryTargetType.Tranform;
-    public System.Action Callback;
-    public EnemyStateType FollowupState;
-
-
-    public void SetTarget (Transform target)
-    {
-        TargetType = EnemyMemoryTargetType.Tranform;
-        TargetTransform = target;
-    }
-
-    public void SetTarget(Vector2 target)
-    {
-        TargetType = EnemyMemoryTargetType.Vector2;
-        TargetPos = target;
-    }
-
-    public enum EnemyMemoryTargetType
-    {
-        Tranform,
-        Vector2,
     }
 }

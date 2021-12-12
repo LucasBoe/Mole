@@ -3,52 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAIRoutineModule : MonoBehaviour
+public class EnemyRoutineModule : EnemyModule<EnemyRoutineModule>
 {
     public List<EnemyAIRoutineState> EnemyAIStates = new List<EnemyAIRoutineState>();
 
-    EnemyAIMoveModule moveModule;
+    EnemyMoveModule moveModule;
 
     private void OnEnable()
     {
-        moveModule = GetComponent<EnemyAIMoveModule>();
+        moveModule = GetComponent<EnemyMoveModule>();
 
         foreach (EnemyAIRoutineState state in EnemyAIStates)
         {
-            if (state.Type == AIStateType.GoTo)
+            if (state.Type == RoutineStateType.GoTo)
             {
                 state.WorldPos = transform.TransformPoint(state.Pos);
             }
         }
     }
 
-    public void StartRoutine()
+    public EnemyStateBase[] GetRoutineStates()
     {
-        StartCoroutine(ProcessRoutineAIRoutine());
-    }
-
-    public void StopRoutine()
-    {
-        StopAllCoroutines();
-    }
-
-    private IEnumerator ProcessRoutineAIRoutine()
-    {
-        int stateIndex = 0;
-        while (true)
-        {
-            EnemyAIStates[stateIndex].Enter(moveModule);
-            while (!EnemyAIStates[stateIndex].Update(this, moveModule))
-            {
-                yield return null;
-            }
-            stateIndex++;
-
-            if (stateIndex >= EnemyAIStates.Count)
-                stateIndex = 0;
-
-            yield return null;
-        }
+        return EnemyAIStates.ToArray();
     }
 
     public bool Look(Vector2 vector2)
@@ -69,13 +45,13 @@ public class EnemyAIRoutineModule : MonoBehaviour
             Vector2 fromPos = transform.position;
             foreach (EnemyAIRoutineState state in EnemyAIStates)
             {
-                if (state.Type == AIStateType.GoTo)
+                if (state.Type == RoutineStateType.GoTo)
                 {
                     Vector2 toPos = transform.TransformPoint(state.Pos);
                     Util.GizmoDrawArrowLine(fromPos, toPos);
                     fromPos = toPos;
                 }
-                else if (state.Type == AIStateType.Wait)
+                else if (state.Type == RoutineStateType.Wait)
                 {
                     Gizmos.DrawWireCube(fromPos, Vector3.one * 0.4f);
                 }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyViewcone : MonoBehaviour
+public class EnemyViewconeModule : EnemyModule<EnemyViewconeModule>
 {
     [SerializeField] LineRenderer viewConeLines;
     [SerializeField] PolygonCollider2D polygonCollider2D;

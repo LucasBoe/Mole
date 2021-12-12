@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(EnemyAIRoutineModule))]
+[CustomEditor(typeof(EnemyRoutineModule))]
 public class EnemyAIRoutineBehaviourEditor : Editor
 {
     bool addMode = false;
-    AIStateType toAdd;
+    RoutineStateType toAdd;
 
     SerializedProperty list;
 
@@ -25,8 +25,8 @@ public class EnemyAIRoutineBehaviourEditor : Editor
         else
         {
             GUILayout.BeginHorizontal();
-            toAdd = (AIStateType)EditorGUILayout.EnumPopup("Tile Type", toAdd);
-            EnemyAIRoutineModule aiBehaviour = (EnemyAIRoutineModule)target;
+            toAdd = (RoutineStateType)EditorGUILayout.EnumPopup("Tile Type", toAdd);
+            EnemyRoutineModule aiBehaviour = (EnemyRoutineModule)target;
             if (GUILayout.Button("Add"))
             {
                 aiBehaviour.EnemyAIStates.Add(new EnemyAIRoutineState());

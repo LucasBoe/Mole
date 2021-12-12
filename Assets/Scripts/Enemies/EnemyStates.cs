@@ -2,76 +2,76 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBaseState
+public class EnemyStateBase
 {
-    public virtual void Enter() { }
-    public virtual void Exit() { }
-}
-
-public class EnemyRoutineState : EnemyBaseState
-{
-    EnemyAIRoutineModule routineModule;
-    public EnemyRoutineState(EnemyAIRoutineModule module)
+    public virtual bool TryEnter(EnemyBase enemyBase)
     {
-        routineModule = module;
+        return true;
     }
 
-    public override void Enter()
+    public virtual void Update(EnemyBase enemyBase)
     {
-        routineModule.StartRoutine();
-    }
 
-    public override void Exit()
+    }
+    public virtual bool TryExit(EnemyBase enemyBase)
     {
-        routineModule.StopRoutine();
+        return true;
     }
 }
 
-public class EnemyAlertState : EnemyBaseState
+public class EnemyAlertState : EnemyStateBase
 {
-    EnemyAIMoveModule moveModule;
-    EnemyMemory memoryModule;
-    SimpleEnemy stateMachine;
+    EnemyMoveModule moveModule;
+    EnemyMemoryModule memoryModule;
+    System.Action OnTargetReached;
 
-    public EnemyAlertState(EnemyAIMoveModule module, EnemyMemory memory, SimpleEnemy stateMachine)
+    public EnemyAlertState(System.Action onTargetReached)
     {
-        moveModule = module;
-        memoryModule = memory;
-        this.stateMachine = stateMachine;
+        OnTargetReached = onTargetReached;
     }
 
-    public override void Enter()
+
+    public override bool TryEnter(EnemyBase enemyBase)
     {
+        memoryModule = enemyBase.GetModule<EnemyMemoryModule>();
+        moveModule = enemyBase.GetModule<EnemyMoveModule>();
+
         if (memoryModule.TargetIsTransform)
-            moveModule.FollowTransform(memoryModule.TargetTransform, memoryModule.Callback);
+            moveModule.FollowTransform(memoryModule.TargetTransform, OnTargetReached);
         else
-            moveModule.MoveTo(memoryModule.TargetPos, memoryModule.Callback);
+            moveModule.MoveTo(memoryModule.TargetPos, OnTargetReached);
+
+        return true;
     }
 }
-public class EnemyLookAroundState : EnemyBaseState
+public class EnemyLookAroundState : EnemyStateBase
 {
-    EnemyMemory memoryModule;
-    EnemyViewcone viewconeModule;
-    SimpleEnemy stateMachine;
+    EnemyMemoryModule memoryModule;
+    EnemyViewconeModule viewconeModule;
 
-    public EnemyLookAroundState(EnemyMemory memory, EnemyViewcone viewcone, SimpleEnemy stateMachine)
-    {
-        memoryModule = memory;
-        viewconeModule = viewcone;
-        this.stateMachine = stateMachine;
-    }
+    bool reachedTarget = false;
 
-    public override void Enter()
+    public override bool TryEnter(EnemyBase enemyBase)
     {
+        memoryModule = enemyBase.GetModule <EnemyMemoryModule>();
+        viewconeModule = enemyBase.GetModule<EnemyViewconeModule>();
+
         Vector2 target = memoryModule.TargetIsTransform ? (Vector2)memoryModule.TargetTransform.position : memoryModule.TargetPos;
-        float xDir = Mathf.Sign(target.x - stateMachine.transform.position.x);
-        stateMachine.transform.localScale = new Vector3(xDir, stateMachine.transform.localScale.y, stateMachine.transform.localScale.z);
+        float xDir = Mathf.Sign(target.x - enemyBase.transform.position.x);
+        enemyBase.transform.localScale = new Vector3(xDir, enemyBase.transform.localScale.y, enemyBase.transform.localScale.z);
 
         viewconeModule.LookTo(memoryModule.TargetPos, andBack: true, Callback);
+
+        return true;
     }
 
     public void Callback()
     {
-        stateMachine.ReachedTarget();
+        reachedTarget = true;
+    }
+
+    public override bool TryExit(EnemyBase enemyBase)
+    {
+        return reachedTarget;
     }
 }

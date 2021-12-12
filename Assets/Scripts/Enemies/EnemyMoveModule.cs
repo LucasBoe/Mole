@@ -9,7 +9,7 @@ public enum EnemyAISmartType
     Thorough,
 }
 
-public class EnemyAIMoveModule : MonoBehaviour
+public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
 {
     CollisionCheck jumpHelperLeft, jumpHelperRight, ground;
 

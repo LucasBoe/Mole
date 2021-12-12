@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public enum AIStateType
+public enum RoutineStateType
 {
     Wait,
     GoTo,
@@ -12,33 +12,44 @@ public enum AIStateType
 }
 
 [System.Serializable]
-public class EnemyAIRoutineState
+public class EnemyAIRoutineState : EnemyStateBase
 {
-    public AIStateType Type;
+    public RoutineStateType Type;
     public bool Right;
     public Vector2 Pos;
     public Vector2 WorldPos;
     public float Speed;
     public float Duration;
     private float waitTimer;
-    public void Enter(EnemyAIMoveModule moveModule)
+
+    EnemyRoutineModule routineModule;
+    EnemyMoveModule moveModule;
+
+    public override bool TryEnter(EnemyBase enemyBase)
     {
+        routineModule = enemyBase.GetModule<EnemyRoutineModule>();
+
         waitTimer = 0f;
-        if (Type == AIStateType.GoTo)
+        if (Type == RoutineStateType.GoTo)
+        {
+            moveModule = enemyBase.GetModule<EnemyMoveModule>();
             moveModule.MoveTo(WorldPos, null);
+        }
+
+        return true;
     }
 
-    public bool Update(EnemyAIRoutineModule enemyAIBehaviour, EnemyAIMoveModule moveModule)
+    public override bool TryExit(EnemyBase enemyBase)
     {
         switch (Type)
         {
-            case AIStateType.GoTo:
+            case RoutineStateType.GoTo:
                 return !moveModule.isMoving;
 
-            case AIStateType.Look:
-                return enemyAIBehaviour.Look(Right ? Vector2.right : Vector2.left);
+            case RoutineStateType.Look:
+                return routineModule.Look(Right ? Vector2.right : Vector2.left);
 
-            case AIStateType.Wait:
+            case RoutineStateType.Wait:
                 return (waitTimer += Time.deltaTime) > Duration;
         }
 
@@ -51,7 +62,7 @@ public class EnemyAIRoutineStateDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
-        AIStateType type = AIStateType.Wait;
+        RoutineStateType type = RoutineStateType.Wait;
 
         bool draw = false;
         int index = 0;
@@ -61,7 +72,7 @@ public class EnemyAIRoutineStateDrawer : PropertyDrawer
             SerializedProperty current = childEnum.Current as SerializedProperty;
             if (current.name == "Type")
             {
-                type = (AIStateType)current.enumValueIndex;
+                type = (RoutineStateType)current.enumValueIndex;
                 draw = true;
             }
             else if (TypeContainsProperty(type, current.name))
@@ -81,21 +92,21 @@ public class EnemyAIRoutineStateDrawer : PropertyDrawer
         }
     }
 
-    private bool TypeContainsProperty(AIStateType type, string name)
+    private bool TypeContainsProperty(RoutineStateType type, string name)
     {
         switch (type)
         {
-            case AIStateType.GoTo:
+            case RoutineStateType.GoTo:
                 if (name == "Pos" || name == "Speed" || name == "WorldPos")
                     return true;
                 break;
 
-            case AIStateType.Look:
+            case RoutineStateType.Look:
                 if (name == "Right")
                     return true;
                 break;
 
-            case AIStateType.Wait:
+            case RoutineStateType.Wait:
                 if (name == "Duration")
                     return true;
                 break;
