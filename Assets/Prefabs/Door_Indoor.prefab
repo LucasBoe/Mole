@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4181828316448362767}
   - component: {fileID: 4181828316448362753}
   - component: {fileID: 4181828316448362752}
-  - component: {fileID: 4181828316448362754}
   - component: {fileID: 4181828316448362755}
   m_Layer: 9
   m_Name: Door_Indoor
@@ -30,7 +29,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 15, y: 19.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 8449353875116088094}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -111,32 +111,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.5, y: 3}
   m_EdgeRadius: 0
---- !u!114 &4181828316448362754
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4181828316448362766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShadowGroup: 0
-  m_HasRenderer: 1
-  m_UseRendererSilhouette: 1
-  m_CastsShadows: 1
-  m_SelfShadows: 0
-  m_ApplyToSortingLayers: cbff35e700000000c1500601
-  m_ShapePath:
-  - {x: -0.124, y: -1.5, z: 0}
-  - {x: 0, y: -1.5, z: 0}
-  - {x: 0, y: 1.5, z: 0}
-  - {x: -0.125, y: 1.5, z: 0}
-  m_ShapePathHash: -373008765
-  m_Mesh: {fileID: 0}
-  m_InstanceId: 22508
 --- !u!114 &4181828316448362755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,4 +126,61 @@ MonoBehaviour:
   spriteRenderer: {fileID: 4181828316448362753}
   closed: {fileID: 2819815934189153119, guid: 56f20fe1f884baf41a1acad70c33f14c, type: 3}
   open: {fileID: 3501540814251876656, guid: 56f20fe1f884baf41a1acad70c33f14c, type: 3}
-  shadowCaster2D: {fileID: 4181828316448362754}
+  viewBlocker: {fileID: 9053967722445444150}
+--- !u!1 &9053967722445444150
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8449353875116088094}
+  - component: {fileID: 1457219406170400099}
+  m_Layer: 0
+  m_Name: ViewBlocker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8449353875116088094
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9053967722445444150}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4181828316448362767}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1457219406170400099
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9053967722445444150}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.065, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.4166667, y: 0.5}
+    oldSize: {x: 1.5, y: 3}
+    newSize: {x: 1.5, y: 3}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 3}
+  m_EdgeRadius: 0

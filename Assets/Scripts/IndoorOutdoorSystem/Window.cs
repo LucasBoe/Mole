@@ -25,7 +25,7 @@ public class Window : MonoBehaviour
 
     private void Update()
     {
-        if (isAbove && Input.GetButton("Interact"))
+        if (isAbove && PlayerInputHandler.PlayerInput.Interact)
         {
             isAbove = false;
             bool isInside = OutdoorIndoorHandler.Instance.Switch();
