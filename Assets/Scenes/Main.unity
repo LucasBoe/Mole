@@ -43353,7 +43353,7 @@ GameObject:
   - component: {fileID: 938844154592570114}
   - component: {fileID: 4961734191728058843}
   m_Layer: 11
-  m_Name: Crossbow
+  m_Name: CollectableCrossbow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
