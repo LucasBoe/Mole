@@ -10,7 +10,6 @@ public class EnemyMemoryModule : EnemyModule<EnemyMemoryModule>
     public System.Action Callback;
     public EnemyStateType FollowupState;
 
-
     public void SetTarget(Transform target)
     {
         TargetType = EnemyMemoryTargetType.Tranform;

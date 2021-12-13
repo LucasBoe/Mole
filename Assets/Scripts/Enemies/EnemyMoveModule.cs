@@ -41,8 +41,6 @@ public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
         followTarget = targetTransform;
         targetReachedCallback = callback;
         isMoving = true;
-        float xDir = Mathf.Sign(moveTarget.x - transform.position.x);
-        transform.localScale = new Vector3(xDir, transform.localScale.y, transform.localScale.z);
     }
 
     public void MoveTo(Vector2 position, System.Action callback)
@@ -51,8 +49,6 @@ public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
         moveTarget = position;
         targetReachedCallback = callback;
         isMoving = true;
-        float xDir = Mathf.Sign(moveTarget.x - transform.position.x);
-        transform.localScale = new Vector3(xDir, transform.localScale.y, transform.localScale.z);
     }
     public void StopMoving()
     {
@@ -77,6 +73,8 @@ public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
 
         Vector2 dir = (moveTarget - (Vector2)transform.position).normalized;
         rigidbody2D.AddForce((dir.x > 0 ? Vector2.right : Vector2.left) * 4000f * Time.deltaTime);
+
+        transform.localScale = new Vector3(Mathf.Sign(dir.x), transform.localScale.y, transform.localScale.z);
 
         if ((dir.x > 0 && jumpHelperRight.IsDetecting) || (dir.x < 0 && jumpHelperLeft.IsDetecting))
             rigidbody2D.AddForce(Vector2.up, ForceMode2D.Impulse);

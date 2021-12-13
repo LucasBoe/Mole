@@ -33,12 +33,6 @@ public class EnemyRoutineModule : EnemyModule<EnemyRoutineModule>
         return true;
     }
 
-    public bool MoveTowards(Vector2 worldPos, float speed)
-    {
-        transform.position = Vector2.MoveTowards(transform.position, worldPos, speed * Time.deltaTime);
-        return (Vector2.Distance(transform.position, worldPos) < 0.01f);
-    }
-
     private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.Lerp(Color.red, Color.yellow, 0.5f);

@@ -19,6 +19,28 @@ public class EnemyStateBase
     }
 }
 
+public class EnemyWaitState : EnemyStateBase
+{
+    private float startTime = 0;
+    private float waitTime;
+
+    public EnemyWaitState(float waitTime)
+    {
+        this.waitTime = waitTime;
+    }
+
+    public override bool TryEnter(EnemyBase enemyBase)
+    {
+        startTime = Time.time;
+        return true;
+    }
+
+    public override bool TryExit(EnemyBase enemyBase)
+    {
+        return Time.time > startTime + waitTime;
+    }
+}
+
 public class EnemyAlertState : EnemyStateBase
 {
     EnemyMoveModule moveModule;
@@ -29,7 +51,6 @@ public class EnemyAlertState : EnemyStateBase
     {
         OnTargetReached = onTargetReached;
     }
-
 
     public override bool TryEnter(EnemyBase enemyBase)
     {
@@ -49,7 +70,7 @@ public class EnemyLookAroundState : EnemyStateBase
     EnemyMemoryModule memoryModule;
     EnemyViewconeModule viewconeModule;
 
-    bool reachedTarget = false;
+    bool doneLookingAround = false;
 
     public override bool TryEnter(EnemyBase enemyBase)
     {
@@ -67,11 +88,11 @@ public class EnemyLookAroundState : EnemyStateBase
 
     public void Callback()
     {
-        reachedTarget = true;
+        doneLookingAround = true;
     }
 
     public override bool TryExit(EnemyBase enemyBase)
     {
-        return reachedTarget;
+        return doneLookingAround;
     }
 }

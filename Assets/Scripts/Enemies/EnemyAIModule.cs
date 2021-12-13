@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyAIModule : EnemyModule<EnemyAIModule>
@@ -25,11 +22,13 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>
     private void CheckOutLocation(Vector2 location)
     {
         memoryModule.SetTarget(location);
+        statemachineModule.OverrideState(new EnemyWaitState(1f));
         statemachineModule.OverrideState(new EnemyAlertState(onTargetReached: LookAround));
     }
 
     private void LookAround()
     {
+        statemachineModule.OverrideState(new EnemyWaitState(0.5f));
         statemachineModule.OverrideState(new EnemyLookAroundState());
 
     }
@@ -37,6 +36,7 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>
     private void OnPlayerEnteredViewcone(Transform target)
     {
         memoryModule.SetTarget(target);
+        statemachineModule.OverrideState(new EnemyWaitState(1f));
         statemachineModule.OverrideState(new EnemyAlertState(onTargetReached: LookAround));
     }
 }
