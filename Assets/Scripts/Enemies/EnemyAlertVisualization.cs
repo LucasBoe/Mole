@@ -16,7 +16,6 @@ public class EnemyAlertVisualization : MonoBehaviour
 
     private void OnEnterNewState(Type type)
     {
-        Debug.LogWarning(type);
         renderer.enabled = type != typeof(EnemyAIRoutineState);
     }
 }

@@ -20,6 +20,7 @@ public class EnemyStatemachineModule : EnemyModule<EnemyStatemachineModule>
             EnemyStateBase newState = FetchNewStateFromTop();
             if (newState.TryEnter(enemyBase))
             {
+                Debug.LogWarning("Entered: " + newState.ToString());
                 OnEnterNewState?.Invoke(newState.GetType());
                 currentState = newState;
             }
@@ -36,6 +37,8 @@ public class EnemyStatemachineModule : EnemyModule<EnemyStatemachineModule>
     {
         if (list.Count == 0)
         {
+            Debug.LogWarning("States empty, fetch from routine");
+
             foreach (EnemyStateBase state in GetModule<EnemyRoutineModule>().GetRoutineStates())
                 list.AddLast(state);
         }
@@ -47,6 +50,8 @@ public class EnemyStatemachineModule : EnemyModule<EnemyStatemachineModule>
 
     public void OverrideState(EnemyStateBase state)
     {
+        Debug.LogWarning("Override State: " + state.ToString());
+
         list.AddFirst(state);
         currentState = null;
     }
