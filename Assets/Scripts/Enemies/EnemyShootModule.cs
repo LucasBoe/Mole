@@ -22,7 +22,7 @@ public class EnemyShootState : EnemyStateBase
     float time = 0;
     Transform target;
 
-    public float ShootingVelocity = 25f;
+    public float ShootingVelocity = 50f;
     public float PreeshootTime = 0.5f;
     public float AftershootTime = 0.5f;
 
