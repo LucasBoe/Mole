@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class EnemyStateBase
 {
     public virtual bool TryEnter(EnemyBase enemyBase)
@@ -17,8 +18,14 @@ public class EnemyStateBase
     {
         return true;
     }
+
+    public override string ToString()
+    {
+        return GetType().ToString();
+    }
 }
 
+[System.Serializable]
 public class EnemyWaitState : EnemyStateBase
 {
     private float startTime = 0;
@@ -41,6 +48,7 @@ public class EnemyWaitState : EnemyStateBase
     }
 }
 
+[System.Serializable]
 public class EnemyAlertState : EnemyStateBase
 {
     EnemyMoveModule moveModule;
@@ -65,6 +73,8 @@ public class EnemyAlertState : EnemyStateBase
         return true;
     }
 }
+
+[System.Serializable]
 public class EnemyLookAroundState : EnemyStateBase
 {
     EnemyMemoryModule memoryModule;

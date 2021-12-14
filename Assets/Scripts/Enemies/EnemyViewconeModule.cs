@@ -33,8 +33,6 @@ public class EnemyViewconeModule : EnemyModule<EnemyViewconeModule>
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.LogWarning("Player left");
-
         if (collision.IsPlayer())
             OnPlayerExit?.Invoke(collision.transform.position);
     }

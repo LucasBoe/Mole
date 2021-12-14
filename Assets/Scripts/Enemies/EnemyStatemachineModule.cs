@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class EnemyStatemachineModule : EnemyModule<EnemyStatemachineModule>
@@ -8,13 +9,20 @@ public class EnemyStatemachineModule : EnemyModule<EnemyStatemachineModule>
     private LinkedList<EnemyStateBase> list = new LinkedList<EnemyStateBase>();
     private EnemyStateBase currentState;
 
+    public System.Action<System.Type> OnEnterNewState;
+    public EnemyStateBase CurrentState => currentState;
+    public LinkedList<EnemyStateBase> NextStates => list;
+
     private void Update()
     {
         if (currentState == null)
         {
             EnemyStateBase newState = FetchNewStateFromTop();
             if (newState.TryEnter(enemyBase))
+            {
+                OnEnterNewState?.Invoke(newState.GetType());
                 currentState = newState;
+            }
         }
         else
         {
@@ -41,5 +49,14 @@ public class EnemyStatemachineModule : EnemyModule<EnemyStatemachineModule>
     {
         list.AddFirst(state);
         currentState = null;
+    }
+
+    void OnDrawGizmos()
+    {
+        GUIStyle style = new GUIStyle();
+        style.normal.textColor = Color.red;
+
+        if (currentState != null)
+            Handles.Label(transform.position + Vector3.up, currentState.ToString(), style);
     }
 }

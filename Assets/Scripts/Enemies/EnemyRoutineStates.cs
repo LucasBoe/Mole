@@ -55,6 +55,11 @@ public class EnemyAIRoutineState : EnemyStateBase
 
         return false;
     }
+
+    public override string ToString()
+    {
+        return Type.ToString();
+    }
 }
 
 [CustomPropertyDrawer(typeof(EnemyAIRoutineState))]
