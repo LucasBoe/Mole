@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,6 +23,11 @@ public class EnemyStateBase
     public override string ToString()
     {
         return GetType().ToString();
+    }
+
+    public virtual void ForceExit()
+    {
+
     }
 }
 
@@ -71,6 +77,16 @@ public class EnemyAlertState : EnemyStateBase
             moveModule.MoveTo(memoryModule.TargetPos, OnTargetReached);
 
         return true;
+    }
+
+    public override void ForceExit()
+    {
+        moveModule.StopMoving();
+    }
+
+    public override bool TryExit(EnemyBase enemyBase)
+    {
+        return !moveModule.isMoving;
     }
 }
 

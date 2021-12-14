@@ -58,7 +58,7 @@ public class EnemyAIRoutineState : EnemyStateBase
 
     public override string ToString()
     {
-        return Type.ToString();
+        return "Routine: " + Type.ToString();
     }
 }
 

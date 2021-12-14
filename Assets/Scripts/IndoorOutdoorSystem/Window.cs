@@ -15,12 +15,14 @@ public class Window : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        isAbove = true;
+        if (collision.IsPlayer())
+            isAbove = true;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        isAbove = false;
+        if (collision.IsPlayer())
+            isAbove = false;
     }
 
     private void Update()

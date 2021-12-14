@@ -28,6 +28,7 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>
 
     private void LookAround()
     {
+        viewconeModule.ResetCollider();
         statemachineModule.OverrideState(new EnemyWaitState(0.5f));
         statemachineModule.OverrideState(new EnemyLookAroundState());
 
@@ -36,7 +37,6 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>
     private void OnPlayerEnteredViewcone(Transform target)
     {
         memoryModule.SetTarget(target);
-        statemachineModule.OverrideState(new EnemyWaitState(1f));
-        statemachineModule.OverrideState(new EnemyAlertState(onTargetReached: LookAround));
+        statemachineModule.OverrideState(new EnemyShootState(target));
     }
 }

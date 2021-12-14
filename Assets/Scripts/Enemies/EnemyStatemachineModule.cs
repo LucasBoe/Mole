@@ -29,7 +29,10 @@ public class EnemyStatemachineModule : EnemyModule<EnemyStatemachineModule>
         {
             currentState.Update(enemyBase);
             if (currentState.TryExit(enemyBase))
+            {
+                Debug.LogWarning("Exit: " + currentState.ToString());
                 currentState = null;
+            }
         }
     }
 
@@ -53,7 +56,12 @@ public class EnemyStatemachineModule : EnemyModule<EnemyStatemachineModule>
         Debug.LogWarning("Override State: " + state.ToString());
 
         list.AddFirst(state);
-        currentState = null;
+
+        if (currentState != null)
+        {
+            currentState.ForceExit();
+            currentState = null;
+        }
     }
 
     void OnDrawGizmos()

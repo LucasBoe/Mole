@@ -50,13 +50,19 @@ public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
         targetReachedCallback = callback;
         isMoving = true;
     }
+
     public void StopMoving()
     {
-        targetReachedCallback?.Invoke();
         followTarget = null;
         moveTarget = Vector2.zero;
         targetReachedCallback = null;
         isMoving = false;
+    }
+
+    private void TargetReached()
+    {
+        targetReachedCallback?.Invoke();
+        StopMoving();
     }
 
 
@@ -72,7 +78,7 @@ public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
             moveTarget = followTarget.position;
 
         Vector2 dir = (moveTarget - (Vector2)transform.position).normalized;
-        rigidbody2D.AddForce((dir.x > 0 ? Vector2.right : Vector2.left) * 4000f * Time.deltaTime);
+        rigidbody2D.AddForce((dir.x > 0 ? Vector2.right : Vector2.left) * 3000f * Time.deltaTime);
 
         transform.localScale = new Vector3(Mathf.Sign(dir.x), transform.localScale.y, transform.localScale.z);
 
@@ -80,7 +86,7 @@ public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
             rigidbody2D.AddForce(Vector2.up, ForceMode2D.Impulse);
 
         if (Mathf.Abs(transform.position.x - moveTarget.x) < 0.1f)
-            StopMoving();
+            TargetReached();
     }
 
     private void OnDrawGizmos()

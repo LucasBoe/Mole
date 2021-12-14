@@ -81,6 +81,6 @@ public class SimpleEnemy : EnemyBase
 
     internal void UpdateViewcone()
     {
-        viewconeModule.UpdateBounds(eyePosition, viewConeDistance, viewConeHeight);
+        //viewconeModule.UpdateBounds(eyePosition, viewConeDistance, viewConeHeight);
     }
 }

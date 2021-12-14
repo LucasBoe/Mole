@@ -5,36 +5,52 @@ using UnityEngine;
 
 public class EnemyViewconeModule : EnemyModule<EnemyViewconeModule>
 {
+    private enum TriggerMode
+    {
+        InnerCollider,
+        OuterCollider,
+    }
+
     [SerializeField] LineRenderer viewConeLines;
-    [SerializeField] PolygonCollider2D polygonCollider2D;
+    [SerializeField] PolygonCollider2D inner, outer;
 
     public System.Action<Transform> OnPlayerEnter;
     public System.Action<Vector2> OnPlayerExit;
 
+    TriggerMode mode = TriggerMode.InnerCollider;
 
-    internal void UpdateBounds(Vector2 eyePosition, float viewConeDistance, float viewConeHeight)
+    private void Start()
     {
-        transform.localPosition = eyePosition;
-
-        Vector2[] points = new Vector2[] { Vector2.right * viewConeDistance + Vector2.up * (viewConeHeight / 2f),
-            Vector2.zero,
-            Vector2.right * viewConeDistance + Vector2.down * (viewConeHeight / 2f) };
-
-        polygonCollider2D.points = points;
-        viewConeLines.positionCount = points.Length;
-        viewConeLines.SetPositions(points.ToVector3Array());
+        SetViewconeTriggerMode(TriggerMode.InnerCollider);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.IsPlayer())
+        {
             OnPlayerEnter?.Invoke(collision.transform);
+            SetViewconeTriggerMode(TriggerMode.OuterCollider);
+        }
+    }
+
+    private void SetViewconeTriggerMode(TriggerMode mode)
+    {
+        inner.enabled = mode == TriggerMode.InnerCollider;
+        outer.enabled = mode == TriggerMode.OuterCollider;
+        this.mode = mode;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.IsPlayer())
+        if (mode == TriggerMode.OuterCollider && collision.IsPlayer())
+        {
             OnPlayerExit?.Invoke(collision.transform.position);
+        }
+    }
+
+    public void ResetCollider()
+    {
+        SetViewconeTriggerMode(TriggerMode.InnerCollider);
     }
 
     internal void LookTo(Vector2 target, bool andBack = false, Action callback = null)
