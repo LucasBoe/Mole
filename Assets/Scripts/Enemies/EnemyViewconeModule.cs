@@ -78,7 +78,7 @@ public class EnemyViewconeModule : EnemyModule<EnemyViewconeModule>
                 break;
 
             case ViewconeMode.FollowTransform:
-                Vector3 t = canSeeTarget ? targetTransform.position : lastSeenTarget;
+                Vector3 t = targetTransform && canSeeTarget ? targetTransform.position : lastSeenTarget;
                 targetAngle = GetAngleFromTarget(t);
                 break;
         }
