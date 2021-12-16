@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,12 @@ public class PlayerHealth : SingletonBehaviour<PlayerHealth>
     private void Start()
     {
         current = max;
+    }
+
+    internal void Heal(int amount)
+    {
+        current = Mathf.Min(current += amount, max);
+        OnHealthChange?.Invoke(relative);
     }
 
     public void DoDamage(int amount)
