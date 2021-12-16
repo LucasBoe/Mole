@@ -8,7 +8,8 @@ public class EnemyMemoryModule : EnemyModule<EnemyMemoryModule>
     public Vector2 TargetPos;
     public bool TargetIsTransform => TargetType == EnemyMemoryTargetType.Tranform;
     public System.Action Callback;
-    public EnemyStateType FollowupState;
+
+    public int ScannedCounter = 0;
 
     public void SetTarget(Transform target)
     {
@@ -18,6 +19,7 @@ public class EnemyMemoryModule : EnemyModule<EnemyMemoryModule>
 
     public void SetTarget(Vector2 target)
     {
+        ScannedCounter = 0;
         TargetType = EnemyMemoryTargetType.Vector2;
         TargetPos = target;
     }

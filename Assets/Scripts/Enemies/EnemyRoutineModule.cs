@@ -7,12 +7,8 @@ public class EnemyRoutineModule : EnemyModule<EnemyRoutineModule>
 {
     public List<EnemyAIRoutineState> EnemyAIStates = new List<EnemyAIRoutineState>();
 
-    EnemyMoveModule moveModule;
-
     private void OnEnable()
     {
-        moveModule = GetComponent<EnemyMoveModule>();
-
         foreach (EnemyAIRoutineState state in EnemyAIStates)
         {
             if (state.Type == RoutineStateType.GoTo)
@@ -25,12 +21,6 @@ public class EnemyRoutineModule : EnemyModule<EnemyRoutineModule>
     public EnemyStateBase[] GetRoutineStates()
     {
         return EnemyAIStates.ToArray();
-    }
-
-    public bool Look(Vector2 vector2)
-    {
-        transform.localScale = new Vector3(vector2.x, transform.localScale.y, transform.localScale.z);
-        return true;
     }
 
     private void OnDrawGizmosSelected()

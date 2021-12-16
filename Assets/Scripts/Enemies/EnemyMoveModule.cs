@@ -17,10 +17,12 @@ public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
 
     Transform followTarget;
     Vector2 moveTarget;
-    System.Action targetReachedCallback;
     Rigidbody2D rigidbody2D;
 
     public bool isMoving;
+    public Vector2 MoveDir => rigidbody2D.velocity.normalized;
+
+    public System.Action OnStartMovingToPosition;
 
     private void Start()
     {
@@ -36,32 +38,28 @@ public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
         collisionChecks.Add(ground);
     }
 
-    internal void FollowTransform(Transform targetTransform, Action callback)
+    internal void FollowTransform(Transform targetTransform)
     {
         followTarget = targetTransform;
-        targetReachedCallback = callback;
         isMoving = true;
     }
 
-    public void MoveTo(Vector2 position, System.Action callback)
+    public void MoveTo(Vector2 position)
     {
-
         moveTarget = position;
-        targetReachedCallback = callback;
         isMoving = true;
+        OnStartMovingToPosition?.Invoke();
     }
 
     public void StopMoving()
     {
         followTarget = null;
         moveTarget = Vector2.zero;
-        targetReachedCallback = null;
         isMoving = false;
     }
 
     private void TargetReached()
     {
-        targetReachedCallback?.Invoke();
         StopMoving();
     }
 
@@ -80,7 +78,7 @@ public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
         Vector2 dir = (moveTarget - (Vector2)transform.position).normalized;
         rigidbody2D.AddForce((dir.x > 0 ? Vector2.right : Vector2.left) * 3000f * Time.deltaTime);
 
-        transform.localScale = new Vector3(Mathf.Sign(dir.x), transform.localScale.y, transform.localScale.z);
+        //transform.localScale = new Vector3(Mathf.Sign(dir.x), transform.localScale.y, transform.localScale.z);
 
         if ((dir.x > 0 && jumpHelperRight.IsDetecting) || (dir.x < 0 && jumpHelperLeft.IsDetecting))
             rigidbody2D.AddForce(Vector2.up, ForceMode2D.Impulse);
@@ -96,5 +94,8 @@ public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
 
         if (moveTarget != Vector2.zero)
             Gizmos.DrawWireSphere(moveTarget, 1f);
+
+        if (rigidbody2D)
+            Gizmos.DrawLine(transform.position, transform.position + (Vector3)rigidbody2D.velocity.normalized);
     }
 }

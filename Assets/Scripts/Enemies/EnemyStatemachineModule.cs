@@ -6,8 +6,16 @@ using UnityEngine;
 
 public class EnemyStatemachineModule : EnemyModule<EnemyStatemachineModule>
 {
+    private enum NewStateSource
+    {
+        RoutineModule,
+        AIModule,
+    }
+
     private LinkedList<EnemyStateBase> list = new LinkedList<EnemyStateBase>();
     private EnemyStateBase currentState;
+
+    [SerializeField] private NewStateSource onEmptyNewStateSource;
 
     public System.Action<System.Type> OnEnterNewState;
     public EnemyStateBase CurrentState => currentState;
@@ -20,7 +28,6 @@ public class EnemyStatemachineModule : EnemyModule<EnemyStatemachineModule>
             EnemyStateBase newState = FetchNewStateFromTop();
             if (newState.TryEnter(enemyBase))
             {
-                Debug.LogWarning("Entered: " + newState.ToString());
                 OnEnterNewState?.Invoke(newState.GetType());
                 currentState = newState;
             }
@@ -30,7 +37,6 @@ public class EnemyStatemachineModule : EnemyModule<EnemyStatemachineModule>
             currentState.Update(enemyBase);
             if (currentState.TryExit(enemyBase))
             {
-                Debug.LogWarning("Exit: " + currentState.ToString());
                 currentState = null;
             }
         }
@@ -40,9 +46,11 @@ public class EnemyStatemachineModule : EnemyModule<EnemyStatemachineModule>
     {
         if (list.Count == 0)
         {
-            Debug.LogWarning("States empty, fetch from routine");
+            EnemyStateBase[] newStates = (onEmptyNewStateSource == NewStateSource.RoutineModule)
+                ? GetModule<EnemyRoutineModule>().GetRoutineStates()
+                : GetModule<EnemyAIModule>().GetNextStates();
 
-            foreach (EnemyStateBase state in GetModule<EnemyRoutineModule>().GetRoutineStates())
+            foreach (EnemyStateBase state in newStates)
                 list.AddLast(state);
         }
 
@@ -54,14 +62,18 @@ public class EnemyStatemachineModule : EnemyModule<EnemyStatemachineModule>
     public void OverrideState(EnemyStateBase state)
     {
         Debug.LogWarning("Override State: " + state.ToString());
-
         list.AddFirst(state);
-
+        StopCurrent();
+    }
+    public void StopCurrent()
+    {
         if (currentState != null)
         {
             currentState.ForceExit();
             currentState = null;
         }
+
+        list.Clear();
     }
 
     void OnDrawGizmos()
@@ -72,4 +84,5 @@ public class EnemyStatemachineModule : EnemyModule<EnemyStatemachineModule>
         if (currentState != null)
             Handles.Label(transform.position + Vector3.up, currentState.ToString(), style);
     }
+
 }

@@ -5,6 +5,14 @@ using UnityEngine;
 
 public class EnemyViewconeModule : EnemyModule<EnemyViewconeModule>
 {
+    public enum ViewconeMode
+    {
+        Free,
+        FollowTransform,
+        ScanSurrounding,
+        LookForward,
+    }
+
     private enum TriggerMode
     {
         InnerCollider,
@@ -17,10 +25,29 @@ public class EnemyViewconeModule : EnemyModule<EnemyViewconeModule>
     public System.Action<Transform> OnPlayerEnter;
     public System.Action<Vector2> OnPlayerExit;
 
+    [SerializeField] ViewconeMode viewconeMode;
     TriggerMode mode = TriggerMode.InnerCollider;
+
+    Coroutine doneLookingCoroutine;
+    public bool Done => doneLookingCoroutine == null;
+
+    private bool canSeeTarget;
+    public bool CanSeeTarget { get => canSeeTarget; }
+    private Vector3 lastSeenTarget;
+    public Vector3 LastSeenTarget { get => lastSeenTarget; }
+    [SerializeField] private int lookedAroundCounter;
+    public int LookedAroundCounter { get => lookedAroundCounter; }
+
+    EnemyMoveModule moveModule;
+    [SerializeField] Vector3 lastPos;
+    [SerializeField] float currentAngle;
+    [SerializeField] float targetAngle;
+    Transform targetTransform;
 
     private void Start()
     {
+        moveModule = GetModule<EnemyMoveModule>();
+        viewconeMode = ViewconeMode.LookForward;
         SetViewconeTriggerMode(TriggerMode.InnerCollider);
     }
 
@@ -28,9 +55,87 @@ public class EnemyViewconeModule : EnemyModule<EnemyViewconeModule>
     {
         if (collision.IsPlayer())
         {
+            targetTransform = collision.transform;
             OnPlayerEnter?.Invoke(collision.transform);
             SetViewconeTriggerMode(TriggerMode.OuterCollider);
         }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (mode == TriggerMode.OuterCollider && collision.IsPlayer())
+        {
+            OnPlayerExit?.Invoke(collision.transform.position);
+        }
+    }
+
+    private void Update()
+    {
+        switch (viewconeMode)
+        {
+            case ViewconeMode.LookForward:
+                if (moveModule != null)
+                    targetAngle = GetAngleFromDir(-moveModule.MoveDir);
+                break;
+
+            case ViewconeMode.FollowTransform:
+                Vector3 t = canSeeTarget ? targetTransform.position : lastSeenTarget;
+                targetAngle = GetAngleFromTarget(t);
+                break;
+        }
+
+        //bool canSeeTargetBefore = canSeeTarget;
+        canSeeTarget = CheckLineOfSight();
+
+        if (canSeeTarget && viewconeMode != ViewconeMode.FollowTransform)
+            SetViewconeMode(ViewconeMode.FollowTransform);
+
+        if (currentAngle > 90 && targetAngle < 90)
+            currentAngle -= (Mathf.DeltaAngle(currentAngle, 90) * 2f);
+        else if (currentAngle < 90 && targetAngle > 90)
+            currentAngle += (Mathf.DeltaAngle(currentAngle, 90) * 2f);
+
+        currentAngle = Mathf.MoveTowardsAngle(currentAngle, targetAngle, Time.deltaTime * 45);
+        transform.localRotation = Quaternion.Euler(0, 0, currentAngle);
+
+        if (targetTransform != null)
+            lastSeenTarget = targetTransform.position;
+
+        if (Vector2.Distance(lastPos, transform.position) > 0.1f)
+            lastPos = transform.position;
+
+        //Vector2 pos = PlayerInputHandler.PlayerInput.VirtualCursorToWorldPos;
+        //targetAngle = GetAngleFromTarget(pos);
+        //Debug.DrawLine(transform.position, pos);
+    }
+
+    private IEnumerator LookAroundRoutine()
+    {
+        targetAngle = 45;
+        while (Mathf.Abs(Mathf.DeltaAngle(currentAngle, targetAngle)) > 0.1f)
+        {
+            yield return null;
+        }
+
+        targetAngle = -25;
+        while (Mathf.Abs(Mathf.DeltaAngle(currentAngle, targetAngle)) > 0.1f)
+        {
+            yield return null;
+        }
+
+        targetAngle = 0;
+        while (Mathf.Abs(Mathf.DeltaAngle(currentAngle, targetAngle)) > 0.1f)
+        {
+            yield return null;
+        }
+
+        lookedAroundCounter++;
+        doneLookingCoroutine = null;
+    }
+
+    internal void SetTarget(Transform target)
+    {
+        targetTransform = target;
+        SetViewconeMode(ViewconeMode.FollowTransform);
     }
 
     private void SetViewconeTriggerMode(TriggerMode mode)
@@ -40,54 +145,56 @@ public class EnemyViewconeModule : EnemyModule<EnemyViewconeModule>
         this.mode = mode;
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    public void SetViewconeMode(ViewconeMode viewconeMode)
     {
-        if (mode == TriggerMode.OuterCollider && collision.IsPlayer())
+        this.viewconeMode = viewconeMode;
+        lookedAroundCounter = 0;
+
+        if (viewconeMode == ViewconeMode.ScanSurrounding)
         {
-            OnPlayerExit?.Invoke(collision.transform.position);
+            if (doneLookingCoroutine != null)
+                StopCoroutine(doneLookingCoroutine);
+
+            doneLookingCoroutine = StartCoroutine(LookAroundRoutine());
         }
+    }
+
+    private float GetAngleFromDir(Vector2 dir)
+    {
+        return Vector2.Angle(Vector2.left * transform.parent.localScale.x, dir);
+    }
+
+    private float GetAngleFromTarget(Vector3 target)
+    {
+        int correction = (target.y < transform.position.y) ? -1 : 1;
+        return GetAngleFromDir(GetDirFromTarget(target)) * correction;
+    }
+
+    private Vector2 GetDirFromTarget(Vector3 target)
+    {
+        return (transform.position - target).normalized;
+    }
+
+    public void Look(LookDirection direction)
+    {
+        targetAngle = direction == LookDirection.Left ? 180 : 0;
+        viewconeMode = ViewconeMode.Free;
     }
 
     public void ResetCollider()
     {
         SetViewconeTriggerMode(TriggerMode.InnerCollider);
     }
-
-    internal void LookTo(Vector2 target, bool andBack = false, Action callback = null)
+    private bool CheckLineOfSight()
     {
-        StartCoroutine(LookToRoutine(target, andBack, callback));
-    }
+        if (targetTransform == null)
+            return false;
 
-    public void ResetRotation ()
-    {
-        transform.localRotation = Quaternion.identity;
-    }
+        float maxDist = 10;
 
-    private IEnumerator LookToRoutine(Vector2 target, bool andBack, Action callback)
-    {
-        float baseRot = 0;
-        float targetRot = Vector2.Angle(Vector2.right, (target - (Vector2)transform.position).normalized);
-        float currentRot = 0;
+        if (Vector2.Distance(transform.position, targetTransform.position) > maxDist)
+            return false;
 
-        float lookAroundSpeed = 100f;
-
-        while (Mathf.Abs(currentRot - targetRot) > 0.1f)
-        {
-            currentRot = Mathf.MoveTowardsAngle(currentRot, targetRot, Time.deltaTime * lookAroundSpeed);
-            transform.localRotation = Quaternion.Euler(0,0, currentRot);
-            yield return null;
-        }
-
-        if (andBack)
-        {
-            while (Mathf.Abs(currentRot - baseRot) > 0.1f)
-            {
-                currentRot = Mathf.MoveTowardsAngle(currentRot, baseRot, Time.deltaTime * lookAroundSpeed);
-                transform.localRotation = Quaternion.Euler(0, 0, currentRot);
-                yield return null;
-            }
-        }
-
-        callback?.Invoke();
+        return Util.CheckLineOfSight(transform.position, targetTransform.position, "Default");
     }
 }

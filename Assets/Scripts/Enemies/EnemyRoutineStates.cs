@@ -4,6 +4,11 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+public enum LookDirection
+{
+    Left,
+    Right
+}
 public enum RoutineStateType
 {
     Wait,
@@ -15,26 +20,28 @@ public enum RoutineStateType
 public class EnemyAIRoutineState : EnemyStateBase
 {
     public RoutineStateType Type;
-    public bool Right;
+    public LookDirection Direction;
     public Vector2 Pos;
     public Vector2 WorldPos;
     public float Speed;
     public float Duration;
     private float waitTimer;
 
-    EnemyRoutineModule routineModule;
+    EnemyViewconeModule viewconeModule;
     EnemyMoveModule moveModule;
 
     public override bool TryEnter(EnemyBase enemyBase)
     {
-        routineModule = enemyBase.GetModule<EnemyRoutineModule>();
+        viewconeModule = enemyBase.GetModule<EnemyViewconeModule>();
 
         waitTimer = 0f;
         if (Type == RoutineStateType.GoTo)
         {
             moveModule = enemyBase.GetModule<EnemyMoveModule>();
-            moveModule.MoveTo(WorldPos, null);
+            moveModule.MoveTo(WorldPos);
         }
+        else if (Type == RoutineStateType.Look)
+            viewconeModule.Look(Direction);
 
         return true;
     }
@@ -47,7 +54,7 @@ public class EnemyAIRoutineState : EnemyStateBase
                 return !moveModule.isMoving;
 
             case RoutineStateType.Look:
-                return routineModule.Look(Right ? Vector2.right : Vector2.left);
+                return true;
 
             case RoutineStateType.Wait:
                 return (waitTimer += Time.deltaTime) > Duration;
@@ -107,7 +114,7 @@ public class EnemyAIRoutineStateDrawer : PropertyDrawer
                 break;
 
             case RoutineStateType.Look:
-                if (name == "Right")
+                if (name == "Direction")
                     return true;
                 break;
 

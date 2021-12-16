@@ -31,6 +31,8 @@ public class EnemyStatemachineModuleEditor : Editor
             EditorGUILayout.HelpBox(new GUIContent(StateToString(state)), wide: true);
             EditorGUILayout.EndHorizontal();
         }
+
+        base.DrawDefaultInspector();
     }
 
     private string StateToString(EnemyStateBase state)

@@ -17,6 +17,7 @@ public class EnemyShootModule : EnemyModule<EnemyShootModule>
 public class EnemyShootState : EnemyStateBase
 {
     EnemyShootModule shootModule;
+    EnemyViewconeModule viewconeModule;
 
     bool shot = false;
     float time = 0;
@@ -33,9 +34,11 @@ public class EnemyShootState : EnemyStateBase
 
     public override bool TryEnter(EnemyBase enemyBase)
     {
+        viewconeModule = enemyBase.GetModule<EnemyViewconeModule>();
         shootModule = enemyBase.GetModule<EnemyShootModule>();
+        viewconeModule.SetTarget(target);
 
-        if (target != null)
+        if (target != null && viewconeModule.CanSeeTarget)
             return true;
 
         return false;
@@ -58,6 +61,6 @@ public class EnemyShootState : EnemyStateBase
 
     public override bool TryExit(EnemyBase enemyBase)
     {
-        return false;
+        return !viewconeModule.CanSeeTarget;
     }
 }

@@ -34,14 +34,14 @@ public static class Util
         RaycastHit2D hit = Physics2D.Raycast(from, (to - from).normalized, Vector2.Distance(from, to), LayerMask.GetMask(layer));
         if (hit == true)
         {
-            Debug.DrawLine(from, hit.point, Color.yellow, 5f);
-            Debug.DrawLine(hit.point, to, Color.red, 5f);
-            DebugDrawCross(hit.point, Color.red, 0.5f, 5f);
+            Debug.DrawLine(from, hit.point, Color.yellow);
+            Debug.DrawLine(hit.point, to, Color.red);
+            DebugDrawCross(hit.point, Color.red,5);
             return false;
         }
         else
         {
-            Debug.DrawLine(from, to, Color.green, 5f);
+            Debug.DrawLine(from, to, Color.green);
         }
 
         return true;
