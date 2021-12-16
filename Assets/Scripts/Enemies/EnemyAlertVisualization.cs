@@ -6,7 +6,7 @@ using UnityEngine;
 public class EnemyAlertVisualization : MonoBehaviour
 {
     EnemyStatemachineModule stateMachine;
-    [SerializeField] SpriteRenderer renderer;
+    [SerializeField] MeshRenderer meshRenderer;
 
     private void Start()
     {
@@ -16,6 +16,6 @@ public class EnemyAlertVisualization : MonoBehaviour
 
     private void OnEnterNewState(Type type)
     {
-        renderer.enabled = type != typeof(EnemyAIRoutineState);
+        meshRenderer.enabled = type != typeof(EnemyAIRoutineState);
     }
 }
