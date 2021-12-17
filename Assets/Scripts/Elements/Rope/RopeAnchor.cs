@@ -6,8 +6,10 @@ using UnityEngine;
 public class RopeAnchor : MonoBehaviour
 {
     [SerializeField] Rope[] ropes;
-    float smoothForceDifference = 0;
-    float smoothDistanceDifference = 0;
+    private float smoothForceDifference = 0;
+    private float smoothDistanceDifference = 0;
+
+    private const float minDistance = 0.005f;
 
     //string log = "change" + "\n";
     //string log1 = "diff1" + "\n";
@@ -25,11 +27,12 @@ public class RopeAnchor : MonoBehaviour
         smoothForceDifference = Mathf.Lerp(smoothForceDifference, forceDifference, Time.deltaTime);
         smoothDistanceDifference = Mathf.Lerp(smoothDistanceDifference, distanceDifference, Time.deltaTime);
 
-        bool improve = Mathf.Abs(smoothDistanceDifference) > Mathf.Abs(smoothDistanceDifference - smoothForceDifference);
-
-        Debug.LogWarning(improve + " => " + Mathf.Abs(distanceDifference) + " > " + Mathf.Abs(distanceDifference - forceDifference));
-
         float decreasedByDistance = Mathf.Max(1 - smoothDistanceDifference, 0) * smoothForceDifference;
+
+        //float newDistanceDifference = Mathf.Abs(((rope1.JointDistance + decreasedByDistance) - rope1.RealDistance) + ((rope2.JointDistance - decreasedByDistance) - rope2.RealDistance));
+        //bool improve = Mathf.Abs(newDistanceDifference) <= Mathf.Abs(distanceDifference);
+        //Debug.LogWarning(improve + (Mathf.Abs(newDistanceDifference) - Mathf.Abs(distanceDifference)).ToString());
+
         //float fix = Mathf.Lerp(decreasedByDistance, smoothForceDifference, improve ? 0 : 0);
 
         //log += smoothForceDifference + "\n";
@@ -43,9 +46,13 @@ public class RopeAnchor : MonoBehaviour
         //Debug.LogWarning(log3);
         //Debug.LogWarning(log4);
 
+        bool rope1DistTooSmall = (rope1.JointDistance + decreasedByDistance) < minDistance;
+        bool rope2DistTooSmall = (rope2.JointDistance - decreasedByDistance) < minDistance;
 
-
-        rope1.ChangeRopeLength(decreasedByDistance);
-        rope2.ChangeRopeLength(-decreasedByDistance);
+        if (!rope1DistTooSmall && !rope2DistTooSmall)
+        {
+            rope1.ChangeRopeLength(decreasedByDistance);
+            rope2.ChangeRopeLength(-decreasedByDistance);
+        }
     }
 }

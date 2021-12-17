@@ -12,7 +12,7 @@ public class Rope : MonoBehaviour
 
     public float PullForce;
     public float RealDistance;
-    public float JointDistance;
+    public float JointDistance = 1;
 
     string log = "dist \n";
     string log2 = "distReal \n";
@@ -34,6 +34,7 @@ public class Rope : MonoBehaviour
         //Vector2 ownAnchor = transform.TransformPoint(joint2D.anchor);
         Vector2 ownAnchor = joint2D.attachedRigidbody.ClosestPoint(otherAnchor);
         RealDistance = Vector2.Distance(otherAnchor, ownAnchor);
+        JointDistance = joint2D.distance;
 
     }
 
@@ -53,7 +54,6 @@ public class Rope : MonoBehaviour
     public void ChangeRopeLength(float lengthChange)
     {
         joint2D.distance += lengthChange;
-        JointDistance = joint2D.distance;
         //Vector2 pos = joint2D.connectedBody.transform.TransformPoint(joint2D.connectedAnchor);
         //Vector2 pos2 = transform.TransformPoint(joint2D.anchor);
         //float distanceReal = Vector2.Distance(pos, pos2);
