@@ -23,6 +23,8 @@ public class PlayerRopePuller : MonoBehaviour, IRopeable
 
     public float JointDistance => Vector2.Distance(transform.position, anchor.transform.position);
 
+    public float Buffer => 0f;
+
     private void Update()
     {
 
@@ -31,7 +33,6 @@ public class PlayerRopePuller : MonoBehaviour, IRopeable
         if (lastPos != Vector2.zero)
             changeInDistance = Vector2.Distance(lastPos, anchor.transform.position) - Vector2.Distance(pos, anchor.transform.position);
 
-        joint2D.distance = anchor.GetTotalRopeLength();
 
         lastPos = pos;
     }
@@ -41,11 +42,17 @@ public class PlayerRopePuller : MonoBehaviour, IRopeable
         rigidbody2D = GetComponentInParent<Rigidbody2D>();
         ropeVisualizer = Instantiate(visualizerPrefab);
         ropeVisualizer.Init(transform, anchor.transform);
+        Invoke("FetchMaxDistance", 0.1f);
     }
 
     public void ChangeRopeLength(float lengthChange)
     {
 
+    }
+
+    private void FetchMaxDistance()
+    {
+        joint2D.distance = anchor.GetTotalRopeLength();
     }
 
     private void OnDrawGizmos()

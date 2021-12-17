@@ -50,7 +50,7 @@ public class RopeAnchor : MonoBehaviour
 
     internal float GetTotalRopeLength()
     {
-        return rope1.JointDistance + rope2.JointDistance;
+        return rope1.JointDistance + rope2.JointDistance + rope1.Buffer + rope2.Buffer;
     }
 
     private float ControlSimulation(IRopeable controller, IRopeable controlled)

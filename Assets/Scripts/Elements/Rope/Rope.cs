@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -6,6 +7,7 @@ using UnityEngine;
 public interface IRopeable
 {
     float PullForce { get; }
+    float Buffer { get; }
     float DistanceDifference { get; }
     float JointDistance { get; }
     bool HasControl { get; }
@@ -17,6 +19,7 @@ public interface IRopeable
 public class Rope : MonoBehaviour, IRopeable
 {
     [SerializeField] RopeConnectionVisualizer visualizerPrefab;
+    private RopeConnectionVisualizer visualizer;
 
     private SpringJoint2D joint2D;
 
@@ -24,17 +27,22 @@ public class Rope : MonoBehaviour, IRopeable
     private float realDistance;
     private float jointDistance = 1;
 
+    [SerializeField] private float buffer = 0;
+    public float Buffer => buffer;
+
     public float PullForce => pullForce;
     public float DistanceDifference => jointDistance - realDistance;
     public float JointDistance => jointDistance;
 
     public bool HasControl => false;
 
+
     // Start is called before the first frame update
     void Start()
     {
         joint2D = GetComponent<SpringJoint2D>();
-        Instantiate(visualizerPrefab).Init(transform, joint2D.connectedBody.transform);
+        visualizer = Instantiate(visualizerPrefab);
+        visualizer.Init(transform, joint2D.connectedBody.transform);
     }
 
     private void Update()
@@ -51,11 +59,49 @@ public class Rope : MonoBehaviour, IRopeable
         realDistance = Vector2.Distance(otherAnchor, ownAnchor);
         jointDistance = joint2D.distance;
 
+        while (buffer > 0.01f && (realDistance + 0.01f > jointDistance))
+        {
+            joint2D.distance += 0.01f;
+            buffer -= 0.01f;
+        }
+
+        if (buffer > 0 && (realDistance + 0.05f > jointDistance))
+        {
+            joint2D.distance += buffer;
+            buffer = 0;
+        }
+
+        visualizer.SetBuffer(buffer);
     }
 
     public void ChangeRopeLength(float lengthChange)
     {
-        joint2D.distance += lengthChange;
+        if (lengthChange != 0)
+        {
+            if (lengthChange > 0)
+                buffer += lengthChange;
+            else
+            {
+                float rest = TryRemoveFromBuffer(lengthChange);
+                joint2D.distance += rest;
+            }
+        }
+    }
+
+    private float TryRemoveFromBuffer(float lengthChange)
+    {
+        if (Mathf.Abs(lengthChange) < buffer)
+        {
+            buffer += lengthChange;
+            return 0f;
+        }
+        else
+        {
+            float b = buffer + lengthChange;
+            buffer = 0f;
+
+            return b;
+        }
     }
 
     private void OnDrawGizmos()

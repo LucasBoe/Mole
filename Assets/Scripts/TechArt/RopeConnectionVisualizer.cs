@@ -13,6 +13,8 @@ public class RopeConnectionVisualizer : MonoBehaviour
     [SerializeField] float smoothValue = 0.25f;
     [SerializeField] float gravityValue = 0.2f;
 
+    private float buffer;
+
     void Start()
     {
         tweenJoint = GetComponentInChildren<TargetJoint2D>();
@@ -34,7 +36,8 @@ public class RopeConnectionVisualizer : MonoBehaviour
         float distance = Vector2.Distance(start.position, end.position);
         Vector2 center = (start.position + end.position) / 2f;
         Vector2 gravityModifier = Vector2.down * distance * gravityValue;
-        tweenJoint.target = center + gravityModifier;
+        Vector2 bufferModifier = Vector2.down * distance * 0.25f * buffer;
+        tweenJoint.target = center + gravityModifier + bufferModifier;
 
         Vector2[] points = new Vector2[] { start.position, tween.position, end.position };
 
@@ -50,5 +53,10 @@ public class RopeConnectionVisualizer : MonoBehaviour
 
         lineRenderer.positionCount = points.Length;
         lineRenderer.SetPositions(points.ToVector3Array());
+    }
+
+    internal void SetBuffer(float buffer)
+    {
+        this.buffer = buffer;
     }
 }
