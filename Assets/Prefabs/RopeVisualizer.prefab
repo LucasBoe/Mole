@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6650807409666267505}
   - component: {fileID: 6650807409666267504}
   - component: {fileID: 6650807409666267510}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Tween
   m_TagString: Untagged
   m_Icon: {fileID: 0}

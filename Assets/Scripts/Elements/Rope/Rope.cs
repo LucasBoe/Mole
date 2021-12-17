@@ -8,6 +8,7 @@ public interface IRopeable
     float PullForce { get; }
     float DistanceDifference { get; }
     float JointDistance { get; }
+    bool HasControl { get; }
 
     void ChangeRopeLength(float lengthChange);
 }
@@ -26,6 +27,8 @@ public class Rope : MonoBehaviour, IRopeable
     public float PullForce => pullForce;
     public float DistanceDifference => jointDistance - realDistance;
     public float JointDistance => jointDistance;
+
+    public bool HasControl => false;
 
     // Start is called before the first frame update
     void Start()
