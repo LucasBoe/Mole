@@ -29,7 +29,7 @@ public class PlayerInputHandler : SingletonBehaviour<PlayerInputHandler>
 
         PlayerInput.Back = Input.GetButtonDown("Back");
         PlayerInput.Jump = Input.GetButtonDown("Jump");
-        PlayerInput.Interact = Input.GetButtonDown("Submit");
+        PlayerInput.Interact = Input.GetButtonDown("Interact");
         PlayerInput.Use = Input.GetButtonDown("Use");
         PlayerInput.Sprint = Input.GetKey(KeyCode.LeftShift);
     }

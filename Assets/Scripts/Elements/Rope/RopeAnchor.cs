@@ -25,9 +25,12 @@ public class RopeAnchor : MonoBehaviour
         smoothForceDifference = Mathf.Lerp(smoothForceDifference, forceDifference, Time.deltaTime);
         smoothDistanceDifference = Mathf.Lerp(smoothDistanceDifference, distanceDifference, Time.deltaTime);
 
-        //bool improve = smoothDistanceDifference > distanceDifference + smoothForceDifference;
+        bool improve = Mathf.Abs(smoothDistanceDifference) > Mathf.Abs(smoothDistanceDifference - smoothForceDifference);
 
-        float correction = Mathf.Max(1 - smoothDistanceDifference, 0) * smoothForceDifference;
+        Debug.LogWarning(improve + " => " + Mathf.Abs(distanceDifference) + " > " + Mathf.Abs(distanceDifference - forceDifference));
+
+        float decreasedByDistance = Mathf.Max(1 - smoothDistanceDifference, 0) * smoothForceDifference;
+        //float fix = Mathf.Lerp(decreasedByDistance, smoothForceDifference, improve ? 0 : 0);
 
         //log += smoothForceDifference + "\n";
         //log1 += rope1.JointDistance - rope1.RealDistance + "\n";
@@ -42,7 +45,7 @@ public class RopeAnchor : MonoBehaviour
 
 
 
-        rope1.ChangeRopeLength(correction);
-        rope2.ChangeRopeLength(-correction);
+        rope1.ChangeRopeLength(decreasedByDistance);
+        rope2.ChangeRopeLength(-decreasedByDistance);
     }
 }
