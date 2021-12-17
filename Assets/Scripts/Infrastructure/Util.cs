@@ -29,6 +29,26 @@ public static class Util
         }
     }
 
+    internal static Vector2[] SmoothToCurve(Vector2[] points, float distribution = 0.25f)
+    {
+        Vector2 start = points[0];
+        Vector2 end = points[points.Length - 1];
+
+        List<Vector2> result = new List<Vector2>();
+
+        result.Add(start);
+
+        for (int i = 1; i < points.Length - 1; i++)
+        {
+            result.Add(Vector2.Lerp(points[i - 1], points[i], i == 1 ? 0.66f : 1 - distribution));
+            result.Add(Vector2.Lerp(points[i], points[i + 1], i == (points.Length - 1) ? 0.33f : distribution));
+        }
+
+        result.Add(end);
+
+        return result.ToArray();
+    }
+
     public static bool CheckLineOfSight(Vector2 from, Vector2 to, string layer)
     {
         RaycastHit2D hit = Physics2D.Raycast(from, (to - from).normalized, Vector2.Distance(from, to), LayerMask.GetMask(layer));
@@ -53,7 +73,7 @@ public static class Util
         for (int i = 0; i <= 360; i += segmentLength)
         {
             Vector2 positionXY = new Vector2(Mathf.Sin(i * Mathf.Deg2Rad), Mathf.Cos(i * Mathf.Deg2Rad));
-            Vector3 positionxyz = new Vector3(position.x + positionXY.x * size, position.y, position.z + positionXY.y * size);
+            Vector2 positionxyz = new Vector3(position.x + positionXY.x * size, position.y + positionXY.y * size);
 
             if (lastPosition != Vector3.zero)
             {
