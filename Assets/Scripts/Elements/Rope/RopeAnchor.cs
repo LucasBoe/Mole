@@ -5,11 +5,19 @@ using UnityEngine;
 
 public class RopeAnchor : MonoBehaviour
 {
-    [SerializeField] Rope[] ropes;
-    private float smoothForceDifference = 0;
-    private float smoothDistanceDifference = 0;
+    [SerializeField] GameObject[] ropes;
+    [SerializeField] private float smoothForceDifference = 0;
+    [SerializeField] private float smoothDistanceDifference = 0;
+
+    IRopeable rope1, rope2;
 
     private const float minDistance = 0.005f;
+
+    private void Start()
+    {
+        rope1 = ropes[0].GetComponent<IRopeable>();
+        rope2 = ropes[1].GetComponent<IRopeable>();
+    }
 
     //string log = "change" + "\n";
     //string log1 = "diff1" + "\n";
@@ -19,10 +27,11 @@ public class RopeAnchor : MonoBehaviour
 
     private void LateUpdate()
     {
-        Rope rope1 = ropes[0], rope2 = ropes[1];
+        Debug.LogWarning(rope1);
+        Debug.LogWarning(rope2);
 
         float forceDifference = (rope1.PullForce - rope2.PullForce) * Time.deltaTime;
-        float distanceDifference = Mathf.Abs((rope1.JointDistance - rope1.RealDistance) + (rope2.JointDistance - rope2.RealDistance));
+        float distanceDifference = Mathf.Abs(rope1.DistanceDifference + rope1.DistanceDifference);
 
         smoothForceDifference = Mathf.Lerp(smoothForceDifference, forceDifference, Time.deltaTime);
         smoothDistanceDifference = Mathf.Lerp(smoothDistanceDifference, distanceDifference, Time.deltaTime);
@@ -51,6 +60,7 @@ public class RopeAnchor : MonoBehaviour
 
         if (!rope1DistTooSmall && !rope2DistTooSmall)
         {
+            Debug.LogWarning("Change Rope Length : " + decreasedByDistance);
             rope1.ChangeRopeLength(decreasedByDistance);
             rope2.ChangeRopeLength(-decreasedByDistance);
         }

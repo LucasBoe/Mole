@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,9 +19,18 @@ public class RopeConnectionVisualizer : MonoBehaviour
         lineRenderer = GetComponent<LineRenderer>();
     }
 
+    internal void Init(Transform start, Transform end)
+    {
+        this.start = start;
+        this.end = end;
+    }
+
     // Update is called once per frame
     void Update()
     {
+        if (!start || !end)
+            return;
+
         float distance = Vector2.Distance(start.position, end.position);
         Vector2 center = (start.position + end.position) / 2f;
         Vector2 gravityModifier = Vector2.down * distance * gravityValue;

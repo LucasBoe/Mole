@@ -3,70 +3,61 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[RequireComponent(typeof(SpringJoint2D))]
-public class Rope : MonoBehaviour
+public interface IRopeable
 {
-    [SerializeField] RopeAnchor anchor;
+    float PullForce { get; }
+    float DistanceDifference { get; }
+    float JointDistance { get; }
 
-    SpringJoint2D joint2D;
+    void ChangeRopeLength(float lengthChange);
+}
 
-    public float PullForce;
-    public float RealDistance;
-    public float JointDistance = 1;
+[RequireComponent(typeof(SpringJoint2D))]
+public class Rope : MonoBehaviour, IRopeable
+{
+    [SerializeField] RopeConnectionVisualizer visualizerPrefab;
 
-    string log = "dist \n";
-    string log2 = "distReal \n";
+    private SpringJoint2D joint2D;
+
+    private float pullForce;
+    private float realDistance;
+    private float jointDistance = 1;
+
+    public float PullForce => pullForce;
+    public float DistanceDifference => jointDistance - realDistance;
+    public float JointDistance => jointDistance;
 
     // Start is called before the first frame update
     void Start()
     {
         joint2D = GetComponent<SpringJoint2D>();
+        Instantiate(visualizerPrefab).Init(transform, joint2D.connectedBody.transform);
     }
 
     private void Update()
     {
-        //joint2D.distance = Mathf.MoveTowards(joint2D.distance, targetDistance, Time.deltaTime);
         float forceRaw = joint2D.reactionForce.magnitude;
         float lerpValue = 1;// Time.deltaTime;
-        PullForce = Mathf.Lerp(PullForce, forceRaw, lerpValue);
+        pullForce = Mathf.Lerp(pullForce, forceRaw, lerpValue);
 
         Vector2 otherAnchor = joint2D.connectedBody.transform.TransformPoint(joint2D.connectedAnchor);
-        //Vector2 ownAnchor = transform.TransformPoint(joint2D.anchor);
-        Vector2 ownAnchor = joint2D.attachedRigidbody.ClosestPoint(otherAnchor);
-        RealDistance = Vector2.Distance(otherAnchor, ownAnchor);
-        JointDistance = joint2D.distance;
+        Vector2 ownAnchor = transform.TransformPoint(joint2D.anchor);
 
-    }
+        Debug.DrawLine(otherAnchor, ownAnchor, Color.red);
 
-    public void ChangeRopeDistance(float newDistance)
-    {
-        JointDistance = newDistance;
-        joint2D.distance = newDistance;
-        //Vector2 pos = joint2D.connectedBody.transform.TransformPoint(joint2D.connectedAnchor);
-        //Vector2 pos2 = transform.TransformPoint(joint2D.anchor);
-        //float distanceReal = Vector2.Distance(pos, pos2);
-        //log += joint2D.distance + " \n";
-        //log2 += distanceReal + " \n";
-        //Debug.LogWarning(log);
-        //Debug.LogWarning(log2);
+        realDistance = Vector2.Distance(otherAnchor, ownAnchor);
+        jointDistance = joint2D.distance;
+
     }
 
     public void ChangeRopeLength(float lengthChange)
     {
         joint2D.distance += lengthChange;
-        //Vector2 pos = joint2D.connectedBody.transform.TransformPoint(joint2D.connectedAnchor);
-        //Vector2 pos2 = transform.TransformPoint(joint2D.anchor);
-        //float distanceReal = Vector2.Distance(pos, pos2);
-        //log += joint2D.distance + " \n";
-        //log2 += distanceReal + " \n";
-        //Debug.LogWarning(log);
-        //Debug.LogWarning(log2);
     }
 
     private void OnDrawGizmos()
     {
         //Gizmos.DrawLine(transform.position, transform.position + (Vector3)joint2D.reactionForce.normalized * (PullForce - joint2D.reactionForce.magnitude));
-        //Handles.Label(transform.position, ((int)(joint2D.reactionForce).magnitude).ToString() + " => " + (int)PullForce);
+        Handles.Label(transform.position, ((int)(joint2D.reactionForce).magnitude).ToString() + " => " + (int)PullForce);
     }
-
 }
