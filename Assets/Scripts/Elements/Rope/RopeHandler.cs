@@ -30,4 +30,15 @@ public class RopeHandler : SingletonBehaviour<RopeHandler>
         info.attached = rigidbody2D;
         return CreateRope(info);
     }
+
+    internal RopeAnchor GetAnchorOf(IRopeable rope)
+    {
+        foreach (RopeAnchor anchor in FindObjectsOfType<RopeAnchor>())
+        {
+            if (anchor.HasRope(rope))
+                return anchor;
+        }
+
+        return null;
+    }
 }

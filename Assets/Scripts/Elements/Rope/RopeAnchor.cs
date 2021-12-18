@@ -49,6 +49,11 @@ public class RopeAnchor : MonoBehaviour
         return RopeSlot.None;
     }
 
+    internal bool HasRope(IRopeable rope)
+    {
+        return (rope1 == rope || rope2 == rope);
+    }
+
     public void ConnectRopeToSlot(IRopeable rope, RopeSlot ropeSlot)
     {
         if (ropeSlot == RopeSlot.Slot1)

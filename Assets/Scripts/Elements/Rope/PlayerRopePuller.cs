@@ -23,14 +23,6 @@ public class PlayerRopePuller : SingletonBehaviour<PlayerRopePuller>, IRopeable
     public float JointDistance => Vector2.Distance(transform.position, anchor.transform.position);
     public float Buffer => 0f;
 
-    private void Start()
-    {
-        ropeVisualizer = Instantiate(visualizerPrefab);
-        ropeVisualizer.Init(transform, anchor.transform);
-        Invoke("FetchMaxDistance", 0.1f);
-    }
-    private void FetchMaxDistance() { joint2D.distance = anchor.GetTotalRopeLength(); }
-
     public RopeConnectionInformation DeactivateAndFetchInfo()
     {
         anchor.ClearSlot(this);
@@ -40,14 +32,25 @@ public class PlayerRopePuller : SingletonBehaviour<PlayerRopePuller>, IRopeable
 
     public void Activate(Rope toReplace)
     {
-        RopeAnchor.RopeSlot slot = anchor.ClearSlot(toReplace);
+        RopeAnchor.RopeSlot slot = RopeHandler.Instance.GetAnchorOf(toReplace).ClearSlot(toReplace);
         anchor = toReplace.DeactivateAndFetchInfo().Anchor;
         anchor.ConnectRopeToSlot(this, slot);
+        joint2D.distance = anchor.GetTotalRopeLength();
+
+        if (ropeVisualizer == null)
+        {
+            ropeVisualizer = Instantiate(visualizerPrefab);
+            ropeVisualizer.Init(transform, anchor.transform);
+        }
+
         SetActiveState(true);
     }
 
     private void Update()
     {
+        if (!IsActive)
+            return;
+
         Vector2 pos = transform.position;
 
         if (lastPos != Vector2.zero)

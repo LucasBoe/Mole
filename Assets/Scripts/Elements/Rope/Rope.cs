@@ -72,7 +72,7 @@ public class Rope : MonoBehaviour, IRopeable
         joint2D.connectedBody = toConnectTo;
         joint2D.connectedAnchor = Vector2.zero;
 
-        FixedJoint2D fix = toAttachTo.gameObject.GetComponent<FixedJoint2D>();
+        FixedJoint2D fix = GetComponent<FixedJoint2D>();
         fix.connectedBody = toAttachTo;
         fix.connectedAnchor = Vector2.zero;
     }
