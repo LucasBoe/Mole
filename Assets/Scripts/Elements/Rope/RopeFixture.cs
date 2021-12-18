@@ -4,33 +4,28 @@ using UnityEngine;
 
 public class RopeFixture : MonoBehaviour
 {
-    Rigidbody2D rigidbody2D;
-    [SerializeField] Rope connected;
-
-    bool playerIsAbove = false;
-
-    private void Start()
-    {
-        rigidbody2D = GetComponent<Rigidbody2D>();
-    }
+    [SerializeField] private Rope connected;
+    [SerializeField] private Rigidbody2D rigidbody2D;
+    private bool playerIsAbove = false;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.IsPlayer())
-        {
-            if (connected != null || PlayerRopePuller.Instance.IsActive)
-                PlayerControlPromptUI.Instance.Show(ControlType.Interact, transform.position + Vector3.up);
+        if (!collision.IsPlayer())
+            return;
 
-            playerIsAbove = true;
-        }
+        if (connected != null || PlayerRopePuller.Instance.IsActive)
+            PlayerControlPromptUI.Instance.Show(ControlType.Interact, transform.position + Vector3.up);
+
+        playerIsAbove = true;
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.IsPlayer())
-        {
-            PlayerControlPromptUI.Instance.Hide();
-            playerIsAbove = false;
-        }
+        if (!collision.IsPlayer())
+            return;
+
+        PlayerControlPromptUI.Instance.Hide();
+        playerIsAbove = false;
+
     }
 
     private void Update()
@@ -39,13 +34,11 @@ public class RopeFixture : MonoBehaviour
         {
             if (PlayerRopePuller.Instance.IsActive && connected == null)
             {
-                RopeConnectionInformation info = PlayerRopePuller.Instance.DeactivateAndFetchInfo();
-                info.attached = rigidbody2D;
-                connected = RopeHandler.Instance.CreateRope(info);
+                connected = RopeHandler.Instance.AttachPlayerRope(rigidbody2D);
             }
             else if (connected != null && !PlayerRopePuller.Instance.IsActive)
             {
-                PlayerRopePuller.Instance.ReplaceRope(connected);
+                PlayerRopePuller.Instance.Activate(connected);
                 connected = null;
             }
         }

@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class RopeAnchor : MonoBehaviour
 {
-    [SerializeField] Rigidbody2D rigidbody2D;
-    [SerializeField] GameObject[] ropes;
+    [SerializeField] private Rigidbody2D rigidbody2D;
+    [SerializeField] private GameObject[] ropes;
     [SerializeField] private float smoothForceDifference = 0;
     [SerializeField] private float smoothDistanceDifference = 0;
 
@@ -48,12 +48,6 @@ public class RopeAnchor : MonoBehaviour
 
         return RopeSlot.None;
     }
-
-    //string log = "change" + "\n";
-    //string log1 = "diff1" + "\n";
-    //string log2 = "diff2" + "\n";
-    //string log3 = "diffTotal" + "\n";
-    //string log4 = "correction" + "\n";
 
     public void ConnectRopeToSlot(IRopeable rope, RopeSlot ropeSlot)
     {
@@ -100,7 +94,6 @@ public class RopeAnchor : MonoBehaviour
     private float EqualSimulation()
     {
         float forceDifference = (rope1.PullForce - rope2.PullForce) * Time.deltaTime;
-
         float distanceDifference = Mathf.Abs(rope1.DistanceDifference + rope1.DistanceDifference);
 
         smoothForceDifference = Mathf.Lerp(smoothForceDifference, forceDifference, Time.deltaTime);
@@ -109,11 +102,6 @@ public class RopeAnchor : MonoBehaviour
         float decreasedByDistance = Mathf.Max(1 - smoothDistanceDifference, 0) * smoothForceDifference;
         return decreasedByDistance;
     }
-
-    //private void OnDrawGizmos()
-    //{
-    //    Handles.Label(transform.position, rope1.JointDistance.ToString() + " - " + rope2.JointDistance);
-    //}
 
     public enum RopeSlot
     {

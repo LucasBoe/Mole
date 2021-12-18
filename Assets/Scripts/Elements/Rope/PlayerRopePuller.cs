@@ -6,77 +6,62 @@ using UnityEngine;
 
 public class PlayerRopePuller : SingletonBehaviour<PlayerRopePuller>, IRopeable
 {
-    [SerializeField] RopeConnectionVisualizer visualizerPrefab;
-    [SerializeField] DistanceJoint2D joint2D;
-    [SerializeField] RopeAnchor anchor;
-    [SerializeField] float pullForceMultiplier = 1;
+    [SerializeField] private Rigidbody2D rigidbody2D;
+    [SerializeField] private RopeConnectionVisualizer visualizerPrefab;
+    [SerializeField] private DistanceJoint2D joint2D;
+    [SerializeField] private RopeAnchor anchor;
 
-    Rigidbody2D rigidbody2D;
-    RopeConnectionVisualizer ropeVisualizer;
-
+    private RopeConnectionVisualizer ropeVisualizer;
+    private float pullForceMultiplier = 100;
     private float changeInDistance;
     private Vector2 lastPos;
+
+    public bool IsActive => joint2D.isActiveAndEnabled;
+    public bool HasControl => true;
+    public float PullForce => changeInDistance * pullForceMultiplier;
+    public float DistanceDifference => 0;
+    public float JointDistance => Vector2.Distance(transform.position, anchor.transform.position);
+    public float Buffer => 0f;
+
+    private void Start()
+    {
+        ropeVisualizer = Instantiate(visualizerPrefab);
+        ropeVisualizer.Init(transform, anchor.transform);
+        Invoke("FetchMaxDistance", 0.1f);
+    }
+    private void FetchMaxDistance() { joint2D.distance = anchor.GetTotalRopeLength(); }
 
     public RopeConnectionInformation DeactivateAndFetchInfo()
     {
         anchor.ClearSlot(this);
-        joint2D.enabled = false;
-        ropeVisualizer.gameObject.SetActive(false);
-
+        SetActiveState(false);
         return new RopeConnectionInformation() { Length = Vector2.Distance(anchor.transform.position, transform.position), Anchor = anchor };
     }
 
-    public void ReplaceRope(Rope connected)
+    public void Activate(Rope toReplace)
     {
-        RopeAnchor.RopeSlot slot = anchor.ClearSlot(connected);
-
-        RopeConnectionInformation info = connected.DeactivateAndFetchInfo();
-        anchor = info.Anchor;
-
+        RopeAnchor.RopeSlot slot = anchor.ClearSlot(toReplace);
+        anchor = toReplace.DeactivateAndFetchInfo().Anchor;
         anchor.ConnectRopeToSlot(this, slot);
-        joint2D.enabled = true;
-        ropeVisualizer.gameObject.SetActive(true);
+        SetActiveState(true);
     }
-
-    public bool IsActive => joint2D.isActiveAndEnabled;
-
-    public bool HasControl => true;
-    public float PullForce => changeInDistance * pullForceMultiplier;
-
-    public float DistanceDifference => 0;
-
-    public float JointDistance => Vector2.Distance(transform.position, anchor.transform.position);
-
-    public float Buffer => 0f;
 
     private void Update()
     {
-
         Vector2 pos = transform.position;
 
         if (lastPos != Vector2.zero)
             changeInDistance = Vector2.Distance(lastPos, anchor.transform.position) - Vector2.Distance(pos, anchor.transform.position);
 
-
         lastPos = pos;
     }
 
-    private void Start()
-    {
-        rigidbody2D = GetComponentInParent<Rigidbody2D>();
-        ropeVisualizer = Instantiate(visualizerPrefab);
-        ropeVisualizer.Init(transform, anchor.transform);
-        Invoke("FetchMaxDistance", 0.1f);
-    }
+    public void ChangeRopeLength(float lengthChange) { }
 
-    public void ChangeRopeLength(float lengthChange)
+    private void SetActiveState(bool active)
     {
-
-    }
-
-    private void FetchMaxDistance()
-    {
-        joint2D.distance = anchor.GetTotalRopeLength();
+        joint2D.enabled = active;
+        ropeVisualizer.gameObject.SetActive(active);
     }
 
     private void OnDrawGizmos()

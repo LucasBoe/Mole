@@ -23,4 +23,11 @@ public class RopeHandler : SingletonBehaviour<RopeHandler>
 
         return newRope;
     }
+
+    public Rope AttachPlayerRope(Rigidbody2D rigidbody2D)
+    {
+        RopeConnectionInformation info = PlayerRopePuller.Instance.DeactivateAndFetchInfo();
+        info.attached = rigidbody2D;
+        return CreateRope(info);
+    }
 }
