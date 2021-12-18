@@ -6,14 +6,14 @@ using UnityEngine;
 [RequireComponent(typeof(LineRenderer))]
 public class RopeConnectionVisualizer : MonoBehaviour
 {
-    [SerializeField] Transform start, tween, end;
-    TargetJoint2D tweenJoint;
-    LineRenderer lineRenderer;
+    [SerializeField] private Transform start, tween, end;
+    private TargetJoint2D tweenJoint;
+    private LineRenderer lineRenderer;
 
-    [SerializeField] float smoothValue = 0.25f;
-    [SerializeField] float gravityValue = 0.2f;
+    [SerializeField] private float smoothValue = 0.25f;
+    [SerializeField] private float gravityValue = 0.2f;
 
-    private float buffer;
+    [SerializeField] private float buffer;
 
     void Start()
     {

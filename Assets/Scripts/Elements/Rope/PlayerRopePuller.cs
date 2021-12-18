@@ -1,9 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class PlayerRopePuller : MonoBehaviour, IRopeable
+public class PlayerRopePuller : SingletonBehaviour<PlayerRopePuller>, IRopeable
 {
     [SerializeField] RopeConnectionVisualizer visualizerPrefab;
     [SerializeField] DistanceJoint2D joint2D;
@@ -15,6 +16,29 @@ public class PlayerRopePuller : MonoBehaviour, IRopeable
 
     private float changeInDistance;
     private Vector2 lastPos;
+
+    public RopeConnectionInformation DeactivateAndFetchInfo()
+    {
+        anchor.ClearSlot(this);
+        joint2D.enabled = false;
+        ropeVisualizer.gameObject.SetActive(false);
+
+        return new RopeConnectionInformation() { Length = Vector2.Distance(anchor.transform.position, transform.position), Anchor = anchor };
+    }
+
+    public void ReplaceRope(Rope connected)
+    {
+        RopeAnchor.RopeSlot slot = anchor.ClearSlot(connected);
+
+        RopeConnectionInformation info = connected.DeactivateAndFetchInfo();
+        anchor = info.Anchor;
+
+        anchor.ConnectRopeToSlot(this, slot);
+        joint2D.enabled = true;
+        ropeVisualizer.gameObject.SetActive(true);
+    }
+
+    public bool IsActive => joint2D.isActiveAndEnabled;
 
     public bool HasControl => true;
     public float PullForce => changeInDistance * pullForceMultiplier;

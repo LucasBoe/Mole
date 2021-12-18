@@ -11,17 +11,18 @@ public interface IRopeable
     float DistanceDifference { get; }
     float JointDistance { get; }
     bool HasControl { get; }
-
+    RopeConnectionInformation DeactivateAndFetchInfo();
     void ChangeRopeLength(float lengthChange);
 }
 
 [RequireComponent(typeof(SpringJoint2D))]
 public class Rope : MonoBehaviour, IRopeable
 {
-    [SerializeField] RopeConnectionVisualizer visualizerPrefab;
-    private RopeConnectionVisualizer visualizer;
+    [SerializeField] private RopeConnectionVisualizer visualizerPrefab;
+    [SerializeField] private SpringJoint2D joint2D;
+    [SerializeField] private Rigidbody2D rigidbody2D;
 
-    private SpringJoint2D joint2D;
+    private RopeConnectionVisualizer visualizer;
 
     private float pullForce;
     private float realDistance;
@@ -36,11 +37,9 @@ public class Rope : MonoBehaviour, IRopeable
 
     public bool HasControl => false;
 
-
     // Start is called before the first frame update
     void Start()
     {
-        joint2D = GetComponent<SpringJoint2D>();
         visualizer = Instantiate(visualizerPrefab);
         visualizer.Init(transform, joint2D.connectedBody.transform);
     }
@@ -61,6 +60,7 @@ public class Rope : MonoBehaviour, IRopeable
 
         while (buffer > 0.01f && (realDistance + 0.01f > jointDistance))
         {
+            rigidbody2D.AddForce(Vector2.down);
             joint2D.distance += 0.01f;
             buffer -= 0.01f;
         }
@@ -84,6 +84,7 @@ public class Rope : MonoBehaviour, IRopeable
             {
                 float rest = TryRemoveFromBuffer(lengthChange);
                 joint2D.distance += rest;
+                rigidbody2D.AddForce(Vector2.up);
             }
         }
     }
@@ -104,9 +105,23 @@ public class Rope : MonoBehaviour, IRopeable
         }
     }
 
-    private void OnDrawGizmos()
+    public void Setup(Rigidbody2D toAttachTo, Rigidbody2D toConnectTo)
     {
-        //Gizmos.DrawLine(transform.position, transform.position + (Vector3)joint2D.reactionForce.normalized * (PullForce - joint2D.reactionForce.magnitude));
-        Handles.Label(transform.position, ((int)(joint2D.reactionForce).magnitude).ToString() + " => " + (int)PullForce);
+        float dist = Vector2.Distance(toAttachTo.position, toConnectTo.position);
+        joint2D.connectedBody = toConnectTo;
+        joint2D.connectedAnchor = Vector2.zero;
+
+        FixedJoint2D fix = toAttachTo.gameObject.GetComponent<FixedJoint2D>();
+        fix.connectedBody = toAttachTo;
+        fix.connectedAnchor = Vector2.zero;
+    }
+
+    public RopeConnectionInformation DeactivateAndFetchInfo()
+    {
+        RopeAnchor anchor = joint2D.connectedBody.GetComponent<RopeAnchor>();
+        RopeConnectionInformation information = new RopeConnectionInformation() { Length = JointDistance, Buffer = Buffer, Anchor = anchor };
+        Destroy(visualizer.gameObject);
+        Destroy(gameObject);
+        return information;
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class RopeAnchor : MonoBehaviour
 {
+    [SerializeField] Rigidbody2D rigidbody2D;
     [SerializeField] GameObject[] ropes;
     [SerializeField] private float smoothForceDifference = 0;
     [SerializeField] private float smoothDistanceDifference = 0;
@@ -14,10 +15,38 @@ public class RopeAnchor : MonoBehaviour
 
     private const float minDistance = 0.005f;
 
+    public Rigidbody2D Rigidbody2D => rigidbody2D;
+
     private void Start()
     {
         rope1 = ropes[0].GetComponent<IRopeable>();
         rope2 = ropes[1].GetComponent<IRopeable>();
+    }
+
+    internal RopeSlot ClearSlot(IRopeable ropeable)
+    {
+        if (rope1 == ropeable)
+        {
+            rope1 = null;
+            return RopeSlot.Slot1;
+        }
+        else if (rope2 == ropeable)
+        {
+            rope2 = null;
+            return RopeSlot.Slot2;
+        }
+
+        return RopeSlot.None;
+    }
+
+    public RopeSlot GetEmptySlot()
+    {
+        if (rope1 == null)
+            return RopeSlot.Slot1;
+        else if (rope2 == null)
+            return RopeSlot.Slot2;
+
+        return RopeSlot.None;
     }
 
     //string log = "change" + "\n";
@@ -26,9 +55,20 @@ public class RopeAnchor : MonoBehaviour
     //string log3 = "diffTotal" + "\n";
     //string log4 = "correction" + "\n";
 
+    public void ConnectRopeToSlot(IRopeable rope, RopeSlot ropeSlot)
+    {
+        if (ropeSlot == RopeSlot.Slot1)
+            rope1 = rope;
+        else
+            rope2 = rope;
+    }
+
     private void LateUpdate()
     {
         float change = 0;
+
+        if (rope1 == null || rope2 == null)
+            return;
 
         if (rope1.HasControl)
             change = ControlSimulation(rope1, rope2);
@@ -42,7 +82,6 @@ public class RopeAnchor : MonoBehaviour
 
         if (!rope1DistTooSmall && !rope2DistTooSmall)
         {
-            Debug.LogWarning("Change Rope Length : " + change);
             rope1.ChangeRopeLength(change);
             rope2.ChangeRopeLength(-change);
         }
@@ -71,8 +110,15 @@ public class RopeAnchor : MonoBehaviour
         return decreasedByDistance;
     }
 
-    private void OnDrawGizmos()
+    //private void OnDrawGizmos()
+    //{
+    //    Handles.Label(transform.position, rope1.JointDistance.ToString() + " - " + rope2.JointDistance);
+    //}
+
+    public enum RopeSlot
     {
-        Handles.Label(transform.position, rope1.JointDistance.ToString() + " - " + rope2.JointDistance);
+        None,
+        Slot1,
+        Slot2,
     }
 }
