@@ -18,6 +18,7 @@ public class EnemyStatemachineModule : EnemyModule<EnemyStatemachineModule>
     [SerializeField] private NewStateSource onEmptyNewStateSource;
 
     public System.Action<System.Type> OnEnterNewState;
+    public System.Action OnStartWaiting;
     public EnemyStateBase CurrentState => currentState;
     public LinkedList<EnemyStateBase> NextStates => list;
 

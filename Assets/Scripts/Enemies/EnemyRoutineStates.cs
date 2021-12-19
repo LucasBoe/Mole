@@ -42,6 +42,8 @@ public class EnemyAIRoutineState : EnemyStateBase
         }
         else if (Type == RoutineStateType.Look)
             viewconeModule.Look(Direction);
+        else if (Type == RoutineStateType.Wait)
+            enemyBase.GetModule<EnemyStatemachineModule>().OnStartWaiting?.Invoke();
 
         return true;
     }

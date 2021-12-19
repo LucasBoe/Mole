@@ -30,6 +30,7 @@ public class EnemyViewconeModule : EnemyModule<EnemyViewconeModule>
 
     Coroutine doneLookingCoroutine;
     public bool Done => doneLookingCoroutine == null;
+    public System.Action OnStartLookingAround;
 
     private bool canSeeTarget;
     public bool CanSeeTarget { get => canSeeTarget; }
@@ -110,6 +111,8 @@ public class EnemyViewconeModule : EnemyModule<EnemyViewconeModule>
 
     private IEnumerator LookAroundRoutine()
     {
+        OnStartLookingAround?.Invoke();
+
         targetAngle = 45;
         while (Mathf.Abs(Mathf.DeltaAngle(currentAngle, targetAngle)) > 0.1f)
         {
