@@ -153,11 +153,11 @@ public class EnemyViewconeModule : EnemyModule<EnemyViewconeModule>
         this.viewconeMode = viewconeMode;
         lookedAroundCounter = 0;
 
+        if (doneLookingCoroutine != null)
+            StopCoroutine(doneLookingCoroutine);
+
         if (viewconeMode == ViewconeMode.ScanSurrounding)
         {
-            if (doneLookingCoroutine != null)
-                StopCoroutine(doneLookingCoroutine);
-
             doneLookingCoroutine = StartCoroutine(LookAroundRoutine());
         }
     }

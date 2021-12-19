@@ -34,6 +34,7 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
     }
     public Vector2 StranglePosition => transform.position + Vector3.left;
     public bool IsNull => this == null;
+    public Action OnStartBeeingStrangled;
 
 
     EnemyRoutineModule routineModule;
@@ -118,7 +119,7 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
             newStates.Add(new EnemyLookAroundState());
         } else if (Mode == AIMode.BeeingStrangled)
         {
-            newStates.Add(new EnemyWaitState(1));
+            newStates.Add(new EnemyWaitState(CombatStrangleState.strangleDuration));
         }
         else
         {
@@ -137,7 +138,9 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
     public void StartStrangling()
     {
         Mode = AIMode.BeeingStrangled;
+        moveModule.StopMoving();
         statemachineModule.StopCurrent();
+        OnStartBeeingStrangled?.Invoke();
     }
 
     public void StopStrangling(Vector2 playerPos)

@@ -17,7 +17,8 @@ public class EnemyAnimator : EnemyModule<EnemyAnimator>
 
         viewconeModule.OnStartLookingAround += delegate () { animator.Play("Enemy_LookAround"); };
         GetModule<EnemyMoveModule>().OnStartMovingToPosition += delegate () { animator.Play("Enemy_Walk"); };
-        GetModule<EnemyStatemachineModule>().OnStartWaiting += delegate () { animator.Play("Enemy_idle"); };
+        GetModule<EnemyStatemachineModule>().OnStartWaiting += delegate () { animator.Play("Enemy_Idle"); };
+        GetModule<EnemyAIModule>().OnStartBeeingStrangled += delegate () { animator.Play("Enemy_Strangled"); Debug.LogWarning("OnStartBeeingStrangled"); };
     }
 
     private void Update()

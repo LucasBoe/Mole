@@ -105,4 +105,9 @@ public class EnemyLookAroundState : EnemyStateBase
     {
         return viewconeModule.Done;
     }
+
+    public override void ForceExit()
+    {
+        viewconeModule.SetViewconeMode(EnemyViewconeModule.ViewconeMode.Free);
+    }
 }

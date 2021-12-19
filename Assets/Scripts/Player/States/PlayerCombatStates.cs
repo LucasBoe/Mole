@@ -27,7 +27,7 @@ public class PlayerCombatState : PlayerStateBase
 public class CombatStrangleState : PlayerCombatState
 {
     float strangleProgression = 0;
-    float strangleDuration = 1;
+    public const float strangleDuration = 2;
 
     PlayerActionProgressionVisualizerUI uiElement;
 
@@ -53,7 +53,7 @@ public class CombatStrangleState : PlayerCombatState
         else
             SetState(PlayerState.Idle);
 
-        uiElement.UpdaValue(strangleProgression);
+        uiElement.UpdaValue(strangleProgression / strangleDuration);
 
         if (strangleProgression >= strangleDuration)
         {
