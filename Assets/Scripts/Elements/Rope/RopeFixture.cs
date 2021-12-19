@@ -8,13 +8,15 @@ public class RopeFixture : MonoBehaviour
     [SerializeField] private Rigidbody2D rigidbody2D;
     private bool playerIsAbove = false;
 
+    PlayerControlPromptUI prompt;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.IsPlayer())
             return;
 
         if (connected != null || PlayerRopePuller.Instance.IsActive)
-            PlayerControlPromptUI.Instance.Show(ControlType.Interact, transform.position + Vector3.up);
+            prompt = PlayerControlPromptUI.Show(ControlType.Interact, transform.position + Vector3.up);
 
         playerIsAbove = true;
     }
@@ -23,7 +25,7 @@ public class RopeFixture : MonoBehaviour
         if (!collision.IsPlayer())
             return;
 
-        PlayerControlPromptUI.Instance.Hide();
+        if (prompt != null) prompt.Hide();
         playerIsAbove = false;
 
     }

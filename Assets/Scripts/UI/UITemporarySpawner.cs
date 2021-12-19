@@ -5,18 +5,18 @@ using UnityEngine;
 
 public class UITemporarySpawner : MonoBehaviour
 {
-    [SerializeField] PlayerActionProgressionVisualizerUI playerActionProgressionVisualizerPrefab;
+    [SerializeField] TemporaryUIElement[] temporaryUIElements;
+    Dictionary<Type, TemporaryUIElement> prefabDictionary;
+
+    private void Awake()
+    {
+        prefabDictionary = new Dictionary<Type, TemporaryUIElement>();
+        foreach (TemporaryUIElement element in temporaryUIElements)
+            prefabDictionary.Add(element.GetType(), element);
+    }
 
     public TemporaryUIElement Spawn<T>()
     {
-        return Instantiate(GetPrefabFromType<T>(), transform);
-    }
-
-    private TemporaryUIElement GetPrefabFromType<T>()
-    {
-        if (playerActionProgressionVisualizerPrefab.GetType() == typeof(T))
-            return playerActionProgressionVisualizerPrefab;
-
-        return null;
+        return Instantiate(prefabDictionary[typeof(T)], transform);
     }
 }

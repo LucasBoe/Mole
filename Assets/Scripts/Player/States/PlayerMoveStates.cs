@@ -135,6 +135,7 @@ public class JumpState : MoveBaseState
 }
 public class FallState : MoveBaseState
 {
+    PlayerControlPromptUI attackPrompt;
     bool enemyIsBelow;
     float startFallTime;
     public FallState(PlayerContext playerContext) : base(playerContext) { }
@@ -206,9 +207,9 @@ public class FallState : MoveBaseState
         enemyIsBelow = IsColliding(CheckType.EnemyBelow);
 
         if (enemyIsBelow && !enemyWasBelowBefore)
-            PlayerControlPromptUI.Instance.Show(ControlType.Use, context.PlayerPos + Vector2.down);
-        else if (!enemyIsBelow && enemyWasBelowBefore)
-            PlayerControlPromptUI.Instance.Hide();
+            attackPrompt = PlayerControlPromptUI.Show(ControlType.Use, context.PlayerPos + Vector2.down);
+        else if (!enemyIsBelow && enemyWasBelowBefore && attackPrompt != null)
+            attackPrompt.Hide();
 
         Util.DebugDrawCross(context.PlayerPos + Vector2.down, enemyIsBelow ? Color.green : Color.red, 2);
         Util.DebugDrawCircle(context.PlayerPos + Vector2.down, enemyIsBelow ? Color.green : Color.red, 2);
@@ -230,6 +231,7 @@ public class FallState : MoveBaseState
     public override void Exit()
     {
         base.Exit();
-        PlayerControlPromptUI.Instance.Hide();
+        if (attackPrompt != null)
+            attackPrompt.Hide();
     }
 }

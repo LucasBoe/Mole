@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,20 +10,14 @@ public enum ControlType
     Use,
 }
 
-public class PlayerControlPromptUI : SingletonBehaviour<PlayerControlPromptUI>
+public class PlayerControlPromptUI : TemporaryUIElement
 {
     [SerializeField] Image image;
     [SerializeField] Text text;
 
-    public void Hide ()
+    public void Init (ControlType type, Vector3 worldPos)
     {
-        image.enabled = false;
-        text.enabled = false;
-    }
-
-    public void Show (ControlType type, Vector3 worldPos)
-    {
-        transform.position = CameraController.WorldToScreenPoint(worldPos);
+        GetComponent<WorldPositionTrackingUI>().WorldPosition = worldPos;
 
         switch (type)
         {
@@ -36,8 +31,13 @@ public class PlayerControlPromptUI : SingletonBehaviour<PlayerControlPromptUI>
                 text.text = "X";
                 break;
         }
+    }
 
-        image.enabled = true;
-        text.enabled = true;
+    public static PlayerControlPromptUI Show(ControlType type, Vector3 worldPos)
+    {
+        PlayerControlPromptUI controlPromptUI = UIHandler.Temporary.Spawn<PlayerControlPromptUI>() as PlayerControlPromptUI;
+        controlPromptUI.Init(type, worldPos);
+
+        return controlPromptUI;
     }
 }
