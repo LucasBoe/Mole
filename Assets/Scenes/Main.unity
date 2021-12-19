@@ -10364,7 +10364,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &464689287
 GameObject:
@@ -32410,6 +32410,7 @@ GameObject:
   - component: {fileID: 904026517}
   - component: {fileID: 904026516}
   - component: {fileID: 904026520}
+  - component: {fileID: 904026521}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -32514,6 +32515,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemUI: {fileID: 2039177765}
+  temporarySpawner: {fileID: 904026521}
+--- !u!114 &904026521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904026515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f6473fd731f3864b94a9529b1f407a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerActionProgressionVisualizerPrefab: {fileID: 5316349196055213934, guid: 7b0b2a4994ba2f848a2d1cce757ab61b, type: 3}
 --- !u!1 &938069454
 GameObject:
   m_ObjectHideFlags: 0
@@ -33291,6 +33306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerValues: {fileID: 11400000, guid: f123c62d2a8706d499bb4afc1f292e52, type: 2}
+  toDebug: 
 --- !u!50 &1189029869
 Rigidbody2D:
   serializedVersion: 4
@@ -33308,7 +33324,7 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 2
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
@@ -34617,7 +34633,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1415202711
 GameObject:

@@ -2,13 +2,28 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAIModule : EnemyModule<EnemyAIModule>
+public interface IInterfaceable
+{
+    bool IsNull { get; }
+}
+
+
+public interface ICombatTarget : IInterfaceable
+{
+    Vector2 StranglePosition { get; }
+    void Kill();
+    void StartStrangling();
+    void StopStrangling(Vector2 playerPos);
+}
+
+public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
 {
     private enum AIMode
     {
         Routine,
         Interrupted,
         Attack,
+        BeeingStrangled,
     }
 
     private AIMode mode;
@@ -17,6 +32,9 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>
         get => mode;
         set => mode = value;
     }
+    public Vector2 StranglePosition => transform.position + Vector3.left;
+    public bool IsNull => this == null;
+
 
     EnemyRoutineModule routineModule;
     EnemyStatemachineModule statemachineModule;
@@ -98,6 +116,9 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>
             newStates.Add(new EnemyWaitState(0.25f));
             newStates.Add(new EnemyAlertState());
             newStates.Add(new EnemyLookAroundState());
+        } else if (Mode == AIMode.BeeingStrangled)
+        {
+            newStates.Add(new EnemyWaitState(1));
         }
         else
         {
@@ -105,5 +126,25 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>
         }
 
         return newStates.ToArray();
+    }
+
+    public void Kill()
+    {
+        if (gameObject != null)
+            Destroy(gameObject);
+    }
+
+    public void StartStrangling()
+    {
+        Mode = AIMode.BeeingStrangled;
+        statemachineModule.StopCurrent();
+    }
+
+    public void StopStrangling(Vector2 playerPos)
+    {
+        Mode = AIMode.Interrupted;
+        memoryModule.SetTarget(playerPos);
+
+        statemachineModule.StopCurrent();
     }
 }

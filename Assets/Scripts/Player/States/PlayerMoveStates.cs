@@ -74,7 +74,7 @@ public class WalkState : MoveBaseState
     {
         base.Update();
 
-        IsSprinting = context.Input.Sprint;
+        IsSprinting = context.Input.HoldingSprint;
         float xInput = context.Input.Axis.x;
 
         context.Rigidbody.velocity = new Vector2(xInput * (IsSprinting ? context.Values.walkXvelocity : context.Values.crouchXvelocity), context.Rigidbody.velocity.y);
@@ -135,6 +135,7 @@ public class JumpState : MoveBaseState
 }
 public class FallState : MoveBaseState
 {
+    bool enemyIsBelow;
     float startFallTime;
     public FallState(PlayerContext playerContext) : base(playerContext) { }
 
@@ -147,8 +148,13 @@ public class FallState : MoveBaseState
     {
         base.Update();
 
+        //combat
+        if (UpdateAttackEnemyBelow())
+            SetState(PlayerState.CombatStrangle);
+
         //gravity
         ApplyGravity(Time.time - startFallTime);
+
 
         //autograp to hangable
         if (IsColliding(CheckType.Hangable) && context.Input.Axis.y > 0.25f)
@@ -157,6 +163,7 @@ public class FallState : MoveBaseState
         if ((IsColliding(CheckType.HangableJumpInLeft) && context.Input.Axis.x < 0.1f) || (IsColliding(CheckType.HangableJumpInRight) && context.Input.Axis.x > -0.1f))
             SetState(PlayerState.JumpToHanging);
 
+        //autograp to wall
         if (triesMovingIntoWall)
             SetState(PlayerState.Wall);
 
@@ -190,5 +197,39 @@ public class FallState : MoveBaseState
 
         if (IsColliding(CheckType.Ground))
             SetState(PlayerState.Idle);
+    }
+
+    private bool UpdateAttackEnemyBelow()
+    {
+        //show / hide prompt
+        bool enemyWasBelowBefore = enemyIsBelow;
+        enemyIsBelow = IsColliding(CheckType.EnemyBelow);
+
+        if (enemyIsBelow && !enemyWasBelowBefore)
+            PlayerControlPromptUI.Instance.Show(ControlType.Use, context.PlayerPos + Vector2.down);
+        else if (!enemyIsBelow && enemyWasBelowBefore)
+            PlayerControlPromptUI.Instance.Hide();
+
+        Util.DebugDrawCross(context.PlayerPos + Vector2.down, enemyIsBelow ? Color.green : Color.red, 2);
+        Util.DebugDrawCircle(context.PlayerPos + Vector2.down, enemyIsBelow ? Color.green : Color.red, 2);
+
+        //handle attack input
+        if (enemyIsBelow && context.Input.Use)
+        {
+            ICombatTarget[] targets = GetCheck(CheckType.EnemyBelow).Get<ICombatTarget>();
+            if (targets != null && targets.Length > 0)
+            {
+                context.CombatTarget = targets[0];
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        PlayerControlPromptUI.Instance.Hide();
     }
 }

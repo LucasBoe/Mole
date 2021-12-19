@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -56,5 +57,18 @@ public class CollisionCheck
         }
 
         return floors.ToArray();
+    }
+
+    internal T[] Get<T>()
+    {
+        List<T> elements = new List<T>();
+        foreach (Collider2D collider in colliders)
+        {
+            var floor = collider.GetComponent<T>();
+            if (floor != null)
+                elements.Add(floor);
+        }
+
+        return elements.ToArray();
     }
 }

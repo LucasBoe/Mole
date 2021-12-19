@@ -56,7 +56,7 @@ public static class Util
         {
             Debug.DrawLine(from, hit.point, Color.yellow);
             Debug.DrawLine(hit.point, to, Color.red);
-            DebugDrawCross(hit.point, Color.red,5);
+            DebugDrawCross(hit.point, Color.red, 5);
             return false;
         }
         else
@@ -93,7 +93,8 @@ public static class Util
         {
             Debug.DrawLine(position + new Vector2(size / 2, size / 2), position + new Vector2(-size / 2, -size / 2), color);
             Debug.DrawLine(position + new Vector2(-size / 2, size / 2), position + new Vector2(size / 2, -size / 2), color);
-        } else
+        }
+        else
         {
             Debug.DrawLine(position + new Vector2(size / 2, size / 2), position + new Vector2(-size / 2, -size / 2), color, lifetime);
             Debug.DrawLine(position + new Vector2(-size / 2, size / 2), position + new Vector2(size / 2, -size / 2), color, lifetime);
@@ -117,12 +118,8 @@ public static class Util
     }
     public static void GizmoDrawCollisionCheck(CollisionCheck pcc, Vector2 pos)
     {
-        if (pcc.IsDetecting)
-        {
-            Gizmos.color = pcc.DebugColor;
-            Gizmos.DrawWireCube(pos + pcc.Pos, pcc.Size);
-        }
-
+        Gizmos.color = pcc.DebugColor;
+        Gizmos.DrawWireCube(pos + pcc.Pos, pcc.Size);
     }
 
     public static float GetLongestAxis(this Vector3 vector3)
@@ -178,7 +175,7 @@ public static class Util
         return v3s.ToArray();
     }
 
-    public static Quaternion ToRotation (this Vector2 dir)
+    public static Quaternion ToRotation(this Vector2 dir)
     {
         float angle = Vector2.Angle(dir.normalized, Vector2.right);
         return Quaternion.Euler(0, 0, angle);

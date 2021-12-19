@@ -323,6 +323,8 @@ MonoBehaviour:
       AnimationClip: {fileID: 7400000, guid: a8dc118b09b031945ae01062517894f1, type: 2}
     - MoveState: 11
       AnimationClip: {fileID: 7400000, guid: b0a89260f3d45ab43b90d7ba686d537f, type: 2}
+    - MoveState: 13
+      AnimationClip: {fileID: 7400000, guid: b0a89260f3d45ab43b90d7ba686d537f, type: 2}
     climbStateParamAnimationPairs:
     - ClimbState: 1
       ParamAnimation: {fileID: 11400000, guid: 3afece717e8f78a45848be079c1a3a43, type: 2}
@@ -414,6 +416,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be443f22f0b929d47bb376f4ce6db263, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lerpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &6967836197375454195
 GameObject:
   m_ObjectHideFlags: 0

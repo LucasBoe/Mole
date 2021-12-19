@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class UIHandler : SingletonBehaviour<UIHandler>
 {
+    public static UITemporarySpawner Temporary;
+
     [SerializeField] PlayerItemUI itemUI;
+    [SerializeField] UITemporarySpawner temporarySpawner;
 
     PlayerInput input;
     List<IUpdateMeWithInput> toUpdate = new List<IUpdateMeWithInput>();
 
     private void OnEnable()
     {
+        Temporary = temporarySpawner;
         input = PlayerInputHandler.PlayerInput;
         Hide(itemUI);
     }

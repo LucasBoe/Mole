@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     IPlayerComponent[] playerComponents;
 
     [SerializeField] PlayerValues playerValues;
+    [SerializeField] private CheckType[] toDebug;
 
     private void Awake()
     {
@@ -49,6 +50,10 @@ public class PlayerController : MonoBehaviour
         context.CollisionChecks.Add(CheckType.PushableLeft, new CollisionCheck(-0.75f, 0f, 0.5f, 0.75f, LayerMask.GetMask("Pushable"), Color.red));
         context.CollisionChecks.Add(CheckType.PushableRight, new CollisionCheck(0.75f, 0f, 0.5f, 0.75f, LayerMask.GetMask("Pushable"), Color.red));
 
+        //Enemy
+        context.CollisionChecks.Add(CheckType.EnemyBelow, new CollisionCheck(0f, -1.5f, 1f, 1.5f, LayerMask.GetMask("Enemy"), Color.red));
+        context.CollisionChecks.Add(CheckType.EnemySideways, new CollisionCheck(0f, 0f, 2f, 0.5f, LayerMask.GetMask("Enemy"), Color.red));
+
         foreach (IPlayerComponent component in playerComponents)
             component.Init(context);
     }
@@ -82,9 +87,10 @@ public class PlayerController : MonoBehaviour
         if (context == null || context.CollisionChecks == null)
             return;
 
-        foreach (CollisionCheck pcc in context.CollisionChecks.Values)
+        foreach (KeyValuePair<CheckType, CollisionCheck> pcc in context.CollisionChecks)
         {
-            Util.GizmoDrawCollisionCheck(pcc, transform.position);
+            if (pcc.Value.IsDetecting || toDebug.Contains(pcc.Key))
+                Util.GizmoDrawCollisionCheck(pcc.Value, transform.position);
         }
 
         Gizmos.color = Color.magenta;
@@ -118,5 +124,7 @@ namespace PlayerCollisionCheckType
         PushableLeft,
         PushableRight,
         WallAbove,
+        EnemyBelow,
+        EnemySideways,
     }
 }

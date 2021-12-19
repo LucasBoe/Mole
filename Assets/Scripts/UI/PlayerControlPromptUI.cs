@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public enum ControlType
 {
     Interact,
+    Use,
 }
 
 public class PlayerControlPromptUI : SingletonBehaviour<PlayerControlPromptUI>
@@ -28,6 +29,11 @@ public class PlayerControlPromptUI : SingletonBehaviour<PlayerControlPromptUI>
             case ControlType.Interact:
                 image.color = Color.green;
                 text.text = "A";
+                break;
+
+            case ControlType.Use:
+                image.color = Color.blue;
+                text.text = "X";
                 break;
         }
 

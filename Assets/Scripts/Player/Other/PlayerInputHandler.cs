@@ -31,7 +31,12 @@ public class PlayerInputHandler : SingletonBehaviour<PlayerInputHandler>
         PlayerInput.Jump = Input.GetButtonDown("Jump");
         PlayerInput.Interact = Input.GetButtonDown("Interact");
         PlayerInput.Use = Input.GetButtonDown("Use");
-        PlayerInput.Sprint = Input.GetKey(KeyCode.LeftShift);
+
+        PlayerInput.HoldingBack = Input.GetButton("Back");
+        PlayerInput.HoldingJump = Input.GetButton("Jump");
+        PlayerInput.HoldingInteract = Input.GetButton("Interact");
+        PlayerInput.HoldingUse = Input.GetButton("Use");
+        PlayerInput.HoldingSprint = Input.GetKey(KeyCode.LeftShift);
     }
 
     private Vector2 ModifyVirtualCursor(Vector2 before, Vector2 mouseAxis)
