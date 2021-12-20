@@ -19,8 +19,12 @@ public interface IRopeable
 public class RopeElement : MonoBehaviour, IRopeable
 {
     [SerializeField] private RopeConnectionVisualizer visualizerPrefab;
-    [SerializeField] private DistanceJoint2D joint2D;
+    [SerializeField] private DistanceJoint2D otherJoint;
+
+    [SerializeField] private SpringJoint2D attachJoint;
     [SerializeField] private Rigidbody2D rigidbody2D;
+
+    [SerializeField] private bool shouldOverrideDistance = true;
 
     private RopeConnectionVisualizer visualizerInstance;
     private float buffer = 0;
@@ -35,13 +39,23 @@ public class RopeElement : MonoBehaviour, IRopeable
     public bool HasControl => false;
 
     private float elementLength;
-    public float ElementLength { get => elementLength;  }
+    public float ElementLength { get => elementLength; }
+
     public Rigidbody2D Rigidbody2D { get => rigidbody2D; }
-    public Rigidbody2D TargetRigidbody2D { get => joint2D.connectedBody; }
+    public Rigidbody2D Rigidbody2DOther { get => otherJoint.connectedBody; }
+    public Rigidbody2D Rigidbody2DAttachedTo { get => attachJoint.connectedBody; }
 
     internal void SetJointDistance(float newDistance)
     {
-        joint2D.distance = newDistance; ;
+        if (shouldOverrideDistance)
+            otherJoint.distance = newDistance; ;
+    }
+
+    internal void Reconnect(Rigidbody2D to)
+    {
+        Debug.LogWarning($"reconnected from {attachJoint.connectedBody.name} to {to.name}");
+        attachJoint.connectedBody = to;
+        visualizerInstance.Init(to, otherJoint.connectedBody);
     }
 
 
@@ -49,17 +63,17 @@ public class RopeElement : MonoBehaviour, IRopeable
     void Start()
     {
         visualizerInstance = Instantiate(visualizerPrefab);
-        visualizerInstance.Init(transform, joint2D.connectedBody.transform);
+        visualizerInstance.Init(attachJoint.connectedBody, otherJoint.connectedBody);
     }
 
     private void Update()
     {
-        pullForce = joint2D.reactionForce.magnitude;
+        pullForce = otherJoint.reactionForce.magnitude;
 
-        Vector2 otherAnchor = joint2D.connectedBody.transform.TransformPoint(joint2D.connectedAnchor);
-        Vector2 ownAnchor = transform.TransformPoint(joint2D.anchor);
+        Vector2 otherAnchor = otherJoint.connectedBody.transform.TransformPoint(otherJoint.connectedAnchor);
+        Vector2 ownAnchor = transform.TransformPoint(otherJoint.anchor);
         realDistance = Vector2.Distance(otherAnchor, ownAnchor);
-        jointDistance = joint2D.distance;
+        jointDistance = otherJoint.distance;
 
         UpdateBuffer();
     }
@@ -72,24 +86,22 @@ public class RopeElement : MonoBehaviour, IRopeable
             else
             {
                 float rest = TryRemoveFromBuffer(lengthChange);
-                joint2D.distance += rest;
+                otherJoint.distance += rest;
                 rigidbody2D.AddForce(Vector2.up);
             }
         }
     }
-    public void Setup(Rigidbody2D toAttachTo, Rigidbody2D toConnectTo)
+    public void Setup(Rigidbody2D attached, Rigidbody2D other)
     {
-        float dist = Vector2.Distance(toAttachTo.position, toConnectTo.position);
-        joint2D.connectedBody = toConnectTo;
-        joint2D.connectedAnchor = Vector2.zero;
+        otherJoint.connectedBody = other;
+        otherJoint.connectedAnchor = Vector2.zero;
 
-        SpringJoint2D fix = GetComponent<SpringJoint2D>();
-        fix.connectedBody = toAttachTo;
-        fix.connectedAnchor = Vector2.zero;
+        attachJoint.connectedBody = attached;
+        attachJoint.connectedAnchor = Vector2.zero;
     }
     public RopeConnectionInformation DeactivateAndFetchInfo()
     {
-        RopeAnchor anchor = joint2D.connectedBody.GetComponent<RopeAnchor>();
+        RopeAnchor anchor = otherJoint.connectedBody.GetComponent<RopeAnchor>();
         RopeConnectionInformation information = new RopeConnectionInformation() { Length = JointDistance, Buffer = Buffer, Anchor = anchor };
         Destroy(visualizerInstance.gameObject);
         Destroy(gameObject);
@@ -100,13 +112,13 @@ public class RopeElement : MonoBehaviour, IRopeable
         while (buffer > 0.01f && (realDistance + 0.01f > jointDistance))
         {
             rigidbody2D.AddForce(Vector2.down);
-            joint2D.distance += 0.01f;
+            otherJoint.distance += 0.01f;
             buffer -= 0.01f;
         }
 
         if (buffer > 0 && (realDistance + 0.05f > jointDistance))
         {
-            joint2D.distance += buffer;
+            otherJoint.distance += buffer;
             buffer = 0;
         }
 
@@ -128,8 +140,15 @@ public class RopeElement : MonoBehaviour, IRopeable
         }
     }
 
+    internal void FixateDistance(bool active)
+    {
+        shouldOverrideDistance = active;
+        if (!shouldOverrideDistance)
+            otherJoint.distance = float.MaxValue;
+    }
+
     private void OnDrawGizmos()
     {
-        Handles.Label(transform.position, pullForce.ToString());
+        Handles.Label(Vector3.Lerp(Rigidbody2DOther.position, Rigidbody2DAttachedTo.position, 0.5f), otherJoint.distance.ToString());
     }
 }

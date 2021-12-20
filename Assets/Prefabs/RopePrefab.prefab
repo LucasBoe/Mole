@@ -87,8 +87,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visualizerPrefab: {fileID: 6650807411414497711, guid: 4a79223125b276c4abee3c5a22a9111c, type: 3}
-  joint2D: {fileID: 6681015172608050805}
+  otherJoint: {fileID: 6681015172608050805}
+  attachJoint: {fileID: 3584642578714866481}
   rigidbody2D: {fileID: 8770418620656433984}
+  shouldOverrideDistance: 1
 --- !u!231 &3584642578714866481
 SpringJoint2D:
   m_ObjectHideFlags: 0

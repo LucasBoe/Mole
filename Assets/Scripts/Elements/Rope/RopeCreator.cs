@@ -11,6 +11,7 @@ public class RopeCreator : MonoBehaviour
     private void Start()
     {
         RopeHandler.Instance.CreateRope(start, anchors.ToArray(), end);
+        Destroy(gameObject);
     }
 
     private void OnDrawGizmos()

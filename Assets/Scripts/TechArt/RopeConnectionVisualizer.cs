@@ -6,7 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(LineRenderer))]
 public class RopeConnectionVisualizer : MonoBehaviour
 {
-    [SerializeField] private Transform start, tween, end;
+    [SerializeField] private Rigidbody2D start, end;
+    [SerializeField] private Transform tween;
     private TargetJoint2D tweenJoint;
     private LineRenderer lineRenderer;
 
@@ -21,7 +22,7 @@ public class RopeConnectionVisualizer : MonoBehaviour
         lineRenderer = GetComponent<LineRenderer>();
     }
 
-    internal void Init(Transform start, Transform end)
+    internal void Init(Rigidbody2D start, Rigidbody2D end)
     {
         this.start = start;
         this.end = end;

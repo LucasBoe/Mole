@@ -5,8 +5,11 @@ using UnityEngine;
 public class PlayerInputHandler : SingletonBehaviour<PlayerInputHandler>
 {
     public static PlayerInput PlayerInput = new PlayerInput();
+    [SerializeField] PlayerInput debug;
+
 
     bool DPadLock = false;
+    bool HoldingLT = false;
 
     private void Update()
     {
@@ -27,6 +30,11 @@ public class PlayerInputHandler : SingletonBehaviour<PlayerInputHandler>
 
         PlayerInput.JustPressedOpenInventoryButton = Input.GetKeyDown(KeyCode.I) || Input.GetAxis("Cross Y") != 0;
 
+        PlayerInput.LTAxis = Input.GetAxis("LT");
+        PlayerInput.LTDown = !HoldingLT && PlayerInput.LTAxis > 0.5f;
+        PlayerInput.LTUp = HoldingLT && PlayerInput.LTAxis < 0.5f;
+        HoldingLT = PlayerInput.LTAxis > 0.5f;
+
         PlayerInput.Back = Input.GetButtonDown("Back");
         PlayerInput.Jump = Input.GetButtonDown("Jump");
         PlayerInput.Interact = Input.GetButtonDown("Interact");
@@ -37,6 +45,8 @@ public class PlayerInputHandler : SingletonBehaviour<PlayerInputHandler>
         PlayerInput.HoldingInteract = Input.GetButton("Interact");
         PlayerInput.HoldingUse = Input.GetButton("Use");
         PlayerInput.HoldingSprint = Input.GetKey(KeyCode.LeftShift);
+
+        debug = PlayerInput;
     }
 
     private Vector2 ModifyVirtualCursor(Vector2 before, Vector2 mouseAxis)

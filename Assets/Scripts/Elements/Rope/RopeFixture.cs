@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class RopeFixture : MonoBehaviour
 {
+    private Rope rope;
     [SerializeField] private RopeElement connected;
     [SerializeField] private Rigidbody2D rigidbody2D;
-    private bool playerIsAbove = false;
+    [SerializeField] private bool playerIsAbove = false;
 
     PlayerControlPromptUI prompt;
 
@@ -15,7 +16,7 @@ public class RopeFixture : MonoBehaviour
         if (!collision.IsPlayer())
             return;
 
-        if (connected != null || PlayerRopePuller.Instance.IsActive)
+        if (rope != null || PlayerRopeUser.Instance.IsActive)
             prompt = PlayerControlPromptUI.Show(ControlType.Interact, transform.position + Vector3.up);
 
         playerIsAbove = true;
@@ -34,14 +35,16 @@ public class RopeFixture : MonoBehaviour
     {
         if (playerIsAbove && PlayerInputHandler.PlayerInput.Interact)
         {
-            if (PlayerRopePuller.Instance.IsActive && connected == null)
+            PlayerRopeUser ropeUser = PlayerRopeUser.Instance;
+
+            if (ropeUser.IsActive && rope == null)
             {
-                connected = RopeHandler.Instance.AttachPlayerRope(rigidbody2D);
+                rope = ropeUser.HandoverRopeTo(rigidbody2D);
             }
-            else if (connected != null && !PlayerRopePuller.Instance.IsActive)
+            else if (rope != null && !ropeUser.IsActive)
             {
-                PlayerRopePuller.Instance.Activate(connected);
-                connected = null;
+                ropeUser.TakeRopeFrom(rope, rigidbody2D);
+                rope = null;
             }
         }
     }
