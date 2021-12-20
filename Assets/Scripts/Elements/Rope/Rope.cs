@@ -7,22 +7,8 @@ using UnityEngine;
 [System.Serializable]
 public class Rope
 {
-    //TODO: Remove
-    public Vector2 Center
-    {
-        get
-        {
-            Vector2 v2s = Vector2.zero;
-            foreach (RopeAnchor anchor in anchors)
-                v2s += anchor.Rigidbody2D.position;
-
-            return v2s / anchors.Count;
-        }
-    }
-
     //anchors
     private List<RopeAnchor> anchors;
-    public bool HasAnchors => anchors != null && anchors.Count > 0;
 
     //elememts
     private RopeElement[] elements = new RopeElement[2];
@@ -33,7 +19,6 @@ public class Rope
     private float length;
     private float distribution = 0.5f;
     private float deadLength = 0;
-    public float Length { get => length; }
 
     //smoothing
     private float smoothForceDifference = 0;
@@ -88,8 +73,8 @@ public class Rope
         Two.SetJointDistance((length - deadLength) * (1f - distribution));
 
         //update bodies
-        One.Rigidbody2D.AddForce(Vector2.up);
-        Two.Rigidbody2D.AddForce(Vector2.up);
+        One.Rigidbody2DAttachedTo.AddForce(Vector2.up);
+        Two.Rigidbody2DAttachedTo.AddForce(Vector2.up);
 
         float RecalculateDitribution(RopeLengthChange lengthChange, float lengthBefore, float newLength)
         {
@@ -130,9 +115,9 @@ public class Rope
     private Vector2[] GetPointsFromRigidbodys()
     {
         List<Vector2> points = new List<Vector2>();
-        points.Add(elements[0].Rigidbody2D.position);
+        points.Add(elements[0].Rigidbody2DAttachedTo.position);
         points.AddRange(anchors.Select(a => a.Rigidbody2D.position));
-        points.Add(elements[1].Rigidbody2D.position);
+        points.Add(elements[1].Rigidbody2DAttachedTo.position);
 
         return points.ToArray();
     }

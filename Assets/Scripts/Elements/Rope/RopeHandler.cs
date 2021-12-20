@@ -6,16 +6,8 @@ using UnityEngine;
 
 public class RopeHandler : SingletonBehaviour<RopeHandler>
 {
-    [SerializeField] RopeElement ropePrefab;
-
+    [SerializeField] private RopeElement ropePrefab;
     private List<Rope> ropes = new List<Rope>();
-
-    public RopeElement CreateRope(Rigidbody2D toAttachTo, Rigidbody2D toConnectTo)
-    {
-        RopeElement instance = Instantiate(ropePrefab, toAttachTo.position, Quaternion.identity);
-        instance.Setup(toAttachTo, toConnectTo);
-        return instance;
-    }
 
     internal Rope CreateRope(Rigidbody2D start, RopeAnchor[] anchors, Rigidbody2D end)
     {
@@ -49,13 +41,5 @@ public class RopeHandler : SingletonBehaviour<RopeHandler>
     {
         foreach (Rope rope in ropes)
             rope.Update();
-    }
-
-    private void OnGUI()
-    {
-        foreach (Rope rope in ropes)
-        {
-            Handles.Label(rope.Center, rope.Length.ToString());
-        }
     }
 }

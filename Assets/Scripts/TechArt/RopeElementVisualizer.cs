@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
-public class RopeConnectionVisualizer : MonoBehaviour
+public class RopeElementVisualizer : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D start, end;
     [SerializeField] private Transform tween;
