@@ -5,26 +5,41 @@ using UnityEngine;
 
 public class RopeHandler : SingletonBehaviour<RopeHandler>
 {
-    [SerializeField] Rope ropePrefab;
+    [SerializeField] RopeElement ropePrefab;
 
-    public Rope CreateRope(Rigidbody2D toAttachTo, Rigidbody2D toConnectTo)
+    private List<Rope> ropes = new List<Rope>();
+
+    public RopeElement CreateRope(Rigidbody2D toAttachTo, Rigidbody2D toConnectTo)
     {
-        Rope instance = Instantiate(ropePrefab, toAttachTo.position, Quaternion.identity);
+        RopeElement instance = Instantiate(ropePrefab, toAttachTo.position, Quaternion.identity);
         instance.Setup(toAttachTo, toConnectTo);
         return instance;
     }
 
-    public Rope CreateRope(RopeConnectionInformation info)
+    internal void CreateRope(Rigidbody2D start, RopeAnchor[] anchors, Rigidbody2D end)
+    {
+        Rope newRope = new Rope(start, anchors, end);
+        ropes.Add(newRope);
+    }
+
+    internal RopeElement CreateRopeElement(Rigidbody2D start, Rigidbody2D end)
+    {
+        RopeElement instance = Instantiate(ropePrefab, start.position, Quaternion.identity);
+        instance.Setup(start, end);
+        return instance;
+    }
+
+    public RopeElement CreateRope(RopeConnectionInformation info)
     {
         RopeAnchor anchor = info.Anchor;
-        Rope newRope = CreateRope(info.attached, anchor.Rigidbody2D);
+        RopeElement newRope = CreateRope(info.attached, anchor.Rigidbody2D);
         RopeAnchor.RopeSlot slot = anchor.GetEmptySlot();
         anchor.ConnectRopeToSlot(newRope, slot);
 
         return newRope;
     }
 
-    public Rope AttachPlayerRope(Rigidbody2D rigidbody2D)
+    public RopeElement AttachPlayerRope(Rigidbody2D rigidbody2D)
     {
         RopeConnectionInformation info = PlayerRopePuller.Instance.DeactivateAndFetchInfo();
         info.attached = rigidbody2D;
@@ -40,5 +55,11 @@ public class RopeHandler : SingletonBehaviour<RopeHandler>
         }
 
         return null;
+    }
+
+    private void Update()
+    {
+        foreach (Rope rope in ropes)
+            rope.Update();
     }
 }

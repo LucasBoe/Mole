@@ -30,7 +30,7 @@ public class PlayerRopePuller : SingletonBehaviour<PlayerRopePuller>, IRopeable
         return new RopeConnectionInformation() { Length = Vector2.Distance(anchor.transform.position, transform.position), Anchor = anchor };
     }
 
-    public void Activate(Rope toReplace)
+    public void Activate(RopeElement toReplace)
     {
         RopeAnchor.RopeSlot slot = RopeHandler.Instance.GetAnchorOf(toReplace).ClearSlot(toReplace);
         anchor = toReplace.DeactivateAndFetchInfo().Anchor;

@@ -19,8 +19,8 @@ public class RopeAnchor : MonoBehaviour
 
     private void Start()
     {
-        rope1 = ropes[0].GetComponent<IRopeable>();
-        rope2 = ropes[1].GetComponent<IRopeable>();
+        //rope1 = ropes[0].GetComponent<IRopeable>();
+        //rope2 = ropes[1].GetComponent<IRopeable>();
     }
 
     internal RopeSlot ClearSlot(IRopeable ropeable)
@@ -64,26 +64,26 @@ public class RopeAnchor : MonoBehaviour
 
     private void LateUpdate()
     {
-        float change = 0;
-
-        if (rope1 == null || rope2 == null)
-            return;
-
-        if (rope1.HasControl)
-            change = ControlSimulation(rope1, rope2);
-        else if (rope2.HasControl)
-            change = ControlSimulation(rope2, rope1);
-        else
-            change = EqualSimulation();
-
-        bool rope1DistTooSmall = (rope1.JointDistance + change) < minDistance;
-        bool rope2DistTooSmall = (rope2.JointDistance - change) < minDistance;
-
-        if (!rope1DistTooSmall && !rope2DistTooSmall)
-        {
-            rope1.ChangeRopeLength(change);
-            rope2.ChangeRopeLength(-change);
-        }
+        //float change = 0;
+        //
+        //if (rope1 == null || rope2 == null)
+        //    return;
+        //
+        //if (rope1.HasControl)
+        //    change = ControlSimulation(rope1, rope2);
+        //else if (rope2.HasControl)
+        //    change = ControlSimulation(rope2, rope1);
+        //else
+        //    change = EqualSimulation();
+        //
+        //bool rope1DistTooSmall = (rope1.JointDistance + change) < minDistance;
+        //bool rope2DistTooSmall = (rope2.JointDistance - change) < minDistance;
+        //
+        //if (!rope1DistTooSmall && !rope2DistTooSmall)
+        //{
+        //    rope1.ChangeRopeLength(change);
+        //    rope2.ChangeRopeLength(-change);
+        //}
     }
 
     internal float GetTotalRopeLength()
@@ -95,19 +95,6 @@ public class RopeAnchor : MonoBehaviour
     {
         return controller.PullForce * Time.deltaTime;
     }
-
-    private float EqualSimulation()
-    {
-        float forceDifference = (rope1.PullForce - rope2.PullForce) * Time.deltaTime;
-        float distanceDifference = Mathf.Abs(rope1.DistanceDifference + rope1.DistanceDifference);
-
-        smoothForceDifference = Mathf.Lerp(smoothForceDifference, forceDifference, Time.deltaTime);
-        smoothDistanceDifference = Mathf.Lerp(smoothDistanceDifference, distanceDifference, Time.deltaTime);
-
-        float decreasedByDistance = Mathf.Max(1 - smoothDistanceDifference, 0) * smoothForceDifference;
-        return decreasedByDistance;
-    }
-
     public enum RopeSlot
     {
         None,

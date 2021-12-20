@@ -1,119 +1,91 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
+using System.Linq;
 using UnityEngine;
 
-public interface IRopeable
+[System.Serializable]
+public class Rope
 {
-    float PullForce { get; }
-    float Buffer { get; }
-    float DistanceDifference { get; }
-    float JointDistance { get; }
-    bool HasControl { get; }
-    RopeConnectionInformation DeactivateAndFetchInfo();
-    void ChangeRopeLength(float lengthChange);
-}
+    private float length;
+    public float Length { get => length; }
 
-[RequireComponent(typeof(SpringJoint2D))]
-public class Rope : MonoBehaviour, IRopeable
-{
-    [SerializeField] private RopeConnectionVisualizer visualizerPrefab;
-    [SerializeField] private SpringJoint2D joint2D;
-    [SerializeField] private Rigidbody2D rigidbody2D;
+    private List<RopeAnchor> anchors;
+    public bool HasAnchors => anchors != null && anchors.Count > 0;
 
-    private RopeConnectionVisualizer visualizerInstance;
-    private float buffer = 0;
-    private float pullForce;
-    private float realDistance;
-    private float jointDistance = 1;
+    private RopeElement[] elements = new RopeElement[2];
+    private RopeElement one => elements[0];
+    private RopeElement two => elements[1];
 
-    public float Buffer => buffer;
-    public float PullForce => pullForce;
-    public float DistanceDifference => jointDistance - realDistance;
-    public float JointDistance => jointDistance;
-    public bool HasControl => false;
+    private float distribution = 0.5f;
+    private float deadLength = 0;
 
-    // Start is called before the first frame update
-    void Start()
+    private float smoothForceDifference = 0;
+    private float smoothDistanceDifference = 0;
+
+    public Rope(Rigidbody2D start, RopeAnchor[] anchors, Rigidbody2D end)
     {
-        visualizerInstance = Instantiate(visualizerPrefab);
-        visualizerInstance.Init(transform, joint2D.connectedBody.transform);
+        this.anchors = new List<RopeAnchor>(anchors);
+        elements[0] = RopeHandler.Instance.CreateRopeElement(start, anchors[0].Rigidbody2D);
+        elements[1] = RopeHandler.Instance.CreateRopeElement(end, anchors[anchors.Length - 1].Rigidbody2D);
+
+        RecalulateLengthAndDistributionFromDistance();
     }
 
-    private void Update()
+    public void Update()
     {
-        pullForce = joint2D.reactionForce.magnitude;
+        float distributionChange = (BalanceOperationn() / length);
+        distribution += distributionChange;
+        distribution = Mathf.Clamp(distribution, 0, 1);
 
-        Vector2 otherAnchor = joint2D.connectedBody.transform.TransformPoint(joint2D.connectedAnchor);
-        Vector2 ownAnchor = transform.TransformPoint(joint2D.anchor);
-        realDistance = Vector2.Distance(otherAnchor, ownAnchor);
-        jointDistance = joint2D.distance;
-
-        UpdateBuffer();
+        one.SetJointDistance((length - deadLength) * distribution);
+        two.SetJointDistance((length - deadLength) * (1f - distribution));
+        one.Rigidbody2D.AddForce(distributionChange < 0 ? Vector2.down : Vector2.up);
+        two.Rigidbody2D.AddForce(distributionChange > 0 ? Vector2.down : Vector2.up);
     }
-    public void ChangeRopeLength(float lengthChange)
+
+    private float BalanceOperationn()
     {
-        if (lengthChange != 0)
+        float forceDifference = (one.PullForce - two.PullForce) * Time.deltaTime;
+        float distanceDifference = Mathf.Abs(one.DistanceDifference + two.DistanceDifference);
+
+        smoothForceDifference = Mathf.Lerp(smoothForceDifference, forceDifference, Time.deltaTime);
+        smoothDistanceDifference = Mathf.Lerp(smoothDistanceDifference, distanceDifference, Time.deltaTime);
+
+        float decreasedByDistance = Mathf.Max(1 - smoothDistanceDifference, 0) * smoothForceDifference;
+        Debug.LogWarning($"Run Balance Operation: {smoothForceDifference}");
+        return smoothForceDifference;
+    }
+
+    private void RecalulateLengthAndDistributionFromDistance()
+    {
+        Vector2[] points = GetPointsFromRigidbodys();
+
+        float startLength = 0;
+        float endLength = 0;
+        deadLength = 0;
+
+        for (int i = 1; i < points.Length; i++)
         {
-            if (lengthChange > 0)
-                buffer += lengthChange;
+            float l = Vector2.Distance(points[i - 1], points[i]);
+            if (i == 1)
+                startLength = l;
+            else if (i == points.Length - 1)
+                endLength = l;
             else
-            {
-                float rest = TryRemoveFromBuffer(lengthChange);
-                joint2D.distance += rest;
-                rigidbody2D.AddForce(Vector2.up);
-            }
-        }
-    }
-    public void Setup(Rigidbody2D toAttachTo, Rigidbody2D toConnectTo)
-    {
-        float dist = Vector2.Distance(toAttachTo.position, toConnectTo.position);
-        joint2D.connectedBody = toConnectTo;
-        joint2D.connectedAnchor = Vector2.zero;
-
-        FixedJoint2D fix = GetComponent<FixedJoint2D>();
-        fix.connectedBody = toAttachTo;
-        fix.connectedAnchor = Vector2.zero;
-    }
-    public RopeConnectionInformation DeactivateAndFetchInfo()
-    {
-        RopeAnchor anchor = joint2D.connectedBody.GetComponent<RopeAnchor>();
-        RopeConnectionInformation information = new RopeConnectionInformation() { Length = JointDistance, Buffer = Buffer, Anchor = anchor };
-        Destroy(visualizerInstance.gameObject);
-        Destroy(gameObject);
-        return information;
-    }
-    private void UpdateBuffer()
-    {
-        while (buffer > 0.01f && (realDistance + 0.01f > jointDistance))
-        {
-            rigidbody2D.AddForce(Vector2.down);
-            joint2D.distance += 0.01f;
-            buffer -= 0.01f;
+                deadLength += l;
         }
 
-        if (buffer > 0 && (realDistance + 0.05f > jointDistance))
-        {
-            joint2D.distance += buffer;
-            buffer = 0;
-        }
-
-        visualizerInstance.SetBuffer(buffer);
+        distribution = startLength / (startLength + endLength);
+        length = startLength + deadLength + endLength;
     }
-    private float TryRemoveFromBuffer(float lengthChange)
-    {
-        if (Mathf.Abs(lengthChange) < buffer)
-        {
-            buffer += lengthChange;
-            return 0f;
-        }
-        else
-        {
-            float b = buffer + lengthChange;
-            buffer = 0f;
 
-            return b;
-        }
+    private Vector2[] GetPointsFromRigidbodys()
+    {
+        List<Vector2> points = new List<Vector2>();
+        points.Add(elements[0].Rigidbody2D.position);
+        points.AddRange(anchors.Select(a => a.Rigidbody2D.position));
+        points.Add(elements[1].TargetRigidbody2D.position);
+
+        return points.ToArray();
     }
 }

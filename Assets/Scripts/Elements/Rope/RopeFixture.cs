@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RopeFixture : MonoBehaviour
 {
-    [SerializeField] private Rope connected;
+    [SerializeField] private RopeElement connected;
     [SerializeField] private Rigidbody2D rigidbody2D;
     private bool playerIsAbove = false;
 
