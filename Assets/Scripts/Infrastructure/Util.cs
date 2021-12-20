@@ -181,6 +181,17 @@ public static class Util
         return Quaternion.Euler(0, 0, angle);
     }
 
+    /// <summary>
+    /// maps an angle back into a range between 0 and 360
+    /// </summary>
+    /// <param name="angleToFix"></param>
+    /// <returns></returns>
+
+    public static float FixAngle(float angleToFix)
+    {
+        return angleToFix % 360;
+    }
+
     public static bool IsPlayer(this Collider2D collision)
     {
         return collision.CompareTag("Player");

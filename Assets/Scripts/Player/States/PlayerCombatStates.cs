@@ -27,7 +27,7 @@ public class PlayerCombatState : PlayerStateBase
 public class CombatStrangleState : PlayerCombatState
 {
     float strangleProgression = 0;
-    public const float strangleDuration = 2;
+    public const float strangleDuration = 10;
 
     PlayerActionProgressionVisualizerUI uiElement;
 
@@ -37,8 +37,11 @@ public class CombatStrangleState : PlayerCombatState
     {
         base.Enter();
         strangleProgression = 0;
-        target.StartStrangling();
-        uiElement = UIHandler.Temporary.Spawn<PlayerActionProgressionVisualizerUI>() as PlayerActionProgressionVisualizerUI;
+
+        if (!target.StartStrangling())
+            ExitCombat();
+        else
+            uiElement = UIHandler.Temporary.Spawn<PlayerActionProgressionVisualizerUI>() as PlayerActionProgressionVisualizerUI;
     }
 
     public override void Update()
@@ -46,7 +49,7 @@ public class CombatStrangleState : PlayerCombatState
         base.Update();
 
         if (Vector2.Distance(context.PlayerPos, target.StranglePosition) > 0.1f)
-            context.Rigidbody.MovePosition(Vector2.MoveTowards(context.PlayerPos, target.StranglePosition, Time.deltaTime * 25f));
+            context.Rigidbody.MovePosition(Vector2.MoveTowards(context.PlayerPos, target.StranglePosition, Time.deltaTime * 100f));
 
         if (context.Input.HoldingUse)
             strangleProgression += Time.deltaTime;
@@ -65,10 +68,7 @@ public class CombatStrangleState : PlayerCombatState
     public override void Exit()
     {
         base.Exit();
-
-        uiElement.Hide();
-
-        if (!target.IsNull)
-            target.StopStrangling(context.PlayerPos);
+        if (uiElement != null) uiElement.Hide();
+        if (!target.IsNull) target.StopStrangling(context.PlayerPos);
     }
 }

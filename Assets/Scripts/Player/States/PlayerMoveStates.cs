@@ -206,13 +206,17 @@ public class FallState : MoveBaseState
         bool enemyWasBelowBefore = enemyIsBelow;
         enemyIsBelow = IsColliding(CheckType.EnemyBelow);
 
+        //handle time warp and attack indicator
         if (enemyIsBelow && !enemyWasBelowBefore)
+        {
+            Time.timeScale = 0.5f;
             attackPrompt = PlayerControlPromptUI.Show(ControlType.Use, context.PlayerPos + Vector2.down);
+        }
         else if (!enemyIsBelow && enemyWasBelowBefore && attackPrompt != null)
+        {
+            Time.timeScale = 1f;
             attackPrompt.Hide();
-
-        Util.DebugDrawCross(context.PlayerPos + Vector2.down, enemyIsBelow ? Color.green : Color.red, 2);
-        Util.DebugDrawCircle(context.PlayerPos + Vector2.down, enemyIsBelow ? Color.green : Color.red, 2);
+        }
 
         //handle attack input
         if (enemyIsBelow && context.Input.Use)
@@ -233,5 +237,7 @@ public class FallState : MoveBaseState
         base.Exit();
         if (attackPrompt != null)
             attackPrompt.Hide();
+
+        Time.timeScale = 1f;
     }
 }

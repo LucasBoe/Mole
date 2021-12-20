@@ -38,6 +38,8 @@ public class EnemyViewconeModule : EnemyModule<EnemyViewconeModule>
     public Vector3 LastSeenTarget { get => lastSeenTarget; }
     [SerializeField] private int lookedAroundCounter;
     public int LookedAroundCounter { get => lookedAroundCounter; }
+    public bool IsLookingLeft { get => isAngleLeft(transform.rotation.eulerAngles.z); }
+    public bool IsPassive = false;
 
     EnemyMoveModule moveModule;
     [SerializeField] Vector3 lastPos;
@@ -54,9 +56,9 @@ public class EnemyViewconeModule : EnemyModule<EnemyViewconeModule>
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.IsPlayer())
+        if (collision.IsPlayer() && CheckLineOfSight(collision.transform) && !IsPassive)
         {
-            targetTransform = collision.transform;
+            SetTarget(collision.transform);
             OnPlayerEnter?.Invoke(collision.transform);
             SetViewconeTriggerMode(TriggerMode.OuterCollider);
         }
@@ -90,10 +92,16 @@ public class EnemyViewconeModule : EnemyModule<EnemyViewconeModule>
         if (canSeeTarget && viewconeMode != ViewconeMode.FollowTransform)
             SetViewconeMode(ViewconeMode.FollowTransform);
 
-        if (currentAngle > 90 && targetAngle < 90)
-            currentAngle -= (Mathf.DeltaAngle(currentAngle, 90) * 2f);
-        else if (currentAngle < 90 && targetAngle > 90)
-            currentAngle += (Mathf.DeltaAngle(currentAngle, 90) * 2f);
+        if (isAngleLeft(currentAngle) && !isAngleLeft(targetAngle))
+        {
+            float angleDifference = (Mathf.DeltaAngle(currentAngle, 90) * 2f);
+            currentAngle = Util.FixAngle(currentAngle - angleDifference);
+        }
+        else if (!isAngleLeft(currentAngle) && isAngleLeft(targetAngle))
+        {
+            float angleDifference = (Mathf.DeltaAngle(currentAngle, 90) * 2f);
+            currentAngle = Util.FixAngle(currentAngle + angleDifference);
+        }
 
         currentAngle = Mathf.MoveTowardsAngle(currentAngle, targetAngle, Time.deltaTime * 45);
         transform.localRotation = Quaternion.Euler(0, 0, currentAngle);
@@ -150,6 +158,9 @@ public class EnemyViewconeModule : EnemyModule<EnemyViewconeModule>
 
     public void SetViewconeMode(ViewconeMode viewconeMode)
     {
+        if (viewconeMode != ViewconeMode.FollowTransform)
+            targetTransform = null;
+
         this.viewconeMode = viewconeMode;
         lookedAroundCounter = 0;
 
@@ -188,16 +199,28 @@ public class EnemyViewconeModule : EnemyModule<EnemyViewconeModule>
     {
         SetViewconeTriggerMode(TriggerMode.InnerCollider);
     }
-    private bool CheckLineOfSight()
+    private bool CheckLineOfSight(Transform customTarget = null)
     {
-        if (targetTransform == null)
+        if (customTarget == null && targetTransform == null)
             return false;
+
+        Transform target = customTarget != null ? customTarget : targetTransform;
 
         float maxDist = 10;
 
-        if (Vector2.Distance(transform.position, targetTransform.position) > maxDist)
+        if (Vector2.Distance(transform.position, target.position) > maxDist)
             return false;
 
-        return Util.CheckLineOfSight(transform.position, targetTransform.position, "Default");
+        return Util.CheckLineOfSight(transform.position, target.position, "Default");
+    }
+
+    private bool isAngleLeft(float angle)
+    {
+        return (angle > 90 && angle < 270) || (angle < -90 && angle > 270);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireCube(transform.position + Vector3.left * 2 * (IsLookingLeft ? 1 : -1), Vector3.one * 2);
     }
 }

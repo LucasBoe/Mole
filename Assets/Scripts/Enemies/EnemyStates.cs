@@ -44,7 +44,6 @@ public class EnemyWaitState : EnemyStateBase
 
     public override bool TryEnter(EnemyBase enemyBase)
     {
-        enemyBase.GetModule<EnemyStatemachineModule>().OnStartWaiting?.Invoke();
         startTime = Time.time;
         return true;
     }

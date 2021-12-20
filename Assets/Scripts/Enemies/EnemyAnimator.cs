@@ -23,6 +23,6 @@ public class EnemyAnimator : EnemyModule<EnemyAnimator>
 
     private void Update()
     {
-        transform.localScale = new Vector3((viewconeModule.transform.rotation.eulerAngles.z > 90 || viewconeModule.transform.rotation.eulerAngles.z < -90) ? -1 : 1, 1, 1);
+        transform.localScale = new Vector3(viewconeModule.IsLookingLeft ? -1 : 1, 1, 1);
     }
 }

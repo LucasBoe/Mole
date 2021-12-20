@@ -12,7 +12,7 @@ public interface ICombatTarget : IInterfaceable
 {
     Vector2 StranglePosition { get; }
     void Kill();
-    void StartStrangling();
+    bool StartStrangling();
     void StopStrangling(Vector2 playerPos);
 }
 
@@ -77,6 +77,9 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
 
     private void OnPlayerEnteredViewcone(Transform target)
     {
+        if (Mode == AIMode.BeeingStrangled)
+            return;
+
         Mode = AIMode.Attack;
         memoryModule.SetTarget(target);
 
@@ -117,7 +120,8 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
             newStates.Add(new EnemyWaitState(0.25f));
             newStates.Add(new EnemyAlertState());
             newStates.Add(new EnemyLookAroundState());
-        } else if (Mode == AIMode.BeeingStrangled)
+        }
+        else if (Mode == AIMode.BeeingStrangled)
         {
             newStates.Add(new EnemyWaitState(CombatStrangleState.strangleDuration));
         }
@@ -135,17 +139,24 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
             Destroy(gameObject);
     }
 
-    public void StartStrangling()
+    public bool StartStrangling()
     {
+        if (Mode == AIMode.Attack)
+            return false;
+
         Mode = AIMode.BeeingStrangled;
         moveModule.StopMoving();
+        viewconeModule.IsPassive = true;
         statemachineModule.StopCurrent();
         OnStartBeeingStrangled?.Invoke();
+        return true;
+
     }
 
     public void StopStrangling(Vector2 playerPos)
     {
         Mode = AIMode.Interrupted;
+        viewconeModule.IsPassive = false;
         memoryModule.SetTarget(playerPos);
 
         statemachineModule.StopCurrent();
