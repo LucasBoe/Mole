@@ -36938,7 +36938,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c669978c97469794480484ef516ee409, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connected: {fileID: 0}
   rigidbody2D: {fileID: 902342675}
   playerIsAbove: 0
 --- !u!1 &904026515
@@ -40117,6 +40116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ropePrefab: {fileID: 8770418620656433986, guid: e6a1984f5450100418be6f6839b6f8d3, type: 3}
+  ropeEndPrefab: {fileID: 2438953284383065058, guid: eb3d2b87398d094468d24896b1ae2db8, type: 3}
 --- !u!1 &1674921963
 GameObject:
   m_ObjectHideFlags: 0

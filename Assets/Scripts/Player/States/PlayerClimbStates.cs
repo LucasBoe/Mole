@@ -37,6 +37,9 @@ public class RopeClimbState : ClimbStateBase
     public override void Enter()
     {
         base.Enter();
+        if (PlayerRopeUser.Instance.IsActive)
+            PlayerRopeUser.Instance.DropCurrentRope();
+
         climbingOn = GetCheck(CheckType.Rope).Get<RopeElement>()[0];
     }
 

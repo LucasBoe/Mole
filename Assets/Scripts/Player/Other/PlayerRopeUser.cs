@@ -44,6 +44,11 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
         return playerRigidbody2D;
     }
 
+    internal void DropCurrentRope()
+    {
+        RopeEnd ropeEnd = RopeHandler.Instance.CreateRopeEnd(playerRigidbody2D.position);
+        HandoverRopeTo(ropeEnd.SetRope(current));
+    }
 
     public Rope HandoverRopeTo(Rigidbody2D newRigidbody)
     {

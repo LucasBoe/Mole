@@ -4,13 +4,8 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public interface IRopeable
-{
-    float PullForce { get; }
-}
-
 [RequireComponent(typeof(DistanceJoint2D))]
-public class RopeElement : MonoBehaviour, IRopeable
+public class RopeElement : MonoBehaviour
 {
     [SerializeField] private RopeElementVisualizer visualizerPrefab;
 

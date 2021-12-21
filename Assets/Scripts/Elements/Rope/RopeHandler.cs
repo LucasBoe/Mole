@@ -7,8 +7,9 @@ using UnityEngine;
 public class RopeHandler : SingletonBehaviour<RopeHandler>
 {
     [SerializeField] private RopeElement ropePrefab;
-    private List<Rope> ropes = new List<Rope>();
+    [SerializeField] private RopeEnd ropeEndPrefab;
 
+    private List<Rope> ropes = new List<Rope>();
     internal Rope CreateRope(Rigidbody2D start, RopeAnchor[] anchors, Rigidbody2D end)
     {
         Rope newRope = new Rope(start, anchors, end);
@@ -35,6 +36,11 @@ public class RopeHandler : SingletonBehaviour<RopeHandler>
         RopeElement instance = Instantiate(ropePrefab, start.position, Quaternion.identity);
         instance.Setup(start, end);
         return instance;
+    }
+
+    internal RopeEnd CreateRopeEnd(Vector2 position)
+    {
+        return Instantiate(ropeEndPrefab, position, Quaternion.identity);
     }
 
     private void Update()

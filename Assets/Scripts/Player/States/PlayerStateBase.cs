@@ -14,14 +14,23 @@ public class PlayerStateBase
 
     public virtual void Enter() { }
 
-    public virtual void Exit() { }
+    public virtual void Exit()
+    {
+        if (useRopeControlPrompt != null)
+            useRopeControlPrompt.Hide();
+    }
 
     public virtual void Update()
     {
         bool stateIsNotRopeClimb = !StateIs(PlayerState.RopeClimb);
         bool isAboveClimbableRope = IsColliding(CheckType.Rope) && stateIsNotRopeClimb;
         if (isAboveClimbableRope && !wasAboveClimbableRopeBefore)
+        {
+            if (useRopeControlPrompt != null)
+                useRopeControlPrompt.Hide();
             useRopeControlPrompt = PlayerControlPromptUI.Show(ControlType.Use, context.PlayerPos + Vector2.up);
+
+        }
         else if (!isAboveClimbableRope && wasAboveClimbableRopeBefore && useRopeControlPrompt != null)
             useRopeControlPrompt.Hide();
 
@@ -74,7 +83,7 @@ public class PlayerStateBase
 
     protected void ApplyGravity(float time)
     {
-        context.Rigidbody.AddForce(new Vector2(0, -Time.deltaTime * 1000f * context.Values.AdditionalGravityForce.Evaluate(Mathf.Clamp(time,0f,4f))));
+        context.Rigidbody.AddForce(new Vector2(0, -Time.deltaTime * 1000f * context.Values.AdditionalGravityForce.Evaluate(Mathf.Clamp(time, 0f, 4f))));
     }
 
     public PlayerStateBase(PlayerContext playerContext)

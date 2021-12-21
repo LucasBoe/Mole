@@ -35,6 +35,8 @@ public class PlayerControlPromptUI : TemporaryUIElement
 
     public static PlayerControlPromptUI Show(ControlType type, Vector3 worldPos)
     {
+        Debug.LogWarning("Show Prompt");
+
         PlayerControlPromptUI controlPromptUI = UIHandler.Temporary.Spawn<PlayerControlPromptUI>() as PlayerControlPromptUI;
         controlPromptUI.Init(type, worldPos);
 

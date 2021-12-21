@@ -2,58 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RopeFixture : MonoBehaviour
+public class RopeFixture : RopeEnd
 {
-    private Rope rope;
-    [SerializeField] private RopeElement connected;
-    [SerializeField] private Rigidbody2D rigidbody2D;
-    [SerializeField] private bool playerIsAbove = false;
-
-    PlayerControlPromptUI prompt;
-
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected override bool ShouldShowPrompt()
     {
-        if (!collision.IsPlayer())
-            return;
-
-        if (rope != null || PlayerRopeUser.Instance.IsActive)
-            prompt = PlayerControlPromptUI.Show(ControlType.Interact, transform.position + Vector3.up);
-
-        playerIsAbove = true;
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (!collision.IsPlayer())
-            return;
-
-        if (prompt != null) prompt.Hide();
-        playerIsAbove = false;
-
+        return base.ShouldShowPrompt() || PlayerRopeUser.Instance.IsActive;
     }
 
-    private void Update()
+    protected override void PlayerTryInteract(PlayerRopeUser ropeUser)
     {
-        if (playerIsAbove && PlayerInputHandler.PlayerInput.Interact)
+        Debug.LogWarning(name);
+
+        if (ropeUser.IsActive && rope == null)
         {
-            PlayerRopeUser ropeUser = PlayerRopeUser.Instance;
-
-            if (ropeUser.IsActive && rope == null)
-            {
-                rope = ropeUser.HandoverRopeTo(rigidbody2D);
-            }
-            else if (rope != null && !ropeUser.IsActive)
-            {
-                ropeUser.TakeRopeFrom(rope, rigidbody2D);
-                rope = null;
-            }
+            rope = ropeUser.HandoverRopeTo(rigidbody2D);
+        }
+        else if (rope != null && !ropeUser.IsActive)
+        {
+            ropeUser.TakeRopeFrom(rope, rigidbody2D);
+            rope = null;
         }
     }
-}
-
-public class RopeConnectionInformation
-{
-    public RopeAnchor Anchor;
-    public float Length;
-    public float Buffer;
-    public Rigidbody2D attached;
 }
