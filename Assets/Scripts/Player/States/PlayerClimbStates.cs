@@ -29,6 +29,29 @@ public class ClimbStateBase : PlayerStateBase
     }
 }
 
+public class RopeClimbState : ClimbStateBase
+{
+    RopeElement climbingOn;
+    public RopeClimbState(PlayerContext playerContext) : base(playerContext) { }
+
+    public override void Enter()
+    {
+        base.Enter();
+        climbingOn = GetCheck(CheckType.Rope).Get<RopeElement>()[0];
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        if (climbingOn == null)
+            SetState(PlayerState.Fall);
+
+        Vector2 closestRopePostion = climbingOn.GetClosestPoint(context.PlayerPos);
+        context.Rigidbody.MovePosition(closestRopePostion + context.Input.Axis * Time.deltaTime * context.Values.WallClimbYvelocity);
+    }
+}
+
 
 //Cimb States
 public class PullUpState : ClimbStateBase

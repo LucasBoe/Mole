@@ -54,6 +54,9 @@ public class PlayerController : MonoBehaviour
         context.CollisionChecks.Add(CheckType.EnemyBelow, new CollisionCheck(0f, -1.5f, 1f, 1.5f, LayerMask.GetMask("Enemy"), Color.red));
         context.CollisionChecks.Add(CheckType.EnemySideways, new CollisionCheck(0f, 0f, 2f, 0.5f, LayerMask.GetMask("Enemy"), Color.red));
 
+        //rope
+        context.CollisionChecks.Add(CheckType.Rope, new CollisionCheck(0f, 0f, 0.875f, 1.5f, LayerMask.GetMask("Rope"), Color.blue));
+
         foreach (IPlayerComponent component in playerComponents)
             component.Init(context);
     }
@@ -126,5 +129,6 @@ namespace PlayerCollisionCheckType
         WallAbove,
         EnemyBelow,
         EnemySideways,
+        Rope,
     }
 }

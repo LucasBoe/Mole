@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 6681015172608050805}
   - component: {fileID: 8770418620656433986}
   - component: {fileID: 3584642578714866481}
-  m_Layer: 0
+  - component: {fileID: 8944087794405297614}
+  m_Layer: 13
   m_Name: RopePrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,7 +90,7 @@ MonoBehaviour:
   visualizerPrefab: {fileID: 6650807411414497711, guid: 4a79223125b276c4abee3c5a22a9111c, type: 3}
   otherJoint: {fileID: 6681015172608050805}
   attachJoint: {fileID: 3584642578714866481}
-  rigidbody2D: {fileID: 8770418620656433984}
+  ropeCollider: {fileID: 8944087794405297614}
   shouldOverrideDistance: 1
 --- !u!231 &3584642578714866481
 SpringJoint2D:
@@ -111,3 +112,25 @@ SpringJoint2D:
   m_Distance: 0.005
   m_DampingRatio: 1
   m_Frequency: 2
+--- !u!68 &8944087794405297614
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8770418620656433988}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: -0.5, y: 0}
+  - {x: 0.5, y: 0}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0

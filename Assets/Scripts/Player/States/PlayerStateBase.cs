@@ -7,13 +7,29 @@ using PlayerCollisionCheckType;
 //Player State Base Class with common and abstract functions 
 public class PlayerStateBase
 {
+    PlayerControlPromptUI useRopeControlPrompt;
+    bool wasAboveClimbableRopeBefore;
+
     protected PlayerContext context;
 
     public virtual void Enter() { }
 
     public virtual void Exit() { }
 
-    public virtual void Update() { }
+    public virtual void Update()
+    {
+        bool stateIsNotRopeClimb = !StateIs(PlayerState.RopeClimb);
+        bool isAboveClimbableRope = IsColliding(CheckType.Rope) && stateIsNotRopeClimb;
+        if (isAboveClimbableRope && !wasAboveClimbableRopeBefore)
+            useRopeControlPrompt = PlayerControlPromptUI.Show(ControlType.Use, context.PlayerPos + Vector2.up);
+        else if (!isAboveClimbableRope && wasAboveClimbableRopeBefore && useRopeControlPrompt != null)
+            useRopeControlPrompt.Hide();
+
+        if (isAboveClimbableRope && context.Input.Use && stateIsNotRopeClimb)
+            SetState(PlayerState.RopeClimb);
+
+        wasAboveClimbableRopeBefore = isAboveClimbableRope;
+    }
 
     protected bool IsColliding(CheckType type)
     {

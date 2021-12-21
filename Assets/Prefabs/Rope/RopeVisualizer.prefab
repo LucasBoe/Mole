@@ -145,10 +145,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   start: {fileID: 0}
-  tween: {fileID: 6650807409666267507}
   end: {fileID: 0}
+  tween: {fileID: 6650807409666267507}
   smoothValue: 0.25
-  gravityValue: 0.25
+  gravityValue: 0.1
+  buffer: 0
 --- !u!120 &6650807411414497708
 LineRenderer:
   m_ObjectHideFlags: 0

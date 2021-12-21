@@ -19,6 +19,8 @@ public class MoveBaseState : PlayerStateBase
 
     public override void Update()
     {
+        base.Update();
+
         if (context.IsCollidingToAnyWall && context.TriesMoveUpDown && !context.TriesMoveLeftRight)
             SetState(PlayerState.Wall);
     }

@@ -17,6 +17,8 @@ public class RopeElement : MonoBehaviour, IRopeable
     [SerializeField] private DistanceJoint2D otherJoint;
     [SerializeField] private SpringJoint2D attachJoint;
 
+    [SerializeField] EdgeCollider2D ropeCollider;
+
     [SerializeField] private bool shouldOverrideDistance = true;
 
     private RopeElementVisualizer visualizerInstance;
@@ -26,13 +28,13 @@ public class RopeElement : MonoBehaviour, IRopeable
     public Rigidbody2D Rigidbody2DOther { get => otherJoint.connectedBody; }
     public Rigidbody2D Rigidbody2DAttachedTo { get => attachJoint.connectedBody; }
 
-    internal void SetJointDistance(float newDistance)
+    public void SetJointDistance(float newDistance)
     {
         if (shouldOverrideDistance)
             otherJoint.distance = newDistance; ;
     }
 
-    internal void Reconnect(Rigidbody2D to)
+    public void Reconnect(Rigidbody2D to)
     {
         Debug.LogWarning($"reconnected from {attachJoint.connectedBody.name} to {to.name}");
         attachJoint.connectedBody = to;
@@ -49,6 +51,12 @@ public class RopeElement : MonoBehaviour, IRopeable
 
     private void Update()
     {
+        ropeCollider.SetPoints(new List<Vector2>(new Vector2[]
+        {
+            transform.InverseTransformPoint(Rigidbody2DAttachedTo.position),
+            transform.InverseTransformPoint(Rigidbody2DOther.position)
+        }));
+
         pullForce = otherJoint.reactionForce.magnitude;
     }
 
@@ -66,6 +74,11 @@ public class RopeElement : MonoBehaviour, IRopeable
         shouldOverrideDistance = active;
         if (!shouldOverrideDistance)
             otherJoint.distance = float.MaxValue;
+    }
+
+    public Vector2 GetClosestPoint(Vector2 point)
+    {
+        return Util.GetClosestPointOnLineSegment(Rigidbody2DOther.position, Rigidbody2DAttachedTo.position, point);
     }
 
     private void OnDrawGizmos()

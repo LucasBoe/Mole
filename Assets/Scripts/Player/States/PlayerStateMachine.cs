@@ -18,6 +18,7 @@ public enum PlayerState
     WalkPush,
     WallStretch,
     CombatStrangle,
+    RopeClimb,
 }
 
 public class PlayerStateMachine : SingletonBehaviour<PlayerStateMachine>, IPlayerComponent
@@ -48,6 +49,7 @@ public class PlayerStateMachine : SingletonBehaviour<PlayerStateMachine>, IPlaye
         stateDictionary.Add(PlayerState.JumpToHanging, new JumpToHangingState(context));
         stateDictionary.Add(PlayerState.Wall, new WallState(context));
         stateDictionary.Add(PlayerState.WallStretch, new WallStretchState(context));
+        stateDictionary.Add(PlayerState.RopeClimb, new RopeClimbState(context));
 
         //bombat states
         stateDictionary.Add(PlayerState.CombatStrangle, new CombatStrangleState(context));
