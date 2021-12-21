@@ -99,13 +99,13 @@ public class Rope
 
         for (int i = 1; i < points.Length; i++)
         {
-            float l = Vector2.Distance(points[i - 1], points[i]);
+            float distance = Vector2.Distance(points[i - 1], points[i]);
             if (i == 1)
-                startLength = l;
+                startLength = distance;
             else if (i == points.Length - 1)
-                endLength = l;
+                endLength = distance;
             else
-                deadLength += l;
+                deadLength += distance;
         }
 
         distribution = startLength / (startLength + endLength);
