@@ -25,7 +25,7 @@ public class RopeHandler : SingletonBehaviour<RopeHandler>
         PlayerRopeUser playerStart = start.GetComponentInChildren<PlayerRopeUser>();
         PlayerRopeUser playerEnd = end.GetComponentInChildren<PlayerRopeUser>();
 
-        if (playerStart != null)
+        if (playerStart != null || newRope.IsShortRope)
             playerStart.ConnectToRope(newRope, playerIsAtStart: true);
         else if (playerEnd != null)
             playerStart.ConnectToRope(newRope, playerIsAtStart: false);

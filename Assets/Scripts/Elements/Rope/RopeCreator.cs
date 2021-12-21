@@ -10,7 +10,10 @@ public class RopeCreator : MonoBehaviour
 
     private void Start()
     {
-        RopeHandler.Instance.CreateRope(start, anchors.ToArray(), end);
+        if (anchors.Count > 0)
+            RopeHandler.Instance.CreateRope(start, anchors.ToArray(), end);
+        else
+            RopeHandler.Instance.CreateRope(start, new RopeAnchor[0] ,end);
         Destroy(gameObject);
     }
 

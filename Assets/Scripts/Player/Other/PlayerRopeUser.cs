@@ -11,9 +11,9 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
         Grap,
     }
 
-    RopeUserMode ropeUserMode;
+    [SerializeField] RopeUserMode ropeUserMode;
 
-    RopeUserMode Mode
+    public RopeUserMode Mode
     {
         get => ropeUserMode;
         set

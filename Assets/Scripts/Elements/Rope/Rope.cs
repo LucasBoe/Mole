@@ -14,6 +14,7 @@ public class Rope
     private RopeElement[] elements = new RopeElement[2];
     public RopeElement One => elements[0];
     public RopeElement Two => elements[1];
+    public bool IsShortRope => anchors.Count == 0;
 
     //length & distribution
     private float length;
@@ -28,10 +29,19 @@ public class Rope
     public Rope(Rigidbody2D start, RopeAnchor[] anchors, Rigidbody2D end)
     {
         this.anchors = new List<RopeAnchor>(anchors);
-        elements[0] = RopeHandler.Instance.CreateRopeElement(start, anchors[0].Rigidbody2D);
-        elements[1] = RopeHandler.Instance.CreateRopeElement(end, anchors[anchors.Length - 1].Rigidbody2D);
+        if (IsShortRope)
+        {
+            elements[0] = RopeHandler.Instance.CreateRopeElement(start, end);
+            length = Vector2.Distance(start.position, end.position);
+            distribution = 0;
+        }
+        else
+        {
+            elements[0] = RopeHandler.Instance.CreateRopeElement(start, anchors[0].Rigidbody2D);
+            elements[1] = RopeHandler.Instance.CreateRopeElement(end, anchors[anchors.Length - 1].Rigidbody2D);
+            RecalulateLengthAndDistributionFromDistance();
+        }
 
-        RecalulateLengthAndDistributionFromDistance();
     }
 
     public void ReplaceConnectedBody(Rigidbody2D from, Rigidbody2D to)
@@ -40,6 +50,10 @@ public class Rope
             One.Reconnect(to);
         else
             Two.Reconnect(to);
+
+        //TODO: Remove this failsave
+        if (IsShortRope)
+            One.SetJointDistance(length);
     }
 
     public bool IsRigidbodyStart(Rigidbody2D rigidbody2D)
@@ -63,18 +77,27 @@ public class Rope
             }
         }
 
-        ////balance
-        float distributionChange = (BalanceOperationn() / length);
-        distribution += distributionChange;
-        distribution = Mathf.Clamp(distribution, 0, 1);
+        if (!IsShortRope)
+        {
+            ////balance
+            float distributionChange = (BalanceOperationn() / length);
+            distribution += distributionChange;
+            distribution = Mathf.Clamp(distribution, 0, 1);
 
-        //new distance
-        One.SetJointDistance((length - deadLength) * distribution);
-        Two.SetJointDistance((length - deadLength) * (1f - distribution));
+            //new distance
+            One.SetJointDistance((length - deadLength) * distribution);
+            Two.SetJointDistance((length - deadLength) * (1f - distribution));
 
-        //update bodies
-        One.Rigidbody2DAttachedTo.AddForce(Vector2.up);
-        Two.Rigidbody2DAttachedTo.AddForce(Vector2.up);
+            //update bodies
+            One.Rigidbody2DAttachedTo.AddForce(Vector2.up);
+            Two.Rigidbody2DAttachedTo.AddForce(Vector2.up);
+        }
+        //TODO: Rewrite this, had to make mode public and doing this in update is rediculous;
+        else if (PlayerRopeUser.Instance.Mode == PlayerRopeUser.RopeUserMode.Grap)
+        {
+            //override length in case the player is pulling
+            One.SetJointDistance(length);
+        }
 
         float RecalculateDitribution(RopeLengthChange lengthChange, float lengthBefore, float newLength)
         {
