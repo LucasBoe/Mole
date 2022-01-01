@@ -18,7 +18,7 @@ public class PlayerInputHandler : SingletonBehaviour<PlayerInputHandler>
 
         //Stick 2 / Mouse
         if (new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0)
-            PlayerInput.VirtualCursor = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
+            PlayerInput.VirtualCursor = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
         else
             PlayerInput.VirtualCursor = ModifyVirtualCursor(PlayerInput.VirtualCursor, new Vector2(Input.GetAxis("StickRight X"), Input.GetAxis("StickRight Y")));
 
@@ -51,6 +51,6 @@ public class PlayerInputHandler : SingletonBehaviour<PlayerInputHandler>
 
     private Vector2 ModifyVirtualCursor(Vector2 before, Vector2 mouseAxis)
     {
-        return (before + mouseAxis * 10).Clamp(Vector2.zero, new Vector2(Screen.width, Screen.height));
+        return (before + mouseAxis.InvertY() * 10).Clamp(Vector2.zero, new Vector2(Screen.width, Screen.height));
     }
 }

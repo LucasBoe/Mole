@@ -91,6 +91,8 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
 
         if (state == ItemUserState.Aim)
             AimEnter();
+
+        Crosshair.SetMode(state == ItemUserState.Aim ? Crosshair.Mode.Active : Crosshair.Mode.Passive);
     }
 
     internal bool TryOverrideActiveItem(PlayerItem item)

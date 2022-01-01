@@ -25,7 +25,7 @@ public class PlayerInput
 
     public Vector2 Axis;
     public Vector2 VirtualCursor;
-    public Vector3 VirtualCursorToScreenCenter => (VirtualCursor - new Vector2(Screen.width / 2, Screen.height / 2)) / new Vector2(Screen.width, Screen.height).InvertY();
+    public Vector3 VirtualCursorToScreenCenter => (VirtualCursor - new Vector2(Screen.width / 2, Screen.height / 2)) / new Vector2(Screen.width, Screen.height);
     public Vector3 VirtualCursorToWorldPos => CameraController.ScreenToWorldPoint(VirtualCursor);
 
 
