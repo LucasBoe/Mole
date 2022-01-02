@@ -47,6 +47,9 @@ TagManager:
   - name: Foreground
     uniqueID: 17191105
     locked: 0
+  - name: Puddle
+    uniqueID: 3412872143
+    locked: 0
   - name: Noise
     uniqueID: 4200260675
     locked: 0
