@@ -79,7 +79,7 @@ public class WalkState : MoveBaseState
         IsSprinting = context.Input.HoldingSprint;
         float xInput = context.Input.Axis.x;
 
-        context.Rigidbody.velocity = new Vector2(xInput * (IsSprinting ? context.Values.walkXvelocity : context.Values.crouchXvelocity), context.Rigidbody.velocity.y);
+        context.Rigidbody.velocity = new Vector2(xInput * (IsSprinting ? context.Values.WalkXvelocity : context.Values.CrouchXvelocity), context.Rigidbody.velocity.y);
 
         if (xInput == 0 || triesMovingIntoWall)
             SetState(PlayerState.Idle);

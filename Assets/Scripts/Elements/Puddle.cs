@@ -22,7 +22,9 @@ public class Puddle : MonoBehaviour
     private void OnTriggerStay2D(Collider2D collision)
     {
         Vector2 newPosition = collision.ClosestPoint(transform.position) + (Vector2.up * 0.125f);
-        walkTroughPuddleEffect.forward = (newPosition - (Vector2)walkTroughPuddleEffect.position).normalized;
+        Vector2 dir = (newPosition - (Vector2)walkTroughPuddleEffect.position).normalized;
+        if (dir.magnitude > 0)
+            walkTroughPuddleEffect.forward = dir;
         walkTroughPuddleEffect.position = newPosition;
     }
 }

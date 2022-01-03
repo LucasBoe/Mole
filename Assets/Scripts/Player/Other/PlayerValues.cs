@@ -5,8 +5,9 @@ using UnityEngine;
 [CreateAssetMenu]
 public class PlayerValues : ScriptableObject
 {
-    public float walkXvelocity = 9f;
-    public float crouchXvelocity = 5f;
+    public float WalkXvelocity = 9f;
+    public float CrouchXvelocity = 5f;
+    public float TunnelXvelocity = 3f;
     public float StraveXVelocity = 6f;
     public float WallClimbYvelocity = 6f;
     public float EdgeHelperUpwardsImpulse = 1f;

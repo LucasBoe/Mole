@@ -19,6 +19,7 @@ public enum PlayerState
     WallStretch,
     CombatStrangle,
     RopeClimb,
+    Tunnel,
 }
 
 public class PlayerStateMachine : SingletonBehaviour<PlayerStateMachine>, IPlayerComponent
@@ -53,6 +54,8 @@ public class PlayerStateMachine : SingletonBehaviour<PlayerStateMachine>, IPlaye
 
         //bombat states
         stateDictionary.Add(PlayerState.CombatStrangle, new CombatStrangleState(context));
+
+        stateDictionary.Add(PlayerState.Tunnel, new TunnelState(context));
 
     }
     public void UpdatePlayerComponent(PlayerContext context)

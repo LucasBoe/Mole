@@ -41,6 +41,12 @@ TagManager:
   - name: Background
     uniqueID: 3879075787
     locked: 0
+  - name: PlayerInTunnel
+    uniqueID: 3197267937
+    locked: 0
+  - name: TunnelBars
+    uniqueID: 3485234455
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
