@@ -10,9 +10,9 @@ public class LayerHandlerEditor : Editor
     // draw lines between a chosen game object
     // and a selection of added game objects
 
-    private void OnEnable()
+    [UnityEditor.Callbacks.DidReloadScripts]
+    private static void OnScriptsReloaded()
     {
-        //SceneView.onSceneGUIDelegate += this.OnSceneGUI;
         SceneView.duringSceneGui -= OnScene;
         SceneView.duringSceneGui += OnScene;
     }
