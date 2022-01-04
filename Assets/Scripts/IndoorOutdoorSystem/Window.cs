@@ -30,7 +30,7 @@ public class Window : MonoBehaviour
         if (isAbove && PlayerInputHandler.PlayerInput.Interact)
         {
             isAbove = false;
-            bool isInside = OutdoorIndoorHandler.Instance.Switch();
+            bool isInside = LayerHandler.Instance.Switch();
             spriteRenderer.sprite = isInside ? insideSprite : outsideSprite;
         }
     }

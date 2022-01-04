@@ -19,7 +19,7 @@ public class TunnelEntrance : PlayerAboveInteractable
     {
         if (playerIsAbove && PlayerInputHandler.PlayerInput.Interact)
         {
-            OutdoorIndoorHandler.Instance.SetIndoorOutdoor(isIndoor: !TunnelUser.Instance.IsInTunnsel);
+            LayerHandler.Instance.SetIndoorOutdoor(isIndoor: !TunnelUser.Instance.IsInTunnsel);
             TunnelUser.Instance.TrySetTunnelState(!TunnelUser.Instance.IsInTunnsel);
         }
     }

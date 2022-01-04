@@ -21,7 +21,7 @@ public class DoorSwitch : MonoBehaviour
     private void UpdateIndoorOutdoor(Vector3 position, bool leaving)
     {
         bool indoor = position.x < transform.position.x;
-        OutdoorIndoorHandler.Instance.SetIndoorOutdoor(indoor == leaving);
+        LayerHandler.Instance.SetIndoorOutdoor(indoor == leaving);
     }
 
 
