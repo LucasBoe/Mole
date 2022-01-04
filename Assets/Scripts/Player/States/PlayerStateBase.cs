@@ -65,11 +65,7 @@ public class PlayerStateBase : PlayerStateObject
         transitionCheck.Rope.TryExit();
     }
 
-    public virtual void Update()
-    {
-        transitionCheck.Rope.TryCheck();
-        transitionCheck.Hideable.TryCheck();
-    }
+    public virtual void Update() { }
 
     protected void SetCollisionActive(bool active)
     {

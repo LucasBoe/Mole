@@ -65,6 +65,7 @@ public class PlayerStateMachine : SingletonBehaviour<PlayerStateMachine>, IPlaye
     public void UpdatePlayerComponent(PlayerContext context)
     {
         UpdateState(CurrentState);
+        context.StateTransitonChecks.TryCheckAll();
     }
 
     public void SetState(PlayerState newState)

@@ -15212,7 +15212,7 @@ GameObject:
   - component: {fileID: 343130583}
   - component: {fileID: 343130582}
   - component: {fileID: 343130581}
-  m_Layer: 12
+  m_Layer: 15
   m_Name: Entrance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15982,7 +15982,7 @@ GameObject:
   - component: {fileID: 548831074}
   - component: {fileID: 548831076}
   - component: {fileID: 548831077}
-  m_Layer: 12
+  m_Layer: 15
   m_Name: Entrance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17057,7 +17057,7 @@ GameObject:
   - component: {fileID: 745689045}
   - component: {fileID: 745689044}
   - component: {fileID: 745689043}
-  m_Layer: 12
+  m_Layer: 15
   m_Name: Entrance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39422,7 +39422,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 8191
+    m_Bits: 65535
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 89245a977d6203d4e8b192fd9d385acc, type: 2}
   m_TargetDisplay: 0
@@ -40909,6 +40909,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1530952065}
   - component: {fileID: 1530952066}
+  - component: {fileID: 1530952067}
   m_Layer: 0
   m_Name: InputHandler
   m_TagString: Untagged
@@ -40960,6 +40961,19 @@ MonoBehaviour:
     HoldingInteract: 0
     HoldingUse: 0
     HoldingSprint: 0
+--- !u!114 &1530952067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1530952064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5535e626f3c0a944692533fd9552615e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actions: []
 --- !u!1 &1546635326
 GameObject:
   m_ObjectHideFlags: 0
@@ -48919,7 +48933,7 @@ GameObject:
   - component: {fileID: 1876315916}
   - component: {fileID: 1876315915}
   - component: {fileID: 1876315914}
-  m_Layer: 12
+  m_Layer: 15
   m_Name: Entrance
   m_TagString: Untagged
   m_Icon: {fileID: 0}

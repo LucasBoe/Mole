@@ -9,9 +9,9 @@ public class RopeFixture : RopeEnd
         return base.ShouldShowPrompt() || PlayerRopeUser.Instance.IsActive;
     }
 
-    protected override void PlayerTryInteract(PlayerRopeUser ropeUser)
+    protected override void PlayerTryInteract()
     {
-        Debug.LogWarning(name);
+        PlayerRopeUser ropeUser = PlayerRopeUser.Instance;
 
         if (ropeUser.IsActive && rope == null)
         {

@@ -9,15 +9,12 @@ public class TunnelEntrance : PlayerAboveInteractable
 
     protected override void OnPlayerEnter()
     {
-        prompt = PlayerControlPromptUI.Show(ControlType.Interact, transform.position + (Vector3.up + Vector3.right));
         if (TunnelUser.Instance.IsInTunnel)
             LayerHandler.Instance.SetLayer(layerLeadsTo);
     }
 
     protected override void OnPlayerExit()
     {
-        if (prompt != null) prompt.Hide();
-
         if (TunnelUser.Instance.IsInTunnel)
             LayerHandler.Instance.SetLayer(layerLeadsTo);
     }

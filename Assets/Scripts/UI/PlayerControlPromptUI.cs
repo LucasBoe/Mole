@@ -10,6 +10,36 @@ public enum ControlType
     Use,
 }
 
+public static class ControlTypeExtention
+{
+    public static Color ToColor(this ControlType type)
+    {
+        switch (type)
+        {
+            case ControlType.Interact:
+                return Color.green;
+
+            case ControlType.Use:
+                return Color.blue;
+        }
+
+        return Color.white;
+    }
+    public static string ToConsoleButtonName(this ControlType type)
+    {
+        switch (type)
+        {
+            case ControlType.Interact:
+                return "A";
+
+            case ControlType.Use:
+                return "X";
+        }
+
+        return "";
+    }
+}
+
 public class PlayerControlPromptUI : TemporaryUIElement
 {
     [SerializeField] Image image;
@@ -18,19 +48,8 @@ public class PlayerControlPromptUI : TemporaryUIElement
     public void Init (ControlType type, Vector3 worldPos)
     {
         GetComponent<WorldPositionTrackingUI>().WorldPosition = worldPos;
-
-        switch (type)
-        {
-            case ControlType.Interact:
-                image.color = Color.green;
-                text.text = "A";
-                break;
-
-            case ControlType.Use:
-                image.color = Color.blue;
-                text.text = "X";
-                break;
-        }
+        image.color = type.ToColor();
+        text.text = type.ToConsoleButtonName();
     }
 
     public static PlayerControlPromptUI Show(ControlType type, Vector3 worldPos)

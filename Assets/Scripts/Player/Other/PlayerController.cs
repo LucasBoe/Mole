@@ -64,6 +64,9 @@ public class PlayerController : MonoBehaviour
         //hideable
         context.CollisionChecks.Add(CheckType.Hideable, new CollisionCheck(0f, -0.5f, 2f, 0.5f, LayerMask.GetMask("Hideable"), Color.blue));
 
+        //tunnel
+        context.CollisionChecks.Add(CheckType.Tunnel, new CollisionCheck(0f, 0f, 0.875f, 1.5f, LayerMask.GetMask("TunnelEntrance"), Color.green));
+
         foreach (IPlayerComponent component in playerComponents)
             component.Init(context);
     }
@@ -144,5 +147,6 @@ namespace PlayerCollisionCheckType
         EnemySideways,
         Rope,
         Hideable,
+        Tunnel,
     }
 }

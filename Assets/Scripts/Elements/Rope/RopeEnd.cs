@@ -5,9 +5,9 @@ using UnityEngine;
 public class RopeEnd : PlayerAboveInteractable
 {
     [SerializeField] protected Rigidbody2D rigidbody2D;
+    [SerializeField] protected SpriteRenderer spriteRenderer;
 
     protected Rope rope;
-    protected PlayerControlPromptUI prompt;
 
     public Rigidbody2D SetRope (Rope rope)
     {
@@ -18,12 +18,12 @@ public class RopeEnd : PlayerAboveInteractable
     protected override void OnPlayerEnter()
     {
         if (ShouldShowPrompt())
-            prompt = PlayerControlPromptUI.Show(ControlType.Interact, transform.position + Vector3.up);
+            PlayerInputActionRegister.Instance.RegisterInputAction(new InputAction() { Input = ControlType.Interact, Object = spriteRenderer, ActionCallback = PlayerTryInteract });
     }
 
     protected override void OnPlayerExit()
     {
-        if (prompt != null) prompt.Hide();
+        PlayerInputActionRegister.Instance.UnregisterInputAction(spriteRenderer);
     }
 
     protected virtual bool ShouldShowPrompt()
@@ -31,17 +31,9 @@ public class RopeEnd : PlayerAboveInteractable
         return rope != null;
     }
 
-    private void Update()
+    protected virtual void PlayerTryInteract()
     {
-        if (playerIsAbove && PlayerInputHandler.PlayerInput.Interact)
-        {
-            PlayerRopeUser ropeUser = PlayerRopeUser.Instance;
-            PlayerTryInteract(ropeUser);
-        }
-    }
-
-    protected virtual void PlayerTryInteract(PlayerRopeUser ropeUser)
-    {
+        PlayerRopeUser ropeUser = PlayerRopeUser.Instance;
         if (rope != null && !ropeUser.IsActive)
         {
             ropeUser.TakeRopeFrom(rope, rigidbody2D);

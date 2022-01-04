@@ -22,6 +22,7 @@ public class HidingHandler : SingletonBehaviour<HidingHandler>
         {
             case PlayerState.InWindow:
             case PlayerState.Tunnel:
+            case PlayerState.Hiding:
                 hiddenByState = true;
                 break;
 

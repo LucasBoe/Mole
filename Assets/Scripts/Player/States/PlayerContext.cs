@@ -73,10 +73,23 @@ public class PlayerStateTransitionChecks
 
     public PlayerStateTransition Rope;
     public PlayerStateTransition Hideable;
-    public PlayerStateTransitionChecks (PlayerContext context)
+    public PlayerStateTransition EnterTunnel;
+    public PlayerStateTransition ExitTunnel;
+    public PlayerStateTransitionChecks(PlayerContext context)
     {
         Rope = new PlayerStateTransition(context, PlayerState.RopeClimb, CheckType.Rope, ControlType.Use);
         Hideable = new PlayerStateTransition(context, PlayerState.Hiding, CheckType.Hideable, ControlType.Use);
+        EnterTunnel = new PlayerStateTransition(context, PlayerState.Tunnel, CheckType.Tunnel, ControlType.Interact);
+        ExitTunnel = new PlayerStateTransition(context, PlayerState.Idle, CheckType.Tunnel, ControlType.Interact);
+
     }
 
+    internal void TryCheckAll()
+    {
+        Rope.TryCheck();
+        Hideable.TryCheck();
+
+        if (!EnterTunnel.TryCheck())
+            ExitTunnel.TryCheck();
+    }
 }

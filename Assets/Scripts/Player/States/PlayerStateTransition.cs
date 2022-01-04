@@ -22,7 +22,7 @@ public class PlayerStateTransition : PlayerStateObject
     PlayerControlPromptUI prompt;
     bool wasCollidingBefore;
 
-    internal void TryCheck()
+    internal bool TryCheck()
     {
         bool notInTargetState = !StateIs(targetState);
         if (Active && notInTargetState)
@@ -33,13 +33,15 @@ public class PlayerStateTransition : PlayerStateObject
                 if (prompt != null)
                     prompt.Hide();
                 prompt = PlayerControlPromptUI.Show(inputNeeded, context.PlayerPos + Vector2.up);
-
             }
             else if (!isColliding && wasCollidingBefore && prompt != null)
                 prompt.Hide();
 
             if (isColliding && context.Input.GetByControlType(inputNeeded) && notInTargetState)
+            {
                 SetState(targetState);
+                return true;
+            }
 
             wasCollidingBefore = isColliding;
         }
@@ -48,6 +50,8 @@ public class PlayerStateTransition : PlayerStateObject
             if (prompt != null)
                 prompt.Hide();
         }
+
+        return false;
     }
 
     internal void TryExit()

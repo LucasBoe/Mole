@@ -5,4 +5,10 @@ using UnityEngine;
 public class CollectablePlayerItem : MonoBehaviour
 {
     public PlayerItem Item;
+    public SpriteRenderer SpriteRenderer;
+
+    private void OnEnable()
+    {
+        SpriteRenderer = GetComponent<SpriteRenderer>();
+    }
 }
