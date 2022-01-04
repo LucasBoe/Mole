@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
 
         context = new PlayerContext();
         context.Input = PlayerInputHandler.PlayerInput;
+        context.StateTransitonChecks = new PlayerStateTransitionChecks(context);
         context.Rigidbody = GetComponent<Rigidbody2D>();
         context.PlayerController = this;
         context.Values = playerValues;
@@ -59,6 +60,9 @@ public class PlayerController : MonoBehaviour
 
         //rope
         context.CollisionChecks.Add(CheckType.Rope, new CollisionCheck(0f, 0f, 0.875f, 1.5f, LayerMask.GetMask("Rope"), Color.blue));
+
+        //hideable
+        context.CollisionChecks.Add(CheckType.Hideable, new CollisionCheck(0f, -0.5f, 2f, 0.5f, LayerMask.GetMask("Hideable"), Color.blue));
 
         foreach (IPlayerComponent component in playerComponents)
             component.Init(context);
@@ -139,5 +143,6 @@ namespace PlayerCollisionCheckType
         EnemyBelow,
         EnemySideways,
         Rope,
+        Hideable,
     }
 }

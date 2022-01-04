@@ -31,4 +31,6 @@ public class PlayerValues : ScriptableObject
     public float WallSnapXVelocity = 4f;
     public float JumpOffVelocity = 1.5f;
     public float KeyPressTimeToDropDown = 0.5f;
+
+    public float SnapToHideablePositionDuration = 0.5f;
 }

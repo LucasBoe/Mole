@@ -9,7 +9,7 @@ public class ClimbStateBase : PlayerStateBase
 
     public override void Enter()
     {
-        context.Rigidbody.gravityScale = 0;
+        SetGravityActive(false);
     }
 
     public override void Update()
@@ -25,7 +25,7 @@ public class ClimbStateBase : PlayerStateBase
 
     public override void Exit()
     {
-        context.Rigidbody.gravityScale = 2;
+        SetGravityActive(true);
     }
 }
 

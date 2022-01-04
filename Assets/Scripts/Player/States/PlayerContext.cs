@@ -15,8 +15,10 @@ public class PlayerContext
     internal bool TriesMoveLeftRight;
     internal bool TriesMoveUpDown;
     public PlayerInput Input;
+    public PlayerStateTransitionChecks StateTransitonChecks;
 
     public ICombatTarget CombatTarget;
+
 }
 
 [System.Serializable]
@@ -49,5 +51,32 @@ public class PlayerInput
     public bool HoldingUse;
 
     public bool HoldingSprint;
+
+    public bool GetByControlType(ControlType type)
+    {
+        switch (type)
+        {
+            case ControlType.Interact:
+                return Interact;
+
+            case ControlType.Use:
+                return Use;
+        }
+
+        return false;
+    }
+
+}
+
+public class PlayerStateTransitionChecks
+{
+
+    public PlayerStateTransition Rope;
+    public PlayerStateTransition Hideable;
+    public PlayerStateTransitionChecks (PlayerContext context)
+    {
+        Rope = new PlayerStateTransition(context, PlayerState.RopeClimb, CheckType.Rope, ControlType.Use);
+        Hideable = new PlayerStateTransition(context, PlayerState.Hiding, CheckType.Hideable, ControlType.Use);
+    }
 
 }

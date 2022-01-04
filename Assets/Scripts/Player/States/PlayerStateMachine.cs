@@ -21,6 +21,7 @@ public enum PlayerState
     RopeClimb,
     Tunnel,
     InWindow,
+    Hiding,
 }
 
 public class PlayerStateMachine : SingletonBehaviour<PlayerStateMachine>, IPlayerComponent
@@ -58,6 +59,7 @@ public class PlayerStateMachine : SingletonBehaviour<PlayerStateMachine>, IPlaye
 
         stateDictionary.Add(PlayerState.Tunnel, new TunnelState(context));
         stateDictionary.Add(PlayerState.InWindow, new InWindowState(context));
+        stateDictionary.Add(PlayerState.Hiding, new HidingState(context));
 
     }
     public void UpdatePlayerComponent(PlayerContext context)
