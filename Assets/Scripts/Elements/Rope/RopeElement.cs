@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 
 [RequireComponent(typeof(DistanceJoint2D))]
-public class RopeElement : MonoBehaviour
+public class RopeElement : MonoBehaviour, IInputActionProvider
 {
     [SerializeField] private RopeElementVisualizer visualizerPrefab;
 
@@ -79,5 +79,15 @@ public class RopeElement : MonoBehaviour
     private void OnDrawGizmos()
     {
         Handles.Label(Vector3.Lerp(Rigidbody2DOther.position, Rigidbody2DAttachedTo.position, 0.5f), otherJoint.distance.ToString());
+    }
+
+    public InputAction FetchInputAction()
+    {
+        return new InputAction() { ActionCallback = Climb, Object = gameObject.AddComponent<SpriteRenderer>(), Text = "Climb" };
+    }
+
+    private void Climb ()
+    {
+        PlayerStateMachine.Instance.SetState(PlayerState.RopeClimb);
     }
 }

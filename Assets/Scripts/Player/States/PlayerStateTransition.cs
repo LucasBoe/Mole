@@ -22,6 +22,8 @@ public class PlayerStateTransition : PlayerStateObject
     PlayerControlPromptUI prompt;
     bool wasCollidingBefore;
 
+    private InputAction current;
+
     internal bool TryCheck()
     {
         bool notInTargetState = !StateIs(targetState);
@@ -30,25 +32,20 @@ public class PlayerStateTransition : PlayerStateObject
             bool isColliding = IsColliding(toCheckFor) && notInTargetState;
             if (isColliding && !wasCollidingBefore)
             {
-                if (prompt != null)
-                    prompt.Hide();
-                prompt = PlayerControlPromptUI.Show(inputNeeded, context.PlayerPos + Vector2.up);
+                IInputActionProvider inputActionProvider = GetCheck(toCheckFor).Get<IInputActionProvider>()[0];
+                current = inputActionProvider.FetchInputAction();
+                current.Input = inputNeeded;
+                PlayerInputActionRegister.Instance.RegisterInputAction(current);
             }
-            else if (!isColliding && wasCollidingBefore && prompt != null)
-                prompt.Hide();
-
-            if (isColliding && context.Input.GetByControlType(inputNeeded) && notInTargetState)
-            {
-                SetState(targetState);
-                return true;
-            }
+            else if (!isColliding && wasCollidingBefore && current != null)
+                PlayerInputActionRegister.Instance.UnregisterInputAction(current);
 
             wasCollidingBefore = isColliding;
         }
         else
         {
-            if (prompt != null)
-                prompt.Hide();
+            if (current != null)
+                PlayerInputActionRegister.Instance.UnregisterInputAction(current);
         }
 
         return false;

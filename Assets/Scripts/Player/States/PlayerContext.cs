@@ -61,6 +61,12 @@ public class PlayerInput
 
             case ControlType.Use:
                 return Use;
+
+            case ControlType.Jump:
+                return Jump;
+
+            case ControlType.Back:
+                return Back;
         }
 
         return false;

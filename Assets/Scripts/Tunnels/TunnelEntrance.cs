@@ -2,10 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TunnelEntrance : PlayerAboveInteractable
+public class TunnelEntrance : PlayerAboveInteractable, IInputActionProvider
 {
+    [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Layers layerLeadsTo;
     PlayerControlPromptUI prompt;
+
+    public InputAction FetchInputAction()
+    {
+        return new InputAction() { Text = "Enter", Object = spriteRenderer, ActionCallback = TryInteract };
+    }
 
     protected override void OnPlayerEnter()
     {
@@ -18,16 +24,9 @@ public class TunnelEntrance : PlayerAboveInteractable
         if (TunnelUser.Instance.IsInTunnel)
             LayerHandler.Instance.SetLayer(layerLeadsTo);
     }
-
-    private void Update()
+    private void TryInteract()
     {
-        if (playerIsAbove)
-        {
-            if (PlayerInputHandler.PlayerInput.Interact)
-            {
-                enableTime = Time.time;
-                TunnelUser.Instance.TrySetTunnelState(!TunnelUser.Instance.IsInTunnel);
-            }
-        }
+        enableTime = Time.time;
+        TunnelUser.Instance.TrySetTunnelState(!TunnelUser.Instance.IsInTunnel);
     }
 }

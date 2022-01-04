@@ -8,6 +8,8 @@ public enum ControlType
 {
     Interact,
     Use,
+    Jump,
+    Back,
 }
 
 public static class ControlTypeExtention
@@ -21,6 +23,12 @@ public static class ControlTypeExtention
 
             case ControlType.Use:
                 return Color.blue;
+
+            case ControlType.Jump:
+                return Color.yellow;
+
+            case ControlType.Back:
+                return Color.red;
         }
 
         return Color.white;
@@ -34,6 +42,12 @@ public static class ControlTypeExtention
 
             case ControlType.Use:
                 return "X";
+
+            case ControlType.Jump:
+                return "Y";
+
+            case ControlType.Back:
+                return "B";
         }
 
         return "";

@@ -231,3 +231,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerIsAbove: 0
+  spriteRenderer: {fileID: 1482603712404808880}

@@ -20,8 +20,23 @@ public class PlayerInputActionRegister : SingletonBehaviour<PlayerInputActionReg
         actions.Add(newAction);
     }
 
+    public void UnregisterInputAction(InputAction oldAction)
+    {
+        Debug.LogWarning("Unregister " + oldAction);
+
+        for (int i = actions.Count - 1; i >= 0; i--)
+        {
+            InputAction action = actions[i];
+            if (action != null && action.Input == oldAction.Input)
+                actions.Remove(action);
+        }
+    }
+
     public bool UnregisterInputAction(SpriteRenderer obj)
     {
+
+        Debug.LogWarning("Unregister " + obj);
+
         for (int i = actions.Count - 1; i >= 0; i--)
         {
             InputAction action = actions[i];
@@ -63,4 +78,9 @@ public class InputAction
     public SpriteRenderer Object;
     public string Text = "Interact";
     public System.Action ActionCallback;
+}
+
+public interface IInputActionProvider
+{
+    InputAction FetchInputAction();
 }
