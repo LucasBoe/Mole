@@ -5,12 +5,30 @@ using UnityEngine;
 
 public class HidingHandler : SingletonBehaviour<HidingHandler>
 {
-    public float PlayerHiddenValue => playerHiddenValue;
+    public float PlayerHiddenValue => hiddenByState ? 0 : playerHiddenValue;
     private float playerHiddenValue;
+
+    private bool hiddenByState = false;
 
     private void Start()
     {
         PlayerBrightnessSampler.OnSampleNewPlayerBrightness += UpdateHiddenValueFromPlayerSample;
+        PlayerStateMachine.Instance.OnStateChange += OnPlayerEnterState;
+    }
+
+    private void OnPlayerEnterState(PlayerState state)
+    {
+        switch (state)
+        {
+            case PlayerState.InWindow:
+            case PlayerState.Tunnel:
+                hiddenByState = true;
+                break;
+
+            default:
+                hiddenByState = false;
+                break;
+        }
     }
 
     private void UpdateHiddenValueFromPlayerSample(float sample)

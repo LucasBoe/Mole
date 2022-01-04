@@ -20,6 +20,7 @@ public enum PlayerState
     CombatStrangle,
     RopeClimb,
     Tunnel,
+    InWindow,
 }
 
 public class PlayerStateMachine : SingletonBehaviour<PlayerStateMachine>, IPlayerComponent
@@ -56,6 +57,7 @@ public class PlayerStateMachine : SingletonBehaviour<PlayerStateMachine>, IPlaye
         stateDictionary.Add(PlayerState.CombatStrangle, new CombatStrangleState(context));
 
         stateDictionary.Add(PlayerState.Tunnel, new TunnelState(context));
+        stateDictionary.Add(PlayerState.InWindow, new InWindowState(context));
 
     }
     public void UpdatePlayerComponent(PlayerContext context)
