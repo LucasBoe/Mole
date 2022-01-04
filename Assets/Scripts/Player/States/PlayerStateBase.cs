@@ -72,7 +72,7 @@ public class PlayerStateBase
 
     protected void SetCollisionActive(bool active)
     {
-        context.Rigidbody.GetComponent<Collider2D>().enabled = active;
+        context.PlayerController.SetCollisionActive(active);
     }
 
     protected void JumpOff(Vector2 input)

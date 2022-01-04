@@ -15,11 +15,14 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] PlayerValues playerValues;
     [SerializeField] private CheckType[] toDebug;
+    [SerializeField] Collider2D[] colliders;
 
     private void Awake()
     {
         playerComponents = GetComponentsInChildren<IPlayerComponent>();
         playerComponents = playerComponents.OrderBy(c => -c.UpdatePrio).ToArray();
+
+        colliders = GetComponents<Collider2D>();
 
         context = new PlayerContext();
         context.Input = PlayerInputHandler.PlayerInput;
@@ -59,6 +62,12 @@ public class PlayerController : MonoBehaviour
 
         foreach (IPlayerComponent component in playerComponents)
             component.Init(context);
+    }
+
+    internal void SetCollisionActive(bool active)
+    {
+        foreach (Collider2D collider in colliders)
+            collider.enabled = active;
     }
 
     // Update is called once per frame
