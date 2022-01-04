@@ -6,7 +6,7 @@ public class TunnelUser : SingletonBehaviour<TunnelUser>
 {
     private float lastTunnelSwitch = 0f;
 
-    public bool IsInTunnsel = false;
+    public bool IsInTunnel = false;
     [SerializeField] CapsuleCollider2D defaultCollider, inTunnelCollider;
     [SerializeField] SpriteRenderer playerSpriteRenderer;
     [SerializeField] string defaultLayer, inTunnselLayer;
@@ -16,14 +16,14 @@ public class TunnelUser : SingletonBehaviour<TunnelUser>
         if (Time.time < lastTunnelSwitch + 0.1f)
             return;
 
-        IsInTunnsel = inTunnel;
-        inTunnelCollider.enabled = inTunnel;
+        IsInTunnel = inTunnel;
         defaultCollider.enabled = !inTunnel;
-        //playerSpriteRenderer.sortingLayerName = inTunnel ? inTunnselLayer : defaultLayer;
+        playerSpriteRenderer.sortingLayerName = inTunnel ? inTunnselLayer : defaultLayer;
 
         lastTunnelSwitch = Time.time;
 
         PlayerStateMachine.Instance.SetState(inTunnel ? PlayerState.Tunnel : PlayerState.Idle);
+        transform.parent.Translate(inTunnel ? Vector2.down : Vector2.up);
 
         Debug.LogWarning($"Player is in tunnel: {inTunnel}");
     }

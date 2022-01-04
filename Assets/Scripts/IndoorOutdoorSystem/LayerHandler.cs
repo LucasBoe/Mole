@@ -2,11 +2,20 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+
+public enum Layers
+{
+    Indoor,
+    Outdoor,
+    Tunnels,
+}
 
 public class LayerHandler : SingletonBehaviour<LayerHandler>
 {
     [SerializeField] GameObject indoor, outdoor;
-    public GameObject[] LayerGameObjects;
+    [SerializeField] LayerEnumGameobjectPair[] layerEnumGameobjectPair;
+    public GameObject[] LayerGameObjects => layerEnumGameobjectPair.Select(p => p.GameObject).ToArray();
 
     public static LayerHandler EditorInstance => (Instance == null) ? FindInstance() : Instance;
 
@@ -24,9 +33,22 @@ public class LayerHandler : SingletonBehaviour<LayerHandler>
         return !indoorActive;
     }
 
+    internal void SetLayer(Layers layerLeadsTo)
+    {
+        foreach (LayerEnumGameobjectPair pair in layerEnumGameobjectPair)
+            pair.GameObject.SetActive(pair.Layer == layerLeadsTo);
+    }
+
     internal void SetIndoorOutdoor(bool isIndoor)
     {
         indoor.SetActive(isIndoor);
         outdoor.SetActive(!isIndoor);
     }
+}
+
+[System.Serializable]
+public class LayerEnumGameobjectPair
+{
+    public Layers Layer;
+    public GameObject GameObject;
 }
