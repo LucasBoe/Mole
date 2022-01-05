@@ -6,13 +6,15 @@ using PlayerCollisionCheckType;
 
 public class PlayerStateTransition : PlayerStateObject
 {
+    PlayerState currentState;
     PlayerState targetState;
     CheckType toCheckFor;
     ControlType inputNeeded;
 
 
-    public PlayerStateTransition(PlayerContext playerContext, PlayerState toTransitionTo, CheckType toCheckFor, ControlType inputNeeded) : base(playerContext)
+    public PlayerStateTransition(PlayerContext playerContext, PlayerState toTransitionTo, CheckType toCheckFor, ControlType inputNeeded, PlayerState needsState = PlayerState.None) : base(playerContext)
     {
+        this.currentState = needsState;
         this.targetState = toTransitionTo;
         this.toCheckFor = toCheckFor;
         this.inputNeeded = inputNeeded;
@@ -27,7 +29,7 @@ public class PlayerStateTransition : PlayerStateObject
     internal bool TryCheck()
     {
         bool notInTargetState = !StateIs(targetState);
-        if (Active && notInTargetState)
+        if (Active && notInTargetState && (currentState == PlayerState.None || StateIs(currentState)))
         {
             bool isColliding = IsColliding(toCheckFor) && notInTargetState;
             if (isColliding && !wasCollidingBefore)
@@ -45,7 +47,10 @@ public class PlayerStateTransition : PlayerStateObject
         else
         {
             if (current != null)
+            {
                 PlayerInputActionRegister.Instance.UnregisterInputAction(current);
+                current = null;
+            }
         }
 
         return false;
