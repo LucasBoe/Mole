@@ -11,11 +11,34 @@ public interface IUpdateMeWithInput
 
 public class PlayerItemUI : UIBehaviour
 {
+    [SerializeField] private List<ItemSlot> itemSlots;
+    [SerializeField] private int selectedItemSlotIndex;
+
+    [SerializeField] RectTransform itemSlotPrefab;
+    [SerializeField] Image itemSlotModePrefab;
+
     [SerializeField] private PlayerItem[] defaultItems;
     [SerializeField] private Button prefab;
 
     int selectedId = 0;
     Button[] buttons;
+
+    private void Start()
+    {
+        foreach (ItemSlot slot in itemSlots)
+        {
+            slot.RectInstance = Instantiate(itemSlotPrefab, transform);
+
+            foreach (ItemMode mode in slot.Modes)
+            {
+                Image selectedImage = Instantiate(itemSlotModePrefab, slot.RectInstance);
+                Image iconImage = selectedImage.GetComponentInChildrenExcludeOwn<Image>();
+                mode.IconImage = iconImage;
+                mode.SelectedImage = selectedImage;
+                iconImage.sprite = mode.Icon;
+            }
+        }
+    }
 
     public override void Show()
     {
@@ -101,4 +124,21 @@ public class PlayerItemUI : UIBehaviour
         if (input.Back)
             HideSelf();
     }
+}
+
+[System.Serializable]
+public class ItemSlot
+{
+    public ItemMode[] Modes;
+    public int SelectedModeIndex;
+    public RectTransform RectInstance;
+}
+
+[System.Serializable]
+public class ItemMode
+{
+    public Sprite Icon;
+    public string Name;
+    public Image IconImage;
+    public Image SelectedImage;
 }

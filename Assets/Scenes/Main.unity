@@ -367,8 +367,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waterSplashPrefab: {fileID: 602138526121088899, guid: 6c61d48f54b82b14d9c456d3a0171009, type: 3}
-  gainHealthPrefab: {fileID: 8278795925450850455, guid: 2c22385b624d41d4696f348d83d2e33b, type: 3}
-  destroyedBottlePrefab: {fileID: 8118633074463970087, guid: 50f3c355a5e307b41bdb5319d7b37ee9, type: 3}
 --- !u!4 &85600430
 Transform:
   m_ObjectHideFlags: 0
@@ -54870,10 +54868,10 @@ RectTransform:
   m_Father: {fileID: 904026519}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 120, y: -32.7}
+  m_SizeDelta: {x: 100, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2039177764
 MonoBehaviour:
@@ -54893,7 +54891,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_Spacing: 0
+  m_Spacing: 4
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -54913,6 +54911,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b54185591b845dd47aa5c2c98cb9a55a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemSlots:
+  - Modes:
+    - Icon: {fileID: 21300000, guid: 3c29cfa591852954eb372e17d0dd6560, type: 3}
+      Name: Crossbow
+      Image: {fileID: 0}
+    - Icon: {fileID: 21300000, guid: 57f388fd768b8d8428278de706cf9615, type: 3}
+      Name: Crossbow + Rope
+      Image: {fileID: 0}
+    SelectedModeIndex: 0
+    RectInstance: {fileID: 0}
+  - Modes:
+    - Icon: {fileID: 21300000, guid: e95e39c1c7146134a93bef166ab36594, type: 3}
+      Name: Rope
+      Image: {fileID: 0}
+    SelectedModeIndex: 0
+    RectInstance: {fileID: 0}
+  selectedItemSlotIndex: 0
+  itemSlotPrefab: {fileID: 6104003653472292562, guid: 4b0e1403848d8f4479f5d8ddd7420684, type: 3}
+  itemSlotModePrefab: {fileID: 552258320844004894, guid: 5401793be2393cb4c8007f7db00100b3, type: 3}
   defaultItems:
   - {fileID: 11400000, guid: d6f6298f03258bf48af39789468bf75b, type: 2}
   prefab: {fileID: 9181675894334206791, guid: 2e1d1aabf911432458cf360c22cfbe1f, type: 3}
