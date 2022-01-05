@@ -48,7 +48,7 @@ public class PlayerInputActionRegister : SingletonBehaviour<PlayerInputActionReg
     }
     private void AddAction(InputAction action)
     {
-        actionPromptPair.Add(action, PlayerControlPromptUI.Show(action.Input, action.Object.transform.position));
+        actionPromptPair.Add(action, PlayerControlPromptUI.Show(action.Input, action.Object.transform.position + (Vector3.up * 1.5f)));
         actions.Add(action);
     }
     private void RemoveAction(InputAction action)

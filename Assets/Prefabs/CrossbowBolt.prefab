@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   velocityForDestruction: 5
-  prefab: {fileID: 8118633074463970085, guid: 50f3c355a5e307b41bdb5319d7b37ee9, type: 3}
+  prefab: {fileID: 8118633074463970087, guid: 50f3c355a5e307b41bdb5319d7b37ee9, type: 3}
 --- !u!50 &4114417083042959107
 Rigidbody2D:
   serializedVersion: 4

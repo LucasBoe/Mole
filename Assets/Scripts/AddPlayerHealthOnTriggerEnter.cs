@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class AddPlayerHealthOnTriggerEnter : MonoBehaviour
 {
-    [SerializeField] GameObject effect;
+    [SerializeField] ParticleSystem gainHealthEffectPrefab;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.IsPlayer())
         {
             PlayerHealth.Instance.Heal(100);
-            GameObject instance = Instantiate(effect, transform.position, Quaternion.identity);
-            Destroy(instance, 2);
+            EffectHandler.Spawn(new CustomEffect(gainHealthEffectPrefab), transform.position);
             Destroy(gameObject);
         }
     }

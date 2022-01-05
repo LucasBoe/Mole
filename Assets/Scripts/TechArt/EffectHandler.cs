@@ -10,8 +10,13 @@ public class EffectHandler : SingletonBehaviour<EffectHandler>
     {
         ParticleSystem spawned = null;
 
-        if (effect.GetType() == typeof(WaterSplashEffect))
+        Type type = effect.GetType();
+
+        if (type == typeof(WaterSplashEffect))
             spawned = Instantiate(Instance.waterSplashPrefab, position, Quaternion.identity);
+
+        if (type == typeof(CustomEffect))
+            spawned = Instantiate((effect as CustomEffect).Prefab, position, Quaternion.identity);
 
         if (spawned != null)
         {
@@ -53,5 +58,15 @@ public class WaterSplashEffect : Effect
         particleSystem.transform.forward = dir.normalized;
         var main = particleSystem.main;
         main.startSpeed = dir.magnitude;
+    }
+}
+
+public class CustomEffect : Effect
+{
+    public ParticleSystem Prefab;
+    public CustomEffect (ParticleSystem prefab, float duration = 10f)
+    {
+        Prefab = prefab;
+        Duration = duration;
     }
 }

@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Item: {fileID: 11400000, guid: 3cb62538e9de26c4992983ea75172c86, type: 2}
+  SpriteRenderer: {fileID: 0}
 --- !u!114 &4715816879690958755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,7 +63,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   velocityForDestruction: 12
-  prefab: {fileID: 8118633074463970085, guid: 50f3c355a5e307b41bdb5319d7b37ee9, type: 3}
+  prefab: {fileID: 8118633074463970087, guid: 50f3c355a5e307b41bdb5319d7b37ee9, type: 3}
 --- !u!212 &5322391908145038697
 SpriteRenderer:
   m_ObjectHideFlags: 0

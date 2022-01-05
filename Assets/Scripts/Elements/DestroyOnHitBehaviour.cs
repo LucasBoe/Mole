@@ -6,7 +6,7 @@ using UnityEngine;
 public class DestroyOnHitBehaviour : MonoBehaviour
 {
     [SerializeField] float velocityForDestruction = 10f;
-    [SerializeField] GameObject prefab;
+    [SerializeField] ParticleSystem prefab;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -21,7 +21,7 @@ public class DestroyOnHitBehaviour : MonoBehaviour
     private void DestroyAndReplace()
     {
         if (prefab != null)
-            Destroy(Instantiate(prefab, transform.position, Quaternion.identity), 10);
+            EffectHandler.Spawn(new CustomEffect(prefab), transform.position);
 
         Destroy(gameObject);
     }
