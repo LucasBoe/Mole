@@ -2,52 +2,60 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System;
 
 public class PlayerInputActionRegister : SingletonBehaviour<PlayerInputActionRegister>
 {
     [SerializeField] List<InputAction> actions = new List<InputAction>();
+    Dictionary<InputAction, PlayerControlPromptUI> actionPromptPair = new Dictionary<InputAction, PlayerControlPromptUI>();
 
     public void RegisterInputAction(InputAction newAction)
     {
-
         for (int i = actions.Count - 1; i >= 0; i--)
         {
             InputAction action = actions[i];
             if (action != null && action.Input == newAction.Input)
-                actions.Remove(action);
+                RemoveAction(action);
         }
 
-        actions.Add(newAction);
+        AddAction(newAction);
     }
+
 
     public void UnregisterInputAction(InputAction oldAction)
     {
-        Debug.LogWarning("Unregister " + oldAction);
-
         for (int i = actions.Count - 1; i >= 0; i--)
         {
             InputAction action = actions[i];
             if (action != null && action.Input == oldAction.Input)
-                actions.Remove(action);
+                RemoveAction(action);
         }
     }
 
     public bool UnregisterInputAction(SpriteRenderer obj)
     {
-
-        Debug.LogWarning("Unregister " + obj);
-
         for (int i = actions.Count - 1; i >= 0; i--)
         {
             InputAction action = actions[i];
             if (action.Object == obj)
             {
-                actions.Remove(action);
+                RemoveAction(action);
                 return true;
             }
         }
 
         return false;
+    }
+    private void AddAction(InputAction action)
+    {
+        actionPromptPair.Add(action, PlayerControlPromptUI.Show(action.Input, action.Object.transform.position));
+        actions.Add(action);
+    }
+    private void RemoveAction(InputAction action)
+    {
+        actionPromptPair[action].Hide();
+        actionPromptPair.Remove(action);
+        actions.Remove(action);
     }
 
     private void Update()
