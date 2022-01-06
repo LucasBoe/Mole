@@ -10,11 +10,8 @@ public interface IPlayerComponent
     void Init(PlayerContext context);
 }
 
-public class PlayerItemCollector : MonoBehaviour, IPlayerComponent
+public class PlayerItemCollector : MonoBehaviour
 {
-    [SerializeField] PlayerItemUser itemUser;
-
-    List<CollectablePlayerItem> items = new List<CollectablePlayerItem>();
     CollectablePlayerItem playerItem;
 
     public int UpdatePrio => 100;
@@ -39,22 +36,9 @@ public class PlayerItemCollector : MonoBehaviour, IPlayerComponent
         if (c != null && PlayerInputActionRegister.Instance.UnregisterInputAction(c.SpriteRenderer)) playerItem = null;
     }
 
-    public void UpdatePlayerComponent(PlayerContext context)
-    {
-        //if (context.Input.Interact && !itemUser.IsAiming && items.Count > 0)
-        //{
-        //    CollectablePlayerItem firstItemInList = items[0];
-        //    if (itemUser.TryOverrideActiveItem(firstItemInList.Item))
-        //    {
-        //        items.RemoveAt(0);
-        //        Destroy(firstItemInList.gameObject);
-        //    }
-        //}
-    }
-
     private void TryCollect()
     {
-        if (playerItem != null && itemUser.TryOverrideActiveItem(playerItem.Item))
+        if (playerItem != null && PlayerItemHolder.Instance.AddItem(playerItem.Item))
         {
             Destroy(playerItem.gameObject);
         }

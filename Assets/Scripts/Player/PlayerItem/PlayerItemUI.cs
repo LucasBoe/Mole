@@ -11,7 +11,7 @@ public interface IUpdateMeWithInput
 
 public class PlayerItemUI : UIBehaviour
 {
-    [SerializeField] private List<ItemSlot> itemSlots;
+    [SerializeField] private List<ItemSlot> itemSlots = new List<ItemSlot>();
     [SerializeField] private int selectedItemSlotIndex = 0;
 
     [SerializeField] RectTransform parent;
@@ -20,30 +20,69 @@ public class PlayerItemUI : UIBehaviour
     [SerializeField] RectTransform itemSlotPrefab;
     [SerializeField] Image itemSlotModePrefab;
 
-    private void Start()
+    private void OnEnable()
     {
         UIHandler.Instance.Show(this);
+        PlayerItemHolder.OnAddNewItem += OnAddItem;
+
+        PlayerItemHolder.OnRemoveItem += OnRemoveItem;
     }
+
+
+    private void OnAddItem(PlayerItem item)
+    {
+        ItemSlot newSlot = new ItemSlot() { Item = item, Modes = item.GetItemModes() };
+        itemSlots.Add(newSlot);
+        CreateInstancesForSlot(newSlot);
+        UpdateSelectedItem();
+    }
+    private void OnRemoveItem(PlayerItem item)
+    {
+        for (int i = itemSlots.Count -1; i > 0; i--)
+        {
+            ItemSlot slot = itemSlots[i];
+            if (slot.Item == item)
+            {
+                Destroy(slot.RectInstance);
+                itemSlots.RemoveAt(i);
+            }
+        }
+
+        UpdateSelectedItem();
+    }
+
+
 
     private void CreateUIElementsForAllItems()
     {
         foreach (ItemSlot slot in itemSlots)
         {
-            slot.RectInstance = Instantiate(itemSlotPrefab, parent);
+            CreateInstancesForSlot(slot);
+        }
+    }
 
-            foreach (ItemMode mode in slot.Modes)
-            {
-                Image selectedImage = Instantiate(itemSlotModePrefab, slot.RectInstance);
-                Image iconImage = selectedImage.GetComponentInChildrenExcludeOwn<Image>();
-                mode.IconImage = iconImage;
-                mode.SelectedImage = selectedImage;
-                iconImage.sprite = mode.Icon;
-            }
+    private void CreateInstancesForSlot(ItemSlot slot)
+    {
+        slot.RectInstance = Instantiate(itemSlotPrefab, parent);
+
+        foreach (ItemMode mode in slot.Modes)
+        {
+            Image selectedImage = Instantiate(itemSlotModePrefab, slot.RectInstance);
+            Image iconImage = selectedImage.GetComponentInChildrenExcludeOwn<Image>();
+            mode.IconImage = iconImage;
+            mode.SelectedImage = selectedImage;
+            iconImage.sprite = mode.Icon;
         }
     }
 
     private void UpdateSelectedItem()
     {
+        if (itemSlots.Count == 0)
+            return;
+
+        PlayerItemUser.Instance.TryOverrideActiveItem(itemSlots[selectedItemSlotIndex].Item);
+
+        //visuals
         for (int i = 0; i < itemSlots.Count; i++)
         {
             ItemSlot slot = itemSlots[i];
@@ -80,6 +119,9 @@ public class PlayerItemUI : UIBehaviour
 
     public override void UpdateUI(PlayerInput input)
     {
+        if (itemSlots.Count == 0)
+            return;
+
         bool update = false;
         ItemSlot slot = itemSlots[selectedItemSlotIndex];
 
@@ -131,6 +173,7 @@ public class PlayerItemUI : UIBehaviour
 [System.Serializable]
 public class ItemSlot
 {
+    public PlayerItem Item;
     public ItemMode[] Modes;
     public int SelectedModeIndex;
     public RectTransform RectInstance;

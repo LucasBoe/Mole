@@ -12,8 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0000e45307b95ed4abcf884ddd3bd859, type: 3}
   m_Name: Crossbow
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 21300000, guid: 3c29cfa591852954eb372e17d0dd6560, type: 3}
+  Sprite: {fileID: 21300000, guid: 8731e56bcd2ca6f4cbb8c630a43cc94b, type: 3}
   Prefab: {fileID: 0}
   IsUseable: 1
   ProjectilePrefab: {fileID: 7406866824899919524, guid: 9904e4e868e04d744aa824d60ce216ff, type: 3}
   ProjectileForce: 25
+  itemModes:
+  - Icon: {fileID: 21300000, guid: 3c29cfa591852954eb372e17d0dd6560, type: 3}
+    Name: Crossbow
+    IconImage: {fileID: 0}
+    SelectedImage: {fileID: 0}
+  - Icon: {fileID: 21300000, guid: 57f388fd768b8d8428278de706cf9615, type: 3}
+    Name: Crossbow + Rope
+    IconImage: {fileID: 0}
+    SelectedImage: {fileID: 0}

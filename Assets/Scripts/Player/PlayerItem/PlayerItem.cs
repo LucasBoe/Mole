@@ -15,6 +15,11 @@ public class PlayerItem : ScriptableObject
     {
         return new PlayerItemUseResult();
     }
+
+    public virtual ItemMode[] GetItemModes()
+    {
+        return new ItemMode[] { new ItemMode() { Icon = Sprite, Name = "Item" } };
+    }
 }
 
 public class PlayerItemUseResult
@@ -22,7 +27,7 @@ public class PlayerItemUseResult
     public Type ResultType;
     public Action ResultFunction;
 
-    public PlayerItemUseResult ()
+    public PlayerItemUseResult()
     {
         ResultType = Type.Fail;
     }

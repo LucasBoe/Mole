@@ -21,7 +21,15 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
     public bool IsAiming => userState == ItemUserState.Aim;
     public int UpdatePrio => 100;
 
-    public void Init(PlayerContext context) { }
+    public void Init(PlayerContext context)
+    {
+        PlayerItemHolder.OnAddNewItem += OnAddNewItem;
+    }
+
+    private void OnAddNewItem(PlayerItem item)
+    {
+        TryOverrideActiveItem(item);
+    }
 
     public void UpdatePlayerComponent(PlayerContext context)
     {
@@ -97,7 +105,10 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
 
     internal bool TryOverrideActiveItem(PlayerItem item)
     {
-        SetItemInHand(item);
+        if (inHand == item)
+            return true;
+
+        SetItemInHand(item, drop: false);
         return true;
     }
 

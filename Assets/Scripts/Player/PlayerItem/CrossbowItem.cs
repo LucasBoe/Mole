@@ -6,6 +6,7 @@ public class CrossbowItem : PlayerItem
 {
     [SerializeField] private GameObject ProjectilePrefab;
     [SerializeField] private float ProjectileForce;
+    [SerializeField] private ItemMode[] itemModes;
 
     public override void AimUpdate(PlayerItemUser playerItemUser, PlayerContext context, LineRenderer aimLine)
     {
@@ -27,5 +28,10 @@ public class CrossbowItem : PlayerItem
         instance.GetComponent<Rigidbody2D>().velocity = (dir * ProjectileForce);
 
         return new PlayerItemUseResult(PlayerItemUseResult.Type.None);
+    }
+
+    public override ItemMode[] GetItemModes()
+    {
+        return itemModes;
     }
 }
