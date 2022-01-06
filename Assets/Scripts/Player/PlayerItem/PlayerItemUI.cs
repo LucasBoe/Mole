@@ -12,22 +12,24 @@ public interface IUpdateMeWithInput
 public class PlayerItemUI : UIBehaviour
 {
     [SerializeField] private List<ItemSlot> itemSlots;
-    [SerializeField] private int selectedItemSlotIndex;
+    [SerializeField] private int selectedItemSlotIndex = 0;
+
+    [SerializeField] RectTransform parent;
+    [SerializeField] Text itemNameText;
 
     [SerializeField] RectTransform itemSlotPrefab;
     [SerializeField] Image itemSlotModePrefab;
 
-    [SerializeField] private PlayerItem[] defaultItems;
-    [SerializeField] private Button prefab;
-
-    int selectedId = 0;
-    Button[] buttons;
-
     private void Start()
+    {
+        UIHandler.Instance.Show(this);
+    }
+
+    private void CreateUIElementsForAllItems()
     {
         foreach (ItemSlot slot in itemSlots)
         {
-            slot.RectInstance = Instantiate(itemSlotPrefab, transform);
+            slot.RectInstance = Instantiate(itemSlotPrefab, parent);
 
             foreach (ItemMode mode in slot.Modes)
             {
@@ -40,89 +42,89 @@ public class PlayerItemUI : UIBehaviour
         }
     }
 
+    private void UpdateSelectedItem()
+    {
+        for (int i = 0; i < itemSlots.Count; i++)
+        {
+            ItemSlot slot = itemSlots[i];
+            int index = i < selectedItemSlotIndex ? selectedItemSlotIndex + i : i - selectedItemSlotIndex;
+            slot.RectInstance.SetSiblingIndex(index);
+
+            float alpha = Mathf.Lerp(1f, 0f, index / 3f);
+
+            for (int j = 0; j < slot.Modes.Length; j++)
+            {
+                ItemMode mode = slot.Modes[j];
+                bool isSelected = i == selectedItemSlotIndex && j == slot.SelectedModeIndex;
+                mode.SelectedImage.enabled = isSelected;
+                mode.IconImage.color = new Color(1, 1, 1, alpha * (isSelected ? 1f : 0.6f));
+
+                if (isSelected)
+                    itemNameText.text = mode.Name;
+            }
+        }
+    }
+
     public override void Show()
     {
-        buttons = new Button[defaultItems.Length + 1];
-
-        for (int i = 0; i <= defaultItems.Length; i++)
-        {
-            bool iForNone = i == defaultItems.Length;
-            PlayerItem item = iForNone ? null : defaultItems[i];
-            Button instance = Instantiate(prefab, transform);
-            Image image = instance.GetComponentInChildrenExcludeOwn<Image>();
-
-            if (!iForNone)
-                image.sprite = item.Sprite;
-            else
-                Destroy(image);
-
-            string text = iForNone ? "None" : item.name;
-            instance.GetComponentInChildren<Text>().text = text;
-
-            int index = i;
-            instance.onClick.AddListener(delegate { Select(index); });
-
-            buttons[i] = instance;
-        }
-
-        Select(selectedId);
-
         base.Show();
+
+        CreateUIElementsForAllItems();
+        UpdateSelectedItem();
     }
 
     public override void Hide()
     {
-        for (int i = transform.childCount - 1; i >= 0; i--)
-            Destroy(transform.GetChild(i).gameObject);
-
-        base.Hide();
-    }
-
-    private void Select(int selectedId)
-    {
-        for (int i = 0; i < buttons.Length; i++)
-        {
-            bool shouldBeSelected = i == selectedId;
-            Button Button = buttons[i];
-            Transform trans = Button.transform;
-            Image button = Button.GetComponent<Image>();
-
-            trans.localScale = Vector3.one * (shouldBeSelected ? 1.1f : 1);
-            button.color = shouldBeSelected ? Color.green : Color.white;
-        }
-
-        PlayerItem playerItem = null;
-
-        if (selectedId < defaultItems.Length)
-            playerItem = defaultItems[selectedId];
-
-        PlayerItemUser.Instance.TryOverrideActiveItem(playerItem);
+        //do never hide
     }
 
     public override void UpdateUI(PlayerInput input)
     {
-        if (input.DPadUp)
+        bool update = false;
+        ItemSlot slot = itemSlots[selectedItemSlotIndex];
+
+        if (input.ItemMenuUp)
         {
-            if (selectedId == 0)
-                selectedId = defaultItems.Length;
+            if (selectedItemSlotIndex == 0)
+                selectedItemSlotIndex = itemSlots.Count - 1;
             else
-                selectedId--;
+                selectedItemSlotIndex--;
 
-            Select(selectedId);
+            update = true;
         }
-        else if (input.DPadDown)
+        else if (input.ItemMenuDown)
         {
-            if (selectedId == defaultItems.Length)
-                selectedId = 0;
+            if (selectedItemSlotIndex == itemSlots.Count - 1)
+                selectedItemSlotIndex = 0;
             else
-                selectedId++;
+                selectedItemSlotIndex++;
 
-            Select(selectedId);
+            update = true;
+        }
+        else if (slot.Modes.Length > 1)
+        {
+            if (input.ItemMenuLeft)
+            {
+                if (slot.SelectedModeIndex == 0)
+                    slot.SelectedModeIndex = slot.Modes.Length - 1;
+                else
+                    slot.SelectedModeIndex--;
+
+                update = true;
+            }
+            else if (input.ItemMenuRight)
+            {
+                if (slot.SelectedModeIndex == slot.Modes.Length - 1)
+                    slot.SelectedModeIndex = 0;
+                else
+                    slot.SelectedModeIndex++;
+
+                update = true;
+            }
         }
 
-
-        if (input.Back)
-            HideSelf();
+        if (update)
+            UpdateSelectedItem();
     }
 }
 

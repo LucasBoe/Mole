@@ -16,17 +16,27 @@ public class PlayerInputHandler : SingletonBehaviour<PlayerInputHandler>
         //Stick 1 / WASD
         PlayerInput.Axis = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
-        //Stick 2 / Mouse
+        //Stick 2 / Mouse => virtual cursor
         if (new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0)
             PlayerInput.VirtualCursor = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
         else
             PlayerInput.VirtualCursor = ModifyVirtualCursor(PlayerInput.VirtualCursor, new Vector2(Input.GetAxis("StickRight X"), Input.GetAxis("StickRight Y")));
 
-        PlayerInput.DPadUp = Input.GetAxis("Cross Y") > 0.1f && !DPadLock;
-        PlayerInput.DPadDown = Input.GetAxis("Cross Y") < -0.1f && !DPadLock;
+        float dPadX = Input.GetAxis("Cross X");
+        float dPadY = Input.GetAxis("Cross Y");
 
-        if (PlayerInput.DPadUp || PlayerInput.DPadDown) DPadLock = true;
-        if (DPadLock && Input.GetAxis("Cross Y") == 0) DPadLock = false;
+        PlayerInput.DPadUp = dPadY > 0.1f && !DPadLock;
+        PlayerInput.DPadDown = dPadY < -0.1f && !DPadLock;
+        PlayerInput.DPadLeft = dPadX < -0.1f && !DPadLock;
+        PlayerInput.DPadRight = dPadX < -0.1f && !DPadLock;
+
+        PlayerInput.Tab = Input.GetKeyDown(KeyCode.Tab);
+
+        if (PlayerInput.DPadUp || PlayerInput.DPadDown || PlayerInput.DPadLeft || PlayerInput.DPadRight) DPadLock = true;
+        if (DPadLock && dPadY == 0 && dPadX == 0) DPadLock = false;
+
+        PlayerInput.MouseWheelDown = Input.GetAxis("Mouse ScrollWheel") < 0f;
+        PlayerInput.MouseWheelUp = Input.GetAxis("Mouse ScrollWheel") > 0f;
 
         PlayerInput.JustPressedOpenInventoryButton = Input.GetKeyDown(KeyCode.I) || Input.GetAxis("Cross Y") != 0;
 

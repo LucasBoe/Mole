@@ -16,13 +16,10 @@ public class UIHandler : SingletonBehaviour<UIHandler>
     {
         Temporary = temporarySpawner;
         input = PlayerInputHandler.PlayerInput;
-        Hide(itemUI);
     }
 
     private void Update()
     {
-        if (!isVisible(itemUI) && (input.JustPressedOpenInventoryButton))
-            Show(itemUI);
 
         for (int i = toUpdate.Count - 1; i >= 0; i--)
         {

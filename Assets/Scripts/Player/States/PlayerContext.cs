@@ -30,15 +30,28 @@ public class PlayerInput
     public Vector3 VirtualCursorToScreenCenter => (VirtualCursor - new Vector2(Screen.width / 2, Screen.height / 2)) / new Vector2(Screen.width, Screen.height);
     public Vector3 VirtualCursorToWorldPos => CameraController.ScreenToWorldPoint(VirtualCursor);
 
+    public bool ItemMenuUp => MouseWheelUp || DPadUp;
+    public bool ItemMenuDown => MouseWheelDown || DPadDown;
+    public bool ItemMenuLeft => DPadLeft;
+    public bool ItemMenuRight => DPadRight || Tab;
+
 
     public float LTAxis;
     public bool LTUp;
     public bool LTDown;
     public Vector2 VirtualCursorToDir(Vector2 position) { return ((Vector2)VirtualCursorToWorldPos - position).normalized; }
 
+    public bool DPadLeft;
+    public bool DPadRight;
     public bool DPadUp;
     public bool DPadDown;
+
     public bool JustPressedOpenInventoryButton;
+
+    public bool Tab;
+
+    public bool MouseWheelUp;
+    public bool MouseWheelDown;
 
     public bool Back;
     public bool Jump;
