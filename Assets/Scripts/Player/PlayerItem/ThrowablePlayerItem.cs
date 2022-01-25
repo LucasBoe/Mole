@@ -5,6 +5,7 @@ using UnityEngine;
 public class ThrowablePlayerItem : PlayerItem
 {
     public float ThrowForce = 2;
+    public float GravityScale = 1;
 
     public override void AimUpdate(PlayerItemUser playerItemUser, PlayerContext context, LineRenderer aimLine)
     {
@@ -18,7 +19,7 @@ public class ThrowablePlayerItem : PlayerItem
 
         for (int i = 0; i < visualizationPointCount; i++)
         {
-            Vector2 point = origin + (dir * ThrowForce * i / divisor + Vector2.down * Mathf.Pow(0.5f * 0.981f * i / divisor, 2));
+            Vector2 point = origin + (dir * ThrowForce * i / divisor + Vector2.down * Mathf.Pow(0.5f * 0.981f * i / divisor, 2) * GravityScale);
             points[i] = point;
         }
 
@@ -30,7 +31,9 @@ public class ThrowablePlayerItem : PlayerItem
     {
         var playerPos = playerItemUser.transform.position;
         CollectablePlayerItem item = Instantiate(Prefab, playerPos + Vector3.up, Quaternion.identity);
-        item.GetComponent<Rigidbody2D>().velocity = (context.Input.VirtualCursorToDir(playerPos) * ThrowForce * 5f);
+        Rigidbody2D rigidbody2D = item.GetComponent<Rigidbody2D>();
+        rigidbody2D.velocity = (context.Input.VirtualCursorToDir(playerPos) * ThrowForce * 4.5f);
+        rigidbody2D.gravityScale = GravityScale;
         return new PlayerItemUseResult(PlayerItemUseResult.Type.Destroy);
     }
 
