@@ -181,6 +181,13 @@ public static class Util
         return Quaternion.Euler(0, 0, angle);
     }
 
+    public static Gradient ToGradient(this Color color)
+    {
+        Gradient gradient = new Gradient();
+        gradient.SetKeys(new GradientColorKey[] { new GradientColorKey(color, 0) } , new GradientAlphaKey[] { new GradientAlphaKey(color.a,0) });
+        return gradient;
+    }
+
     /// <summary>
     /// maps an angle back into a range between 0 and 360
     /// </summary>

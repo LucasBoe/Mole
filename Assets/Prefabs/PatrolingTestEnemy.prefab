@@ -5438,7 +5438,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d2585a0be621f244a5d2d4cf16eb7ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewConeLines: {fileID: 7324263898784691320}
+  playerDetectionLine: {fileID: 7324263898784691320}
   inner: {fileID: 7324263898784691322}
   outer: {fileID: 7324263898784691321}
   viewconeMode: 0
@@ -5546,7 +5546,6 @@ LineRenderer:
   m_Positions:
   - {x: 6, y: 1.5, z: 0}
   - {x: 0, y: 0, z: 0}
-  - {x: 6, y: -1.5, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -5555,7 +5554,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.013696283
+        value: 0.15
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -5600,5 +5599,5 @@ LineRenderer:
     textureMode: 0
     shadowBias: 0.5
     generateLightingData: 0
-  m_UseWorldSpace: 0
+  m_UseWorldSpace: 1
   m_Loop: 0

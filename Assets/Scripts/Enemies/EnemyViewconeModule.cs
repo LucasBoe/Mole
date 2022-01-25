@@ -19,7 +19,7 @@ public class EnemyViewconeModule : EnemyModule<EnemyViewconeModule>
         OuterCollider,
     }
 
-    [SerializeField] LineRenderer viewConeLines;
+    [SerializeField] LineRenderer playerDetectionLine;
     [SerializeField] PolygonCollider2D inner, outer;
 
     public System.Action<Transform> OnPlayerEnter;
@@ -58,17 +58,46 @@ public class EnemyViewconeModule : EnemyModule<EnemyViewconeModule>
     {
         if (collision.IsPlayer() && CheckLineOfSight(collision.transform) && !IsPassive)
         {
-            SetTarget(collision.transform);
-            OnPlayerEnter?.Invoke(collision.transform);
-            SetViewconeTriggerMode(TriggerMode.OuterCollider);
+            StopAllCoroutines();
+            StartCoroutine(PlayerDetectionRoutine(collision.transform));
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (mode == TriggerMode.OuterCollider && collision.IsPlayer())
+        if (collision.IsPlayer())
         {
-            OnPlayerExit?.Invoke(collision.transform.position);
+            if (mode == TriggerMode.OuterCollider)
+            {
+                OnPlayerExit?.Invoke(collision.transform.position);
+            } else
+            {
+                playerDetectionLine.enabled = false;
+                StopAllCoroutines();
+            }
         }
+    }
+
+    IEnumerator PlayerDetectionRoutine(Transform player)
+    {
+        playerDetectionLine.enabled = true;
+
+        float t = 1;
+        while(t > 0)
+        {
+            t -= Time.deltaTime;
+            playerDetectionLine.SetPosition(0, transform.position);
+            playerDetectionLine.SetPosition(1, player.position);
+            Color c = playerDetectionLine.startColor;
+            c.a = (1 - t);
+            playerDetectionLine.colorGradient = c.ToGradient();
+            yield return null;
+        }
+
+        playerDetectionLine.enabled = false;
+
+        SetTarget(player);
+        SetViewconeTriggerMode(TriggerMode.OuterCollider);
+        OnPlayerEnter?.Invoke(player);
     }
 
     private void Update()
