@@ -15,7 +15,7 @@ public class TunnelState : PlayerStateBase
     {
         base.Enter();
 
-        TunnelEntrance entrance = GetCheck(CheckType.Tunnel).Get<TunnelEntrance>()[0];
+        LayerSwitch entrance = GetCheck(CheckType.Tunnel).Get<LayerSwitch>()[0];
         context.Rigidbody.MovePosition(entrance.transform.position);
     }
 

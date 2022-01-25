@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TunnelEntrance : PlayerAboveInteractable, IInputActionProvider
+public class LayerSwitch : PlayerAboveInteractable, IInputActionProvider
 {
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Layers layerLeadsTo;
