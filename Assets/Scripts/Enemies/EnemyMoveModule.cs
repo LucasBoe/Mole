@@ -11,7 +11,7 @@ public enum EnemyAISmartType
 
 public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
 {
-    CollisionCheck jumpHelperLeft, jumpHelperRight, ground;
+    CollisionCheck jumpHelperLeft, jumpHelperRight, ground, fallDetectionLeft, fallDetectionRight;
 
     List<CollisionCheck> collisionChecks = new List<CollisionCheck>();
 
@@ -28,14 +28,21 @@ public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
 
-        jumpHelperLeft = new CollisionCheck(-0.3f, -0.73f, 0.3f, 0.3f, LayerMask.GetMask("Default", "Hangable"), Color.yellow);
+        jumpHelperLeft = new CollisionCheck(-0.5f, -0.73f, 0.5f, 0.3f, LayerMask.GetMask("Default", "Hangable"), Color.yellow);
         collisionChecks.Add(jumpHelperLeft);
 
-        jumpHelperRight = new CollisionCheck(0.3f, -0.73f, 0.3f, 0.3f, LayerMask.GetMask("Default", "Hangable"), Color.yellow);
+        jumpHelperRight = new CollisionCheck(0.5f, -0.73f, 0.5f, 0.3f, LayerMask.GetMask("Default", "Hangable"), Color.yellow);
         collisionChecks.Add(jumpHelperRight);
 
         ground = new CollisionCheck(0f, -1f, 0.5f, 0.2f, LayerMask.GetMask("Default", "Hangable"), Color.yellow);
         collisionChecks.Add(ground);
+
+        fallDetectionLeft = new CollisionCheck(-1, -1.5f, 0.5f, 1.5f, LayerMask.GetMask("Default"), Color.red);
+        collisionChecks.Add(fallDetectionLeft);
+
+        fallDetectionRight = new CollisionCheck(1, -1.5f, 0.5f, 1.5f, LayerMask.GetMask("Default"), Color.red);
+        collisionChecks.Add(fallDetectionRight);
+
     }
 
     internal void FollowTransform(Transform targetTransform)
@@ -76,12 +83,15 @@ public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
             moveTarget = followTarget.position;
 
         Vector2 dir = (moveTarget - (Vector2)transform.position).normalized;
-        rigidbody2D.AddForce((dir.x > 0 ? Vector2.right : Vector2.left) * 3000f * Time.deltaTime);
+        bool movingRight = dir.x > 0;
 
-        //transform.localScale = new Vector3(Mathf.Sign(dir.x), transform.localScale.y, transform.localScale.z);
+        rigidbody2D.AddForce((movingRight ? Vector2.right : Vector2.left) * 3000f * Time.deltaTime);
 
-        if ((dir.x > 0 && jumpHelperRight.IsDetecting) || (dir.x < 0 && jumpHelperLeft.IsDetecting))
+        if ((movingRight && jumpHelperRight.IsDetecting) || (!movingRight && jumpHelperLeft.IsDetecting))
             rigidbody2D.AddForce(Vector2.up, ForceMode2D.Impulse);
+
+        if ((movingRight && !fallDetectionRight.IsDetecting) || (!movingRight && !fallDetectionLeft.IsDetecting))
+            TargetReached();
 
         if (Mathf.Abs(transform.position.x - moveTarget.x) < 0.1f)
             TargetReached();
