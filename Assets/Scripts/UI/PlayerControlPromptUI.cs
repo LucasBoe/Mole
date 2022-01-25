@@ -57,19 +57,20 @@ public static class ControlTypeExtention
 public class PlayerControlPromptUI : TemporaryUIElement
 {
     [SerializeField] Image image;
-    [SerializeField] Text text;
+    [SerializeField] Text buttonText, interactionText;
 
-    public void Init (ControlType type, Vector3 worldPos)
+    public void Init (ControlType type, Vector3 worldPos, string txt)
     {
         GetComponent<WorldPositionTrackingUI>().WorldPosition = worldPos;
         image.color = type.ToColor();
-        text.text = type.ToConsoleButtonName();
+        buttonText.text = type.ToConsoleButtonName();
+        interactionText.text = txt;
     }
 
-    public static PlayerControlPromptUI Show(ControlType type, Vector3 worldPos)
+    public static PlayerControlPromptUI Show(ControlType type, Vector3 worldPos, string txt = "")
     {
         PlayerControlPromptUI controlPromptUI = UIHandler.Temporary.Spawn<PlayerControlPromptUI>() as PlayerControlPromptUI;
-        controlPromptUI.Init(type, worldPos);
+        controlPromptUI.Init(type, worldPos, txt);
 
         return controlPromptUI;
     }
