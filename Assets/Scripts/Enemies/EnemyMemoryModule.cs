@@ -11,9 +11,12 @@ public class EnemyMemoryModule : EnemyModule<EnemyMemoryModule>
 
     public int ScannedCounter = 0;
 
+    [SerializeField] GameObject lastSeenTargetEffectPrefab;
+
     public void SetTarget(Transform target)
     {
         TargetType = EnemyMemoryTargetType.Tranform;
+        TargetPos = Vector2.zero;
         TargetTransform = target;
     }
 
@@ -22,6 +25,11 @@ public class EnemyMemoryModule : EnemyModule<EnemyMemoryModule>
         ScannedCounter = 0;
         TargetType = EnemyMemoryTargetType.Vector2;
         TargetPos = target;
+        TargetTransform = null;
+
+        
+        if (target != Vector2.zero)
+            EffectHandler.Spawn(new CustomEffect(lastSeenTargetEffectPrefab, 3f), target );
     }
 
     public enum EnemyMemoryTargetType
