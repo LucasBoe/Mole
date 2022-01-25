@@ -37,10 +37,10 @@ public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
         ground = new CollisionCheck(0f, -1f, 0.5f, 0.2f, LayerMask.GetMask("Default", "Hangable"), Color.yellow);
         collisionChecks.Add(ground);
 
-        fallDetectionLeft = new CollisionCheck(-1, -1.5f, 0.5f, 1.5f, LayerMask.GetMask("Default"), Color.red);
+        fallDetectionLeft = new CollisionCheck(-1, -1f, 0.5f, 2.5f, LayerMask.GetMask("Default"), Color.red);
         collisionChecks.Add(fallDetectionLeft);
 
-        fallDetectionRight = new CollisionCheck(1, -1.5f, 0.5f, 1.5f, LayerMask.GetMask("Default"), Color.red);
+        fallDetectionRight = new CollisionCheck(1, -1f, 0.5f, 2.5f, LayerMask.GetMask("Default"), Color.red);
         collisionChecks.Add(fallDetectionRight);
 
     }
