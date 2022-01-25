@@ -7,15 +7,19 @@ public class EnemyRoutineModule : EnemyModule<EnemyRoutineModule>
 {
     public List<EnemyAIRoutineState> EnemyAIStates = new List<EnemyAIRoutineState>();
 
+    private bool transformedPosititionsToWorld = false;
+
     private void OnEnable()
     {
         foreach (EnemyAIRoutineState state in EnemyAIStates)
         {
-            if (state.Type == RoutineStateType.GoTo)
+            if (state.Type == RoutineStateType.GoTo && !transformedPosititionsToWorld)
             {
                 state.WorldPos = transform.TransformPoint(state.Pos);
             }
         }
+
+        transformedPosititionsToWorld = true;
     }
 
     public EnemyStateBase[] GetRoutineStates()
