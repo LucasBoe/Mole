@@ -36,7 +36,20 @@ public class LayerHandler : SingletonBehaviour<LayerHandler>
     internal void SetLayer(Layers layerLeadsTo)
     {
         foreach (LayerEnumGameobjectPair pair in layerEnumGameobjectPair)
-            pair.GameObject.SetActive(pair.Layer == layerLeadsTo);
+        {
+            if (pair.Layer != layerLeadsTo)
+            {
+                pair.GameObject.SetActive(false);
+            }
+        }
+
+        foreach (LayerEnumGameobjectPair pair in layerEnumGameobjectPair)
+        {
+            if (pair.Layer == layerLeadsTo)
+            {
+                pair.GameObject.SetActive(true);
+            }
+        }
     }
 
     internal void SetIndoorOutdoor(bool isIndoor)

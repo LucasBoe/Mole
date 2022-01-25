@@ -38,11 +38,14 @@ TagManager:
   - 
   - RenderTexture
   m_SortingLayers:
-  - name: Background
-    uniqueID: 3879075787
+  - name: Bachground_Tunnel
+    uniqueID: 2966620745
     locked: 0
   - name: PlayerInTunnel
     uniqueID: 3197267937
+    locked: 0
+  - name: Background
+    uniqueID: 3879075787
     locked: 0
   - name: TunnelBars
     uniqueID: 3485234455
