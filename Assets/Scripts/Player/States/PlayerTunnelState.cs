@@ -21,6 +21,6 @@ public class TunnelState : PlayerStateBase
 
     public override void Update()
     {
-        context.Rigidbody.velocity = Vector2.right * context.Input.Axis.x * context.Values.TunnelXvelocity;
+        context.Rigidbody.velocity = Vector2.right * context.Input.Axis.x * context.Values.XVelocity.NotSprintValue;
     }
 }

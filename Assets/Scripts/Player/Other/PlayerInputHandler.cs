@@ -54,7 +54,7 @@ public class PlayerInputHandler : SingletonBehaviour<PlayerInputHandler>
         PlayerInput.HoldingJump = Input.GetButton("Jump");
         PlayerInput.HoldingInteract = Input.GetButton("Interact");
         PlayerInput.HoldingUse = Input.GetButton("Use");
-        PlayerInput.HoldingSprint = Input.GetKey(KeyCode.LeftShift);
+        PlayerInput.Sprinting = Input.GetKey(KeyCode.LeftShift) || PlayerInput.Axis.y > - 0.1f;
 
         debug = PlayerInput;
     }

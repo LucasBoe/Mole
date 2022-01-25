@@ -5,14 +5,12 @@ using UnityEngine;
 [CreateAssetMenu]
 public class PlayerValues : ScriptableObject
 {
-    public float WalkXvelocity = 9f;
-    public float CrouchXvelocity = 5f;
-    public float TunnelXvelocity = 3f;
-    public float StraveXVelocity = 6f;
+    public SprintEffectedFloat XVelocity = new SprintEffectedFloat { SprintValue = 9, NotSprintValue = 5 };
+    public SprintEffectedFloat StraveXVelocity = new SprintEffectedFloat { SprintValue = 10, NotSprintValue = 6 };
     public float WallClimbYvelocity = 6f;
     public float EdgeHelperUpwardsImpulse = 1f;
 
-    public float JumpForce = 30f;
+    public SprintEffectedFloat JumpForce = new SprintEffectedFloat { SprintValue = 50, NotSprintValue = 30 };
     [Range(0,1)]
     public float DirectionalJumpAmount = 0.5f;
     public AnimationCurve AdditionalGravityForce = AnimationCurve.Linear(0,1,2,4);
@@ -33,4 +31,16 @@ public class PlayerValues : ScriptableObject
     public float KeyPressTimeToDropDown = 0.5f;
 
     public float SnapToHideablePositionDuration = 0.5f;
+}
+
+[System.Serializable]
+public struct SprintEffectedFloat
+{
+    public float SprintValue;
+    public float NotSprintValue;
+
+    public float GetValue(PlayerInput input)
+    {
+        return input.Sprinting ? SprintValue : NotSprintValue;
+    }
 }

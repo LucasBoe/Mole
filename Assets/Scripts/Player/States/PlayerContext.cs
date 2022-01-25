@@ -63,7 +63,7 @@ public class PlayerInput
     public bool HoldingInteract;
     public bool HoldingUse;
 
-    public bool HoldingSprint;
+    public bool Sprinting;
 
     public bool GetByControlType(ControlType type)
     {

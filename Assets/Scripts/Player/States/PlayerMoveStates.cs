@@ -76,10 +76,10 @@ public class WalkState : MoveBaseState
     {
         base.Update();
 
-        IsSprinting = context.Input.HoldingSprint;
+        IsSprinting = context.Input.Sprinting;
         float xInput = context.Input.Axis.x;
 
-        context.Rigidbody.velocity = new Vector2(xInput * (IsSprinting ? context.Values.WalkXvelocity : context.Values.CrouchXvelocity), context.Rigidbody.velocity.y);
+        context.Rigidbody.velocity = new Vector2(xInput * context.Values.XVelocity.GetValue(context.Input), context.Rigidbody.velocity.y);
 
         if (xInput == 0 || triesMovingIntoWall)
             SetState(PlayerState.Idle);
@@ -114,8 +114,8 @@ public class JumpState : MoveBaseState
     public override void Enter()
     {
         Vector2 dir = context.Input.Axis.magnitude < 0.1f ? Vector2.up : context.Input.Axis;
-        dir = Vector2.Lerp(Vector2.up, dir, context.Values.DirectionalJumpAmount);
-        context.Rigidbody.AddForce(dir.normalized * context.Values.JumpForce, ForceMode2D.Impulse);
+        dir = Vector2.Lerp(Vector2.up, dir, context.Input.Sprinting ? context.Values.DirectionalJumpAmount : 0);
+        context.Rigidbody.AddForce(dir.normalized * context.Values.JumpForce.GetValue(context.Input), ForceMode2D.Impulse);
     }
 
     public override void Update()
@@ -125,7 +125,7 @@ public class JumpState : MoveBaseState
         ApplyGravity(0f);
 
         //strave
-        context.Rigidbody.velocity = new Vector2(context.Input.Axis.x * context.Values.StraveXVelocity, context.Rigidbody.velocity.y);
+        context.Rigidbody.velocity = new Vector2(context.Input.Axis.x * context.Values.StraveXVelocity.GetValue(context.Input), context.Rigidbody.velocity.y);
 
         //autograp to hangable
         if (IsColliding(CheckType.Hangable) && context.Input.Axis.y > 0.25f)
@@ -180,7 +180,7 @@ public class FallState : MoveBaseState
         if (context.TriesMoveLeftRight)
         {
             float clampedInputX = Mathf.Clamp(context.Input.Axis.x, isCollidingEdgeHelperLeft ? 0f : -1f, isCollidingEdgeHelperRight ? 0f : 1f);
-            context.Rigidbody.velocity = new Vector2(clampedInputX * context.Values.StraveXVelocity, context.Rigidbody.velocity.y);
+            context.Rigidbody.velocity = new Vector2(clampedInputX * context.Values.StraveXVelocity.GetValue(context.Input), context.Rigidbody.velocity.y);
         }
 
 
