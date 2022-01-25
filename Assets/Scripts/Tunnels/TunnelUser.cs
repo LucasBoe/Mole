@@ -8,8 +8,15 @@ public class TunnelUser : SingletonBehaviour<TunnelUser>
 
     public bool IsInTunnel = false;
     [SerializeField] CapsuleCollider2D defaultCollider, inTunnelCollider;
-    [SerializeField] SpriteRenderer playerSpriteRenderer;
+    SpriteRenderer[] playerSpriteRenderers;
     [SerializeField] string defaultLayer, inTunnselLayer;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        playerSpriteRenderers = transform.parent.GetComponentsInChildren<SpriteRenderer>();
+    }
+
 
     public void TrySetTunnelState(bool inTunnel)
     {
@@ -18,13 +25,14 @@ public class TunnelUser : SingletonBehaviour<TunnelUser>
 
         IsInTunnel = inTunnel;
         defaultCollider.enabled = !inTunnel;
-        playerSpriteRenderer.sortingLayerName = inTunnel ? inTunnselLayer : defaultLayer;
+        foreach (SpriteRenderer spriteRenderer in playerSpriteRenderers)
+        {
+            spriteRenderer.sortingLayerName = inTunnel ? inTunnselLayer : defaultLayer;
+        }
 
         lastTunnelSwitch = Time.time;
 
         PlayerStateMachine.Instance.SetState(inTunnel ? PlayerState.Tunnel : PlayerState.Idle);
         transform.parent.Translate(inTunnel ? Vector2.down : Vector2.up);
-
-        Debug.LogWarning($"Player is in tunnel: {inTunnel}");
     }
 }

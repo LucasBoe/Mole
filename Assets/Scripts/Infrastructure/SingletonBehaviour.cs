@@ -6,7 +6,7 @@ public abstract class SingletonBehaviour<T> : MonoBehaviour where T : SingletonB
 {
     public static T Instance;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         if (Instance != null)
             Destroy(gameObject);
