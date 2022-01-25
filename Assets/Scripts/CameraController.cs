@@ -9,11 +9,19 @@ public class CameraController : SingletonBehaviour<CameraController>
     [SerializeField] private RenderTexture renderTexture;
     [SerializeField] private Camera camera;
 
+    CinemachineVirtualCamera virtualCamera;
     CinemachineFramingTransposer transposer;
 
     private void OnEnable()
     {
-        transposer = GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineFramingTransposer>();
+        virtualCamera = GetComponent<CinemachineVirtualCamera>();
+        transposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+        PlayerController.OnPlayerSpawned += ConnectPlayerTransformToVirtualCamera;
+    }
+
+    private void ConnectPlayerTransformToVirtualCamera(Transform player)
+    {
+        virtualCamera.Follow = player;
     }
 
     public static Vector2 ScreenToWorldPoint(Vector2 vector2)

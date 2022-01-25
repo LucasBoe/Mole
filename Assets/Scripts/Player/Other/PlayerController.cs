@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static System.Action<Transform> OnPlayerSpawned;
+
     [SerializeField] PlayerContext context;
 
     bool jumpBlocker = false;
@@ -69,6 +71,8 @@ public class PlayerController : MonoBehaviour
 
         foreach (IPlayerComponent component in playerComponents)
             component.Init(context);
+
+        OnPlayerSpawned?.Invoke(transform);
     }
 
     internal void SetCollisionActive(bool active)

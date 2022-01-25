@@ -147,7 +147,7 @@ public class DynamicShadowDrawer : MonoBehaviour
     {
         raycastCounterDebug++;
 
-        RaycastHit2D hit = Physics2D.Raycast(origin, dir, length, LayerMask.GetMask("Default", "Pushable"));
+        RaycastHit2D hit = Physics2D.Raycast(origin, dir, length, LayerMask.GetMask("Default"));
         if (hit)
         {
             if (debug)
