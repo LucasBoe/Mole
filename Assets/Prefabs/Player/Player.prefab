@@ -467,7 +467,7 @@ MonoBehaviour:
     HoldingJump: 0
     HoldingInteract: 0
     HoldingUse: 0
-    HoldingSprint: 0
+    Sprinting: 0
 --- !u!114 &7193096735658781758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -564,8 +564,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -112831827
+  m_SortingLayer: -3
   m_SortingOrder: 10
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

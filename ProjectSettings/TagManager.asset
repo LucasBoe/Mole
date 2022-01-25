@@ -50,6 +50,12 @@ TagManager:
   - name: TunnelBars
     uniqueID: 3485234455
     locked: 0
+  - name: Player
+    uniqueID: 4182135469
+    locked: 0
+  - name: Box
+    uniqueID: 3810113037
+    locked: 0
   - name: Enemy
     uniqueID: 1039961981
     locked: 0

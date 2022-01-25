@@ -84,7 +84,7 @@ public class EnemyViewconeModule : EnemyModule<EnemyViewconeModule>
         float t = 1;
         while(t > 0)
         {
-            t -= Time.deltaTime;
+            t -= Time.deltaTime * 2;
             playerDetectionLine.SetPosition(0, transform.position);
             playerDetectionLine.SetPosition(1, player.position);
             Color c = playerDetectionLine.startColor;

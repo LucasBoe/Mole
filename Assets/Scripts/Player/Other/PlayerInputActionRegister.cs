@@ -4,10 +4,13 @@ using UnityEngine;
 using UnityEditor;
 using System;
 
-public class PlayerInputActionRegister : SingletonBehaviour<PlayerInputActionRegister>
+public class PlayerInputActionRegister : SingletonBehaviour<PlayerInputActionRegister>, IPlayerComponent
 {
     [SerializeField] List<InputAction> actions = new List<InputAction>();
     Dictionary<InputAction, PlayerControlPromptUI> actionPromptPair = new Dictionary<InputAction, PlayerControlPromptUI>();
+
+    //needs higher update prio then item user to clear inputs for it
+    public int UpdatePrio => 200;
 
     public void RegisterInputAction(InputAction newAction)
     {
@@ -58,15 +61,19 @@ public class PlayerInputActionRegister : SingletonBehaviour<PlayerInputActionReg
         actions.Remove(action);
     }
 
-    private void Update()
+    public void UpdatePlayerComponent(PlayerContext context)
     {
         for (int i = actions.Count - 1; i >= 0; i--)
         {
             InputAction action = actions[i];
-            if (PlayerInputHandler.PlayerInput.GetByControlType(action.Input))
+            if (context.Input.GetByControlType(action.Input))
+            {
                 action.ActionCallback?.Invoke();
+                context.Input.ClearByControlType(action.Input);
+            }
         }
     }
+
     void OnDrawGizmos()
     {
         GUIStyle style = new GUIStyle();
@@ -76,6 +83,12 @@ public class PlayerInputActionRegister : SingletonBehaviour<PlayerInputActionReg
             style.normal.textColor = action.Input.ToColor();
             Handles.Label(action.Object.transform.position + Vector3.up, action.Input.ToConsoleButtonName() + " -> " + action.Text, style);
         }
+    }
+
+
+    public void Init(PlayerContext context)
+    {
+
     }
 }
 

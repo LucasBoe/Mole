@@ -85,6 +85,29 @@ public class PlayerInput
         return false;
     }
 
+    public void ClearByControlType(ControlType type)
+    {
+        switch (type)
+        {
+            case ControlType.Interact:
+                Interact = false;
+                break;
+
+            case ControlType.Use:
+                Use = false;
+                break;
+
+            case ControlType.Jump:
+                Jump = false;
+                break;
+
+            case ControlType.Back:
+                Back = false;
+                break;
+        }
+
+    }
+
 }
 
 public class PlayerStateTransitionChecks

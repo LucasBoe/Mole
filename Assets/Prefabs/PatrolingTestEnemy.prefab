@@ -413,6 +413,7 @@ MonoBehaviour:
   TargetTransform: {fileID: 0}
   TargetPos: {x: 0, y: 0}
   ScannedCounter: 0
+  lastSeenTargetEffectPrefab: {fileID: 5536127152050330895, guid: 4b9466a6880f9794a9d5654ad149ad33, type: 3}
 --- !u!114 &7324263897917580388
 MonoBehaviour:
   m_ObjectHideFlags: 0

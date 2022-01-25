@@ -12,13 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62e7c53ec7da4d04da17439730c37df3, type: 3}
   m_Name: PlayerValues
   m_EditorClassIdentifier: 
-  WalkXvelocity: 9
-  CrouchXvelocity: 5
-  TunnelXvelocity: 3
-  StraveXVelocity: 10
+  XVelocity:
+    SprintValue: 9
+    NotSprintValue: 5
+  StraveXVelocity:
+    SprintValue: 10
+    NotSprintValue: 6
   WallClimbYvelocity: 6
   EdgeHelperUpwardsImpulse: 2
-  JumpForce: 50
+  JumpForce:
+    SprintValue: 50
+    NotSprintValue: 30
   DirectionalJumpAmount: 0.5
   AdditionalGravityForce:
     serializedVersion: 2
@@ -84,4 +88,4 @@ MonoBehaviour:
   WallSnapXVelocity: 10
   JumpOffVelocity: 1.5
   KeyPressTimeToDropDown: 0.05
-  SnapToHideablePositionDuration: 0.1
+  SnapToHideablePositionDuration: 0.05

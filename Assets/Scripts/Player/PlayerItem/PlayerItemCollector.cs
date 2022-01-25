@@ -5,6 +5,7 @@ using UnityEngine;
 
 public interface IPlayerComponent
 {
+    //the bigger the number the earlier the update
     int UpdatePrio { get; }
     void UpdatePlayerComponent(PlayerContext context);
     void Init(PlayerContext context);
