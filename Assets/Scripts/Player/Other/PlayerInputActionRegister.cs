@@ -67,11 +67,16 @@ public class PlayerInputActionRegister : SingletonBehaviour<PlayerInputActionReg
     {
         for (int i = actions.Count - 1; i >= 0; i--)
         {
-            InputAction action = actions[i];
-            if (context.Input.GetByControlType(action.Input))
+
+            if (actions.Count > 0)
             {
-                action.ActionCallback?.Invoke();
-                context.Input.ClearByControlType(action.Input);
+
+                InputAction action = actions[i];
+                if (context.Input.GetByControlType(action.Input))
+                {
+                    action.ActionCallback?.Invoke();
+                    context.Input.ClearByControlType(action.Input);
+                }
             }
         }
     }
