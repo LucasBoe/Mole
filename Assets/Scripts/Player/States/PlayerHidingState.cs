@@ -7,7 +7,6 @@ public class HidingState : PlayerStateBase
 {
     Hideable hideable;
     Vector2 posBefore;
-    Vector2 hideablePos;
     float distance;
 
     InputAction leaveAction;
@@ -19,9 +18,8 @@ public class HidingState : PlayerStateBase
         base.Enter();
 
         hideable = Hideable.GetClosestFrom(GetCheck(CheckType.Hideable).Get<Hideable>(), context.PlayerPos);
-        hideablePos = hideable.transform.position;
         posBefore = context.PlayerPos;
-        distance = Vector2.Distance(posBefore, hideablePos);
+        distance = Vector2.Distance(posBefore, hideable.transform.position);
 
         leaveAction = new InputAction() { ActionCallback = Unhide, Input = ControlType.Back, Object = hideable.SpriteRenderer, Text = "Unhide" };
         PlayerInputActionRegister.Instance.RegisterInputAction(leaveAction);
@@ -42,8 +40,14 @@ public class HidingState : PlayerStateBase
 
     public override void Update()
     {
-        Vector2 pos = Vector2.MoveTowards(context.PlayerPos, hideablePos, (distance * Time.deltaTime) / context.Values.SnapToHideablePositionDuration);
-        context.Rigidbody.MovePosition(pos);
+        if (hideable == null)
+            Unhide();
+        else
+        {
+            Vector2 pos = Vector2.MoveTowards(context.PlayerPos, hideable.transform.position, (distance * Time.deltaTime) / context.Values.SnapToHideablePositionDuration);
+            context.Rigidbody.MovePosition(pos);
+        }
+
     }
 
     private void Unhide()

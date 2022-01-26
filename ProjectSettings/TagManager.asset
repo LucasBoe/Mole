@@ -17,7 +17,7 @@ TagManager:
   - Trigger
   - Enemy
   - Item
-  - PlayerTrigger
+  - Trigger
   - Rope
   - Hideable
   - TunnelEntrance

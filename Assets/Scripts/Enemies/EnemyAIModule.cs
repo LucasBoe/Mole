@@ -42,6 +42,7 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
     EnemyViewconeModule viewconeModule;
     EnemyMemoryModule memoryModule;
     EnemyMoveModule moveModule;
+    EnemyDamageModule damageModule;
 
     [SerializeField] NoiseListener noiseListener;
 
@@ -53,11 +54,13 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
         memoryModule = GetModule<EnemyMemoryModule>();
         routineModule = GetModule<EnemyRoutineModule>();
         moveModule = GetModule<EnemyMoveModule>();
+        damageModule = GetModule<EnemyDamageModule>();
 
         moveModule.OnStartMovingToPosition += SetViewconeModeToForward;
         viewconeModule.OnPlayerEnter += OnPlayerEnteredViewcone;
         //viewconeModule.OnPlayerExit += CheckOutLocation;
         noiseListener.OnNoise += CheckOutLocation;
+        damageModule.OnOutOfHealth += Kill;
     }
 
     private void SetViewconeModeToForward()
