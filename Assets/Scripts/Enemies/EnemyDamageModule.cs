@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyDamageModule : EnemyModule<EnemyDamageModule>, IHealth
@@ -24,5 +22,14 @@ public class EnemyDamageModule : EnemyModule<EnemyDamageModule>, IHealth
     public void Heal(int amount)
     {
         currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        EnemyDamager damager = collision.GetComponent<EnemyDamager>();
+        if (damager != null)
+        {
+            DoDamage(damager.FetchDamageAmout());
+        }
     }
 }

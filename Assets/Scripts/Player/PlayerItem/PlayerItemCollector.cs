@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public interface IPlayerComponent
@@ -19,7 +16,7 @@ public class PlayerItemCollector : MonoBehaviour
 
     public int UpdatePrio => 100;
 
-    public void Init(PlayerContext context)    {    }
+    public void Init(PlayerContext context) { }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         CollectablePlayerItem c = collision.GetComponent<CollectablePlayerItem>();
