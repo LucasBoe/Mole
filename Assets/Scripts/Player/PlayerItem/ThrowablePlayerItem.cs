@@ -10,16 +10,17 @@ public class ThrowablePlayerItem : PlayerItem
     public override void AimUpdate(PlayerItemUser playerItemUser, PlayerContext context, LineRenderer aimLine)
     {
         Vector2 origin = (Vector2)aimLine.transform.position + Vector2.up;
-        Vector2 dir = context.Input.VirtualCursorToDir(playerItemUser.transform.position);
+        Vector2 dir = context.Input.VirtualCursorToDir(playerItemUser.transform.position).normalized;
 
         int visualizationPointCount = 100;
-        float divisor = 10f;
+        float divisor = 50f;
 
         Vector2[] points = new Vector2[visualizationPointCount];
 
         for (int i = 0; i < visualizationPointCount; i++)
         {
-            Vector2 point = origin + (dir * ThrowForce * i / divisor + Vector2.down * Mathf.Pow(0.5f * 0.981f * i / divisor, 2) * GravityScale);
+            float t = i / divisor;
+            Vector2 point = origin + (dir * ThrowForce * t) + 0.5f * GravityScale * Physics2D.gravity * (t*t);
             points[i] = point;
         }
 
@@ -32,7 +33,7 @@ public class ThrowablePlayerItem : PlayerItem
         var playerPos = playerItemUser.transform.position;
         CollectablePlayerItem item = Instantiate(Prefab, playerPos + Vector3.up, Quaternion.identity);
         Rigidbody2D rigidbody2D = item.GetComponent<Rigidbody2D>();
-        rigidbody2D.velocity = (context.Input.VirtualCursorToDir(playerPos) * ThrowForce * 4.5f);
+        rigidbody2D.velocity = (context.Input.VirtualCursorToDir(playerPos) * ThrowForce);
         rigidbody2D.gravityScale = GravityScale;
         return new PlayerItemUseResult(PlayerItemUseResult.Type.Destroy);
     }
