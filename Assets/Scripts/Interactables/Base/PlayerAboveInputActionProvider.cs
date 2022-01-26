@@ -33,4 +33,9 @@ public class PlayerAboveInputActionProvider : PlayerAboveInteractable
         else
             PlayerInputActionRegister.Instance.UnregisterInputAction(inputAction);
     }
+
+    private void OnDestroy()
+    {
+        OnPlayerExit();
+    }
 }

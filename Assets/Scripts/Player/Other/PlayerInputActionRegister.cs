@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System;
+using System.Linq;
 
 public class PlayerInputActionRegister : SingletonBehaviour<PlayerInputActionRegister>, IPlayerComponent
 {
@@ -51,7 +52,8 @@ public class PlayerInputActionRegister : SingletonBehaviour<PlayerInputActionReg
     }
     private void AddAction(InputAction action)
     {
-        actionPromptPair.Add(action, PlayerControlPromptUI.Show(action.Input, action.Object.transform.position + (Vector3.up * 1.5f), action.Text));
+        int otherActionsWithSameObject = actions.Where(a => a.Object == action.Object).Count();
+        actionPromptPair.Add(action, PlayerControlPromptUI.Show(action.Input, action.Object.transform.position + (Vector3.up * 1.5f) + new Vector3(1f * otherActionsWithSameObject, 0,0), action.Text));
         actions.Add(action);
     }
     private void RemoveAction(InputAction action)
@@ -78,10 +80,19 @@ public class PlayerInputActionRegister : SingletonBehaviour<PlayerInputActionReg
     {
         GUIStyle style = new GUIStyle();
 
-        foreach (InputAction action in actions)
+        for (int i = actions.Count - 1; i >= 0; i--)
         {
-            style.normal.textColor = action.Input.ToColor();
-            Handles.Label(action.Object.transform.position + Vector3.up, action.Input.ToConsoleButtonName() + " -> " + action.Text, style);
+            InputAction action = actions[i];
+
+            if (action == null || action.Object == null)
+            {
+                actions.RemoveAt(i);
+            }
+            else
+            {
+                style.normal.textColor = action.Input.ToColor();
+                Handles.Label(action.Object.transform.position + Vector3.up, action.Input.ToConsoleButtonName() + " -> " + action.Text, style);
+            }
         }
     }
 
