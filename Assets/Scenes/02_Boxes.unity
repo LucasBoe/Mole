@@ -43317,6 +43317,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PatrolingTestEnemy (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7324263897917580387, guid: fadeeb2542b834b46b3b9e8ff39cbd67, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fadeeb2542b834b46b3b9e8ff39cbd67, type: 3}
 --- !u!4 &774911830 stripped
@@ -43631,6 +43635,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PatrolingTestEnemy (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 7324263897917580387, guid: fadeeb2542b834b46b3b9e8ff39cbd67, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fadeeb2542b834b46b3b9e8ff39cbd67, type: 3}
 --- !u!4 &1086649058 stripped
@@ -43829,6 +43837,10 @@ PrefabInstance:
     - target: {fileID: 7324263897917580384, guid: fadeeb2542b834b46b3b9e8ff39cbd67, type: 3}
       propertyPath: m_Name
       value: PatrolingTestEnemy (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7324263897917580387, guid: fadeeb2542b834b46b3b9e8ff39cbd67, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fadeeb2542b834b46b3b9e8ff39cbd67, type: 3}
