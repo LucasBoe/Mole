@@ -138,8 +138,11 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
 
     public void Kill()
     {
-        if (gameObject != null)
+        if (gameObject != null) {
+            enemyBase.OnEnemyDeath?.Invoke();
             Destroy(gameObject);
+        }
+
     }
 
     public bool StartStrangling()

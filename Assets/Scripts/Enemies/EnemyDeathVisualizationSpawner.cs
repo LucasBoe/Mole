@@ -8,7 +8,12 @@ public class EnemyDeathVisualizationSpawner : MonoBehaviour
     [SerializeField] GameObject[] toSpawn;
     [SerializeField] Vector2 offset;
 
-    private void OnDestroy()
+    private void Start()
+    {
+        GetComponent<EnemyBase>().OnEnemyDeath += OnDeath;
+    }
+
+    private void OnDeath()
     {
         Vector3 scale = toGetFlipFrom.localScale;
 

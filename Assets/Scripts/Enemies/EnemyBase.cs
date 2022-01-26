@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyBase : MonoBehaviour
 {
     Dictionary<System.Type, object> modules = new Dictionary<System.Type, object>();
+    public System.Action OnEnemyDeath;
 
     public void Register<T>(object module)
     {
