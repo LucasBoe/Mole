@@ -9,24 +9,24 @@ public interface IPlayerComponent
     int UpdatePrio { get; }
     void UpdatePlayerComponent(PlayerContext context);
     void Init(PlayerContext context);
+
 }
 
 public class PlayerItemCollector : MonoBehaviour
 {
     CollectablePlayerItem playerItem;
+    InputAction current = null;
 
     public int UpdatePrio => 100;
 
-    public void Init(PlayerContext context)
-    {
-        //
-    }
+    public void Init(PlayerContext context)    {    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         CollectablePlayerItem c = collision.GetComponent<CollectablePlayerItem>();
         if (c != null)
         {
-            PlayerInputActionRegister.Instance.RegisterInputAction(new InputAction() { Text = "Take " + c.Item.name, Object = c.SpriteRenderer, ActionCallback = TryCollect });
+            current = new InputAction() { Text = "Take " + c.Item.name, Object = c.SpriteRenderer, ActionCallback = TryCollect };
+            PlayerInputActionRegister.Instance.RegisterInputAction(current);
             playerItem = c;
         }
     }
@@ -41,6 +41,9 @@ public class PlayerItemCollector : MonoBehaviour
     {
         if (playerItem != null && PlayerItemHolder.Instance.AddItem(playerItem.Item))
         {
+            if (current != null)
+                PlayerInputActionRegister.Instance.UnregisterInputAction(current);
+
             Destroy(playerItem.gameObject);
         }
     }

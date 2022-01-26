@@ -8,6 +8,7 @@ public class PlayerItem : ScriptableObject
     public Sprite Sprite;
     public CollectablePlayerItem Prefab;
     public bool IsUseable;
+    public bool HandOnly = false;
 
     public virtual void AimUpdate(PlayerItemUser playerItemUser, PlayerContext context, LineRenderer aimLine) { }
 

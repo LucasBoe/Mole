@@ -13,7 +13,7 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
 {
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Material lineRendererMat;
-    PlayerItem inHand;
+    PlayerItem selectedItem;
     ItemUserState userState;
 
     LineRenderer aimLine;
@@ -26,14 +26,15 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
         PlayerItemHolder.OnAddNewItem += OnAddNewItem;
     }
 
-    private void OnAddNewItem(PlayerItem item)
+    private void OnAddNewItem(PlayerItem item, bool forceSelection)
     {
-        TryOverrideActiveItem(item);
+        if (forceSelection)
+            OverrideSelectedItem(item);
     }
 
     public void UpdatePlayerComponent(PlayerContext context)
     {
-        if (inHand)
+        if (selectedItem)
         {
             if (userState == ItemUserState.Aim)
             {
@@ -41,7 +42,7 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
             }
             else
             {
-                if (context.Input.Use && inHand.IsUseable)
+                if (context.Input.Use && selectedItem.IsUseable)
                 {
                     SetUserState(ItemUserState.Aim);
                 }
@@ -52,7 +53,7 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
                 if (userState == ItemUserState.Aim)
                     SetUserState(ItemUserState.Idle);
                 else
-                    SetItemInHand(null);
+                    SetItemInHand(null, drop:true);
             }
         }
     }
@@ -68,12 +69,13 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
     {
         if (context.Input.Interact)
         {
-            PlayerItemUseResult useResult = inHand.AimInteract(context, this);
+            PlayerItemUseResult useResult = selectedItem.AimInteract(context, this);
 
             switch (useResult.ResultType)
             {
                 case PlayerItemUseResult.Type.Destroy:
-                    SetItemInHand(null, drop: false);
+                    PlayerItemHolder.Instance.RemoveItem(selectedItem);
+                    //SetItemInHand(null, drop: false);
                     break;
 
                 case PlayerItemUseResult.Type.Function:
@@ -82,8 +84,8 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
             }
         }
 
-        if (aimLine != null && inHand)
-            inHand.AimUpdate(this, context, aimLine);
+        if (aimLine != null && selectedItem)
+            selectedItem.AimUpdate(this, context, aimLine);
     }
     private void AimExit()
     {
@@ -103,26 +105,25 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
         Crosshair.SetMode(state == ItemUserState.Aim ? Crosshair.Mode.Active : Crosshair.Mode.Passive);
     }
 
-    internal bool TryOverrideActiveItem(PlayerItem item)
+    internal void OverrideSelectedItem(PlayerItem item, bool drop = false)
     {
-        if (inHand == item)
-            return true;
+        if (selectedItem == item)
+            return;
 
-        SetItemInHand(item, drop: false);
-        return true;
+        SetItemInHand(item, drop);
     }
 
-    private void SetItemInHand(PlayerItem item, bool drop = true)
+    private void SetItemInHand(PlayerItem item, bool drop)
     {
-        if (inHand != null)
+        if (selectedItem != null)
         {
-            if (drop && inHand.Prefab != null)
-                Instantiate(inHand.Prefab, transform.position, Quaternion.identity);
+            if (drop && selectedItem.Prefab != null)
+                Instantiate(selectedItem.Prefab, transform.position, Quaternion.identity);
             SetUserState(ItemUserState.Idle);
         }
 
         spriteRenderer.sprite = (item != null) ? item.Sprite : null;
 
-        inHand = item;
+        selectedItem = item;
     }
 }

@@ -20,30 +20,34 @@ public class PlayerItemUI : UIBehaviour
     [SerializeField] RectTransform itemSlotPrefab;
     [SerializeField] Image itemSlotModePrefab;
 
-    private void OnEnable()
+    private void Start()
     {
         UIHandler.Instance.Show(this);
         PlayerItemHolder.OnAddNewItem += OnAddItem;
-
         PlayerItemHolder.OnRemoveItem += OnRemoveItem;
     }
 
 
-    private void OnAddItem(PlayerItem item)
+    private void OnAddItem(PlayerItem item, bool forceSelection)
     {
         ItemSlot newSlot = new ItemSlot() { Item = item, Modes = item.GetItemModes() };
         itemSlots.Add(newSlot);
         CreateInstancesForSlot(newSlot);
+
+        if (forceSelection)
+            selectedItemSlotIndex = itemSlots.IndexOf(newSlot);
+
         UpdateSelectedItem();
     }
     private void OnRemoveItem(PlayerItem item)
     {
-        for (int i = itemSlots.Count -1; i > 0; i--)
+        for (int i = itemSlots.Count -1; i >= 0; i--)
         {
             ItemSlot slot = itemSlots[i];
+
             if (slot.Item == item)
             {
-                Destroy(slot.RectInstance);
+                Destroy(slot.RectInstance.gameObject);
                 itemSlots.RemoveAt(i);
             }
         }
@@ -77,10 +81,16 @@ public class PlayerItemUI : UIBehaviour
 
     private void UpdateSelectedItem()
     {
-        if (itemSlots.Count == 0)
-            return;
+        Debug.Log("Update SelectedItem c: " + itemSlots.Count);
 
-        PlayerItemUser.Instance.TryOverrideActiveItem(itemSlots[selectedItemSlotIndex].Item);
+        if (itemSlots.Count == 0)
+        {
+            //clear selected item
+            PlayerItemUser.Instance.OverrideSelectedItem(null, drop:false);
+            return;
+        }
+
+        PlayerItemUser.Instance.OverrideSelectedItem(itemSlots[selectedItemSlotIndex].Item);
 
         //visuals
         for (int i = 0; i < itemSlots.Count; i++)
