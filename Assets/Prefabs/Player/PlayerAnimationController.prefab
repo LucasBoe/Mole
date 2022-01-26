@@ -272,7 +272,7 @@ GameObject:
   - component: {fileID: 37113589534412487}
   - component: {fileID: 1594742437642166090}
   m_Layer: 3
-  m_Name: AnimationController
+  m_Name: PlayerAnimationController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

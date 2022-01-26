@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 62819485965221170}
   - component: {fileID: 62819485965221171}
   m_Layer: 0
-  m_Name: NoiseVisualization
+  m_Name: NoiseVisualization_Effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

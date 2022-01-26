@@ -1,0 +1,27 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class SceneSwitch : PlayerAboveInputActionProvider
+{
+    [Scene]
+    [SerializeField] string toLoad;
+    [SerializeField] SpriteRenderer spriteRenderer;
+
+    protected override InputAction CreateInputAction()
+    {
+        return new InputAction()
+        {
+            ActionCallback = LoadScene,
+            Input = ControlType.Interact,
+            Object = spriteRenderer,
+            Text = "Step through"
+        };
+    }
+
+    private void LoadScene()
+    {
+        SceneManager.LoadScene(toLoad);
+    }
+}
