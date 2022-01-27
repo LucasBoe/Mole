@@ -5,6 +5,7 @@ using UnityEngine;
 
 public enum ItemUserState
 {
+    Hidden,
     Idle,
     Aim,
 }
@@ -15,14 +16,17 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
     [SerializeField] Material lineRendererMat;
     PlayerItem selectedItem;
     ItemUserState userState;
-
     LineRenderer aimLine;
 
-    public bool IsAiming => userState == ItemUserState.Aim;
     public int UpdatePrio => 100;
+    public bool IsAiming => userState == ItemUserState.Aim;
+
+    public static System.Action OnStartUsingItem;
+    public static System.Action OnEndUsingItem;
 
     public void Init(PlayerContext context)
     {
+        PlayerItemHolder.OnAddNewItem += OnAddNewItem;
         PlayerItemHolder.OnAddNewItem += OnAddNewItem;
     }
 
@@ -53,7 +57,7 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
                 if (userState == ItemUserState.Aim)
                     SetUserState(ItemUserState.Idle);
                 else
-                    SetItemInHand(null, drop:true);
+                    SetUserState(ItemUserState.Hidden);
             }
         }
     }
@@ -75,7 +79,7 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
             {
                 case PlayerItemUseResult.Type.Destroy:
                     PlayerItemHolder.Instance.RemoveItem(selectedItem);
-                    //SetItemInHand(null, drop: false);
+                    SetUserState(ItemUserState.Hidden);
                     break;
 
                 case PlayerItemUseResult.Type.Function:
@@ -102,25 +106,33 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
         if (state == ItemUserState.Aim)
             AimEnter();
 
+        if (userState == ItemUserState.Hidden)
+            OverrideSelectedItem(null, drop: true);
+
         Crosshair.SetMode(state == ItemUserState.Aim ? Crosshair.Mode.Active : Crosshair.Mode.Passive);
     }
 
     internal void OverrideSelectedItem(PlayerItem item, bool drop = false)
     {
+        if (item == null)
+            OnEndUsingItem?.Invoke();
+        else
+            OnStartUsingItem?.Invoke();
+
         if (selectedItem == item)
             return;
 
-        SetItemInHand(item, drop);
+        SetSelectedItem(item, drop);
     }
 
-    private void SetItemInHand(PlayerItem item, bool drop)
+    private void SetSelectedItem(PlayerItem item, bool drop)
     {
         if (selectedItem != null)
         {
             if (drop && selectedItem.Prefab != null)
                 Instantiate(selectedItem.Prefab, transform.position, Quaternion.identity);
-            SetUserState(ItemUserState.Idle);
         }
+
 
         spriteRenderer.sprite = (item != null) ? item.Sprite : null;
 

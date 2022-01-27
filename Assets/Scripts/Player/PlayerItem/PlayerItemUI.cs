@@ -13,6 +13,7 @@ public class PlayerItemUI : UIBehaviour
 {
     [SerializeField] private List<ItemSlot> itemSlots = new List<ItemSlot>();
     [SerializeField] private int selectedItemSlotIndex = 0;
+    private Image currentSelectionImage;
 
     [SerializeField] RectTransform parent;
     [SerializeField] Text itemNameText;
@@ -20,13 +21,15 @@ public class PlayerItemUI : UIBehaviour
     [SerializeField] RectTransform itemSlotPrefab;
     [SerializeField] Image itemSlotModePrefab;
 
+
     private void Start()
     {
         UIHandler.Instance.Show(this);
         PlayerItemHolder.OnAddNewItem += OnAddItem;
         PlayerItemHolder.OnRemoveItem += OnRemoveItem;
+        PlayerItemUser.OnStartUsingItem += ShowSelectionIndicator;
+        PlayerItemUser.OnEndUsingItem += HideSelectionIndicator;
     }
-
 
     private void OnAddItem(PlayerItem item, bool forceSelection)
     {
@@ -54,8 +57,13 @@ public class PlayerItemUI : UIBehaviour
 
         UpdateSelectedItem();
     }
+    private void SetSelectionIndicatorAlpha(float alpha)
+    {
+        Debug.Log(alpha);
 
-
+        if (currentSelectionImage != null)
+            currentSelectionImage.color = new Color(255, 255, 255, alpha);
+    }
 
     private void CreateUIElementsForAllItems()
     {
@@ -81,13 +89,15 @@ public class PlayerItemUI : UIBehaviour
 
     private void UpdateSelectedItem()
     {
-        Debug.Log("Update SelectedItem c: " + itemSlots.Count);
-
         if (itemSlots.Count == 0)
         {
             //clear selected item
             PlayerItemUser.Instance.OverrideSelectedItem(null, drop:false);
             return;
+        } else
+        {
+            //prevent overflow when old index is outside range
+            selectedItemSlotIndex = Mathf.Min(selectedItemSlotIndex, itemSlots.Count - 1);
         }
 
         PlayerItemUser.Instance.OverrideSelectedItem(itemSlots[selectedItemSlotIndex].Item);
@@ -96,7 +106,10 @@ public class PlayerItemUI : UIBehaviour
         for (int i = 0; i < itemSlots.Count; i++)
         {
             ItemSlot slot = itemSlots[i];
+
+
             int index = i < selectedItemSlotIndex ? selectedItemSlotIndex + i : i - selectedItemSlotIndex;
+            Debug.Log(index + " / " + itemSlots.Count);
             slot.RectInstance.SetSiblingIndex(index);
 
             float alpha = Mathf.Lerp(1f, 0f, index / 3f);
@@ -105,6 +118,7 @@ public class PlayerItemUI : UIBehaviour
             {
                 ItemMode mode = slot.Modes[j];
                 bool isSelected = i == selectedItemSlotIndex && j == slot.SelectedModeIndex;
+                if (isSelected) currentSelectionImage = mode.SelectedImage;
                 mode.SelectedImage.enabled = isSelected;
                 mode.IconImage.color = new Color(1, 1, 1, alpha * (isSelected ? 1f : 0.6f));
 
@@ -177,6 +191,15 @@ public class PlayerItemUI : UIBehaviour
 
         if (update)
             UpdateSelectedItem();
+    }
+
+    private void HideSelectionIndicator()
+    {
+        SetSelectionIndicatorAlpha(0.1f);
+    }
+    private void ShowSelectionIndicator()
+    {
+        SetSelectionIndicatorAlpha(1f);
     }
 }
 
