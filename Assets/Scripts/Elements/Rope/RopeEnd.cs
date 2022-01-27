@@ -18,12 +18,12 @@ public class RopeEnd : PlayerAboveInteractable
     protected override void OnPlayerEnter()
     {
         if (ShouldShowPrompt())
-            PlayerInputActionRegister.Instance.RegisterInputAction(new InputAction() { Input = ControlType.Interact, Object = spriteRenderer, ActionCallback = PlayerTryInteract });
+            PlayerInputActionRegister.Instance.RegisterInputAction(new InputAction() { Input = ControlType.Interact, Target = transform, ActionCallback = PlayerTryInteract });
     }
 
     protected override void OnPlayerExit()
     {
-        PlayerInputActionRegister.Instance.UnregisterInputAction(spriteRenderer);
+        PlayerInputActionRegister.Instance.UnregisterAllInputActions(spriteRenderer);
     }
 
     protected virtual bool ShouldShowPrompt()

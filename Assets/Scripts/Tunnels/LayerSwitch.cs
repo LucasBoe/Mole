@@ -10,7 +10,7 @@ public class LayerSwitch : PlayerAboveInteractable, IInputActionProvider
 
     public InputAction FetchInputAction()
     {
-        return new InputAction() { Text = "Enter", Object = spriteRenderer, ActionCallback = TryInteract };
+        return new InputAction() { Text = "Enter", Target = transform, ActionCallback = TryInteract, Stage = InputActionStage.WorldObject };
     }
 
     protected override void OnPlayerEnter()

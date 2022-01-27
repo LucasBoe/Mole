@@ -22,7 +22,7 @@ public class PlayerItemCollector : MonoBehaviour
         CollectablePlayerItem c = collision.GetComponent<CollectablePlayerItem>();
         if (c != null)
         {
-            current = new InputAction() { Text = "Take " + c.Item.name, Object = c.SpriteRenderer, ActionCallback = TryCollect };
+            current = new InputAction() { Text = "Take " + c.Item.name, Target = transform, ActionCallback = TryCollect };
             PlayerInputActionRegister.Instance.RegisterInputAction(current);
             playerItem = c;
         }
@@ -31,7 +31,7 @@ public class PlayerItemCollector : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         CollectablePlayerItem c = collision.GetComponent<CollectablePlayerItem>();
-        if (c != null && PlayerInputActionRegister.Instance.UnregisterInputAction(c.SpriteRenderer)) playerItem = null;
+        if (c != null && PlayerInputActionRegister.Instance.UnregisterAllInputActions(transform)) playerItem = null;
     }
 
     private void TryCollect()

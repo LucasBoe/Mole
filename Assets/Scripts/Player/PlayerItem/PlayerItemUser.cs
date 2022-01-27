@@ -7,7 +7,7 @@ public enum ItemUserState
 {
     Hidden,
     Idle,
-    Aim,
+    Using,
 }
 
 public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerComponent
@@ -18,8 +18,10 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
     ItemUserState userState;
     LineRenderer aimLine;
 
+    InputAction ac_useItem, ac_hideItem, ac_stopUsing, ac_confirmUsage;
+
     public int UpdatePrio => 100;
-    public bool IsAiming => userState == ItemUserState.Aim;
+    public bool IsAiming => userState == ItemUserState.Using;
 
     public static System.Action OnStartUsingItem;
     public static System.Action OnEndUsingItem;
@@ -28,6 +30,11 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
     {
         PlayerItemHolder.OnAddNewItem += OnAddNewItem;
         PlayerItemHolder.OnAddNewItem += OnAddNewItem;
+
+        ac_useItem = new InputAction() { Stage = InputActionStage.ModeSpecific, Target = transform, Input = ControlType.Use, Text = "Use Item", ActionCallback = TryUseItem };
+        ac_hideItem = new InputAction() { Stage = InputActionStage.ModeSpecific, Target = transform, Input = ControlType.Back, Text = "Hide Item", ActionCallback = () => SetUserState(ItemUserState.Hidden) };
+        ac_stopUsing = new InputAction() { Stage = InputActionStage.ModeSpecific, Target = transform, Input = ControlType.Back, Text = "Stop", ActionCallback = () => SetUserState(ItemUserState.Idle) };
+        ac_confirmUsage = new InputAction() { Stage = InputActionStage.ModeSpecific, Target = transform, Input = ControlType.Interact, Text = "Confirm", ActionCallback = UseConfirm };
     }
 
     private void OnAddNewItem(PlayerItem item, bool forceSelection)
@@ -36,80 +43,77 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
             OverrideSelectedItem(item);
     }
 
+    private void TryUseItem()
+    {
+        if (selectedItem.IsUseable)
+            SetUserState(ItemUserState.Using);
+    }
+
     public void UpdatePlayerComponent(PlayerContext context)
     {
-        if (selectedItem)
+        if (selectedItem && userState == ItemUserState.Using && aimLine != null)
         {
-            if (userState == ItemUserState.Aim)
-            {
-                AimUpdate(context);
-            }
-            else
-            {
-                if (context.Input.Use && selectedItem.IsUseable)
-                {
-                    SetUserState(ItemUserState.Aim);
-                }
-            }
-
-            if (context.Input.Back)
-            {
-                if (userState == ItemUserState.Aim)
-                    SetUserState(ItemUserState.Idle);
-                else
-                    SetUserState(ItemUserState.Hidden);
-            }
+            selectedItem.AimUpdate(this, context, aimLine);
         }
     }
 
-    private void AimEnter()
+    private void UseEnter()
     {
         aimLine = gameObject.AddComponent<LineRenderer>();
         aimLine.useWorldSpace = true;
         aimLine.widthCurve = AnimationCurve.Constant(0, 1, 0.125f);
         aimLine.material = lineRendererMat;
     }
-    private void AimUpdate(PlayerContext context)
+
+    private void UseConfirm()
     {
-        if (context.Input.Interact)
+        PlayerItemUseResult useResult = selectedItem.AimInteract(this);
+
+        switch (useResult.ResultType)
         {
-            PlayerItemUseResult useResult = selectedItem.AimInteract(context, this);
+            case PlayerItemUseResult.Type.Destroy:
+                PlayerItemHolder.Instance.RemoveItem(selectedItem);
+                SetUserState(ItemUserState.Hidden);
+                break;
 
-            switch (useResult.ResultType)
-            {
-                case PlayerItemUseResult.Type.Destroy:
-                    PlayerItemHolder.Instance.RemoveItem(selectedItem);
-                    SetUserState(ItemUserState.Hidden);
-                    break;
-
-                case PlayerItemUseResult.Type.Function:
-                    useResult.ResultFunction?.Invoke();
-                    break;
-            }
+            case PlayerItemUseResult.Type.Function:
+                useResult.ResultFunction?.Invoke();
+                break;
         }
 
-        if (aimLine != null && selectedItem)
-            selectedItem.AimUpdate(this, context, aimLine);
     }
-    private void AimExit()
+
+    private void UseExit()
     {
         Destroy(aimLine);
     }
 
     private void SetUserState(ItemUserState state)
     {
-        if (userState == ItemUserState.Aim)
-            AimExit();
+        PlayerInputActionRegister.Instance.UnregisterAllInputActions(transform);
+
+        if (userState == ItemUserState.Using)
+            UseExit();
 
         userState = state;
 
-        if (state == ItemUserState.Aim)
-            AimEnter();
+        if (userState == ItemUserState.Idle)
+        {
+            PlayerInputActionRegister.Instance.RegisterInputAction(ac_useItem);
+            PlayerInputActionRegister.Instance.RegisterInputAction(ac_hideItem);
+        }
+
+        if (state == ItemUserState.Using)
+        {
+            PlayerInputActionRegister.Instance.RegisterInputAction(ac_confirmUsage);
+            PlayerInputActionRegister.Instance.RegisterInputAction(ac_stopUsing);
+            UseEnter();
+        }
 
         if (userState == ItemUserState.Hidden)
             OverrideSelectedItem(null, drop: true);
 
-        Crosshair.SetMode(state == ItemUserState.Aim ? Crosshair.Mode.Active : Crosshair.Mode.Passive);
+        Crosshair.SetMode(state == ItemUserState.Using ? Crosshair.Mode.Active : Crosshair.Mode.Passive);
     }
 
     internal void OverrideSelectedItem(PlayerItem item, bool drop = false)
@@ -117,7 +121,10 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
         if (item == null)
             OnEndUsingItem?.Invoke();
         else
+        {
             OnStartUsingItem?.Invoke();
+            SetUserState(ItemUserState.Idle);
+        }
 
         if (selectedItem == item)
             return;

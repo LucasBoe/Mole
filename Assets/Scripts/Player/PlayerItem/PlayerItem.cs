@@ -12,7 +12,7 @@ public class PlayerItem : ScriptableObject
 
     public virtual void AimUpdate(PlayerItemUser playerItemUser, PlayerContext context, LineRenderer aimLine) { }
 
-    public virtual PlayerItemUseResult AimInteract(PlayerContext context, PlayerItemUser playerItemUser)
+    public virtual PlayerItemUseResult AimInteract(PlayerItemUser playerItemUser)
     {
         return new PlayerItemUseResult();
     }

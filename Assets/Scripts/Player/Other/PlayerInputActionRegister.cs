@@ -5,106 +5,114 @@ using UnityEditor;
 using System;
 using System.Linq;
 
+public enum InputActionStage
+{
+    ModeSpecific,
+    WorldObject,
+}
+
 public class PlayerInputActionRegister : SingletonBehaviour<PlayerInputActionRegister>, IPlayerComponent
 {
     [SerializeField] List<InputAction> actions = new List<InputAction>();
-    Dictionary<InputAction, PlayerControlPromptUI> actionPromptPair = new Dictionary<InputAction, PlayerControlPromptUI>();
+    [SerializeField] Dictionary<ControlType, List<InputAction>> register = new Dictionary<ControlType, List<InputAction>>();
+    public static Dictionary<ControlType, List<InputAction>> Register => Instance.register;
+    public static System.Action<ControlType> OnInputActionChangedForType;
 
+    public static InputAction GetTopActionForType(ControlType type)
+    {
+        if (Register.ContainsKey(type) && Register[type].Count > 0)
+            return Register[type].OrderBy(ac => ac.Stage).First();
+        else
+            return null;
+    }
     //needs higher update prio then item user to clear inputs for it
     public int UpdatePrio => 200;
 
-    public void RegisterInputAction(InputAction newAction)
+    public void Init(PlayerContext context)
     {
-        for (int i = actions.Count - 1; i >= 0; i--)
-        {
-            InputAction action = actions[i];
-            if (action != null && action.Input == newAction.Input)
-                RemoveAction(action);
-        }
-
-        AddAction(newAction);
+        register.Add(ControlType.Interact, new List<InputAction>());
+        register.Add(ControlType.Use, new List<InputAction>());
+        register.Add(ControlType.Jump, new List<InputAction>());
+        register.Add(ControlType.Back, new List<InputAction>());
     }
 
+    public void RegisterInputAction(InputAction newAction)
+    {
+        ControlType controlType = newAction.Input;
+        if (!register[controlType].Contains(newAction))
+        {
+            register[controlType].Add(newAction);
+            OnInputActionChangedForType?.Invoke(controlType);
+        }
+    }
 
     public void UnregisterInputAction(InputAction oldAction)
     {
-        for (int i = actions.Count - 1; i >= 0; i--)
+        ControlType controlType = oldAction.Input;
+        if (register[controlType].Contains(oldAction))
         {
-            InputAction action = actions[i];
-            if (action != null && action.Input == oldAction.Input)
-                RemoveAction(action);
+            register[controlType].Remove(oldAction);
+            OnInputActionChangedForType?.Invoke(controlType);
         }
     }
 
-    public bool UnregisterInputAction(SpriteRenderer obj)
+    public bool UnregisterAllInputActions(UnityEngine.Object target)
     {
-        for (int i = actions.Count - 1; i >= 0; i--)
+        List<ControlType> typesToUpdate = new List<ControlType>();
+
+        bool removed = false;
+        foreach (ControlType type in register.Keys)
         {
-            InputAction action = actions[i];
-            if (action.Object == obj)
+            var list = register[type];
+            for (int i = list.Count - 1; i >= 0; i--)
             {
-                RemoveAction(action);
-                return true;
+                if (list[i].TargetObject == target)
+                {
+                    if (!typesToUpdate.Contains(type))
+                        typesToUpdate.Add(type);
+
+                    list.RemoveAt(i);
+                    removed = true;
+                }
             }
         }
 
-        return false;
-    }
-    private void AddAction(InputAction action)
-    {
-        int otherActionsWithSameObject = actions.Where(a => a.Object == action.Object).Count();
-        actionPromptPair.Add(action, PlayerControlPromptUI.Show(action.Input, action.Object.transform.position + (Vector3.up * 1.5f) + new Vector3(1f * otherActionsWithSameObject, 0,0), action.Text));
-        actions.Add(action);
-    }
-    private void RemoveAction(InputAction action)
-    {
-        actionPromptPair[action].Hide();
-        actionPromptPair.Remove(action);
-        actions.Remove(action);
+        foreach (ControlType type in typesToUpdate)
+        {
+            OnInputActionChangedForType?.Invoke(type);
+        }
+
+        return removed;
     }
 
     public void UpdatePlayerComponent(PlayerContext context)
     {
-        for (int i = actions.Count - 1; i >= 0; i--)
+        for (int i = 0; i < 4; i++)
         {
-
-            if (actions.Count > 0)
+            ControlType type = ((ControlType)i);
+            if (register.ContainsKey(type) && context.Input.GetByControlType(type) && register[type].Count > 0)
             {
+                GetTopActionForType(type).ActionCallback?.Invoke();
+            }
+        }
+    }
 
-                InputAction action = actions[i];
-                if (context.Input.GetByControlType(action.Input))
+    private void OnGUI()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            if (register.ContainsKey((ControlType)i))
+            {
+                string str = ((ControlType)i).ToString() + ":\n";
+
+                foreach (InputAction action in register[(ControlType)i].OrderBy(ac => ac.Stage))
                 {
-                    action.ActionCallback?.Invoke();
-                    context.Input.ClearByControlType(action.Input);
+                    str += action.Text + " (" + action.TargetObject.name + ")\n";
                 }
+
+                GUI.Box(new Rect(100 + 200 * i, 100, 190, 90), str);
             }
         }
-    }
-
-    void OnDrawGizmos()
-    {
-        GUIStyle style = new GUIStyle();
-
-        for (int i = actions.Count - 1; i >= 0; i--)
-        {
-            InputAction action = actions[i];
-
-            if (action == null || action.Object == null)
-            {
-                actions.RemoveAt(i);
-            }
-            else
-            {
-                style.normal.textColor = action.Input.ToColor();
-                Handles.Label(action.Object.transform.position + Vector3.up, action.Input.ToConsoleButtonName() + " -> " + action.Text, style);
-            }
-        }
-    }
-
-
-    public void Init(PlayerContext context)
-    {
-
     }
 }
 
@@ -112,9 +120,41 @@ public class PlayerInputActionRegister : SingletonBehaviour<PlayerInputActionReg
 public class InputAction
 {
     public ControlType Input;
-    public SpriteRenderer Object;
     public string Text = "Interact";
     public System.Action ActionCallback;
+    public InputActionStage Stage;
+
+    public TargetTypes TargetType;
+    public Transform TargetTransform;
+    public RectTransform TargetRectTransform;
+    public UnityEngine.Object TargetObject;
+
+    public UnityEngine.Object Target { set => SetTarget(value); }
+    public void SetTarget(UnityEngine.Object target)
+    {
+        if (target.GetType() == typeof(RectTransform))
+        {
+            TargetType = TargetTypes.RectTransform;
+            TargetRectTransform = target as RectTransform;
+        }
+        else if (target.GetType() == typeof(Transform))
+        {
+            TargetType = TargetTypes.Transform;
+            TargetTransform = target as Transform;
+        }
+        else
+        {
+            TargetType = TargetTypes.Object;
+        }
+        TargetObject = target;
+    }
+
+    public enum TargetTypes
+    {
+        Transform,
+        RectTransform,
+        Object,
+    }
 }
 
 public interface IInputActionProvider

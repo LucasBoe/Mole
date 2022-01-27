@@ -20,7 +20,6 @@ public class UIHandler : SingletonBehaviour<UIHandler>
 
     private void Update()
     {
-
         for (int i = toUpdate.Count - 1; i >= 0; i--)
         {
             IUpdateMeWithInput element = toUpdate[i];

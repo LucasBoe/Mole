@@ -83,7 +83,7 @@ public class RopeElement : MonoBehaviour, IInputActionProvider
 
     public InputAction FetchInputAction()
     {
-        return new InputAction() { ActionCallback = Climb, Object = gameObject.AddComponent<SpriteRenderer>(), Text = "Climb" };
+        return new InputAction() { ActionCallback = Climb, Target = gameObject.AddComponent<SpriteRenderer>(), Text = "Climb" };
     }
 
     private void Climb ()

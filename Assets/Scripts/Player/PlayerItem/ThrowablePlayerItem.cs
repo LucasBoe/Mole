@@ -28,12 +28,12 @@ public class ThrowablePlayerItem : PlayerItem
         aimLine.SetPositions(points.ToVector3Array());
     }
 
-    public override PlayerItemUseResult AimInteract(PlayerContext context, PlayerItemUser playerItemUser)
+    public override PlayerItemUseResult AimInteract(PlayerItemUser playerItemUser)
     {
         var playerPos = playerItemUser.transform.position;
         CollectablePlayerItem item = Instantiate(Prefab, playerPos + Vector3.up, Quaternion.identity);
         Rigidbody2D rigidbody2D = item.GetComponent<Rigidbody2D>();
-        rigidbody2D.velocity = (context.Input.VirtualCursorToDir(playerPos) * ThrowForce);
+        rigidbody2D.velocity = (PlayerInputHandler.PlayerInput.VirtualCursorToDir(playerPos) * ThrowForce);
         rigidbody2D.gravityScale = GravityScale;
         return new PlayerItemUseResult(PlayerItemUseResult.Type.Destroy);
     }

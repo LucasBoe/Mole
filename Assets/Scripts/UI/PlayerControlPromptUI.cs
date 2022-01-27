@@ -61,7 +61,6 @@ public class PlayerControlPromptUI : TemporaryUIElement
 
     public void Init (ControlType type, Vector3 worldPos, string txt)
     {
-        GetComponent<WorldPositionTrackingUI>().WorldPosition = worldPos;
         image.color = type.ToColor();
         buttonText.text = type.ToConsoleButtonName();
         interactionText.text = txt;

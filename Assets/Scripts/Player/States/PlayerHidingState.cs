@@ -21,7 +21,7 @@ public class HidingState : PlayerStateBase
         posBefore = context.PlayerPos;
         distance = Vector2.Distance(posBefore, hideable.transform.position);
 
-        leaveAction = new InputAction() { ActionCallback = Unhide, Input = ControlType.Back, Object = hideable.SpriteRenderer, Text = "Unhide" };
+        leaveAction = new InputAction() { ActionCallback = Unhide, Input = ControlType.Back, Target = hideable.transform, Text = "Unhide", Stage = InputActionStage.WorldObject };
         PlayerInputActionRegister.Instance.RegisterInputAction(leaveAction);
 
         SetCollisionActive(false);

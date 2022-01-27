@@ -15,7 +15,7 @@ public class SceneSwitch : PlayerAboveInputActionProvider
         {
             ActionCallback = LoadScene,
             Input = ControlType.Interact,
-            Object = spriteRenderer,
+            Target = transform,
             Text = "Step through"
         };
     }

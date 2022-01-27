@@ -6,6 +6,7 @@ public class TemporaryUIElement : MonoBehaviour
 {
     public void Hide()
     {
+        Debug.Log("Hide UI " + name);
         Destroy(gameObject);
     }
 }
