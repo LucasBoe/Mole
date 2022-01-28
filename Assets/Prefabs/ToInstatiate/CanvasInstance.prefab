@@ -28,7 +28,7 @@ RectTransform:
   m_GameObject: {fileID: 98624973726504128}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalScale: {x: 0.06, y: 0.06, z: 0.06}
   m_Children: []
   m_Father: {fileID: 9057710944172122447}
   m_RootOrder: 1
@@ -233,6 +233,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worldSpaceParent: {fileID: 1906827962633565304}
+  uiSpaceParent: {fileID: 7827159488523802549}
+  uiSpaceOffset: {x: 0, y: -100, z: 0}
+  worldSpaceOffset: {x: 6, y: 1, z: 0}
   inputUIParentPrefab: {fileID: 2894191411437368956, guid: b472b20202ec5ea4e8f351b7423c7969, type: 3}
   inputUIPrefab: {fileID: 857312041124753315, guid: b41d44e0c3bde634fa8526daa9f31925, type: 3}
 --- !u!1 &1405024705742051843
@@ -1063,7 +1066,7 @@ GameObject:
   - component: {fileID: 4866714890636806570}
   - component: {fileID: 1833839002232687263}
   m_Layer: 5
-  m_Name: Overlay
+  m_Name: UISpace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

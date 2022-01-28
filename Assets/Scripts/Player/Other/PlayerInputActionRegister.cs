@@ -107,7 +107,8 @@ public class PlayerInputActionRegister : SingletonBehaviour<PlayerInputActionReg
 
                 foreach (InputAction action in register[(ControlType)i].OrderBy(ac => ac.Stage))
                 {
-                    str += action.Text + " (" + action.TargetObject.name + ")\n";
+                    if (action.TargetObject != null)
+                        str += action.Text + " (" + action.TargetObject.name + " - " + action.Stage.ToString() + " )\n";
                 }
 
                 GUI.Box(new Rect(100 + 200 * i, 100, 190, 90), str);
@@ -136,6 +137,7 @@ public class InputAction
         {
             TargetType = TargetTypes.RectTransform;
             TargetRectTransform = target as RectTransform;
+            TargetTransform = target as Transform;
         }
         else if (target.GetType() == typeof(Transform))
         {

@@ -16,7 +16,7 @@ public class Hideable : PlayerAboveInputActionProvider
 
     protected override InputAction CreateInputAction()
     {
-        return new InputAction() { Input = ControlType.Use, Target = transform, Text = "Hide", ActionCallback = Hide };
+        return new InputAction() { Input = ControlType.Use, Target = transform, Stage= InputActionStage.WorldObject, Text = "Hide", ActionCallback = Hide };
     }
 
     private void Hide()

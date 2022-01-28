@@ -22,7 +22,7 @@ public class PlayerItemCollector : MonoBehaviour
         CollectablePlayerItem c = collision.GetComponent<CollectablePlayerItem>();
         if (c != null)
         {
-            current = new InputAction() { Text = "Take " + c.Item.name, Target = transform, ActionCallback = TryCollect };
+            current = new InputAction() { Text = "Take " + c.Item.name, Target = transform, Stage= InputActionStage.WorldObject, ActionCallback = TryCollect };
             PlayerInputActionRegister.Instance.RegisterInputAction(current);
             playerItem = c;
         }

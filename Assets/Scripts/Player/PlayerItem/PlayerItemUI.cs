@@ -21,15 +21,61 @@ public class PlayerItemUI : UIBehaviour
     [SerializeField] RectTransform itemSlotPrefab;
     [SerializeField] Image itemSlotModePrefab;
 
-
+    InputAction ac_useItem, ac_deselectItem, ac_stopUsing, ac_confirmUsage;
     private void Start()
     {
         UIHandler.Instance.Show(this);
         PlayerItemHolder.OnAddNewItem += OnAddItem;
         PlayerItemHolder.OnRemoveItem += OnRemoveItem;
-        PlayerItemUser.OnStartUsingItem += ShowSelectionIndicator;
-        PlayerItemUser.OnEndUsingItem += HideSelectionIndicator;
+        //PlayerItemUser.OnStartUsingItem += ShowSelectionIndicator;
+        //PlayerItemUser.OnEndUsingItem += HideSelectionIndicator;
+
+        ac_useItem = new InputAction() { Stage = InputActionStage.ModeSpecific, Target = transform, Input = ControlType.Use, Text = "Use Item", ActionCallback = TryUseItem };
+        ac_deselectItem = new InputAction() { Stage = InputActionStage.ModeSpecific, Target = transform, Input = ControlType.Back, Text = "Hide Item", ActionCallback = DeselectItem };
+        ac_stopUsing = new InputAction() { Stage = InputActionStage.ModeSpecific, Target = transform, Input = ControlType.Back, Text = "Stop", ActionCallback = StopUse };
+        ac_confirmUsage = new InputAction() { Stage = InputActionStage.ModeSpecific, Target = transform, Input = ControlType.Interact, Text = "Confirm", ActionCallback = ConfirmUse };
     }
+    private void SelectItem(PlayerItem item)
+    {
+        Debug.Log("SelectItem");
+
+        PlayerInputActionRegister.Instance.UnregisterAllInputActions(transform);
+        PlayerItemUser.Instance.OverrideSelectedItem(item, drop: false);
+
+        if (item != null)
+        {
+            PlayerInputActionRegister.Instance.RegisterInputAction(ac_useItem);
+            PlayerInputActionRegister.Instance.RegisterInputAction(ac_deselectItem);
+            SetSelectionIndicatorAlpha(1f);
+        }
+    }
+
+    private void DeselectItem()
+    {
+        PlayerItemUser.Instance.Stop();
+        SelectItem(null);
+        SetSelectionIndicatorAlpha(0.1f);
+    }
+
+    private void TryUseItem()
+    {
+        PlayerInputActionRegister.Instance.UnregisterAllInputActions(transform);
+        PlayerItemUser.Instance.Use(itemSlots[selectedItemSlotIndex].Item);
+        PlayerInputActionRegister.Instance.RegisterInputAction(ac_confirmUsage);
+        PlayerInputActionRegister.Instance.RegisterInputAction(ac_stopUsing);
+    }
+
+    private void StopUse()
+    {
+        PlayerItemUser.Instance.Stop();
+        SelectItem(itemSlots[selectedItemSlotIndex].Item);
+    }
+
+    private void ConfirmUse()
+    {
+        PlayerItemUser.Instance.Confirm();
+    }
+
 
     private void OnAddItem(PlayerItem item, bool forceSelection)
     {
@@ -44,7 +90,7 @@ public class PlayerItemUI : UIBehaviour
     }
     private void OnRemoveItem(PlayerItem item)
     {
-        for (int i = itemSlots.Count -1; i >= 0; i--)
+        for (int i = itemSlots.Count - 1; i >= 0; i--)
         {
             ItemSlot slot = itemSlots[i];
 
@@ -92,15 +138,16 @@ public class PlayerItemUI : UIBehaviour
         if (itemSlots.Count == 0)
         {
             //clear selected item
-            PlayerItemUser.Instance.OverrideSelectedItem(null, drop:false);
+            SelectItem(null);
             return;
-        } else
+        }
+        else
         {
             //prevent overflow when old index is outside range
             selectedItemSlotIndex = Mathf.Min(selectedItemSlotIndex, itemSlots.Count - 1);
         }
 
-        PlayerItemUser.Instance.OverrideSelectedItem(itemSlots[selectedItemSlotIndex].Item);
+        SelectItem(itemSlots[selectedItemSlotIndex].Item);
 
         //visuals
         for (int i = 0; i < itemSlots.Count; i++)
@@ -143,7 +190,7 @@ public class PlayerItemUI : UIBehaviour
 
     public override void UpdateUI(PlayerInput input)
     {
-        if (itemSlots.Count == 0)
+        if (itemSlots.Count == 0 || PlayerItemUser.Instance.IsAiming)
             return;
 
         bool update = false;
@@ -191,15 +238,6 @@ public class PlayerItemUI : UIBehaviour
 
         if (update)
             UpdateSelectedItem();
-    }
-
-    private void HideSelectionIndicator()
-    {
-        SetSelectionIndicatorAlpha(0.1f);
-    }
-    private void ShowSelectionIndicator()
-    {
-        SetSelectionIndicatorAlpha(1f);
     }
 }
 

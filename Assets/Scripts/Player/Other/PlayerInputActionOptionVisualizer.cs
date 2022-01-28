@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class PlayerInputActionOptionVisualizer : MonoBehaviour
 {
-    [SerializeField] RectTransform worldSpaceParent;
+    [SerializeField] RectTransform worldSpaceParent, uiSpaceParent;
+    [SerializeField] Vector3 uiSpaceOffset, worldSpaceOffset;
     [SerializeField] RectTransform inputUIParentPrefab;
     [SerializeField] PlayerControlPromptUI inputUIPrefab;
 
@@ -40,11 +41,11 @@ public class PlayerInputActionOptionVisualizer : MonoBehaviour
             uiInstances[type] = new KeyValuePair<PlayerControlPromptUI, InputAction>(prompt, top);
 
             prompt.Init(type, Vector3.zero, top.Text);
-            Position(top.TargetTransform, prompt);
+            Position(top.TargetTransform, prompt, top.TargetType);
         }
     }
 
-    private void Position(Transform targetTransform, PlayerControlPromptUI prompt)
+    private void Position(Transform targetTransform, PlayerControlPromptUI prompt, InputAction.TargetTypes targetType)
     {
         RectTransform parent;
 
@@ -52,9 +53,9 @@ public class PlayerInputActionOptionVisualizer : MonoBehaviour
             parent = uiParents[targetTransform];
         else
         {
-            parent = Instantiate(inputUIParentPrefab, worldSpaceParent);
+            parent = Instantiate(inputUIParentPrefab, targetType == InputAction.TargetTypes.RectTransform ? uiSpaceParent : worldSpaceParent );
             uiParents.Add(targetTransform, parent);
-            parent.position = targetTransform.position + Vector3.up;
+            parent.position = targetTransform.position + (targetType == InputAction.TargetTypes.RectTransform ? uiSpaceOffset : worldSpaceOffset);
         }
 
         prompt.transform.parent = parent;
