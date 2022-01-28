@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/02_Boxes.unity
     guid: dfca67396fad8c34292887586324459e
+  - enabled: 1
+    path: Assets/Scenes/03_Infiltrate.unity
+    guid: 4a4e93b86dfb7004e82b431201a08e36
   m_configObjects: {}
