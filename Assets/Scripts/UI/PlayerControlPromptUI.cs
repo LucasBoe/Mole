@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -57,7 +58,7 @@ public static class ControlTypeExtention
 public class PlayerControlPromptUI : TemporaryUIElement
 {
     [SerializeField] Image image;
-    [SerializeField] Text buttonText, interactionText;
+    [SerializeField] TMP_Text buttonText, interactionText;
 
     public void Init (ControlType type, Vector3 worldPos, string txt)
     {
