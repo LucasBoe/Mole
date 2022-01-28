@@ -55,9 +55,9 @@ public class PlayerInputActionOptionVisualizer : MonoBehaviour
         {
             parent = Instantiate(inputUIParentPrefab, targetType == InputAction.TargetTypes.RectTransform ? uiSpaceParent : worldSpaceParent );
             uiParents.Add(targetTransform, parent);
-            parent.position = targetTransform.position + (targetType == InputAction.TargetTypes.RectTransform ? uiSpaceOffset : worldSpaceOffset);
         }
 
+        parent.position = targetTransform.position + (targetType == InputAction.TargetTypes.RectTransform ? uiSpaceOffset : worldSpaceOffset);
         prompt.transform.parent = parent;
         prompt.transform.localScale = Vector3.one;
     }
