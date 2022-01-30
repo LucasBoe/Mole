@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: Player_Idle
   m_EditorClassIdentifier: 
   atWallSprite: {fileID: 3029914874245117369, guid: a94b1f00feececc459aa009bfd58c52b, type: 3}
-  climbing:
+  idleStand:
   - {fileID: 175043465572383521, guid: 8b2ab7bb857a5eb4d9fbeda250a74c38, type: 3}
   - {fileID: 1745356807530272992, guid: 8b2ab7bb857a5eb4d9fbeda250a74c38, type: 3}
   - {fileID: -6123550004050103995, guid: 8b2ab7bb857a5eb4d9fbeda250a74c38, type: 3}
   - {fileID: 1745356807530272992, guid: 8b2ab7bb857a5eb4d9fbeda250a74c38, type: 3}
+  idleCrouch:
+  - {fileID: 2780394414310922584, guid: c83a09efd2ebf5b4bad59f3cb2b43876, type: 3}
+  - {fileID: -5180262838989424630, guid: c83a09efd2ebf5b4bad59f3cb2b43876, type: 3}

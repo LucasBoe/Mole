@@ -35,6 +35,10 @@ public class ThrowablePlayerItem : PlayerItem
         Rigidbody2D rigidbody2D = item.GetComponent<Rigidbody2D>();
         rigidbody2D.velocity = (PlayerInputHandler.PlayerInput.VirtualCursorToDir(playerPos) * ThrowForce);
         rigidbody2D.gravityScale = GravityScale;
+        IThrowListener[] throwListeners = item.GetComponents<IThrowListener>();
+        foreach (IThrowListener listener in throwListeners)
+            listener.OnThrow();
+
         return new PlayerItemUseResult(PlayerItemUseResult.Type.Destroy);
     }
 

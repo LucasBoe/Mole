@@ -13,7 +13,7 @@ TagManager:
   - UI
   - Hangable
   - OneDirectionalFloor
-  - Pushable
+  - BlockViewButNotCollision
   - Trigger
   - Enemy
   - Item

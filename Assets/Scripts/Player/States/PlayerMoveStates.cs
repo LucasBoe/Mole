@@ -29,6 +29,7 @@ public class MoveBaseState : PlayerStateBase
 
 public class IdleState : MoveBaseState
 {
+    public bool IsCrouching;
     public bool IsAtWall;
     float dropDownTimer = 0f;
 
@@ -43,6 +44,8 @@ public class IdleState : MoveBaseState
     public override void Update()
     {
         base.Update();
+
+        IsCrouching = !context.Input.Sprinting;
 
         if (context.Input.Axis.x != 0 && !triesMovingIntoWall)
             SetState(PlayerState.Walk);

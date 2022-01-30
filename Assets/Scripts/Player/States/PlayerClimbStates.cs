@@ -81,7 +81,7 @@ public class PullUpState : ClimbStateBase
         bool blocked = true;
         while (blocked && i < 25)
         {
-            Collider2D[] colliders = Physics2D.OverlapBoxAll(toCheck, new Vector2(1, 1.5f), 0, LayerMask.GetMask("Hangable"));
+            Collider2D[] colliders = Physics2D.OverlapBoxAll(toCheck, new Vector2(1, 1.5f), 0, LayerMask.GetMask("Hangable", "OneDirectionalPlatform"));
             blocked = colliders.Length != 0;
             Debug.DrawLine(toCheck + Vector2.left * 0.1f, toCheck + Vector2.right * 0.1f, blocked ? Color.red : Color.green, 10);
             toCheck += new Vector2(0, 0.25f);
