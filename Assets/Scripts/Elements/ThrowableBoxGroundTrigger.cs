@@ -14,8 +14,6 @@ public class ThrowableBoxGroundTrigger : MonoBehaviour, IThrowListener
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Trigger" + collision.gameObject.layer + " / " + 0);
-
         if (collision.gameObject.layer == 0)
             boxCollider2D.enabled = true;
     }

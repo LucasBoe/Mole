@@ -17,6 +17,31 @@ public class PlayerInputActionOptionVisualizer : MonoBehaviour
     private void Start()
     {
         PlayerInputActionRegister.OnInputActionChangedForType += UpdateUI;
+        PlayerControlPromptUI.OnDeleteControPrompt += CheckForDeletionIfNoChildsExist;
+    }
+
+    private void CheckForDeletionIfNoChildsExist(Transform parent)
+    {
+        if (parent.childCount == 1)
+        {
+            UnityEngine.Object key = null;
+
+            if (uiParents.ContainsValue(parent as RectTransform))
+            {
+                foreach (var pair in uiParents)
+                {
+                    if (pair.Value == parent)
+                    {
+                        key = pair.Key;
+                        break;
+                    }
+                }
+            }
+
+            uiParents.Remove(key);
+
+            Destroy(parent.gameObject);
+        }
     }
 
     private void UpdateUI(ControlType type)
@@ -26,10 +51,13 @@ public class PlayerInputActionOptionVisualizer : MonoBehaviour
 
         if (uiInstances.ContainsKey(type)) prompt = uiInstances[type].Key;
 
-        Debug.Log(top);
         if (top == null)
         {
-            if (prompt != null) prompt.Hide();
+            if (prompt != null)
+            {
+                Transform parent = prompt.transform.parent;
+                prompt.Hide();
+            }
             uiInstances.Remove(type);
         }
         else
@@ -45,6 +73,8 @@ public class PlayerInputActionOptionVisualizer : MonoBehaviour
         }
     }
 
+
+
     private void Position(Transform targetTransform, PlayerControlPromptUI prompt, InputAction.TargetTypes targetType)
     {
         RectTransform parent;
@@ -53,7 +83,7 @@ public class PlayerInputActionOptionVisualizer : MonoBehaviour
             parent = uiParents[targetTransform];
         else
         {
-            parent = Instantiate(inputUIParentPrefab, targetType == InputAction.TargetTypes.RectTransform ? uiSpaceParent : worldSpaceParent );
+            parent = Instantiate(inputUIParentPrefab, targetType == InputAction.TargetTypes.RectTransform ? uiSpaceParent : worldSpaceParent);
             uiParents.Add(targetTransform, parent);
         }
 

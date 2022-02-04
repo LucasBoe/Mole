@@ -37,8 +37,6 @@ public class PlayerItemUI : UIBehaviour
     }
     private void SelectItem(PlayerItem item)
     {
-        Debug.Log("SelectItem");
-
         PlayerInputActionRegister.Instance.UnregisterAllInputActions(transform);
         PlayerItemUser.Instance.OverrideSelectedItem(item, drop: false);
 
@@ -105,8 +103,6 @@ public class PlayerItemUI : UIBehaviour
     }
     private void SetSelectionIndicatorAlpha(float alpha)
     {
-        Debug.Log(alpha);
-
         if (currentSelectionImage != null)
             currentSelectionImage.color = new Color(255, 255, 255, alpha);
     }
@@ -156,7 +152,6 @@ public class PlayerItemUI : UIBehaviour
 
 
             int index = i < selectedItemSlotIndex ? selectedItemSlotIndex + i : i - selectedItemSlotIndex;
-            Debug.Log(index + " / " + itemSlots.Count);
             slot.RectInstance.SetSiblingIndex(index);
 
             float alpha = Mathf.Lerp(1f, 0f, index / 3f);

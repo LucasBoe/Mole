@@ -60,6 +60,7 @@ public class PlayerControlPromptUI : TemporaryUIElement
     [SerializeField] Image image;
     [SerializeField] TMP_Text buttonText, interactionText;
 
+    public static System.Action<Transform> OnDeleteControPrompt;
     public void Init (ControlType type, Vector3 worldPos, string txt)
     {
         image.color = type.ToColor();
@@ -67,11 +68,8 @@ public class PlayerControlPromptUI : TemporaryUIElement
         interactionText.text = txt;
     }
 
-    public static PlayerControlPromptUI Show(ControlType type, Vector3 worldPos, string txt = "")
+    private void OnDestroy()
     {
-        PlayerControlPromptUI controlPromptUI = UIHandler.Temporary.Spawn<PlayerControlPromptUI>() as PlayerControlPromptUI;
-        controlPromptUI.Init(type, worldPos, txt);
-
-        return controlPromptUI;
+        OnDeleteControPrompt?.Invoke(transform.parent);
     }
 }
