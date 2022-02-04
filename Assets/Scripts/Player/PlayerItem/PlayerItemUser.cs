@@ -39,6 +39,7 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
         aimLine = gameObject.GetComponent<LineRenderer>();
         if (aimLine == null)
             aimLine = gameObject.AddComponent<LineRenderer>();
+
         aimLine.useWorldSpace = true;
         aimLine.widthCurve = AnimationCurve.Constant(0, 1, 0.125f);
         aimLine.material = lineRendererMat;
@@ -79,6 +80,7 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
         }
 
         spriteRenderer.sprite = (item != null) ? item.Sprite : null;
+        transform.rotation = Quaternion.identity;
 
         selectedItem = item;
     }
