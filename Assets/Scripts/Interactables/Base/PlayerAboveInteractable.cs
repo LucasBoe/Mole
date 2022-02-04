@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider2D))]
 public class PlayerAboveInteractable : MonoBehaviour
 {
     [SerializeField] protected bool playerIsAbove = false;
@@ -21,10 +20,15 @@ public class PlayerAboveInteractable : MonoBehaviour
 
         playerIsAbove = true;
 
-        if ((enableTime + 0.1f) < Time.time)
+        if (DidNotJustSpawn())
             OnPlayerEnter();
         else
             OnEnableWithPlayerAbove();
+    }
+
+    protected bool DidNotJustSpawn()
+    {
+        return (enableTime + 0.1f) < Time.time;
     }
 
 
