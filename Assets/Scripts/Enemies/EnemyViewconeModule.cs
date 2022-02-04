@@ -240,7 +240,7 @@ public class EnemyViewconeModule : EnemyModule<EnemyViewconeModule>
         if (Vector2.Distance(transform.position, target.position) > maxDist)
             return false;
 
-        return Util.CheckLineOfSight(transform.position, target.position, "Default");
+        return Util.CheckLineOfSight(transform.position, target.position, new string[] { "Default", "OneDirectionalFloor" });
     }
 
     private bool isAngleLeft(float angle)

@@ -51,7 +51,12 @@ public static class Util
 
     public static bool CheckLineOfSight(Vector2 from, Vector2 to, string layer)
     {
-        RaycastHit2D hit = Physics2D.Raycast(from, (to - from).normalized, Vector2.Distance(from, to), LayerMask.GetMask(layer));
+        return CheckLineOfSight(from, to, new string[] { layer });
+    }
+
+    public static bool CheckLineOfSight(Vector2 from, Vector2 to, string[] layers)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(from, (to - from).normalized, Vector2.Distance(from, to), LayerMask.GetMask(layers));
         if (hit == true)
         {
             Debug.DrawLine(from, hit.point, Color.yellow);

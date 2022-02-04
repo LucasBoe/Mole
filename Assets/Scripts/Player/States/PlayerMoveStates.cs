@@ -143,11 +143,28 @@ public class FallState : MoveBaseState
     PlayerControlPromptUI attackPrompt;
     bool enemyIsBelow;
     float startFallTime;
+    InputAction attackEnemyBelowAction;
     public FallState(PlayerContext playerContext) : base(playerContext) { }
 
     public override void Enter()
     {
         startFallTime = Time.time;
+        attackEnemyBelowAction = new InputAction()
+        {
+            Target = context.PlayerController.transform,
+            Input = ControlType.Use,
+            Stage = InputActionStage.WorldObject,
+            Text = "Strangle",
+            ActionCallback = () =>
+            {
+                ICombatTarget[] targets = GetCheck(CheckType.EnemyBelow).Get<ICombatTarget>();
+                if (targets != null && targets.Length > 0)
+                {
+                    context.CombatTarget = targets[0];
+                    SetState(PlayerState.CombatStrangle);
+                }
+            }
+        };
     }
 
     public override void Update()
@@ -215,23 +232,12 @@ public class FallState : MoveBaseState
         if (enemyIsBelow && !enemyWasBelowBefore)
         {
             Time.timeScale = 0.5f;
-            attackPrompt = PlayerControlPromptUI.Show(ControlType.Use, context.PlayerPos + Vector2.down);
+            PlayerInputActionRegister.Instance.RegisterInputAction(attackEnemyBelowAction);
         }
         else if (!enemyIsBelow && enemyWasBelowBefore && attackPrompt != null)
         {
             Time.timeScale = 1f;
-            attackPrompt.Hide();
-        }
-
-        //handle attack input
-        if (enemyIsBelow && context.Input.Use)
-        {
-            ICombatTarget[] targets = GetCheck(CheckType.EnemyBelow).Get<ICombatTarget>();
-            if (targets != null && targets.Length > 0)
-            {
-                context.CombatTarget = targets[0];
-                return true;
-            }
+            PlayerInputActionRegister.Instance.UnregisterInputAction(attackEnemyBelowAction);
         }
 
         return false;
@@ -240,9 +246,7 @@ public class FallState : MoveBaseState
     public override void Exit()
     {
         base.Exit();
-        if (attackPrompt != null)
-            attackPrompt.Hide();
-
+        PlayerInputActionRegister.Instance.UnregisterInputAction(attackEnemyBelowAction);
         Time.timeScale = 1f;
     }
 }

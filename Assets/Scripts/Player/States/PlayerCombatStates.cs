@@ -27,7 +27,7 @@ public class PlayerCombatState : PlayerStateBase
 public class CombatStrangleState : PlayerCombatState
 {
     float strangleProgression = 0;
-    public const float strangleDuration = 10;
+    public const float strangleDuration = 1;
 
     PlayerActionProgressionVisualizerUI uiElement;
 
