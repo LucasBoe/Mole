@@ -22,6 +22,7 @@ public class PlayerItemCollector : MonoBehaviour
         CollectablePlayerItem c = collision.GetComponent<CollectablePlayerItem>();
         if (c != null)
         {
+            //TODO: Move this to input action register look at PlayerAboveInputActionProvider
             current = new InputAction() { Text = "Take " + c.Item.name, Target = transform, Stage= InputActionStage.WorldObject, ActionCallback = TryCollect };
             PlayerInputActionRegister.Instance.RegisterInputAction(current);
             playerItem = c;

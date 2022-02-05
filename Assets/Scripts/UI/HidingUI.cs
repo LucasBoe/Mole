@@ -10,6 +10,6 @@ public class HidingUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        image.fillAmount = HidingHandler.Instance.PlayerHiddenValue;
+        image.fillAmount = PlayerHidingHandler.Instance.PlayerHiddenValue;
     }
 }

@@ -17,6 +17,7 @@ public class NoiseHandler : SingletonBehaviour<NoiseHandler>
         OnNoise?.Invoke(position, volume);
     }
 
+    //TODO: Move to Noise visualizer
     private void SetNoiseParticleSize(ParticleSystem particleSystem, float size)
     {
         ParticleSystemRenderer noiseRenderer = particleSystem.GetComponent<ParticleSystemRenderer>();

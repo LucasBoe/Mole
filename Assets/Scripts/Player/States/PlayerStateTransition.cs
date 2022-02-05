@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using PlayerCollisionCheckType;
 
+//TODO: Rebuild Transition System to be more reliable while flexible
 public class PlayerStateTransition : PlayerStateObject
 {
     PlayerState currentState;
     PlayerState targetState;
     CheckType toCheckFor;
     ControlType inputNeeded;
-
 
     public PlayerStateTransition(PlayerContext playerContext, PlayerState toTransitionTo, CheckType toCheckFor, ControlType inputNeeded, PlayerState needsState = PlayerState.None) : base(playerContext)
     {

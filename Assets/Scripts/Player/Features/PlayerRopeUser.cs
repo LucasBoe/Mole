@@ -65,11 +65,6 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
         ConnectToRope(rope, rope.IsRigidbodyStart(playerRigidbody2D));
     }
 
-    public void DisconnectFromRope()
-    {
-        currentElement.FixateDistance(true);
-    }
-
     private void Update()
     {
         if (!IsActive)

@@ -13,24 +13,14 @@ public enum Layers
 
 public class LayerHandler : SingletonBehaviour<LayerHandler>
 {
-    [SerializeField] GameObject indoor, outdoor;
     [SerializeField] LayerEnumGameobjectPair[] layerEnumGameobjectPair;
     public GameObject[] LayerGameObjects => layerEnumGameobjectPair.Select(p => p.GameObject).ToArray();
-
     public static LayerHandler EditorInstance => (Instance == null) ? FindInstance() : Instance;
 
     private static LayerHandler FindInstance()
     {
         Instance = FindObjectOfType<LayerHandler>();
         return Instance;
-    }
-
-    public bool Switch()
-    {
-        bool indoorActive = indoor.activeSelf;
-        indoor.SetActive(!indoorActive);
-        outdoor.SetActive(indoorActive);
-        return !indoorActive;
     }
 
     internal void SetLayer(Layers layerLeadsTo)
@@ -50,12 +40,6 @@ public class LayerHandler : SingletonBehaviour<LayerHandler>
                 pair.GameObject.SetActive(true);
             }
         }
-    }
-
-    internal void SetIndoorOutdoor(bool isIndoor)
-    {
-        indoor.SetActive(isIndoor);
-        outdoor.SetActive(!isIndoor);
     }
 }
 

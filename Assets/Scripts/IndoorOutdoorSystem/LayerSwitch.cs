@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//TODO: make this not tunnel exclusive
 public class LayerSwitch : PlayerAboveInteractable, IInputActionProvider
 {
     [SerializeField] SpriteRenderer spriteRenderer;

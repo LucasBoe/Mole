@@ -1184,7 +1184,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   temporaryUIElements:
   - {fileID: 5316349196055213934, guid: 7b0b2a4994ba2f848a2d1cce757ab61b, type: 3}
-  - {fileID: 4285534173770150547, guid: c36267b63f1181e4bb321152d2ddf1fc, type: 3}
 --- !u!1 &6135942087833603616
 GameObject:
   m_ObjectHideFlags: 0

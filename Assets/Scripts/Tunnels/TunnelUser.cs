@@ -26,11 +26,11 @@ public class TunnelUser : SingletonBehaviour<TunnelUser>
         IsInTunnel = inTunnel;
         defaultCollider.enabled = !inTunnel;
         inTunnelCollider.enabled = inTunnel;
-        foreach (SpriteRenderer spriteRenderer in playerSpriteRenderers)
-        {
-            spriteRenderer.sortingLayerName = inTunnel ? inTunnselLayer : defaultLayer;
-        }
 
+        foreach (SpriteRenderer spriteRenderer in playerSpriteRenderers)
+            spriteRenderer.sortingLayerName = inTunnel ? inTunnselLayer : defaultLayer;
+
+        //TODO: Remove this variable after entering and looking trough are different actions
         lastTunnelSwitch = Time.time;
 
         PlayerStateMachine.Instance.SetState(inTunnel ? PlayerState.Tunnel : PlayerState.Idle);

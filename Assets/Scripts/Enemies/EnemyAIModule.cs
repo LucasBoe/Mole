@@ -46,7 +46,6 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
 
     [SerializeField] NoiseListener noiseListener;
 
-
     private void Start()
     {
         statemachineModule = GetModule<EnemyStatemachineModule>();
@@ -58,7 +57,6 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
 
         moveModule.OnStartMovingToPosition += SetViewconeModeToForward;
         viewconeModule.OnPlayerEnter += OnPlayerEnteredViewcone;
-        //viewconeModule.OnPlayerExit += CheckOutLocation;
         noiseListener.OnNoise += CheckOutLocation;
         damageModule.OnOutOfHealth += Kill;
     }
@@ -92,10 +90,6 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
     public EnemyStateBase[] GetNextStates()
     {
         List<EnemyStateBase> newStates = new List<EnemyStateBase>();
-
-        //newStates.Add(new EnemyWaitState(1));
-        //
-        //return newStates.ToArray();
 
         bool canSeeTarget = viewconeModule.CanSeeTarget;
 

@@ -115,7 +115,7 @@ public class EnemyViewconeModule : EnemyModule<EnemyViewconeModule>
                 break;
         }
 
-        //bool canSeeTargetBefore = canSeeTarget;
+        //TODO: Capsulate code sections and look for refactor potential
         canSeeTarget = CheckLineOfSight();
 
         if (canSeeTarget && viewconeMode != ViewconeMode.FollowTransform)
@@ -224,10 +224,6 @@ public class EnemyViewconeModule : EnemyModule<EnemyViewconeModule>
         viewconeMode = ViewconeMode.Free;
     }
 
-    public void ResetCollider()
-    {
-        SetViewconeTriggerMode(TriggerMode.InnerCollider);
-    }
     private bool CheckLineOfSight(Transform customTarget = null)
     {
         if (customTarget == null && targetTransform == null)

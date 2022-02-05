@@ -118,6 +118,7 @@ public class PlayerStateTransitionChecks
     public PlayerStateTransition ExitTunnel;
     public PlayerStateTransitionChecks(PlayerContext context)
     {
+        //TODO: Change to type based dictionary
         Rope = new PlayerStateTransition(context, PlayerState.RopeClimb, CheckType.Rope, ControlType.Use);
         EnterTunnel = new PlayerStateTransition(context, PlayerState.Tunnel, CheckType.Tunnel, ControlType.Interact);
         ExitTunnel = new PlayerStateTransition(context, PlayerState.Idle, CheckType.Tunnel, ControlType.Interact, needsState: PlayerState.Tunnel);

@@ -33,6 +33,7 @@ public class CollisionCheck
         colliders = Physics2D.OverlapBoxAll((Vector2)player.position + Pos, Size, 0, LayerMask);
     }
 
+    //TODO: Remove and replace with T method below
     public IHangable[] GetHangables()
     {
         List<IHangable> hangables = new List<IHangable>();
@@ -46,6 +47,7 @@ public class CollisionCheck
         return hangables.ToArray();
     }
 
+    //TODO: Remove and replace with T method below
     public IFloor[] GetFloors()
     {
         List<IFloor> floors = new List<IFloor>();

@@ -9,12 +9,12 @@ public class GameSceneConstructor : MonoBehaviour
     private void Awake()
     {
         //Spawn instances
-        Transform holder = new GameObject("==Instance-Holder==").transform;
-        holder.SetAsFirstSibling();
+        Transform marker = new GameObject("==Instances==").transform;
         foreach (GameObject gameObject in ToInstatiate)
         {
-            Instantiate(gameObject, holder);
+            Instantiate(gameObject);
         }
+        marker.SetAsFirstSibling();
 
         //Spawn player
         Transform spawnPoint = GameObject.Find("SpawnPoint").transform;

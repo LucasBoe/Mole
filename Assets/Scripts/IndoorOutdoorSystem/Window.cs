@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//TODO: Replace with generalized system that allow for looking and entering separatly
 public class Window : PlayerAboveInteractable
 {
     [SerializeField] Layers targetLayer;

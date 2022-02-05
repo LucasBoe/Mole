@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+//TODO: Generalize this to not need a separate layer but share it with other action providers
 public class Hideable : PlayerAboveInputActionProvider
 {
     [SerializeField] SpriteRenderer spriteRenderer;

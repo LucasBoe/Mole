@@ -15,7 +15,6 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Material lineRendererMat;
     PlayerItem selectedItem;
-    ItemUserState userState;
     LineRenderer aimLine;
 
     public int UpdatePrio => 100;
@@ -73,11 +72,8 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
         if (selectedItem == item)
             return;
 
-        if (selectedItem != null)
-        {
-            if (drop && selectedItem.Prefab != null)
-                Instantiate(selectedItem.Prefab, transform.position, Quaternion.identity);
-        }
+        if (selectedItem != null && drop && selectedItem.Prefab != null)
+            Instantiate(selectedItem.Prefab, transform.position, Quaternion.identity);
 
         spriteRenderer.sprite = (item != null) ? item.Sprite : null;
         transform.rotation = Quaternion.identity;

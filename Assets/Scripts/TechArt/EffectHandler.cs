@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//TODO: Rework Effect Pipeline to be scriptableObjectBased
 public class EffectHandler : SingletonBehaviour<EffectHandler>
 {
     public ParticleSystem waterSplashPrefab;
@@ -35,7 +36,8 @@ public class EffectHandler : SingletonBehaviour<EffectHandler>
                     ParticleSystem = instance,
                     GameObject = instance.gameObject
                 };
-            } else
+            }
+            else
             {
                 result = new EffectSpawnResult()
                 {
@@ -63,15 +65,9 @@ public class Effect
 {
     public float Duration = 0f;
 
-    public virtual void Play()
-    {
+    public virtual void Play() { }
 
-    }
-
-    public virtual void Play(ParticleSystem particleSystem)
-    {
-
-    }
+    public virtual void Play(ParticleSystem particleSystem) { }
 }
 
 public class WaterSplashEffect : Effect
@@ -91,18 +87,18 @@ public class WaterSplashEffect : Effect
         main.startSpeed = dir.magnitude;
     }
 }
-    public enum EffectSpawnType
-    {
-        ParticleSystem,
-        GameObject
-    }
+public enum EffectSpawnType
+{
+    ParticleSystem,
+    GameObject
+}
 
 public class CustomEffect : Effect
 {
     public EffectSpawnType CustomSpawnType;
     public GameObject GOPrefab;
     public ParticleSystem PSPrefab;
-    public CustomEffect (ParticleSystem prefab, float duration = 10f)
+    public CustomEffect(ParticleSystem prefab, float duration = 10f)
     {
         CustomSpawnType = EffectSpawnType.ParticleSystem;
         PSPrefab = prefab;

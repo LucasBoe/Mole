@@ -28,13 +28,7 @@ public class PlayerCoatBehaviour : MonoBehaviour
                 if (distanceToBefore > MaxDistanceToKeep)
                     element.MovePosition(Vector2.MoveTowards(element.position, before, Mathf.Max(0, distanceToBefore - MaxDistanceToKeep)));
             }
-
             lineRenderer.SetPosition(i, element.position);
         }
-
-    }
-
-    private void FixedUpdate()
-    {
     }
 }

@@ -19,7 +19,6 @@ public class PlayerSpriteDamageVisualizer : MonoBehaviour
     {
         StopAllCoroutines();
         StartCoroutine(AnimateDamageOverlay());
-
     }
 
     IEnumerator AnimateDamageOverlay()

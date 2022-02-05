@@ -59,12 +59,6 @@ public class EnemyStatemachineModule : EnemyModule<EnemyStatemachineModule>
         list.RemoveFirst();
         return toReturn;
     }
-
-    public void OverrideState(EnemyStateBase state)
-    {
-        list.AddFirst(state);
-        StopCurrent();
-    }
     public void StopCurrent()
     {
         if (currentState != null)

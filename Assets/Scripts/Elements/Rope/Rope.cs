@@ -92,7 +92,7 @@ public class Rope
             One.Rigidbody2DAttachedTo.AddForce(Vector2.up);
             Two.Rigidbody2DAttachedTo.AddForce(Vector2.up);
         }
-        //TODO: Rewrite this, had to make mode public and doing this in update is rediculous;
+        //TODO: Rewrite this. Had to make mode public and doing this in update is rediculous;
         else if (PlayerRopeUser.Instance.Mode == PlayerRopeUser.RopeUserMode.Grap)
         {
             //override length in case the player is pulling

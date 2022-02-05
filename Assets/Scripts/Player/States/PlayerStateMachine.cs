@@ -29,9 +29,7 @@ public class PlayerStateMachine : SingletonBehaviour<PlayerStateMachine>, IPlaye
     public PlayerState CurrentState;
 
     public System.Action<PlayerState> OnStateChange;
-
     public System.Action<PlayerState, PlayerState> OnStateChangePrevious;
-
     public Dictionary<PlayerState, PlayerStateBase> stateDictionary = new Dictionary<PlayerState, PlayerStateBase>();
 
     public int UpdatePrio => 50;
@@ -74,7 +72,9 @@ public class PlayerStateMachine : SingletonBehaviour<PlayerStateMachine>, IPlaye
 
         string from = CurrentState.ToString();
         string to = newState.ToString();
+
         Debug.Log($"Change state from: ({from}) to ({newState})");
+
         OnStateChangePrevious?.Invoke(CurrentState, newState);
         OnStateChange?.Invoke(newState);
 
@@ -100,18 +100,5 @@ public class PlayerStateMachine : SingletonBehaviour<PlayerStateMachine>, IPlaye
     {
         if (newState != PlayerState.None)
             stateDictionary[newState].Exit();
-    }
-
-    private void OnGUI()
-    {
-        //foreach (KeyValuePair<CheckType, PlayerCollisionCheck> pcc in context.CollisionChecks)
-        //{
-        //    Vector3 offsetFromSize = new Vector3(0.1f + ((Vector3)(pcc.Value.Size / 2f)).x, ((Vector3)(pcc.Value.Size / 2f)).y);
-        //    Vector2 screenPos = Camera.main.WorldToScreenPoint(transform.position + (Vector3)pcc.Value.Pos + offsetFromSize);
-        //    Rect rect = new Rect(screenPos.x, Screen.height - screenPos.y, 150, 50);
-        //    GUI.Label(rect, pcc.Key.ToString() + " (" + pcc.Value.LayerMask.ToString() + ")");
-        //}
-
-        GUILayout.Box(CurrentState.ToString());
     }
 }

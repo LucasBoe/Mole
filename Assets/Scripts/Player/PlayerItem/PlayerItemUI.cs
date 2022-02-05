@@ -27,8 +27,6 @@ public class PlayerItemUI : UIBehaviour
         UIHandler.Instance.Show(this);
         PlayerItemHolder.OnAddNewItem += OnAddItem;
         PlayerItemHolder.OnRemoveItem += OnRemoveItem;
-        //PlayerItemUser.OnStartUsingItem += ShowSelectionIndicator;
-        //PlayerItemUser.OnEndUsingItem += HideSelectionIndicator;
 
         ac_useItem = new InputAction() { Stage = InputActionStage.ModeSpecific, Target = transform, Input = ControlType.Use, Text = "Use Item", ActionCallback = TryUseItem };
         ac_deselectItem = new InputAction() { Stage = InputActionStage.ModeSpecific, Target = transform, Input = ControlType.Back, Text = "Hide Item", ActionCallback = DeselectItem };

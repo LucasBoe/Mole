@@ -17,7 +17,8 @@ public class RopeEnd : PlayerAboveInteractable
 
     protected override void OnPlayerEnter()
     {
-        if (ShouldShowPrompt())
+        //TODO: Replace with PlayerAboveInputActionProvider
+        if (ShouldShowPrompt()) 
             PlayerInputActionRegister.Instance.RegisterInputAction(new InputAction() { Input = ControlType.Interact, Stage = InputActionStage.WorldObject, Target = transform, ActionCallback = PlayerTryInteract });
     }
 

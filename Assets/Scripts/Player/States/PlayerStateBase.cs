@@ -6,7 +6,6 @@ using PlayerCollisionCheckType;
 
 public class PlayerStateObject
 {
-
     protected PlayerContext context;
     protected bool IsColliding(CheckType type)
     {
@@ -62,11 +61,11 @@ public class PlayerStateBase : PlayerStateObject
 
     public virtual void Exit()
     {
+        //TODO: remove manually checking for transitions
         transitionCheck.Rope.TryExit();
     }
 
     public virtual void Update() { }
-
     protected void SetCollisionActive(bool active)
     {
         context.PlayerController.SetCollisionActive(active);
@@ -75,13 +74,11 @@ public class PlayerStateBase : PlayerStateObject
     {
         context.Rigidbody.gravityScale = active ? 2 : 0;
     }
-
     protected void JumpOff(Vector2 input)
     {
         context.Rigidbody.velocity = input * context.Values.JumpOffVelocity;
         SetState(PlayerState.Fall);
     }
-
     protected void ApplyGravity(float time)
     {
         context.Rigidbody.AddForce(new Vector2(0, -Time.deltaTime * 1000f * context.Values.AdditionalGravityForce.Evaluate(Mathf.Clamp(time, 0f, 4f))));

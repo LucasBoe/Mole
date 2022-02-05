@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//TODO: Connect to rope system
 public class Clothline : MonoBehaviour
 {
     [SerializeField] HingeJoint2D start, end;

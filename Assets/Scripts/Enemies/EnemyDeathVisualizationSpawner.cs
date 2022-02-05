@@ -17,8 +17,6 @@ public class EnemyDeathVisualizationSpawner : MonoBehaviour
     {
         Vector3 scale = toGetFlipFrom.localScale;
 
-        Debug.LogWarning("scale: " + scale);
-
         foreach (GameObject gameObject in toSpawn)
         {
             GameObject instance = Instantiate(gameObject, (Vector2)transform.position + offset, Quaternion.identity);

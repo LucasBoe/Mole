@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-
-
+//TODO: Remake this into player collision handler
 public class PlayerController : MonoBehaviour
 {
     public static System.Action<Transform> OnPlayerSpawned;

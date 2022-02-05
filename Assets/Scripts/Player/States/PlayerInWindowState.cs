@@ -11,5 +11,4 @@ public class InWindowState : PlayerStateBase
         if (context.Input.Axis.x != 0)
             SetState(PlayerState.Walk);
     }
-
 }

@@ -31,7 +31,6 @@ public class EnemyShootState : EnemyStateBase
     {
         this.target = target;
     }
-
     public override bool TryEnter(EnemyBase enemyBase)
     {
         viewconeModule = enemyBase.GetModule<EnemyViewconeModule>();
@@ -44,6 +43,7 @@ public class EnemyShootState : EnemyStateBase
         return false;
     }
 
+    //TODO: Enemy should look in direction he is shooting
     public override void Update(EnemyBase enemyBase)
     {
         time += Time.deltaTime;
@@ -58,7 +58,6 @@ public class EnemyShootState : EnemyStateBase
             shootModule.Shoot(target.position, ShootingVelocity);
         }
     }
-
     public override bool TryExit(EnemyBase enemyBase)
     {
         return !viewconeModule.CanSeeTarget;

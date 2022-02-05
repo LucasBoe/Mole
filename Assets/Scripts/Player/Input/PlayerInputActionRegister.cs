@@ -13,7 +13,6 @@ public enum InputActionStage
 
 public class PlayerInputActionRegister : SingletonBehaviour<PlayerInputActionRegister>, IPlayerComponent
 {
-    [SerializeField] List<InputAction> actions = new List<InputAction>();
     [SerializeField] Dictionary<ControlType, List<InputAction>> register = new Dictionary<ControlType, List<InputAction>>();
     public static Dictionary<ControlType, List<InputAction>> Register => Instance.register;
     public static System.Action<ControlType> OnInputActionChangedForType;

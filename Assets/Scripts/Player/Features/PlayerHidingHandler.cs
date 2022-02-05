@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HidingHandler : SingletonBehaviour<HidingHandler>
+public class PlayerHidingHandler : SingletonBehaviour<PlayerHidingHandler>
 {
     public float PlayerHiddenValue => hiddenByState ? 0 : playerHiddenValue;
     private float playerHiddenValue;
