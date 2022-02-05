@@ -5,8 +5,12 @@ using System.Linq;
 using UnityEngine;
 
 //TODO: Generalize this to not need a separate layer but share it with other action providers
-public class Hideable : PlayerAboveInputActionProvider
+public class Hideable : PlayerAboveInputActionProvider, IStaticTargetProvider
 {
+    public InputAction GetCustomExitAction() { return null; }
+    public Transform GetTransform() { return transform; }
+    public bool ProvidesCustomActionCallback() { return false; }
+
     [SerializeField] SpriteRenderer spriteRenderer;
     public SpriteRenderer SpriteRenderer => spriteRenderer;
 
@@ -15,13 +19,20 @@ public class Hideable : PlayerAboveInputActionProvider
         return hideables.OrderBy(h => Vector2.Distance(h.transform.position, playerPos)).First();
     }
 
-    protected override InputAction CreateInputAction()
+    protected override InputAction[] CreateInputActions()
     {
-        return new InputAction() { Input = ControlType.Use, Target = transform, Stage= InputActionStage.WorldObject, Text = "Hide", ActionCallback = Hide };
+        return new InputAction[] { new InputAction()
+        {
+            Input = ControlType.Use,
+            Target = transform,
+            Stage= InputActionStage.WorldObject,
+            Text = "Hide",
+            ActionCallback = Hide
+        }};
     }
 
     private void Hide()
     {
-        PlayerStateMachine.Instance.SetState(PlayerState.Hiding);
+        PlayerStateMachine.Instance.SetState(new HidingState(this));
     }
 }

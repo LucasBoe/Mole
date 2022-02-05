@@ -5,11 +5,12 @@ using System.Linq;
 using UnityEngine;
 
 //TODO: Remake this into player collision handler
-public class PlayerController : MonoBehaviour
+public class PlayerController : SingletonBehaviour<PlayerController>
 {
     public static System.Action<Transform> OnPlayerSpawned;
 
     [SerializeField] PlayerContext context;
+    public static PlayerContext Context => Instance.context;
 
     bool jumpBlocker = false;
     IPlayerComponent[] playerComponents;
@@ -18,8 +19,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CheckType[] toDebug;
     [SerializeField] Collider2D[] colliders;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         playerComponents = GetComponentsInChildren<IPlayerComponent>();
         playerComponents = playerComponents.OrderBy(c => -c.UpdatePrio).ToArray();
 
@@ -62,8 +65,8 @@ public class PlayerController : MonoBehaviour
         //rope
         context.CollisionChecks.Add(CheckType.Rope, new CollisionCheck(0f, 0f, 0.875f, 1.5f, LayerMask.GetMask("Rope"), Color.blue));
 
-        //hideable
-        context.CollisionChecks.Add(CheckType.Hideable, new CollisionCheck(0f, -0.5f, 2f, 0.5f, LayerMask.GetMask("Hideable"), Color.blue));
+        //interactable
+        context.CollisionChecks.Add(CheckType.Interactable, new CollisionCheck(0f, -0.5f, 2f, 0.5f, LayerMask.GetMask("Interactable"), Color.blue));
 
         //tunnel
         context.CollisionChecks.Add(CheckType.Tunnel, new CollisionCheck(0f, 0f, 0.875f, 1.5f, LayerMask.GetMask("TunnelEntrance"), Color.green));
@@ -149,7 +152,7 @@ namespace PlayerCollisionCheckType
         EnemyBelow,
         EnemySideways,
         Rope,
-        Hideable,
+        Interactable,
         Tunnel,
     }
 }

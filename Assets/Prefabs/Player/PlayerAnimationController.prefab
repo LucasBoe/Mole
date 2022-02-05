@@ -307,47 +307,47 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stateToAnimationHolder:
     moveStateAnimationPairs:
-    - MoveState: 3
+    - MoveState: HangingState
       AnimationClip: {fileID: 7400000, guid: 2cc595aca30d5fa4383844d45a9a3542, type: 2}
       showCoat: 1
-    - MoveState: 4
+    - MoveState: PullUpState
       AnimationClip: {fileID: 7400000, guid: 390b6048933a94041a100a52939eb2a8, type: 2}
       showCoat: 1
-    - MoveState: 5
+    - MoveState: DropDownState
       AnimationClip: {fileID: 7400000, guid: 4ac335baa950df04abb496bce6e9f79e, type: 2}
       showCoat: 1
-    - MoveState: 6
+    - MoveState: JumpToHangingState
       AnimationClip: {fileID: 7400000, guid: 4ac335baa950df04abb496bce6e9f79e, type: 2}
       showCoat: 1
-    - MoveState: 7
+    - MoveState: IdleState
       AnimationClip: {fileID: 7400000, guid: 74989ddfd9cf47940bcb2e90fd52d01d, type: 2}
       showCoat: 1
-    - MoveState: 9
+    - MoveState: JumpState
       AnimationClip: {fileID: 7400000, guid: 3601cfa8b7b5afe40b4bdd04a21aa6b6, type: 2}
       showCoat: 1
-    - MoveState: 10
+    - MoveState: FallState
       AnimationClip: {fileID: 7400000, guid: a8dc118b09b031945ae01062517894f1, type: 2}
       showCoat: 1
-    - MoveState: 11
+    - MoveState: PushState
       AnimationClip: {fileID: 7400000, guid: b0a89260f3d45ab43b90d7ba686d537f, type: 2}
       showCoat: 1
-    - MoveState: 13
+    - MoveState: CombatStrangleState
       AnimationClip: {fileID: 7400000, guid: b0a89260f3d45ab43b90d7ba686d537f, type: 2}
       showCoat: 1
-    - MoveState: 16
+    - MoveState: InWindowState
       AnimationClip: {fileID: 7400000, guid: 436d73cd3eab16341a0df1f898956683, type: 2}
       showCoat: 0
     climbStateParamAnimationPairs:
-    - ClimbState: 1
+    - ClimbState: WallState
       ParamAnimation: {fileID: 11400000, guid: 3afece717e8f78a45848be079c1a3a43, type: 2}
       showCoat: 1
-    - ClimbState: 7
+    - ClimbState: IdleState
       ParamAnimation: {fileID: 11400000, guid: c12ad59d003d60041be1ee949107159c, type: 2}
       showCoat: 1
-    - ClimbState: 12
+    - ClimbState: WallStretchState
       ParamAnimation: {fileID: 11400000, guid: 7df0d3a36875589468a9cb466a16cfd5, type: 2}
       showCoat: 1
-    - ClimbState: 8
+    - ClimbState: WalkState
       ParamAnimation: {fileID: 11400000, guid: bbb05537a851a8744a9b2af5a0bd73a3, type: 2}
       showCoat: 1
   coatGameObject: {fileID: 9031940380163258740}

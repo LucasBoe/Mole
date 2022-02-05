@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ClimbStateBase : PlayerStateBase
 {
-    public ClimbStateBase(PlayerContext playerContext) : base(playerContext) { }
+    public ClimbStateBase() : base() { }
 
     public override void Enter()
     {
@@ -16,7 +16,7 @@ public class ClimbStateBase : PlayerStateBase
     {
         //player tries to walk on the ground transition to Idle
         if (IsColliding(CheckType.Ground) && context.TriesMoveLeftRight && !context.TriesMoveUpDown)
-            SetState(PlayerState.Walk);
+            SetState(new WalkState());
 
         //jump
         if (context.Input.Jump)
@@ -32,15 +32,16 @@ public class ClimbStateBase : PlayerStateBase
 public class RopeClimbState : ClimbStateBase
 {
     RopeElement climbingOn;
-    public RopeClimbState(PlayerContext playerContext) : base(playerContext) { }
+    public RopeClimbState(RopeElement ropeElement) : base()
+    {
+        climbingOn = ropeElement;
+    }
 
     public override void Enter()
     {
         base.Enter();
         if (PlayerRopeUser.Instance.IsActive)
             PlayerRopeUser.Instance.DropCurrentRope();
-
-        climbingOn = GetCheck(CheckType.Rope).Get<RopeElement>()[0];
     }
 
     public override void Update()
@@ -48,7 +49,7 @@ public class RopeClimbState : ClimbStateBase
         base.Update();
 
         if (climbingOn == null)
-            SetState(PlayerState.Fall);
+            SetState(new FallState());
 
         Vector2 closestRopePostion = climbingOn.GetClosestPoint(context.PlayerPos);
         context.Rigidbody.MovePosition(closestRopePostion + context.Input.Axis * Time.deltaTime * context.Values.WallClimbYvelocity);
@@ -65,7 +66,7 @@ public class PullUpState : ClimbStateBase
 
     Vector2 startPos, targetPos;
 
-    public PullUpState(PlayerContext playerContext) : base(playerContext) { }
+    public PullUpState() : base() { }
 
     public override void Enter()
     {
@@ -100,7 +101,7 @@ public class PullUpState : ClimbStateBase
             context.Rigidbody.MovePosition(Vector2.Lerp(startPos, targetPos, curve.Evaluate(t / context.Values.PullUpDuration)));
         }
         else
-            SetState(PlayerState.Idle);
+            SetState(new IdleState());
     }
     public override void Exit()
     {
@@ -120,14 +121,16 @@ public class DropDownState : ClimbStateBase
         Floor,
     }
 
-    public DropDownState(PlayerContext playerContext) : base(playerContext) { }
+    public DropDownState(IFloor[] floors) : base()
+    {
+        this.floors = floors;
+    }
 
     public override void Enter()
     {
         base.Enter();
 
         //Is the player dropping down from a hangable or through a oneDir. floor?
-        floors = GetCheck(CheckType.DropDownable).GetFloors();
         mode = floors.Length > 0 ? DropDownMode.Floor : DropDownMode.Hangable;
 
         if (mode == DropDownMode.Hangable)
@@ -139,7 +142,7 @@ public class DropDownState : ClimbStateBase
             foreach (IFloor floor in floors)
                 floor.DeactivateUntilPlayerIsAboveAgain(context.PlayerController);
 
-            SetState(PlayerState.Fall);
+            SetState(new FallState());
         }
     }
     public override void Update()
@@ -147,7 +150,7 @@ public class DropDownState : ClimbStateBase
         context.Rigidbody.MovePosition(context.PlayerPos + Vector2.down * Time.deltaTime * context.Values.DropDownSpeed);
 
         if (IsColliding(CheckType.Hangable))
-            SetState(PlayerState.Hanging);
+            SetState(new HangingState());
     }
     public override void Exit()
     {
@@ -161,7 +164,7 @@ public class WallState : ClimbStateBase
     public float DistanceFromTop;
     public bool IsLeft => IsColliding(CheckType.WallLeft);
 
-    public WallState(PlayerContext playerContext) : base(playerContext) { }
+    public WallState() : base() { }
 
     public override void Update()
     {
@@ -188,7 +191,7 @@ public class WallState : ClimbStateBase
             RaycastHit2D hit = Physics2D.Raycast(context.PlayerPos, new Vector2(IsLeft ? -1 : 1, 0), 2, LayerMask.GetMask("Default"));
             if (hit == true)
             {
-                SetState(PlayerState.WallStretch);
+                SetState(new WallStretchState());
             }
         }
 
@@ -198,11 +201,11 @@ public class WallState : ClimbStateBase
         //transition to hanging
         if (IsColliding(CheckType.Hangable)
             && ((!IsColliding(CheckType.WallLeft) && context.Input.Axis.x < 0) || (!IsColliding(CheckType.WallRight) && context.Input.Axis.x > 0)))
-            SetState(PlayerState.Hanging);
+            SetState(new HangingState());
 
         //player loses connection to wall
         if (!context.IsCollidingToAnyWall)
-            SetState(PlayerState.Fall);
+            SetState(new FallState());
     }
 }
 
@@ -212,7 +215,7 @@ public class WallStretchState : ClimbStateBase
 
     public float Distance = 0;
 
-    public WallStretchState(PlayerContext playerContext) : base(playerContext) { }
+    public WallStretchState() : base() { }
 
     public override void Enter()
     {
@@ -250,13 +253,13 @@ public class WallStretchState : ClimbStateBase
         }
 
         if (moveUpDownThenLeftRight && context.IsCollidingToAnyWall && Distance < 0.65)
-            SetState(PlayerState.Wall);
+            SetState(new WallState());
     }
 }
 
 public class HangingBaseState : ClimbStateBase
 {
-    public HangingBaseState(PlayerContext playerContext) : base(playerContext) { }
+    public HangingBaseState() : base() { }
     protected Vector2 GetClosestHangablePosition(Vector2 position, Vector2 input, CheckType[] checkTypes)
     {
         List<IHangable> hangables = new List<IHangable>();
@@ -296,7 +299,7 @@ public class HangingBaseState : ClimbStateBase
 
 public class HangingState : HangingBaseState
 {
-    public HangingState(PlayerContext playerContext) : base(playerContext) { }
+    public HangingState() : base() { }
 
     public override void Update()
     {
@@ -304,12 +307,12 @@ public class HangingState : HangingBaseState
 
         //transition to wall climb
         if (context.IsCollidingToAnyWall && context.TriesMoveUpDown)
-            SetState(PlayerState.Wall);
+            SetState(new WallState());
 
         //pulling up
         if (!IsColliding(CheckType.HangableAboveAir) && context.Input.Axis.y > 0.5f && !context.TriesMoveLeftRight)
         {
-            SetState(PlayerState.PullUp);
+            SetState(new PullUpState());
         }
         else
         {
@@ -326,7 +329,7 @@ public class HangingState : HangingBaseState
 public class JumpToHangingState : HangingBaseState
 {
     Vector2 target;
-    public JumpToHangingState(PlayerContext playerContext) : base(playerContext) { }
+    public JumpToHangingState() : base() { }
 
     public override void Enter()
     {
@@ -346,7 +349,7 @@ public class JumpToHangingState : HangingBaseState
         context.Rigidbody.MovePosition(pos);
 
         if (IsColliding(CheckType.Hangable))
-            SetState(PlayerState.Hanging);
+            SetState(new HangingState());
     }
 
     public override void Exit()

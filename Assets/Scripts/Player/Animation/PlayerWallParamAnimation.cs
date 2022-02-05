@@ -8,21 +8,23 @@ public class PlayerWallParamAnimation : ParameterBasedAnimation<WallState>
     [SerializeField] Sprite[] climbing;
     [SerializeField] FloatSpritePair[] ledgeClimbing;
 
+    WallState state;
+
     float animSpeed;
 
     public override void Init(PlayerStateMachine playerStateMachine)
     {
-        StateType = PlayerState.Wall;
         base.Init(playerStateMachine);
     }
 
     public override Sprite Update()
     {
-        if (State.DistanceFromTop > 0)
+        state = PlayerStateMachine.Instance.CurrentState as WallState;
+        if (state.DistanceFromTop > 0)
         {
             foreach (FloatSpritePair pair in ledgeClimbing)
             {
-                if (State.DistanceFromTop < pair.Value)
+                if (state.DistanceFromTop < pair.Value)
                     return pair.Sprite;
             }
 
@@ -30,7 +32,7 @@ public class PlayerWallParamAnimation : ParameterBasedAnimation<WallState>
         }
         else
         {
-            if (State.IsMoving)
+            if (state.IsMoving)
                 return climbing[(int)(Mathf.Floor(Time.time * (climbing.Length + 0.5f)) % climbing.Length)];
 
             return baseSprite;

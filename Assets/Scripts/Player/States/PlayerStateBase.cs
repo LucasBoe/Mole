@@ -27,26 +27,30 @@ public class PlayerStateObject
         return context.CollisionChecks[type];
     }
 
-    protected void SetState(PlayerState state)
+    protected void SetState(PlayerStateBase state)
     {
         PlayerStateMachine.Instance.SetState(state);
     }
 
-    protected bool StateIs(PlayerState state)
+    protected bool StateIs(PlayerStateBase state)
     {
-        return PlayerStateMachine.Instance.CurrentState == state;
+        return StateIs(state.GetType());
     }
 
-    public PlayerStateObject(PlayerContext playerContext)
+    protected bool StateIs(System.Type stateType)
     {
-        context = playerContext;
+        return PlayerStateMachine.Instance.CurrentState.GetType() == stateType;
+    }
+
+    public PlayerStateObject()
+    {
+        context = PlayerController.Context;
     }
 }
 
 //Player State Base Class with common and abstract functions 
 public class PlayerStateBase : PlayerStateObject
 {
-    public PlayerStateBase(PlayerContext playerContext) : base(playerContext) { }
 
     protected PlayerStateTransitionChecks transitionCheck => context.StateTransitonChecks;
 
@@ -62,7 +66,7 @@ public class PlayerStateBase : PlayerStateObject
     public virtual void Exit()
     {
         //TODO: remove manually checking for transitions
-        transitionCheck.Rope.TryExit();
+        //transitionCheck.Rope.TryExit();
     }
 
     public virtual void Update() { }
@@ -77,7 +81,7 @@ public class PlayerStateBase : PlayerStateObject
     protected void JumpOff(Vector2 input)
     {
         context.Rigidbody.velocity = input * context.Values.JumpOffVelocity;
-        SetState(PlayerState.Fall);
+        SetState(new FallState());
     }
     protected void ApplyGravity(float time)
     {

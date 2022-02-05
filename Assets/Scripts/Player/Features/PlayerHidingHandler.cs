@@ -16,13 +16,13 @@ public class PlayerHidingHandler : SingletonBehaviour<PlayerHidingHandler>
         PlayerStateMachine.Instance.OnStateChange += OnPlayerEnterState;
     }
 
-    private void OnPlayerEnterState(PlayerState state)
+    private void OnPlayerEnterState(PlayerStateBase state)
     {
-        switch (state)
+        switch (state.ToString())
         {
-            case PlayerState.InWindow:
-            case PlayerState.Tunnel:
-            case PlayerState.Hiding:
+            case "InWindowState":
+            case "TunnelState":
+            case "HidingState":
                 hiddenByState = true;
                 break;
 

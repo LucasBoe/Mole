@@ -15,14 +15,13 @@ public class MoveBaseState : PlayerStateBase
             return (wallToLeft && context.Input.Axis.x < 0) || (wallToRight && context.Input.Axis.x > 0);
         }
     }
-    public MoveBaseState(PlayerContext playerContext) : base(playerContext) { }
 
     public override void Update()
     {
         base.Update();
 
         if (context.IsCollidingToAnyWall && context.TriesMoveUpDown && !context.TriesMoveLeftRight)
-            SetState(PlayerState.Wall);
+            SetState(new WallState());
     }
 }
 
@@ -32,8 +31,6 @@ public class IdleState : MoveBaseState
     public bool IsCrouching;
     public bool IsAtWall;
     float dropDownTimer = 0f;
-
-    public IdleState(PlayerContext playerContext) : base(playerContext) { }
 
     public override void Enter()
     {
@@ -48,11 +45,11 @@ public class IdleState : MoveBaseState
         IsCrouching = !context.Input.Sprinting;
 
         if (context.Input.Axis.x != 0 && !triesMovingIntoWall)
-            SetState(PlayerState.Walk);
+            SetState(new WalkState());
 
         //jumping
         if (context.Input.Jump)
-            SetState(PlayerState.Jump);
+            SetState(new WallState());
 
         //dropping down
         if (IsColliding(CheckType.DropDownable) && context.Input.Axis.y < -0.9f)
@@ -61,7 +58,8 @@ public class IdleState : MoveBaseState
             if (dropDownTimer > context.Values.KeyPressTimeToDropDown)
             {
                 dropDownTimer = 0f;
-                SetState(PlayerState.DropDown);
+                IFloor[] floors = GetCheck(CheckType.DropDownable).GetFloors();
+                SetState(new DropDownState(floors));
             }
         }
         else
@@ -74,7 +72,7 @@ public class WalkState : MoveBaseState
 {
     public bool IsSprinting;
 
-    public WalkState(PlayerContext playerContext) : base(playerContext) { }
+    public WalkState() : base() { }
     public override void Update()
     {
         base.Update();
@@ -85,34 +83,35 @@ public class WalkState : MoveBaseState
         context.Rigidbody.velocity = new Vector2(xInput * context.Values.XVelocity.GetValue(context.Input), context.Rigidbody.velocity.y);
 
         if (xInput == 0 || triesMovingIntoWall)
-            SetState(PlayerState.Idle);
+            SetState(new IdleState());
 
         if (!IsColliding(CheckType.Ground))
-            SetState(PlayerState.Fall);
+            SetState(new FallState());
 
         if (context.Input.Jump)
-            SetState(PlayerState.Jump);
+            SetState(new JumpState());
 
-        if (!StateIs(PlayerState.WalkPush) && ((xInput < 0 && IsColliding(CheckType.PushableLeft)) || (xInput > 0 && IsColliding(CheckType.PushableRight))))
-            SetState(PlayerState.WalkPush);
+        if (!StateIs(typeof(WalkPushState)) && ((xInput < 0 && IsColliding(CheckType.PushableLeft)) || (xInput > 0 && IsColliding(CheckType.PushableRight))))
+            SetState(new WalkPushState());
+
     }
 }
 
 public class WalkPushState : WalkState
 {
-    public WalkPushState(PlayerContext playerContext) : base(playerContext) { }
+    public WalkPushState() : base() { }
     public override void Update()
     {
         base.Update();
 
         if (!IsColliding(CheckType.PushableLeft) && !IsColliding(CheckType.PushableRight))
-            SetState(PlayerState.Walk);
+            SetState(new WalkState());
     }
 }
 
 public class JumpState : MoveBaseState
 {
-    public JumpState(PlayerContext playerContext) : base(playerContext) { }
+    public JumpState() : base() { }
 
     public override void Enter()
     {
@@ -132,10 +131,10 @@ public class JumpState : MoveBaseState
 
         //autograp to hangable
         if (IsColliding(CheckType.Hangable) && context.Input.Axis.y > 0.25f)
-            SetState(PlayerState.Hanging);
+            SetState(new HangingState());
 
         if (context.Rigidbody.velocity.y < 0)
-            SetState(PlayerState.Fall);
+            SetState(new FallState());
     }
 }
 public class FallState : MoveBaseState
@@ -144,7 +143,7 @@ public class FallState : MoveBaseState
     bool enemyIsBelow;
     float startFallTime;
     InputAction attackEnemyBelowAction;
-    public FallState(PlayerContext playerContext) : base(playerContext) { }
+    public FallState() : base() { }
 
     public override void Enter()
     {
@@ -161,7 +160,7 @@ public class FallState : MoveBaseState
                 if (targets != null && targets.Length > 0)
                 {
                     context.CombatTarget = targets[0];
-                    SetState(PlayerState.CombatStrangle);
+                    SetState(new CombatStrangleState(targets[0]));
                 }
             }
         };
@@ -173,7 +172,14 @@ public class FallState : MoveBaseState
 
         //combat
         if (UpdateAttackEnemyBelow())
-            SetState(PlayerState.CombatStrangle);
+        {
+            ICombatTarget[] targets = GetCheck(CheckType.EnemyBelow).Get<ICombatTarget>();
+            if (targets != null && targets.Length > 0)
+            {
+                context.CombatTarget = targets[0];
+                SetState(new CombatStrangleState(targets[0]));
+            }
+        }
 
         //gravity
         ApplyGravity(Time.time - startFallTime);
@@ -181,14 +187,14 @@ public class FallState : MoveBaseState
 
         //autograp to hangable
         if (IsColliding(CheckType.Hangable) && context.Input.Axis.y > 0.25f)
-            SetState(PlayerState.Hanging);
+            SetState(new HangingState());
 
         if ((IsColliding(CheckType.HangableJumpInLeft) && context.Input.Axis.x < 0.1f) || (IsColliding(CheckType.HangableJumpInRight) && context.Input.Axis.x > -0.1f))
-            SetState(PlayerState.JumpToHanging);
+            SetState(new JumpToHangingState());
 
         //autograp to wall
         if (triesMovingIntoWall)
-            SetState(PlayerState.Wall);
+            SetState(new WalkState());
 
         bool isCollidingEdgeHelperLeft = IsColliding(CheckType.EdgeHelperLeft);
         bool isCollidingEdgeHelperRight = IsColliding(CheckType.EdgeHelperRight);
@@ -219,7 +225,7 @@ public class FallState : MoveBaseState
 
 
         if (IsColliding(CheckType.Ground))
-            SetState(PlayerState.Idle);
+            SetState(new IdleState());
     }
 
     //TODO: Move this into transition logic

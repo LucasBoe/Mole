@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class InWindowState : PlayerStateBase
 {
-    public InWindowState(PlayerContext playerContext) : base(playerContext) { }
+    public InWindowState() : base() { }
 
     public override void Update()
     {
         if (context.Input.Axis.x != 0)
-            SetState(PlayerState.Walk);
+            SetState(new WalkState());
     }
 }

@@ -2283,8 +2283,8 @@ GameObject:
   - component: {fileID: 21190648}
   - component: {fileID: 21190647}
   - component: {fileID: 21190646}
-  m_Layer: 15
-  m_Name: LayerEntrance
+  m_Layer: 14
+  m_Name: LayerSwitch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39241,15 +39241,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac2ce3345ae40024cbe1cfea53f47c45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  indoor: {fileID: 671799403}
-  outdoor: {fileID: 1741348560}
   layerEnumGameobjectPair:
   - Layer: 0
     GameObject: {fileID: 671799403}
+    IsTunnel: 0
   - Layer: 1
     GameObject: {fileID: 1741348560}
+    IsTunnel: 0
   - Layer: 2
     GameObject: {fileID: 1522547012}
+    IsTunnel: 1
 --- !u!156049354 &747041234
 Grid:
   m_ObjectHideFlags: 0
@@ -41585,11 +41586,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1277542900069462900, guid: 5000b7a239c87c14883b16e2c7eb45ab, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 1277542900069462900, guid: 5000b7a239c87c14883b16e2c7eb45ab, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -7
       objectReference: {fileID: 0}
     - target: {fileID: 1277542900069462900, guid: 5000b7a239c87c14883b16e2c7eb45ab, type: 3}
       propertyPath: m_LocalPosition.z

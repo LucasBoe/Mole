@@ -18,13 +18,7 @@ public class ParameterBasedAnimationBase : ScriptableObject
 
 public class ParameterBasedAnimation<T> : ParameterBasedAnimationBase where T : PlayerStateBase
 {
-    protected PlayerState StateType;
-    protected T State;
 
-    public override void Init(PlayerStateMachine playerStateMachine)
-    {
-        State = playerStateMachine.stateDictionary[StateType] as T;
-    }
 }
 
 [System.Serializable]

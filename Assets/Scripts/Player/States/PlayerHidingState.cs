@@ -2,56 +2,128 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using PlayerCollisionCheckType;
+using System.Linq;
 
-public class HidingState : PlayerStateBase
+public interface IStaticTargetProvider
 {
-    Hideable hideable;
+    Transform GetTransform();
+    bool ProvidesCustomActionCallback();
+    InputAction GetCustomExitAction();
+}
+
+public interface ISpyableTargetProvider : IStaticTargetProvider
+{
+    Layers GetLayerToSpy();
+}
+
+public static class IStaticTargetProviderExtention
+{
+    public static IStaticTargetProvider GetClosest(this IStaticTargetProvider[] staticTargetProviders, Vector2 position)
+    {
+        Transform closest = staticTargetProviders.Select(p => p.GetTransform()).OrderBy(h => Vector2.Distance(h.transform.position, position)).First();
+        return staticTargetProviders.Where(p => p.GetTransform() == closest).First();
+    }
+}
+
+public class PlayerStaticState : PlayerStateBase
+{
+    protected IStaticTargetProvider target;
+    InputAction exitAction;
     Vector2 posBefore;
     float distance;
 
-    InputAction leaveAction;
-
-    public HidingState(PlayerContext playerContext) : base(playerContext) { }
+    public PlayerStaticState() : base() { }
 
     public override void Enter()
     {
         base.Enter();
 
-        hideable = Hideable.GetClosestFrom(GetCheck(CheckType.Hideable).Get<Hideable>(), context.PlayerPos);
-        posBefore = context.PlayerPos;
-        distance = Vector2.Distance(posBefore, hideable.transform.position);
+        if (target.GetTransform() != null)
+        {
+            posBefore = context.PlayerPos;
+            distance = Vector2.Distance(posBefore, target.GetTransform().position);
 
-        leaveAction = new InputAction() { ActionCallback = Unhide, Input = ControlType.Back, Target = hideable.transform, Text = "Unhide", Stage = InputActionStage.WorldObject };
-        PlayerInputActionRegister.Instance.RegisterInputAction(leaveAction);
+            exitAction = target.ProvidesCustomActionCallback() ?
+                target.GetCustomExitAction() :
+                new InputAction() { ActionCallback = DefaultExitCallback, Input = ControlType.Back, Target = target.GetTransform(), Text = "Exit", Stage = InputActionStage.WorldObject };
 
-        SetCollisionActive(false);
-        SetGravityActive(false);
+            PlayerInputActionRegister.Instance.RegisterInputAction(exitAction);
+
+            SetCollisionActive(false);
+            SetGravityActive(false);
+        }
+        else
+        {
+            SetState(new IdleState());
+        }
+    }
+
+    public override void Update()
+    {
+        Transform targetTransform = target.GetTransform();
+        if (targetTransform == null)
+            DefaultExitCallback();
+        else
+        {
+            Vector2 pos = Vector2.MoveTowards(context.PlayerPos, targetTransform.position, (distance * Time.deltaTime) / context.Values.SnapToHideablePositionDuration);
+            context.Rigidbody.MovePosition(pos);
+        }
     }
 
     public override void Exit()
     {
         base.Exit();
-
-        PlayerInputActionRegister.Instance.UnregisterInputAction(leaveAction);
-
+        PlayerInputActionRegister.Instance.UnregisterInputAction(exitAction);
         SetCollisionActive(true);
         SetGravityActive(true);
     }
 
-    public override void Update()
+    private void DefaultExitCallback()
     {
-        if (hideable == null)
-            Unhide();
-        else
-        {
-            Vector2 pos = Vector2.MoveTowards(context.PlayerPos, hideable.transform.position, (distance * Time.deltaTime) / context.Values.SnapToHideablePositionDuration);
-            context.Rigidbody.MovePosition(pos);
-        }
 
+        SetState(new IdleState());
+    }
+}
+
+public class HidingState : PlayerStaticState
+{
+    public HidingState(IStaticTargetProvider targetProvider) : base()
+    {
+        target = targetProvider;
+    }
+}
+
+public class SpyingState : PlayerStaticState
+{
+    private Layers sourceLayer;
+    private Layers spyLayer;
+    InputAction exitSpyStateAction;
+
+    public SpyingState(Layers sourceLayer, Layers spyLayer)
+    {
+        this.sourceLayer = sourceLayer;
+        this.spyLayer = spyLayer;
+
+        exitSpyStateAction = new InputAction() { ActionCallback = () => { SetState(new IdleState()); }, Input = ControlType.Back, Stage = InputActionStage.ModeSpecific, Target = PlayerController.Instance.transform, Text = "Stop Spying" };
     }
 
-    private void Unhide()
+    public override void Enter()
     {
-        SetState(PlayerState.Idle);
+        SetCollisionActive(false);
+        SetGravityActive(false);
+
+        LayerHandler.Instance.SetLayer(spyLayer);
+        PlayerInputActionRegister.Instance.RegisterInputAction(exitSpyStateAction);
+    }
+
+    public override void Update() { }
+
+    public override void Exit()
+    {
+        SetCollisionActive(true);
+        SetGravityActive(true);
+
+        LayerHandler.Instance.SetLayer(sourceLayer);
+        PlayerInputActionRegister.Instance.UnregisterInputAction(exitSpyStateAction);
     }
 }

@@ -26,7 +26,7 @@ public class PlayerAboveInteractable : MonoBehaviour
             OnEnableWithPlayerAbove();
     }
 
-    protected bool DidNotJustSpawn()
+    protected virtual bool DidNotJustSpawn()
     {
         return (enableTime + 0.1f) < Time.time;
     }
@@ -34,12 +34,16 @@ public class PlayerAboveInteractable : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        Debug.Log("Player Exit");
+
         if (!collision.IsPlayer())
             return;
 
         playerIsAbove = false;
 
-        if ((enableTime + 0.1f) < Time.time)
+        Debug.Log("Call OnPlayerExit " + DidNotJustSpawn());
+
+        if (DidNotJustSpawn())
             OnPlayerExit();
     }
 

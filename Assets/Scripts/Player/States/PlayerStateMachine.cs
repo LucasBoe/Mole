@@ -26,39 +26,16 @@ public enum PlayerState
 
 public class PlayerStateMachine : SingletonBehaviour<PlayerStateMachine>, IPlayerComponent
 {
-    public PlayerState CurrentState;
+    public PlayerStateBase CurrentState;
 
-    public System.Action<PlayerState> OnStateChange;
-    public System.Action<PlayerState, PlayerState> OnStateChangePrevious;
-    public Dictionary<PlayerState, PlayerStateBase> stateDictionary = new Dictionary<PlayerState, PlayerStateBase>();
+    public System.Action<PlayerStateBase> OnStateChange;
+    public System.Action<PlayerStateBase, PlayerStateBase> OnStateChangePrevious;
 
     public int UpdatePrio => 50;
 
     public void Init(PlayerContext context)
     {
-        //move states
-        stateDictionary.Add(PlayerState.Idle, new IdleState(context));
-        stateDictionary.Add(PlayerState.Walk, new WalkState(context));
-        stateDictionary.Add(PlayerState.WalkPush, new WalkPushState(context));
-        stateDictionary.Add(PlayerState.Jump, new JumpState(context));
-        stateDictionary.Add(PlayerState.Fall, new FallState(context));
-
-        //climb states
-        stateDictionary.Add(PlayerState.PullUp, new PullUpState(context));
-        stateDictionary.Add(PlayerState.DropDown, new DropDownState(context));
-        stateDictionary.Add(PlayerState.Hanging, new HangingState(context));
-        stateDictionary.Add(PlayerState.JumpToHanging, new JumpToHangingState(context));
-        stateDictionary.Add(PlayerState.Wall, new WallState(context));
-        stateDictionary.Add(PlayerState.WallStretch, new WallStretchState(context));
-        stateDictionary.Add(PlayerState.RopeClimb, new RopeClimbState(context));
-
-        //bombat states
-        stateDictionary.Add(PlayerState.CombatStrangle, new CombatStrangleState(context));
-
-        stateDictionary.Add(PlayerState.Tunnel, new TunnelState(context));
-        stateDictionary.Add(PlayerState.InWindow, new InWindowState(context));
-        stateDictionary.Add(PlayerState.Hiding, new HidingState(context));
-
+        CurrentState = new IdleState();
     }
     public void UpdatePlayerComponent(PlayerContext context)
     {
@@ -66,9 +43,9 @@ public class PlayerStateMachine : SingletonBehaviour<PlayerStateMachine>, IPlaye
         context.StateTransitonChecks.TryCheckAll();
     }
 
-    public void SetState(PlayerState newState)
+    public void SetState(PlayerStateBase newState)
     {
-        ExitState(CurrentState);
+        CurrentState.Exit();
 
         string from = CurrentState.ToString();
         string to = newState.ToString();
@@ -79,26 +56,11 @@ public class PlayerStateMachine : SingletonBehaviour<PlayerStateMachine>, IPlaye
         OnStateChange?.Invoke(newState);
 
         CurrentState = newState;
-
-        EnterState(newState);
+        newState.Enter();
     }
 
-    public void EnterState(PlayerState newState)
+    public void UpdateState(PlayerStateBase state)
     {
-        if (newState != PlayerState.None)
-            stateDictionary[newState].Enter();
-    }
-
-    public void UpdateState(PlayerState newState)
-    {
-        if (newState != PlayerState.None)
-            stateDictionary[newState].Update();
-    }
-
-    //Exit Methods
-    public void ExitState(PlayerState newState)
-    {
-        if (newState != PlayerState.None)
-            stateDictionary[newState].Exit();
+        state.Update();
     }
 }

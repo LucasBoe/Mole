@@ -13,9 +13,10 @@ public enum Layers
 
 public class LayerHandler : SingletonBehaviour<LayerHandler>
 {
-    [SerializeField] LayerEnumGameobjectPair[] layerEnumGameobjectPair;
+    [SerializeField] LayerDataPackage[] layerEnumGameobjectPair;
     public GameObject[] LayerGameObjects => layerEnumGameobjectPair.Select(p => p.GameObject).ToArray();
     public static LayerHandler EditorInstance => (Instance == null) ? FindInstance() : Instance;
+    public static System.Action<Layers, LayerDataPackage> OnChangeLayer;
 
     private static LayerHandler FindInstance()
     {
@@ -25,27 +26,41 @@ public class LayerHandler : SingletonBehaviour<LayerHandler>
 
     internal void SetLayer(Layers layerLeadsTo)
     {
-        foreach (LayerEnumGameobjectPair pair in layerEnumGameobjectPair)
+        Layers before = Layers.Outdoor;
+
+        foreach (LayerDataPackage package in layerEnumGameobjectPair)
         {
-            if (pair.Layer != layerLeadsTo)
+            if (package.Layer != layerLeadsTo)
             {
-                pair.GameObject.SetActive(false);
+                if (package.GameObject.activeSelf)
+                    before = package.Layer;
+
+                package.GameObject.SetActive(false);
             }
         }
 
-        foreach (LayerEnumGameobjectPair pair in layerEnumGameobjectPair)
+        foreach (LayerDataPackage package in layerEnumGameobjectPair)
         {
-            if (pair.Layer == layerLeadsTo)
+            if (package.Layer == layerLeadsTo)
             {
-                pair.GameObject.SetActive(true);
+                OnChangeLayer?.Invoke(before, package);
+                package.GameObject.SetActive(true);
+                return;
             }
         }
+    }
+
+    internal Layers GetCurrentLayer()
+    {
+        //TODO: acutally implement logic for this one
+        return Layers.Outdoor;
     }
 }
 
 [System.Serializable]
-public class LayerEnumGameobjectPair
+public class LayerDataPackage
 {
     public Layers Layer;
     public GameObject GameObject;
+    public bool IsTunnel;
 }

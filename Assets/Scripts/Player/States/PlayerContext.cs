@@ -119,17 +119,11 @@ public class PlayerStateTransitionChecks
     public PlayerStateTransitionChecks(PlayerContext context)
     {
         //TODO: Change to type based dictionary
-        Rope = new PlayerStateTransition(context, PlayerState.RopeClimb, CheckType.Rope, ControlType.Use);
-        EnterTunnel = new PlayerStateTransition(context, PlayerState.Tunnel, CheckType.Tunnel, ControlType.Interact);
-        ExitTunnel = new PlayerStateTransition(context, PlayerState.Idle, CheckType.Tunnel, ControlType.Interact, needsState: PlayerState.Tunnel);
-
+        //Rope = new PlayerStateTransition(context, new RopeClimbState(null), CheckType.Rope, ControlType.Use);
     }
 
     internal void TryCheckAll()
     {
-        Rope.TryCheck();
-
-        if (!EnterTunnel.TryCheck())
-            ExitTunnel.TryCheck();
+        //Rope.TryCheck();
     }
 }

@@ -37,6 +37,8 @@ public class PlayerInputActionRegister : SingletonBehaviour<PlayerInputActionReg
 
     public void RegisterInputAction(InputAction newAction)
     {
+        Debug.Log("RegisterInputAction: " + newAction);
+
         ControlType controlType = newAction.Input;
         if (!register[controlType].Contains(newAction))
         {
@@ -47,6 +49,8 @@ public class PlayerInputActionRegister : SingletonBehaviour<PlayerInputActionReg
 
     public void UnregisterInputAction(InputAction oldAction)
     {
+        Debug.Log("UnregisterInputAction: " + oldAction);
+
         if (oldAction == null)
             return;
 

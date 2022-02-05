@@ -18,6 +18,6 @@ public class Window : PlayerAboveInteractable
 
     protected override void OnEnableWithPlayerAbove()
     {
-        PlayerStateMachine.Instance.SetState(PlayerState.InWindow);
+        PlayerStateMachine.Instance.SetState(new InWindowState());
     }
 }

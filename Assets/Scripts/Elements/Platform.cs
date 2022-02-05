@@ -34,7 +34,7 @@ public class Platform : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.IsPlayer() && collision.transform.position.y < transform.position.y)
-            PlayerStateMachine.Instance.SetState(PlayerState.PullUp);
+            PlayerStateMachine.Instance.SetState(new PullUpState());
     }
 
     private void SetSeeThrough(bool value)

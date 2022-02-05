@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,15 +16,18 @@ public class TunnelUser : SingletonBehaviour<TunnelUser>
     {
         base.Awake();
         playerSpriteRenderers = transform.parent.GetComponentsInChildren<SpriteRenderer>();
+        LayerHandler.OnChangeLayer += OnChangeLayer; 
     }
-
-
-    public void TrySetTunnelState(bool inTunnel)
+    private void OnChangeLayer(Layers before, LayerDataPackage target)
     {
-        if (Time.time < lastTunnelSwitch + 0.1f)
-            return;
-
-        IsInTunnel = inTunnel;
+        if (before == Layers.Tunnels)
+            SetTunnelState(false);
+        else if (target.Layer == Layers.Tunnels)
+            SetTunnelState(true);
+    }
+    public void SetTunnelState(bool inTunnel)
+    {
+        IsInTunnel = true;
         defaultCollider.enabled = !inTunnel;
         inTunnelCollider.enabled = inTunnel;
 
@@ -33,7 +37,7 @@ public class TunnelUser : SingletonBehaviour<TunnelUser>
         //TODO: Remove this variable after entering and looking trough are different actions
         lastTunnelSwitch = Time.time;
 
-        PlayerStateMachine.Instance.SetState(inTunnel ? PlayerState.Tunnel : PlayerState.Idle);
+        //PlayerStateMachine.Instance.SetState(inTunnel ? PlayerState.Tunnel : new IdleState());
         transform.parent.Translate(inTunnel ? Vector2.down : Vector2.up);
     }
 }

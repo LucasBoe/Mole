@@ -1,37 +1,40 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class PlayerAboveInputActionProvider : PlayerAboveInteractable
 {
-    private InputAction inputAction;
+    private InputAction[] inputActions;
 
     protected override void OnEnable()
     {
         base.OnEnable();
-        inputAction = CreateInputAction();
+        UpdateInputActions();
     }
 
-    protected virtual InputAction CreateInputAction()
+    protected void UpdateInputActions()
+    {
+        inputActions = CreateInputActions();
+    }
+
+    protected virtual InputAction[] CreateInputActions()
     {
         return null;
     }
 
     protected override void OnPlayerEnter()
     {
-        if (inputAction == null)
-            Debug.LogWarning("No input action found on " + name);
-        else
+        foreach (var inputAction in inputActions)
+        {
             PlayerInputActionRegister.Instance.RegisterInputAction(inputAction);
+        }
+            
     }
 
     protected override void OnPlayerExit()
     {
-        if (inputAction == null)
-            Debug.LogWarning("No input action found on " + name);
-        else
+        foreach (var inputAction in inputActions)
+        {
             PlayerInputActionRegister.Instance.UnregisterInputAction(inputAction);
+        }
     }
 
     private void OnDestroy()

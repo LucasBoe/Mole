@@ -9,15 +9,15 @@ public class SceneSwitch : PlayerAboveInputActionProvider
     [SerializeField] string toLoad;
     [SerializeField] SpriteRenderer spriteRenderer;
 
-    protected override InputAction CreateInputAction()
+    protected override InputAction[] CreateInputActions()
     {
-        return new InputAction()
+        return new InputAction[] { new InputAction()
         {
             ActionCallback = LoadScene,
             Input = ControlType.Interact,
             Target = transform,
             Text = "Step through"
-        };
+        }};
     }
 
     private void LoadScene()

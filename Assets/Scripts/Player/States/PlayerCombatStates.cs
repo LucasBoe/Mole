@@ -5,11 +5,9 @@ using UnityEngine;
 public class PlayerCombatState : PlayerStateBase
 {
     protected ICombatTarget target;
-    public PlayerCombatState(PlayerContext playerContext) : base(playerContext) { }
-
-    public override void Enter()
+    public PlayerCombatState(ICombatTarget target) : base()
     {
-        target = context.CombatTarget;
+        this.target = target;
     }
 
     public override void Update()
@@ -20,7 +18,7 @@ public class PlayerCombatState : PlayerStateBase
 
     protected void ExitCombat()
     {
-        SetState(PlayerState.Idle);
+        SetState(new IdleState());
     }
 }
 
@@ -31,7 +29,7 @@ public class CombatStrangleState : PlayerCombatState
 
     PlayerActionProgressionVisualizerUI uiElement;
 
-    public CombatStrangleState(PlayerContext playerContext) : base(playerContext) { }
+    public CombatStrangleState(ICombatTarget target) : base(target) { }
 
     public override void Enter()
     {
@@ -54,7 +52,7 @@ public class CombatStrangleState : PlayerCombatState
         if (context.Input.HoldingUse)
             strangleProgression += Time.deltaTime;
         else
-            SetState(PlayerState.Idle);
+            SetState(new IdleState());
 
         uiElement.UpdaValue(strangleProgression / strangleDuration);
 

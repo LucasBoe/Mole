@@ -7,12 +7,12 @@ using PlayerCollisionCheckType;
 //TODO: Rebuild Transition System to be more reliable while flexible
 public class PlayerStateTransition : PlayerStateObject
 {
-    PlayerState currentState;
-    PlayerState targetState;
+    PlayerStateBase currentState;
+    PlayerStateBase targetState;
     CheckType toCheckFor;
     ControlType inputNeeded;
 
-    public PlayerStateTransition(PlayerContext playerContext, PlayerState toTransitionTo, CheckType toCheckFor, ControlType inputNeeded, PlayerState needsState = PlayerState.None) : base(playerContext)
+    public PlayerStateTransition(PlayerContext playerContext, PlayerStateBase toTransitionTo, CheckType toCheckFor, ControlType inputNeeded, PlayerStateBase needsState = null) : base()
     {
         this.currentState = needsState;
         this.targetState = toTransitionTo;
@@ -29,7 +29,7 @@ public class PlayerStateTransition : PlayerStateObject
     internal bool TryCheck()
     {
         bool notInTargetState = !StateIs(targetState);
-        if (Active && notInTargetState && (currentState == PlayerState.None || StateIs(currentState)))
+        if (Active && notInTargetState && (StateIs(currentState)))
         {
             bool isColliding = IsColliding(toCheckFor) && notInTargetState;
             if (isColliding && !wasCollidingBefore)

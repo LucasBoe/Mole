@@ -6,7 +6,7 @@ using PlayerCollisionCheckType;
 public class TunnelState : PlayerStateBase
 {
     TunnelUser tunnelUser;
-    public TunnelState(PlayerContext playerContext) : base(playerContext)
+    public TunnelState() : base()
     {
         tunnelUser = TunnelUser.Instance;
     }
@@ -15,8 +15,8 @@ public class TunnelState : PlayerStateBase
     {
         base.Enter();
 
-        LayerSwitch entrance = GetCheck(CheckType.Tunnel).Get<LayerSwitch>()[0];
-        context.Rigidbody.MovePosition(entrance.transform.position);
+        //LayerSwitch entrance = GetCheck(CheckType.Tunnel).Get<LayerSwitch>()[0];
+        //context.Rigidbody.MovePosition(entrance.transform.position);
     }
 
     public override void Update()
