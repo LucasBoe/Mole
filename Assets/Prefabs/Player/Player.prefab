@@ -256,7 +256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsInTunnel: 0
-  defaultLayer: Default
+  defaultLayer: Player
   inTunnselLayer: PlayerInTunnel
 --- !u!1 &7193096735565673044
 GameObject:

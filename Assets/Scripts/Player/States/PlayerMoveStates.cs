@@ -194,7 +194,7 @@ public class FallState : MoveBaseState
 
         //autograp to wall
         if (triesMovingIntoWall)
-            SetState(new WalkState());
+            SetState(new WallState());
 
         bool isCollidingEdgeHelperLeft = IsColliding(CheckType.EdgeHelperLeft);
         bool isCollidingEdgeHelperRight = IsColliding(CheckType.EdgeHelperRight);

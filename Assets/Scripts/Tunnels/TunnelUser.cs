@@ -22,7 +22,7 @@ public class TunnelUser : MonoBehaviour
         if (!IsInTunnel && newState == typeof(TunnelState))
         {
             SetTunnelState(true);
-        } else if (newState != typeof(TunnelState) && newState != typeof(SpyingState))
+        } else if (IsInTunnel && newState != typeof(TunnelState) && newState != typeof(SpyingState))
         {
             SetTunnelState(false);
         }
