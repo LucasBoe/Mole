@@ -37,7 +37,7 @@ public class PlayerStateObject
         return StateIs(state.GetType());
     }
 
-    protected bool StateIs(System.Type stateType)
+    public bool StateIs(System.Type stateType)
     {
         return PlayerStateMachine.Instance.CurrentState.GetType() == stateType;
     }

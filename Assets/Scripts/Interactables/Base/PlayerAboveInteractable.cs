@@ -34,14 +34,10 @@ public class PlayerAboveInteractable : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log("Player Exit");
-
         if (!collision.IsPlayer())
             return;
 
         playerIsAbove = false;
-
-        Debug.Log("Call OnPlayerExit " + DidNotJustSpawn());
 
         if (DidNotJustSpawn())
             OnPlayerExit();

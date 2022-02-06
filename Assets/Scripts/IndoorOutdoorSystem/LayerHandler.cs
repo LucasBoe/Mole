@@ -16,7 +16,7 @@ public class LayerHandler : SingletonBehaviour<LayerHandler>
     [SerializeField] LayerDataPackage[] layerEnumGameobjectPair;
     public GameObject[] LayerGameObjects => layerEnumGameobjectPair.Select(p => p.GameObject).ToArray();
     public static LayerHandler EditorInstance => (Instance == null) ? FindInstance() : Instance;
-    public static System.Action<Layers, LayerDataPackage> OnChangeLayer;
+    public static System.Action<Layers, LayerDataPackage, bool> OnChangeLayer;
 
     private static LayerHandler FindInstance()
     {
@@ -24,7 +24,7 @@ public class LayerHandler : SingletonBehaviour<LayerHandler>
         return Instance;
     }
 
-    internal void SetLayer(Layers layerLeadsTo)
+    internal void SetLayer(Layers layerLeadsTo, bool spy = false)
     {
         Layers before = Layers.Outdoor;
 
@@ -43,7 +43,7 @@ public class LayerHandler : SingletonBehaviour<LayerHandler>
         {
             if (package.Layer == layerLeadsTo)
             {
-                OnChangeLayer?.Invoke(before, package);
+                OnChangeLayer?.Invoke(before, package, spy);
                 package.GameObject.SetActive(true);
                 return;
             }

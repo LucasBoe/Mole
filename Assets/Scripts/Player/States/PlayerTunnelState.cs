@@ -2,25 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using PlayerCollisionCheckType;
+using System;
 
 public class TunnelState : PlayerStateBase
 {
-    TunnelUser tunnelUser;
-    public TunnelState() : base()
+    public static System.Action<bool> OnSetTunnelState;
+    public TunnelState(Transform switchTransform)
     {
-        tunnelUser = TunnelUser.Instance;
+        context.Rigidbody.MovePosition(switchTransform.position);
     }
 
     public override void Enter()
     {
         base.Enter();
-
-        //LayerSwitch entrance = GetCheck(CheckType.Tunnel).Get<LayerSwitch>()[0];
-        //context.Rigidbody.MovePosition(entrance.transform.position);
+        OnSetTunnelState?.Invoke(true);
     }
 
     public override void Update()
     {
         context.Rigidbody.velocity = Vector2.right * context.Input.Axis.x * context.Values.XVelocity.NotSprintValue;
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        context.Rigidbody.transform.Translate(Vector2.up);
+        OnSetTunnelState?.Invoke(false);
     }
 }

@@ -98,13 +98,15 @@ public class SpyingState : PlayerStaticState
     private Layers sourceLayer;
     private Layers spyLayer;
     InputAction exitSpyStateAction;
+    InputAction enterLayerAction;
 
-    public SpyingState(Layers sourceLayer, Layers spyLayer)
+    public SpyingState(PlayerStateBase stateBefore, Layers sourceLayer, Layers spyLayer, InputAction enterAction)
     {
         this.sourceLayer = sourceLayer;
         this.spyLayer = spyLayer;
 
-        exitSpyStateAction = new InputAction() { ActionCallback = () => { SetState(new IdleState()); }, Input = ControlType.Back, Stage = InputActionStage.ModeSpecific, Target = PlayerController.Instance.transform, Text = "Stop Spying" };
+        exitSpyStateAction = new InputAction() { ActionCallback = () => { LayerHandler.Instance.SetLayer(sourceLayer); SetState(stateBefore); }, Input = ControlType.Back, Stage = InputActionStage.ModeSpecific, Target = PlayerController.Instance.transform, Text = "Stop Spying" };
+        enterLayerAction = enterAction;
     }
 
     public override void Enter()
@@ -112,8 +114,9 @@ public class SpyingState : PlayerStaticState
         SetCollisionActive(false);
         SetGravityActive(false);
 
-        LayerHandler.Instance.SetLayer(spyLayer);
+        LayerHandler.Instance.SetLayer(spyLayer, spy: true);
         PlayerInputActionRegister.Instance.RegisterInputAction(exitSpyStateAction);
+        PlayerInputActionRegister.Instance.RegisterInputAction(enterLayerAction);
     }
 
     public override void Update() { }
@@ -123,7 +126,7 @@ public class SpyingState : PlayerStaticState
         SetCollisionActive(true);
         SetGravityActive(true);
 
-        LayerHandler.Instance.SetLayer(sourceLayer);
         PlayerInputActionRegister.Instance.UnregisterInputAction(exitSpyStateAction);
+        PlayerInputActionRegister.Instance.UnregisterInputAction(enterLayerAction);
     }
 }
