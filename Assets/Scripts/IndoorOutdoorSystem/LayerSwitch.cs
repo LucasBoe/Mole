@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //TODO: make this not tunnel exclusive
-public class LayerSwitch : PlayerAboveInputActionProvider
+public class LayerSwitch : AboveInputActionProvider
 {
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Layers layerLeadsTo;
@@ -46,24 +46,12 @@ public class LayerSwitch : PlayerAboveInputActionProvider
             return new InputAction[] { enterAction, spyAction };
         }
     }
-
-    protected override bool DidNotJustSpawn()
-    {
-        return true;
-    }
-
     protected override void OnPlayerEnter()
     {
         UpdateInputActions();
         base.OnPlayerEnter();
 
     }
-
-    protected override void OnPlayerExit()
-    {
-        base.OnPlayerExit();
-    }
-
     private void TryInteract()
     {
         LayerHandler.Instance.SwitchLayer(layerLeadsTo);

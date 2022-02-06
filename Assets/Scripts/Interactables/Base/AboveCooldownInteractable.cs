@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAboveInteractable : MonoBehaviour
+public class AboveCooldownInteractable : MonoBehaviour
 {
     [SerializeField] protected bool playerIsAbove = false;
+    [SerializeField] bool useCooldown = true;
     protected float enableTime = 0f;
 
     protected virtual void OnEnable()
@@ -20,15 +21,15 @@ public class PlayerAboveInteractable : MonoBehaviour
 
         playerIsAbove = true;
 
-        if (DidNotJustSpawn())
+        if (CooldownFinished())
             OnPlayerEnter();
         else
             OnEnableWithPlayerAbove();
     }
 
-    protected virtual bool DidNotJustSpawn()
+    protected virtual bool CooldownFinished()
     {
-        return (enableTime + 0.1f) < Time.time;
+        return !useCooldown ? true : (enableTime + 0.1f) < Time.time;
     }
 
 
@@ -39,7 +40,7 @@ public class PlayerAboveInteractable : MonoBehaviour
 
         playerIsAbove = false;
 
-        if (DidNotJustSpawn())
+        if (CooldownFinished())
             OnPlayerExit();
     }
 

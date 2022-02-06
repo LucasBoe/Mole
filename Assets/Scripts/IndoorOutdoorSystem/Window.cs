@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //TODO: Replace with generalized system that allow for looking and entering separatly
-public class Window : PlayerAboveInteractable
+public class Window : AboveCooldownInteractable
 {
     [SerializeField] Layers targetLayer;
     [SerializeField] Sprite insideSprite, outsideSprite;

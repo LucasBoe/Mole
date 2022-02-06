@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DoorSwitch : PlayerAboveInteractable
+public class DoorSwitch : AboveCooldownInteractable
 {
     [SerializeField] TriggerDoorPair left, right;
     private Dictionary<DoorTrigger, Layers> doorData = new Dictionary<DoorTrigger, Layers>();
@@ -16,7 +16,7 @@ public class DoorSwitch : PlayerAboveInteractable
 
     internal void PlayerEntered(DoorTrigger doorTrigger)
     {
-        if (DidNotJustSpawn())
+        if (CooldownFinished())
         {
             Layers targetLayer = doorData[doorTrigger];
             LayerHandler.Instance.SwitchLayer(targetLayer);

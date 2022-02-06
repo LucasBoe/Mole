@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RopeEnd : PlayerAboveInteractable
+public class RopeEnd : AboveCooldownInteractable
 {
     [SerializeField] protected Rigidbody2D rigidbody2D;
     [SerializeField] protected SpriteRenderer spriteRenderer;

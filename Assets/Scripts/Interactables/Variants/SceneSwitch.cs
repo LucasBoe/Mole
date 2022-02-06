@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneSwitch : PlayerAboveInputActionProvider
+public class SceneSwitch : AboveInputActionProvider
 {
     [Scene]
     [SerializeField] string toLoad;

@@ -1,6 +1,6 @@
 using System;
 
-public class PlayerAboveInputActionProvider : PlayerAboveInteractable
+public class AboveInputActionProvider : AboveCooldownInteractable
 {
     private InputAction[] inputActions;
 

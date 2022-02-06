@@ -36,9 +36,4 @@ public class TunnelUser : MonoBehaviour
         foreach (SpriteRenderer spriteRenderer in playerSpriteRenderers)
             spriteRenderer.sortingLayerName = inTunnel ? inTunnselLayer : defaultLayer;
     }
-
-    private void OnGUI()
-    {
-        GUI.Box(new Rect(10,10,300,100), (PlayerStateMachine.Instance.CurrentState + " - Is in tunnel: " + IsInTunnel));
-    }
 }

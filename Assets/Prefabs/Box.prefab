@@ -304,7 +304,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerIsAbove: 0
-  spriteRenderer: {fileID: 1482603712404808880}
+  useCooldown: 0
 --- !u!1 &8337605467304274045
 GameObject:
   m_ObjectHideFlags: 0
