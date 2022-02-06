@@ -17,7 +17,6 @@ public class PlayerController : SingletonBehaviour<PlayerController>
 
     [SerializeField] PlayerValues playerValues;
     [SerializeField] private CheckType[] toDebug;
-    [SerializeField] Collider2D[] colliders;
 
     protected override void Awake()
     {
@@ -25,8 +24,6 @@ public class PlayerController : SingletonBehaviour<PlayerController>
 
         playerComponents = GetComponentsInChildren<IPlayerComponent>();
         playerComponents = playerComponents.OrderBy(c => -c.UpdatePrio).ToArray();
-
-        colliders = GetComponents<Collider2D>();
 
         context = new PlayerContext();
         context.Input = PlayerInputHandler.PlayerInput;
@@ -75,12 +72,6 @@ public class PlayerController : SingletonBehaviour<PlayerController>
             component.Init(context);
 
         OnPlayerSpawned?.Invoke(transform);
-    }
-
-    internal void SetCollisionActive(bool active)
-    {
-        foreach (Collider2D collider in colliders)
-            collider.enabled = active;
     }
 
     // Update is called once per frame

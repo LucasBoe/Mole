@@ -49,7 +49,7 @@ public class IdleState : MoveBaseState
 
         //jumping
         if (context.Input.Jump)
-            SetState(new WallState());
+            SetState(new JumpState());
 
         //dropping down
         if (IsColliding(CheckType.DropDownable) && context.Input.Axis.y < -0.9f)

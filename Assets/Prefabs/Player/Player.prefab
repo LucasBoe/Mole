@@ -256,8 +256,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsInTunnel: 0
-  defaultCollider: {fileID: 7193096735565673047}
-  inTunnelCollider: {fileID: 7193096735565673037}
   defaultLayer: Default
   inTunnselLayer: PlayerInTunnel
 --- !u!1 &7193096735565673044
@@ -275,6 +273,7 @@ GameObject:
   - component: {fileID: 7193096735565673047}
   - component: {fileID: 7193096735565673040}
   - component: {fileID: 7193096735565673037}
+  - component: {fileID: 7589702775508381033}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -318,7 +317,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b9ec1cfcc6e57341891deb6ec9805df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentState: 10
 --- !u!114 &7193096735565673041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -333,7 +331,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerValues: {fileID: 11400000, guid: f123c62d2a8706d499bb4afc1f292e52, type: 2}
   toDebug: 
-  colliders: []
 --- !u!114 &7193096735565673042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -400,6 +397,20 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 0.5}
   m_Direction: 0
+--- !u!114 &7589702775508381033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7193096735565673044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8f888fd38b09b440ae6565798f07a73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultCollider: {fileID: 7193096735565673047}
+  inTunnelCollider: {fileID: 7193096735565673037}
 --- !u!1 &7193096735658781757
 GameObject:
   m_ObjectHideFlags: 0
@@ -479,7 +490,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5535e626f3c0a944692533fd9552615e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actions: []
 --- !u!1 &7193096735683353417
 GameObject:
   m_ObjectHideFlags: 0

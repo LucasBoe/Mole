@@ -66,23 +66,29 @@ public class LayerSwitch : PlayerAboveInputActionProvider
 
     private void TryInteract()
     {
-        LayerHandler.Instance.SetLayer(layerLeadsTo);
-
-        if (PlayerStateMachine.Instance.CurrentState.StateIs(typeof(TunnelState)))
-            PlayerStateMachine.Instance.SetState(new IdleState());
-        else
-            PlayerStateMachine.Instance.SetState(new TunnelState(transform));
-
+        LayerHandler.Instance.SwitchLayer(layerLeadsTo);
+        UpdatePlayerState(layerLeadsTo == Layers.Tunnels);
         PlayerInputActionRegister.Instance.UnregisterInputAction(spyAction);
         PlayerInputActionRegister.Instance.UnregisterInputAction(enterAction);
 
     }
-
     private void TrySpy()
     {
-        Layers sourceLayer = LayerHandler.Instance.GetCurrentLayer();
         PlayerStateBase currentState = PlayerStateMachine.Instance.CurrentState;
-        PlayerStateMachine.Instance.SetState(new SpyingState(currentState, sourceLayer, layerLeadsTo, enterAction));
+        PlayerStateMachine.Instance.SetState(new SpyingState(currentState, LayerHandler.Instance.CurrentLayer, layerLeadsTo, enterAction));
+
         PlayerInputActionRegister.Instance.UnregisterInputAction(spyAction);
     }
+
+    private void UpdatePlayerState(bool enterTunnel)
+    {
+        if (enterTunnel)
+            PlayerStateMachine.Instance.SetState(new TunnelState(transform));
+        else
+        {
+            PlayerStateMachine.Instance.transform.Translate(Vector2.up);
+            PlayerStateMachine.Instance.SetState(new IdleState());
+        }
+    }
+
 }

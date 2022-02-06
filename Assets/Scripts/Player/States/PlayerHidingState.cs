@@ -102,10 +102,12 @@ public class SpyingState : PlayerStaticState
 
     public SpyingState(PlayerStateBase stateBefore, Layers sourceLayer, Layers spyLayer, InputAction enterAction)
     {
+        Debug.LogWarning("spy from " + sourceLayer + " to " + spyLayer);
+
         this.sourceLayer = sourceLayer;
         this.spyLayer = spyLayer;
 
-        exitSpyStateAction = new InputAction() { ActionCallback = () => { LayerHandler.Instance.SetLayer(sourceLayer); SetState(stateBefore); }, Input = ControlType.Back, Stage = InputActionStage.ModeSpecific, Target = PlayerController.Instance.transform, Text = "Stop Spying" };
+        exitSpyStateAction = new InputAction() { ActionCallback = () => { LayerHandler.Instance.SwitchLayer(sourceLayer); SetState(stateBefore); }, Input = ControlType.Back, Stage = InputActionStage.ModeSpecific, Target = PlayerController.Instance.transform, Text = "Stop Spying" };
         enterLayerAction = enterAction;
     }
 
@@ -114,7 +116,7 @@ public class SpyingState : PlayerStaticState
         SetCollisionActive(false);
         SetGravityActive(false);
 
-        LayerHandler.Instance.SetLayer(spyLayer, spy: true);
+        LayerHandler.Instance.SwitchLayer(spyLayer, spy: true);
         PlayerInputActionRegister.Instance.RegisterInputAction(exitSpyStateAction);
         PlayerInputActionRegister.Instance.RegisterInputAction(enterLayerAction);
     }

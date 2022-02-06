@@ -19,7 +19,7 @@ public class DoorSwitch : PlayerAboveInteractable
         if (DidNotJustSpawn())
         {
             Layers targetLayer = doorData[doorTrigger];
-            LayerHandler.Instance.SetLayer(targetLayer);
+            LayerHandler.Instance.SwitchLayer(targetLayer);
         }
     }
 }

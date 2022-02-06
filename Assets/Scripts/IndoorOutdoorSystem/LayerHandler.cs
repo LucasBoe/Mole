@@ -24,36 +24,30 @@ public class LayerHandler : SingletonBehaviour<LayerHandler>
         return Instance;
     }
 
-    internal void SetLayer(Layers layerLeadsTo, bool spy = false)
-    {
-        Layers before = Layers.Outdoor;
+    private Layers currentLayer = Layers.Outdoor;
+    public Layers CurrentLayer => currentLayer;
 
+    internal void SwitchLayer(Layers newLayer, bool spy = false)
+    {
         foreach (LayerDataPackage package in layerEnumGameobjectPair)
         {
-            if (package.Layer != layerLeadsTo)
+            if (package.Layer != newLayer)
             {
-                if (package.GameObject.activeSelf)
-                    before = package.Layer;
-
                 package.GameObject.SetActive(false);
             }
         }
 
         foreach (LayerDataPackage package in layerEnumGameobjectPair)
         {
-            if (package.Layer == layerLeadsTo)
+            if (package.Layer == newLayer)
             {
-                OnChangeLayer?.Invoke(before, package, spy);
+                OnChangeLayer?.Invoke(currentLayer, package, spy);
                 package.GameObject.SetActive(true);
+                currentLayer = newLayer;
                 return;
             }
         }
-    }
 
-    internal Layers GetCurrentLayer()
-    {
-        //TODO: acutally implement logic for this one
-        return Layers.Outdoor;
     }
 }
 

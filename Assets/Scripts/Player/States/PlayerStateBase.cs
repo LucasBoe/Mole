@@ -72,7 +72,7 @@ public class PlayerStateBase : PlayerStateObject
     public virtual void Update() { }
     protected void SetCollisionActive(bool active)
     {
-        context.PlayerController.SetCollisionActive(active);
+        PlayerColliderModifier.Instance.SetActive(active);
     }
     protected void SetGravityActive(bool active)
     {

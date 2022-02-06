@@ -12,7 +12,7 @@ public class Window : PlayerAboveInteractable
     {
         if (playerIsAbove && PlayerInputHandler.PlayerInput.Interact)
         {
-            LayerHandler.Instance.SetLayer(targetLayer);
+            LayerHandler.Instance.SwitchLayer(targetLayer);
         }
     }
 
