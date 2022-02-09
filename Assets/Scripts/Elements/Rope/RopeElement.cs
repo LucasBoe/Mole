@@ -73,7 +73,17 @@ public class RopeElement : MonoBehaviour, IInputActionProvider
 
     public Vector2 GetClosestPoint(Vector2 point)
     {
-        return Util.GetClosestPointOnLineSegment(Rigidbody2DOther.position, Rigidbody2DAttachedTo.position, point);
+        if (!otherJoint || !attachJoint)
+            return point;
+        else
+            return Util.GetClosestPointOnLineSegment(Rigidbody2DOther.position, Rigidbody2DAttachedTo.position, point);
+    }
+
+    internal void Destroy()
+    {
+        Destroy(visualizerInstance.gameObject);
+        Destroy(gameObject);
+        Destroy(this);
     }
 
     private void OnDrawGizmos()
@@ -83,10 +93,10 @@ public class RopeElement : MonoBehaviour, IInputActionProvider
 
     public InputAction FetchInputAction()
     {
-        return new InputAction() { ActionCallback = Climb, Stage=InputActionStage.WorldObject, Target = gameObject.AddComponent<SpriteRenderer>(), Text = "Climb" };
+        return new InputAction() { ActionCallback = Climb, Stage = InputActionStage.WorldObject, Target = gameObject.AddComponent<SpriteRenderer>(), Text = "Climb" };
     }
 
-    private void Climb ()
+    private void Climb()
     {
         PlayerStateMachine.Instance.SetState(new RopeClimbState(this));
     }

@@ -24,7 +24,7 @@ public class RopeEnd : AboveCooldownInteractable
 
     protected override void OnPlayerExit()
     {
-        PlayerInputActionRegister.Instance.UnregisterAllInputActions(spriteRenderer);
+        PlayerInputActionRegister.Instance.UnregisterAllInputActions(transform);
     }
 
     protected virtual bool ShouldShowPrompt()

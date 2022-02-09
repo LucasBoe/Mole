@@ -42,6 +42,8 @@ public class RopeClimbState : ClimbStateBase
         base.Enter();
         if (PlayerRopeUser.Instance.IsActive)
             PlayerRopeUser.Instance.DropCurrentRope();
+
+        SetCollisionActive(false);
     }
 
     public override void Update()
@@ -52,7 +54,14 @@ public class RopeClimbState : ClimbStateBase
             SetState(new FallState());
 
         Vector2 closestRopePostion = climbingOn.GetClosestPoint(context.PlayerPos);
-        context.Rigidbody.MovePosition(closestRopePostion + context.Input.Axis * Time.deltaTime * context.Values.WallClimbYvelocity);
+        context.Rigidbody.MovePosition(closestRopePostion + context.Input.Axis * Time.deltaTime * context.Values.RopeClimbVelocity);
+    }
+    public override void Exit()
+    {
+        base.Exit();
+        PlayerRopeClimbListener.Instance.TrySetState(PlayerRopeClimbListener.States.Passive);
+        PlayerRopeClimbListener.Instance.TrySetState(PlayerRopeClimbListener.States.Active, delay: 0.5f);
+        SetCollisionActive(true);
     }
 }
 

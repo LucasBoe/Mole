@@ -45,6 +45,40 @@ public class RopeHandler : SingletonBehaviour<RopeHandler>
         return instance;
     }
 
+    internal void DestroyRope(Rigidbody2D rigidbody2D)
+    {
+        Rope toDestroy = null;
+
+        foreach (Rope rope in ropes)
+        {
+            List<Rigidbody2D> rigidbody2Ds = new List<Rigidbody2D>();
+            foreach (RopeElement element in rope.Elements)
+            {
+                if (element != null)
+                {
+                    if (element.Rigidbody2DAttachedTo != null) rigidbody2Ds.Add(element.Rigidbody2DAttachedTo);
+                    if (element.Rigidbody2DOther != null) rigidbody2Ds.Add(element.Rigidbody2DOther);
+                }
+            }
+            if (rigidbody2Ds.Contains(rigidbody2D))
+                toDestroy = rope;
+        }
+
+        if (toDestroy != null)
+            DestroyRope(toDestroy);
+    }
+
+    internal void DestroyRope(Rope rope)
+    {
+        foreach (RopeElement element in rope.Elements)
+        {
+
+            if (element != null)
+                element.Destroy();
+        }
+        ropes.Remove(rope);
+    }
+
     internal RopeEnd CreateRopeEnd(Vector2 position)
     {
         return Instantiate(ropeEndPrefab, position, Quaternion.identity);

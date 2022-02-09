@@ -88,4 +88,5 @@ MonoBehaviour:
   WallSnapXVelocity: 10
   JumpOffVelocity: 1.5
   KeyPressTimeToDropDown: 0.05
+  RopeClimbVelocity: 25
   SnapToHideablePositionDuration: 0.05

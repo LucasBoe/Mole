@@ -28,10 +28,23 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
     RopeElement currentElement;
     Rope current;
     bool playerConstrollsStart = false;
-    public bool IsActive => current != null;
+    public bool IsActive => current != null && currentElement != null;
 
     float distBefore;
     float distanceDifference;
+
+    private InputAction startClimbing;
+
+    private void Start()
+    {
+        startClimbing = new InputAction() { ActionCallback = StartClimbinfCurrentRope, Input = ControlType.Use, Stage = InputActionStage.WorldObject, Target = transform, Text = "Climb Rope" };
+    }
+
+
+    private void StartClimbinfCurrentRope()
+    {
+        PlayerStateMachine.Instance.SetState(new RopeClimbState(currentElement));
+    }
 
     public Rigidbody2D ConnectToRope(Rope newRope, bool playerIsAtStart)
     {
@@ -41,9 +54,14 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
         distBefore = 0;
         currentElement.FixateDistance(false);
 
+        PlayerInputActionRegister.Instance.RegisterInputAction(startClimbing);
+
         return playerRigidbody2D;
     }
 
+    /// <summary>
+    /// Creates a new RopeEnd at the players position and hands over the rope.
+    /// </summary>
     internal void DropCurrentRope()
     {
         RopeEnd ropeEnd = RopeHandler.Instance.CreateRopeEnd(playerRigidbody2D.position);
@@ -54,6 +72,9 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
     {
         currentElement.FixateDistance(true);
         current.ReplaceConnectedBody(playerRigidbody2D, newRigidbody);
+
+        PlayerInputActionRegister.Instance.UnregisterInputAction(startClimbing);
+
         Rope r = current;
         current = null;
         return r;
@@ -80,7 +101,7 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
         {
             distanceDifference = dist - distBefore;
 
-                current.Elongate(distanceDifference, distribution: playerConstrollsStart ? 1f : 0f);
+            current.Elongate(distanceDifference, distribution: playerConstrollsStart ? 1f : 0f);
         }
 
         distBefore = dist;
@@ -88,6 +109,9 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
 
     private void OnDrawGizmos()
     {
+        if (currentElement == null)
+            return;
+
         if (distanceDifference > 0)
             Util.GizmoDrawArrowLine(currentElement.Rigidbody2DAttachedTo.position, currentElement.Rigidbody2DOther.position);
         else if (distanceDifference < 0)

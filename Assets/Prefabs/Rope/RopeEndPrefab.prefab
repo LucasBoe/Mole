@@ -45,8 +45,8 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
+  m_Mass: 4
+  m_LinearDrag: 1
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
@@ -66,8 +66,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 789f0adbbdd73ed489399769ba0cfbc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigidbody2D: {fileID: 2438953284383065059}
   playerIsAbove: 0
+  useCooldown: 1
+  rigidbody2D: {fileID: 2438953284383065059}
+  spriteRenderer: {fileID: 0}
 --- !u!58 &2438953284383065069
 CircleCollider2D:
   m_ObjectHideFlags: 0

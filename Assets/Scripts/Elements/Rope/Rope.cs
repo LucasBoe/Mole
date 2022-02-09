@@ -12,9 +12,11 @@ public class Rope
 
     //elememts
     private RopeElement[] elements = new RopeElement[2];
+    public RopeElement[] Elements => elements;
     public RopeElement One => elements[0];
     public RopeElement Two => elements[1];
     public bool IsShortRope => anchors.Count == 0;
+
 
     //length & distribution
     private float length;

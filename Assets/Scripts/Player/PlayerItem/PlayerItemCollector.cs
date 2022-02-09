@@ -42,7 +42,7 @@ public class PlayerItemCollector : MonoBehaviour
             if (current != null)
                 PlayerInputActionRegister.Instance.UnregisterInputAction(current);
 
-            Destroy(playerItem.gameObject);
+            playerItem.Collect();
         }
     }
 }

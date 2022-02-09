@@ -26,6 +26,7 @@ public class RopeElementVisualizer : MonoBehaviour
     {
         this.start = start;
         this.end = end;
+        tween.position = (start.position + end.position) / 2;
     }
 
     // Update is called once per frame

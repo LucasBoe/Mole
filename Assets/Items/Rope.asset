@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65138e4512561c74e9d2ebeb88d0b6d0, type: 3}
   m_Name: Rope
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 21300000, guid: c08194d63c2574e418dd4435f0b60758, type: 3}
+  Sprite: {fileID: 21300000, guid: f1e9732a88eb42647904764d99ef7c15, type: 3}
   Prefab: {fileID: 0}
   IsUseable: 1
   HandOnly: 0

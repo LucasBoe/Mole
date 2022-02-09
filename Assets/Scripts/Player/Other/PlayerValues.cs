@@ -30,6 +30,8 @@ public class PlayerValues : ScriptableObject
     public float JumpOffVelocity = 1.5f;
     public float KeyPressTimeToDropDown = 0.5f;
 
+    public float RopeClimbVelocity = 10f;
+
     public float SnapToHideablePositionDuration = 0.5f;
 }
 
