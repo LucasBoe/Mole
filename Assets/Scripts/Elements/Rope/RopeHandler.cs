@@ -10,6 +10,11 @@ public class RopeHandler : SingletonBehaviour<RopeHandler>
     [SerializeField] private RopeEnd ropeEndPrefab;
 
     private List<Rope> ropes = new List<Rope>();
+    internal Rope CreateRope(Rigidbody2D player, Rigidbody2D end)
+    {
+        return CreateRope(player, new RopeAnchor[0], end);
+    }
+
     internal Rope CreateRope(Rigidbody2D start, RopeAnchor[] anchors, Rigidbody2D end)
     {
         Rope newRope = new Rope(start, anchors, end);
@@ -24,6 +29,8 @@ public class RopeHandler : SingletonBehaviour<RopeHandler>
     {
         PlayerRopeUser playerStart = start.GetComponentInChildren<PlayerRopeUser>();
         PlayerRopeUser playerEnd = end.GetComponentInChildren<PlayerRopeUser>();
+
+        Debug.LogWarning(playerStart + " / " + playerEnd);
 
         if (playerStart != null || newRope.IsShortRope)
             playerStart.ConnectToRope(newRope, playerIsAtStart: true);

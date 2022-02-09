@@ -31,15 +31,20 @@ public class ThrowablePlayerItem : PlayerItem
     public override PlayerItemUseResult AimInteract(PlayerItemUser playerItemUser)
     {
         var playerPos = playerItemUser.transform.position;
-        CollectablePlayerItem item = Instantiate(Prefab, playerPos + Vector3.up, Quaternion.identity);
-        Rigidbody2D rigidbody2D = item.GetComponent<Rigidbody2D>();
+        GameObject instance = Instantiate(GetObjectToInstatiate(), playerPos + Vector3.up, Quaternion.identity);
+        Rigidbody2D rigidbody2D = instance.GetComponent<Rigidbody2D>();
         rigidbody2D.velocity = (PlayerInputHandler.PlayerInput.VirtualCursorToDir(playerPos) * ThrowForce);
         rigidbody2D.gravityScale = GravityScale;
-        IThrowListener[] throwListeners = item.GetComponents<IThrowListener>();
+        IThrowListener[] throwListeners = instance.GetComponents<IThrowListener>();
         foreach (IThrowListener listener in throwListeners)
             listener.OnThrow();
 
         return new PlayerItemUseResult(PlayerItemUseResult.Type.Destroy);
+    }
+
+    public virtual GameObject GetObjectToInstatiate()
+    {
+        return Prefab.gameObject;
     }
 
 }

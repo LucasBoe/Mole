@@ -12,6 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65138e4512561c74e9d2ebeb88d0b6d0, type: 3}
   m_Name: Rope
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 21300000, guid: e95e39c1c7146134a93bef166ab36594, type: 3}
+  Sprite: {fileID: 21300000, guid: c08194d63c2574e418dd4435f0b60758, type: 3}
   Prefab: {fileID: 0}
-  IsUseable: 0
+  IsUseable: 1
+  HandOnly: 0
+  ThrowForce: 20
+  GravityScale: 3
+  ropeThrow:
+    Icon: {fileID: 21300000, guid: e95e39c1c7146134a93bef166ab36594, type: 3}
+    Name: throw Rope
+    IconImage: {fileID: 0}
+    SelectedImage: {fileID: 0}
+  hookPrefab: {fileID: -5677770464223142192, guid: dba5770e72c88fb4593f1f77d06e08e5, type: 3}

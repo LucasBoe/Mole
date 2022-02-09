@@ -210,7 +210,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startItems:
-  - Item: {fileID: 11400000, guid: d6f6298f03258bf48af39789468bf75b, type: 2}
+  - Item: {fileID: 11400000, guid: 423842dede65dce499a13036082fefa1, type: 2}
     Amount: 1
 --- !u!1 &7193096735473354739
 GameObject:
