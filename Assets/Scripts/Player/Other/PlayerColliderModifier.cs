@@ -9,12 +9,14 @@ public class PlayerColliderModifier : SingletonBehaviour<PlayerColliderModifier>
     {
         Default,
         Tunnel,
+        Hanging,
     }
 
-    [SerializeField] CapsuleCollider2D defaultCollider, inTunnelCollider;
+    [SerializeField] Collider2D defaultCollider, inTunnelCollider, hangingCollider;
 
     private bool isActive = true;
     private ColliderMode mode = ColliderMode.Default;
+    public ColliderMode Mode => mode;
 
     internal void SetActive(bool active)
     {
@@ -30,7 +32,8 @@ public class PlayerColliderModifier : SingletonBehaviour<PlayerColliderModifier>
 
     private void UpdateColliders()
     {
-        defaultCollider.enabled = isActive && mode == ColliderMode.Default;
+        defaultCollider.enabled = isActive && (mode == ColliderMode.Default || mode == ColliderMode.Hanging);
         inTunnelCollider.enabled = isActive && mode == ColliderMode.Tunnel;
+        hangingCollider.enabled = isActive && mode == ColliderMode.Hanging;
     }
 }

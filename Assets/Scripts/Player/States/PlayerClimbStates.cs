@@ -61,6 +61,7 @@ public class RopeClimbState : ClimbStateBase
 public class PullUpState : ClimbStateBase
 {
     float t = 0;
+    int mask;
 
     AnimationCurve curve;
 
@@ -73,6 +74,7 @@ public class PullUpState : ClimbStateBase
         base.Enter();
 
         curve = context.Values.PullUpCurve;
+        mask = LayerMask.GetMask("Hangable", "OneDirectionalFloor");
         SetCollisionActive(false);
 
         t = 0;
@@ -82,7 +84,7 @@ public class PullUpState : ClimbStateBase
         bool blocked = true;
         while (blocked && i < 25)
         {
-            Collider2D[] colliders = Physics2D.OverlapBoxAll(toCheck, new Vector2(1, 1.5f), 0, LayerMask.GetMask("Hangable", "OneDirectionalPlatform"));
+            Collider2D[] colliders = Physics2D.OverlapBoxAll(toCheck, new Vector2(1, 1.5f), 0, mask);
             blocked = colliders.Length != 0;
             Debug.DrawLine(toCheck + Vector2.left * 0.1f, toCheck + Vector2.right * 0.1f, blocked ? Color.red : Color.green, 10);
             toCheck += new Vector2(0, 0.25f);
@@ -90,18 +92,34 @@ public class PullUpState : ClimbStateBase
         }
 
         startPos = context.PlayerPos;
-        targetPos = toCheck;
+        targetPos = toCheck + Vector2.up * 0.5f; //+0.5 to counteract clothlines moving up;
     }
     public override void Update()
     {
         t += Time.deltaTime;
 
-        if (t < context.Values.PullUpDuration)
+        var checkEmptyBoxPos = context.PlayerPos + new Vector2(0, 0.5f);
+        var checkEmptyBoxScale = new Vector2(1, 2.5f);
+
+        bool pullUpFinished = t >= context.Values.PullUpDuration;
+        bool reachedStablePosition = !Physics2D.OverlapBox(checkEmptyBoxPos, checkEmptyBoxScale, 0, mask);
+
+        if (!pullUpFinished && !reachedStablePosition)
         {
+            Util.DebugDrawBox(checkEmptyBoxPos, checkEmptyBoxScale, color: Color.red);
             context.Rigidbody.MovePosition(Vector2.Lerp(startPos, targetPos, curve.Evaluate(t / context.Values.PullUpDuration)));
         }
         else
+        {
+            if (reachedStablePosition)
+                Util.DebugDrawBox(checkEmptyBoxPos, checkEmptyBoxScale, color: Color.yellow, 3f);
+            if (pullUpFinished)
+                Util.DebugDrawBox(checkEmptyBoxPos + new Vector2(0.25f, 0.25f), checkEmptyBoxScale, color: Color.green, 3f);
+
+            context.Rigidbody.velocity = Vector2.zero;
             SetState(new IdleState());
+            PlayerStateMachine.Instance.enabled = false;
+        }
     }
     public override void Exit()
     {
@@ -299,7 +317,13 @@ public class HangingBaseState : ClimbStateBase
 
 public class HangingState : HangingBaseState
 {
-    public HangingState() : base() { }
+    PlayerColliderModifier.ColliderMode modeBefore;
+    public override void Enter()
+    {
+        base.Enter();
+        modeBefore = PlayerColliderModifier.Instance.Mode;
+        PlayerColliderModifier.Instance.SetMode(PlayerColliderModifier.ColliderMode.Hanging);
+    }
 
     public override void Update()
     {
@@ -323,6 +347,12 @@ public class HangingState : HangingBaseState
             Debug.DrawLine(context.PlayerPos, toMoveTo, Color.cyan);
             context.Rigidbody.MovePosition(Vector2.MoveTowards(context.PlayerPos, toMoveTo, Time.deltaTime * 10f));
         }
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        PlayerColliderModifier.Instance.SetMode(modeBefore);
     }
 }
 

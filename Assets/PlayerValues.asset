@@ -57,7 +57,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 0
     m_RotationOrder: 4
-  PullUpDuration: 0.5
+  PullUpDuration: 0.75
   PullUpCurve:
     serializedVersion: 2
     m_Curve:
@@ -82,7 +82,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  DropDownSpeed: 25
+  DropDownSpeed: 50
   HangableOffset: {x: 0, y: 1.33}
   WallPushVelocity: 0.1
   WallSnapXVelocity: 10

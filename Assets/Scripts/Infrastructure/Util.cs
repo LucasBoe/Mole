@@ -92,6 +92,24 @@ public static class Util
         }
     }
 
+    internal static void DebugDrawBox(Vector2 pos, Vector2 scale, Color color, float lifetime = -1f)
+    {
+        if (lifetime < 0)
+        {
+            Debug.DrawLine(pos + new Vector2(scale.x / 2, scale.y / 2), pos + new Vector2(scale.x / 2, -scale.y / 2), color);
+            Debug.DrawLine(pos + new Vector2(-scale.x / 2, scale.y / 2), pos + new Vector2(-scale.x / 2, -scale.y / 2), color);
+            Debug.DrawLine(pos + new Vector2(scale.x / 2, -scale.y / 2), pos + new Vector2(-scale.x / 2, -scale.y / 2), color);
+            Debug.DrawLine(pos + new Vector2(-scale.x / 2, scale.y / 2), pos + new Vector2(scale.x / 2, scale.y / 2), color);
+        }
+        else
+        {
+            Debug.DrawLine(pos + new Vector2(scale.x / 2, scale.y / 2), pos + new Vector2(scale.x / 2, -scale.y / 2), color, lifetime);
+            Debug.DrawLine(pos + new Vector2(-scale.x / 2, scale.y / 2), pos + new Vector2(-scale.x / 2, -scale.y / 2), color, lifetime);
+            Debug.DrawLine(pos + new Vector2(scale.x / 2, -scale.y / 2), pos + new Vector2(-scale.x / 2, -scale.y / 2), color, lifetime);
+            Debug.DrawLine(pos + new Vector2(-scale.x / 2, scale.y / 2), pos + new Vector2(scale.x / 2, scale.y / 2), color, lifetime);
+        }
+    }
+
     public static void DebugDrawCross(Vector2 position, Color color, float size, float lifetime = -1f)
     {
         if (lifetime < 0)
@@ -189,7 +207,7 @@ public static class Util
     public static Gradient ToGradient(this Color color)
     {
         Gradient gradient = new Gradient();
-        gradient.SetKeys(new GradientColorKey[] { new GradientColorKey(color, 0) } , new GradientAlphaKey[] { new GradientAlphaKey(color.a,0) });
+        gradient.SetKeys(new GradientColorKey[] { new GradientColorKey(color, 0) }, new GradientAlphaKey[] { new GradientAlphaKey(color.a, 0) });
         return gradient;
     }
 
