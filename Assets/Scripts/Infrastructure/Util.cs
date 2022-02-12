@@ -190,6 +190,11 @@ public static class Util
         return new Vector2(vector2.x, -vector2.y);
     }
 
+    public static Vector2 ToVector2(this Vector3 vector3)
+    {
+        return vector3;
+    }
+
     public static Vector3[] ToVector3Array(this Vector2[] v2s)
     {
         List<Vector3> v3s = new List<Vector3>();
