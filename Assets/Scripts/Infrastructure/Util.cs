@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class Util
@@ -90,6 +91,11 @@ public static class Util
 
             lastPosition = positionxyz;
         }
+    }
+
+    public static Rigidbody2D GetClosest(this IEnumerable<Rigidbody2D> rigidbodies, Vector2 toPos)
+    {
+        return rigidbodies.ToArray().OrderBy(r => Vector2.Distance(r.position, toPos)).First();
     }
 
     internal static void DebugDrawBox(Vector2 pos, Vector2 scale, Color color, float lifetime = -1f)

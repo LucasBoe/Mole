@@ -5,32 +5,24 @@ using UnityEngine;
 
 public class PlayerRopeClimbListener : SingletonBehaviour<PlayerRopeClimbListener>
 {
+    [SerializeField] Rigidbody2D rigidbody2D;
+    [SerializeField] SpringJoint2D springJoint2D;
     public enum States
     {
-        Active,
-        Passive,
+        Idle,
+        Climb,
     }
 
-    States currentState = States.Passive;
+    [SerializeField] States currentState = States.Idle;
     Coroutine currentCoroutine;
+    bool hover;
 
     private void Update()
     {
-        if (currentState == States.Passive)
-            return;
+        Collider2D[] ropeColliders = Physics2D.OverlapBoxAll(transform.position, Vector2.one, 0, LayerMask.GetMask("Rope"));
 
-        Collider2D ropeCollider = Physics2D.OverlapBox(transform.position, Vector2.one, 0, LayerMask.GetMask("Rope"));
-
-        if (ropeCollider != null)
-        {
-            RopeElement rope = ropeCollider.GetComponent<RopeElement>();
-
-            if (rope != null)
-            {
-                PlayerStateMachine.Instance.SetState(new RopeClimbState(rope));
-                return;
-            }
-        }
+        bool hoverBefore = hover;
+        hover = ropeColliders.Length > 0;
     }
 
     public void TrySetState(States toSet, float delay = -1, bool forceOverride = false)
@@ -44,7 +36,9 @@ public class PlayerRopeClimbListener : SingletonBehaviour<PlayerRopeClimbListene
         if (delay <= 0)
         {
             currentState = toSet;
-        } else
+            springJoint2D.enabled = toSet == States.Climb;
+        }
+        else
         {
             currentCoroutine = StartCoroutine(SetStateDelayedRoutine(toSet, delay));
         }
@@ -55,5 +49,15 @@ public class PlayerRopeClimbListener : SingletonBehaviour<PlayerRopeClimbListene
         yield return new WaitForSeconds(delay);
         currentState = toSet;
         currentCoroutine = null;
+    }
+
+    internal void SetClimbingBody(Rigidbody2D body)
+    {
+        springJoint2D.connectedBody = body;
+    }
+
+    internal ColliderDistance2D GetDistanceToBody()
+    {
+        return springJoint2D.connectedBody.Distance(PlayerColliderModifier.Instance.GetActiveCollider());
     }
 }

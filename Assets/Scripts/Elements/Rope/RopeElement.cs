@@ -83,6 +83,7 @@ public class RopeElement : MonoBehaviour, IInputActionProvider
 
     internal void Destroy()
     {
+        Destroy(physicsInstance.gameObject);
         Destroy(visualizerInstance.gameObject);
         Destroy(gameObject);
         Destroy(this);

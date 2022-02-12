@@ -113,6 +113,12 @@ public class RopeElementPhysicsBehaviour : MonoBehaviour
             target.connectedBody = Last.Rigidbody;
     }
 
+    private void OnDestroy()
+    {
+        for (int i = elements.Count - 1; i >= 0; i--)
+            Destroy(elements[i].gameObject);
+    }
+
     private enum ModifationDirection
     {
         Shorten,

@@ -164,9 +164,6 @@ public class FallState : MoveBaseState
                 }
             }
         };
-
-        //autograp to rope
-        PlayerRopeClimbListener.Instance.TrySetState(PlayerRopeClimbListener.States.Active);
     }
 
     public override void Update()
@@ -257,7 +254,6 @@ public class FallState : MoveBaseState
     {
         base.Exit();
         PlayerInputActionRegister.Instance.UnregisterInputAction(attackEnemyBelowAction);
-        PlayerRopeClimbListener.Instance.TrySetState(PlayerRopeClimbListener.States.Passive);
         Time.timeScale = 1f;
     }
 }

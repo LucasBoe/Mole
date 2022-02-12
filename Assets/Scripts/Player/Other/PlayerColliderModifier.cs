@@ -36,4 +36,9 @@ public class PlayerColliderModifier : SingletonBehaviour<PlayerColliderModifier>
         inTunnelCollider.enabled = isActive && mode == ColliderMode.Tunnel;
         hangingCollider.enabled = isActive && mode == ColliderMode.Hanging;
     }
+
+    internal Collider2D GetActiveCollider()
+    {
+        return mode == ColliderMode.Tunnel ? inTunnelCollider : defaultCollider;
+    }
 }

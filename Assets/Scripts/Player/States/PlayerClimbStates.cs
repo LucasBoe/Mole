@@ -1,6 +1,7 @@
 using PlayerCollisionCheckType;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ClimbStateBase : PlayerStateBase
@@ -29,9 +30,10 @@ public class ClimbStateBase : PlayerStateBase
     }
 }
 
-public class RopeClimbState : ClimbStateBase
+public class RopeClimbState : PlayerStateBase
 {
     RopeElement climbingOn;
+    Rigidbody2D climbingBody;
     public RopeClimbState(RopeElement ropeElement) : base()
     {
         climbingOn = ropeElement;
@@ -43,25 +45,46 @@ public class RopeClimbState : ClimbStateBase
         if (PlayerRopeUser.Instance.IsActive)
             PlayerRopeUser.Instance.DropCurrentRope();
 
-        SetCollisionActive(false);
+        PlayerRopeClimbListener.Instance.TrySetState(PlayerRopeClimbListener.States.Climb, forceOverride: true);
+
     }
 
     public override void Update()
     {
         base.Update();
 
-        if (climbingOn == null)
-            SetState(new FallState());
+        RopePhysicsSegment[] segments = GetCheck(CheckType.Rope).Get<RopePhysicsSegment>();
+        if (segments.Length > 0)
+        {
+            Rigidbody2D closest = segments.Select(s => s.Rigidbody).GetClosest(context.PlayerPos);
+            if (closest != null)
+            {
+                climbingBody = closest;
+                PlayerRopeClimbListener.Instance.SetClimbingBody(climbingBody);
+            }
+        }
 
-        Vector2 closestRopePostion = climbingOn.GetClosestPoint(context.PlayerPos);
-        context.Rigidbody.MovePosition(closestRopePostion + context.Input.Axis * Time.deltaTime * context.Values.RopeClimbVelocity);
+        if (context.Input.Jump)
+            JumpOff(context.Input.Axis);
+
+        if (climbingBody == null)
+            SetState(new FallState());
+        else
+        {
+            ColliderDistance2D distanceToClimbingBody = PlayerRopeClimbListener.Instance.GetDistanceToBody();
+            float movementModifier = Mathf.Clamp(0.5f - distanceToClimbingBody.distance, 0, 10);
+
+            if (context.Input.Axis != Vector2.zero)
+                context.Rigidbody.MovePosition(context.PlayerPos + context.Input.Axis * Time.deltaTime * movementModifier * context.Values.RopeClimbVelocity);
+            else
+                context.Rigidbody.MovePosition(Vector2.MoveTowards(context.PlayerPos, distanceToClimbingBody.pointB, context.Values.RopeClimbVelocity * Time.deltaTime));
+        }
     }
     public override void Exit()
     {
         base.Exit();
-        PlayerRopeClimbListener.Instance.TrySetState(PlayerRopeClimbListener.States.Passive);
-        PlayerRopeClimbListener.Instance.TrySetState(PlayerRopeClimbListener.States.Active, delay: 0.5f);
-        SetCollisionActive(true);
+
+        PlayerRopeClimbListener.Instance.TrySetState(PlayerRopeClimbListener.States.Idle, forceOverride: true);
     }
 }
 
