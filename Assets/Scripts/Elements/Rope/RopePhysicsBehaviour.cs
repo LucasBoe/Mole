@@ -10,14 +10,15 @@ public class RopePhysicsBehaviour : MonoBehaviour
     [SerializeField] RopePhysicsElement elementPrefab;
     [SerializeField] LineRenderer lineRenderer;
     [SerializeField] TargetJoint2D target;
+    public TargetJoint2D Target => target;
 
     private List<RopePhysicsElement> elements = new List<RopePhysicsElement>();
-    private RopePhysicsElement lowest = null;
     private RopePhysicsElement Last => elements.Count == 0 ? null : elements[elements.Count - 1];
-    private float length = 10.5f;
+    private float length = 0;
 
-    private void Start()
+    public void Init(float startLength)
     {
+        length = startLength;
         CreateRopeElements(length);
     }
 
@@ -29,7 +30,6 @@ public class RopePhysicsBehaviour : MonoBehaviour
             RopePhysicsElement newElement = Instantiate(elementPrefab, previousElementExists ? Last.transform.position : transform.position, Quaternion.identity);
 
             newElement.Connected(previousElementExists ? Last.Rigidbody : GetComponent<Rigidbody2D>());
-            lowest = newElement;
             elements.Add(newElement);
             if (newLength >= 1)
                 newLength--;
@@ -79,27 +79,20 @@ public class RopePhysicsBehaviour : MonoBehaviour
                 elements.RemoveAt(index);
                 Destroy(element.gameObject);
             }
-            lowest = elements[elements.Count - 1];
             SetLastElementLength(newLengt - Mathf.Floor(newLengt));
         }
     }
 
     private void SetLastElementLength(float lastLength)
     {
-        elements[elements.Count - 1].SetDistance(lastLength);
+        Last.SetDistance(lastLength);
     }
 
     private void Update()
     {
         lineRenderer.positionCount = elements.Count;
         lineRenderer.SetPositions(elements.Select(e => e.Rigidbody.position).ToArray().ToVector3Array());
-
         target.target = Last.GetEnd();
-
-        if (Input.GetKey(KeyCode.DownArrow))
-            SetLength(length - Time.deltaTime);
-        else if (Input.GetKey(KeyCode.UpArrow))
-            SetLength(length + Time.deltaTime);
     }
 
     private enum ModifationDirection
