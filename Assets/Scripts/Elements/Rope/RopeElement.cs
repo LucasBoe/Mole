@@ -4,76 +4,77 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[RequireComponent(typeof(DistanceJoint2D))]
 public class RopeElement : MonoBehaviour, IInputActionProvider
 {
     [SerializeField] private RopeElementVisualizer visualizerPrefab;
+    private RopeElementVisualizer visualizerInstance;
 
-    [SerializeField] private DistanceJoint2D otherJoint;
-    [SerializeField] private SpringJoint2D attachJoint;
+    [SerializeField] private RopeElementPhysicsBehaviour physicsInstance;
 
-    [SerializeField] EdgeCollider2D ropeCollider;
+    [SerializeField] private AnchoredJoint2D attachJoint;
+
+    //[SerializeField] EdgeCollider2D ropeCollider;
 
     [SerializeField] private bool shouldOverrideDistance = true;
 
-    private RopeElementVisualizer visualizerInstance;
     private float pullForce;
     public float PullForce => pullForce;
 
-    public Rigidbody2D Rigidbody2DOther { get => otherJoint.connectedBody; }
+
+    private Rigidbody2D otherRigidbody;
+    public Rigidbody2D Rigidbody2DOther { get => otherRigidbody; }
     public Rigidbody2D Rigidbody2DAttachedTo { get => attachJoint.connectedBody; }
 
     public void SetJointDistance(float newDistance)
     {
-        if (shouldOverrideDistance)
-            otherJoint.distance = newDistance; ;
+        //if (shouldOverrideDistance)
+        //    otherJoint.distance = newDistance;
+        physicsInstance.SetLength(newDistance);
     }
 
     public void Reconnect(Rigidbody2D to)
     {
         Debug.LogWarning($"reconnected from {attachJoint.connectedBody.name} to {to.name}");
         attachJoint.connectedBody = to;
-        visualizerInstance.Init(to, otherJoint.connectedBody);
-    }
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        visualizerInstance = Instantiate(visualizerPrefab);
-        visualizerInstance.Init(attachJoint.connectedBody, otherJoint.connectedBody);
+        visualizerInstance.Init(to, otherRigidbody, physicsInstance);
     }
 
     private void Update()
     {
+        /*
         ropeCollider.SetPoints(new List<Vector2>(new Vector2[]
         {
             transform.InverseTransformPoint(Rigidbody2DAttachedTo.position),
             transform.InverseTransformPoint(Rigidbody2DOther.position)
         }));
+        */
 
-        pullForce = otherJoint.reactionForce.magnitude;
+
+        pullForce = Mathf.Min(attachJoint.reactionForce.magnitude, 25, Time.time);
     }
 
     public void Setup(Rigidbody2D attached, Rigidbody2D other)
     {
-        otherJoint.connectedBody = other;
-        otherJoint.connectedAnchor = Vector2.zero;
+        otherRigidbody = other;
 
         attachJoint.connectedBody = attached;
         attachJoint.connectedAnchor = Vector2.zero;
+        physicsInstance.Init(attached, otherRigidbody);
+
+        visualizerInstance = Instantiate(visualizerPrefab);
+        visualizerInstance.Init(attachJoint.connectedBody, otherRigidbody, physicsInstance);
     }
 
     internal void FixateDistance(bool active)
     {
         shouldOverrideDistance = active;
-        if (!shouldOverrideDistance)
-            otherJoint.distance = float.MaxValue;
+        //if (!shouldOverrideDistance)
+        //    otherJoint.distance = float.MaxValue;
     }
 
     public Vector2 GetClosestPoint(Vector2 point)
     {
-        if (!otherJoint || !attachJoint)
+        if (!otherRigidbody || !attachJoint)
             return point;
         else
             return Util.GetClosestPointOnLineSegment(Rigidbody2DOther.position, Rigidbody2DAttachedTo.position, point);
@@ -84,11 +85,6 @@ public class RopeElement : MonoBehaviour, IInputActionProvider
         Destroy(visualizerInstance.gameObject);
         Destroy(gameObject);
         Destroy(this);
-    }
-
-    private void OnDrawGizmos()
-    {
-        Handles.Label(Vector3.Lerp(Rigidbody2DOther.position, Rigidbody2DAttachedTo.position, 0.5f), otherJoint.distance.ToString());
     }
 
     public InputAction FetchInputAction()

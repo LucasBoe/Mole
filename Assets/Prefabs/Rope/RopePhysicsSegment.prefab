@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 5796486872293685243}
   - component: {fileID: 1073419391189356010}
   - component: {fileID: 8426806209408980155}
-  m_Layer: 11
-  m_Name: RopePhysicsElement
+  m_Layer: 13
+  m_Name: RopePhysicsSegment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

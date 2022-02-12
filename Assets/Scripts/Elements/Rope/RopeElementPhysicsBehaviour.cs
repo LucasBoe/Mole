@@ -4,32 +4,42 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class RopePhysicsBehaviour : MonoBehaviour
+public class RopeElementPhysicsBehaviour : MonoBehaviour
 {
-    [SerializeField] HingeJoint2D hinge;
-    [SerializeField] RopePhysicsElement elementPrefab;
-    [SerializeField] LineRenderer lineRenderer;
-    [SerializeField] TargetJoint2D target;
-    public TargetJoint2D Target => target;
+    [SerializeField] RopePhysicsSegment segmentPrefab;
+    [SerializeField] FixedJoint2D target;
+    public FixedJoint2D Target => target;
 
-    private List<RopePhysicsElement> elements = new List<RopePhysicsElement>();
-    private RopePhysicsElement Last => elements.Count == 0 ? null : elements[elements.Count - 1];
+    private List<RopePhysicsSegment> elements = new List<RopePhysicsSegment>();
+    private RopePhysicsSegment Last => elements.Count == 0 ? null : elements[elements.Count - 1];
+
+
+    private Rigidbody2D connectedBody;
     private float length = 0;
+    public float Length => length;
 
-    public void Init(float startLength)
+    public void Init(Rigidbody2D endBody, Rigidbody2D startBody)
     {
-        length = startLength;
-        CreateRopeElements(length);
+        length = Vector2.Distance(startBody.position, endBody.position);
+        Vector2[] pos = new Vector2[Mathf.CeilToInt(length)];
+        for (int i = 0; i < length; i++)
+            pos[i] = Vector2.Lerp(startBody.position, endBody.position, (float)i / length);
+
+        this.connectedBody = startBody;
+        CreateRopeElements(length, pos);
     }
 
-    private void CreateRopeElements(float newLength)
+    private void CreateRopeElements(float newLength, Vector2[] positions = null)
     {
+        int index = 0;
         while (newLength > 0)
         {
             bool previousElementExists = Last != null;
-            RopePhysicsElement newElement = Instantiate(elementPrefab, previousElementExists ? Last.transform.position : transform.position, Quaternion.identity);
+            Vector2 pos = (positions != null) ? positions[index] : (previousElementExists ? Last.transform.position.ToVector2() : transform.position.ToVector2());
 
-            newElement.Connected(previousElementExists ? Last.Rigidbody : GetComponent<Rigidbody2D>());
+            RopePhysicsSegment newElement = Instantiate(segmentPrefab, pos, Quaternion.identity);
+
+            newElement.Connected(previousElementExists ? Last.Rigidbody : connectedBody);
             elements.Add(newElement);
             if (newLength >= 1)
                 newLength--;
@@ -38,9 +48,17 @@ public class RopePhysicsBehaviour : MonoBehaviour
                 newElement.SetDistance(newLength);
                 newLength = 0;
             }
+
+            index++;
         }
     }
-    private void SetLength(float newLength)
+
+    internal Vector2[] GetPoints()
+    {
+        return elements.Select(e => e.Rigidbody.position).ToArray();
+    }
+
+    public void SetLength(float newLength)
     {
         if (newLength < length)
         {
@@ -75,7 +93,7 @@ public class RopePhysicsBehaviour : MonoBehaviour
             {
                 toRemove--;
                 int index = elements.Count - 1;
-                RopePhysicsElement element = elements[index];
+                RopePhysicsSegment element = elements[index];
                 elements.RemoveAt(index);
                 Destroy(element.gameObject);
             }
@@ -85,14 +103,14 @@ public class RopePhysicsBehaviour : MonoBehaviour
 
     private void SetLastElementLength(float lastLength)
     {
-        Last.SetDistance(lastLength);
+        if (Last != null)
+            Last.SetDistance(lastLength);
     }
 
     private void Update()
     {
-        lineRenderer.positionCount = elements.Count;
-        lineRenderer.SetPositions(elements.Select(e => e.Rigidbody.position).ToArray().ToVector3Array());
-        target.target = Last.GetEnd();
+        if (Last != null)
+            target.connectedBody = Last.Rigidbody;
     }
 
     private enum ModifationDirection

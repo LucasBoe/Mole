@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RopePhysicsElement : MonoBehaviour
+public class RopePhysicsSegment : MonoBehaviour
 {
     [SerializeField] private CapsuleCollider2D capsuleCollider;
     [SerializeField] private HingeJoint2D joint;

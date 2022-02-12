@@ -6,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(LineRenderer))]
 public class RopeElementVisualizer : MonoBehaviour
 {
+    [SerializeField] RopeElementPhysicsBehaviour physicsBehaviour;
     [SerializeField] private Rigidbody2D start, end;
     [SerializeField] private Transform tween;
     private TargetJoint2D tweenJoint;
@@ -22,28 +23,30 @@ public class RopeElementVisualizer : MonoBehaviour
         lineRenderer = GetComponent<LineRenderer>();
     }
 
-    internal void Init(Rigidbody2D start, Rigidbody2D end)
+    internal void Init(Rigidbody2D start, Rigidbody2D end, RopeElementPhysicsBehaviour physicsBehaviour = null)
     {
         this.start = start;
         this.end = end;
+        this.physicsBehaviour = physicsBehaviour;
         tween.position = (start.position + end.position) / 2;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!start || !end)
+        if (!physicsBehaviour && (!start || !end))
             return;
 
-        float distance = Vector2.Distance(start.position, end.position);
-        Vector2 center = (start.position + end.position) / 2f;
-        Vector2 gravityModifier = Vector2.down * distance * gravityValue;
-        Vector2 bufferModifier = Vector2.down * distance * 0.25f * buffer;
-        tweenJoint.target = center + gravityModifier + bufferModifier;
-
         Vector2[] points = new Vector2[] { start.position, tween.position, end.position };
+        float distance = Vector2.Distance(start.position, end.position);
 
-        for (int i = 0; i < distance / 10f + 1; i++)
+        if (physicsBehaviour != null)
+        {
+            points = physicsBehaviour.GetPoints();
+            distance = physicsBehaviour.Length;
+        }
+
+        for (int i = 0; i < distance / Mathf.Pow(points.Length + 1, 2) ; i++)
         {
             points = Util.SmoothToCurve(points, smoothValue);
         }
