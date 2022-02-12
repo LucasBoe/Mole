@@ -5,50 +5,44 @@ using UnityEngine;
 
 public class PlayerRopeClimbListener : SingletonBehaviour<PlayerRopeClimbListener>
 {
-    [SerializeField] Rigidbody2D rigidbody2D;
-    [SerializeField] SpringJoint2D springJoint2D;
+    [SerializeField] private SpringJoint2D springJoint2D;
     public enum States
     {
         Idle,
+        IdleHoverRope,
         Climb,
     }
 
-    [SerializeField] States currentState = States.Idle;
-    Coroutine currentCoroutine;
-    bool hover;
+    [SerializeField] private States currentState = States.Idle;
+
+    private InputAction startClimbing;
+
+    private void Start()
+    {
+        startClimbing = new InputAction() { ActionCallback = () => PlayerStateMachine.Instance.SetState(new RopeClimbState()), Input = ControlType.Use, Stage = InputActionStage.WorldObject, Target = transform, Text = "Climb Rope" };
+    }
 
     private void Update()
     {
-        Collider2D[] ropeColliders = Physics2D.OverlapBoxAll(transform.position, Vector2.one, 0, LayerMask.GetMask("Rope"));
-
-        bool hoverBefore = hover;
-        hover = ropeColliders.Length > 0;
-    }
-
-    public void TrySetState(States toSet, float delay = -1, bool forceOverride = false)
-    {
-        if (currentCoroutine != null && !forceOverride)
+        if (currentState == States.Climb)
             return;
 
-        if (forceOverride)
-            StopAllCoroutines();
 
-        if (delay <= 0)
-        {
-            currentState = toSet;
-            springJoint2D.enabled = toSet == States.Climb;
-        }
-        else
-        {
-            currentCoroutine = StartCoroutine(SetStateDelayedRoutine(toSet, delay));
-        }
+        Collider2D[] ropeColliders = Physics2D.OverlapBoxAll(transform.position, Vector2.one, 0, LayerMask.GetMask("Rope"));
+        TrySetState(ropeColliders.Length > 0 ? States.IdleHoverRope : States.Idle);
     }
 
-    private IEnumerator SetStateDelayedRoutine(States toSet, float delay)
+    public void TrySetState(States toSet)
     {
-        yield return new WaitForSeconds(delay);
+        States stateBefore = currentState;
         currentState = toSet;
-        currentCoroutine = null;
+
+        if (currentState == States.IdleHoverRope)
+            PlayerInputActionRegister.Instance.RegisterInputAction(startClimbing);
+        else
+            PlayerInputActionRegister.Instance.UnregisterInputAction(startClimbing);
+
+        springJoint2D.enabled = toSet == States.Climb;
     }
 
     internal void SetClimbingBody(Rigidbody2D body)

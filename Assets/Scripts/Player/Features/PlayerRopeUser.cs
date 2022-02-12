@@ -38,15 +38,8 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
 
     private void Start()
     {
-        startClimbing = new InputAction() { ActionCallback = StartClimbinfCurrentRope, Input = ControlType.Use, Stage = InputActionStage.WorldObject, Target = transform, Text = "Climb Rope" };
+        startClimbing = new InputAction() { ActionCallback = () => PlayerStateMachine.Instance.SetState(new RopeClimbState()) , Input = ControlType.Use, Stage = InputActionStage.WorldObject, Target = transform, Text = "Climb Rope" };
     }
-
-
-    private void StartClimbinfCurrentRope()
-    {
-        PlayerStateMachine.Instance.SetState(new RopeClimbState(currentElement));
-    }
-
     public Rigidbody2D ConnectToRope(Rope newRope, bool playerIsAtStart)
     {
         current = newRope;

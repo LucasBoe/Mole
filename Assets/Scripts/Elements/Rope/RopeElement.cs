@@ -96,6 +96,6 @@ public class RopeElement : MonoBehaviour, IInputActionProvider
 
     private void Climb()
     {
-        PlayerStateMachine.Instance.SetState(new RopeClimbState(this));
+        PlayerStateMachine.Instance.SetState(new RopeClimbState());
     }
 }

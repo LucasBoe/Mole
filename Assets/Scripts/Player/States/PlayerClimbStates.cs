@@ -32,12 +32,8 @@ public class ClimbStateBase : PlayerStateBase
 
 public class RopeClimbState : PlayerStateBase
 {
-    RopeElement climbingOn;
     Rigidbody2D climbingBody;
-    public RopeClimbState(RopeElement ropeElement) : base()
-    {
-        climbingOn = ropeElement;
-    }
+
 
     public override void Enter()
     {
@@ -45,7 +41,7 @@ public class RopeClimbState : PlayerStateBase
         if (PlayerRopeUser.Instance.IsActive)
             PlayerRopeUser.Instance.DropCurrentRope();
 
-        PlayerRopeClimbListener.Instance.TrySetState(PlayerRopeClimbListener.States.Climb, forceOverride: true);
+        PlayerRopeClimbListener.Instance.TrySetState(PlayerRopeClimbListener.States.Climb);
 
     }
 
@@ -84,7 +80,7 @@ public class RopeClimbState : PlayerStateBase
     {
         base.Exit();
 
-        PlayerRopeClimbListener.Instance.TrySetState(PlayerRopeClimbListener.States.Idle, forceOverride: true);
+        PlayerRopeClimbListener.Instance.TrySetState(PlayerRopeClimbListener.States.Idle);
     }
 }
 
