@@ -772,6 +772,48 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ropeUserMode: 0
+  distanceToRopeToLengthChangeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: -10
+      inSlope: 0.042755168
+      outSlope: 0.042755168
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.4482546
+    - serializedVersion: 3
+      time: 0.35
+      value: -0.038482666
+      inSlope: -0.05031199
+      outSlope: -0.05031199
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.1304778
+    - serializedVersion: 3
+      time: 2.0644107
+      value: 12.027415
+      inSlope: 9.559073
+      outSlope: 9.559073
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.09613544
+    - serializedVersion: 3
+      time: 10
+      value: 100
+      inSlope: 31.352602
+      outSlope: 31.352602
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.046924885
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   playerRigidbody2D: {fileID: 7193096735565673040}
 --- !u!114 &1802189378069733980
 MonoBehaviour:

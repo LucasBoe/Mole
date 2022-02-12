@@ -12,6 +12,7 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
     }
 
     [SerializeField] RopeUserMode ropeUserMode;
+    [SerializeField] AnimationCurve distanceToRopeToLengthChangeCurve;
 
     public RopeUserMode Mode
     {
@@ -96,12 +97,15 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
         else if (PlayerInputHandler.PlayerInput.LTUp)
             Mode = RopeUserMode.Free;
 
+
         float dist = Vector2.Distance(currentElement.Rigidbody2DOther.position, currentElement.Rigidbody2DAttachedTo.position);
         if (distBefore != 0f && Mode == RopeUserMode.Free)
         {
-            distanceDifference = dist - distBefore;
+            //distanceDifference = dist - distBefore;
+            distanceDifference = distanceToRopeToLengthChangeCurve.Evaluate(currentElement.DistanceToAttachedObject);
 
-            current.Elongate(distanceDifference, distribution: playerConstrollsStart ? 1f : 0f);
+            current.Elongate(distanceDifference * Time.deltaTime, distribution: playerConstrollsStart ? 1f : 0f);
+
         }
 
         distBefore = dist;

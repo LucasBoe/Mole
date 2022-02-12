@@ -79,6 +79,8 @@ public class Rope
             }
         }
 
+        Debug.LogWarning("new length: " + length + " (is short? " + IsShortRope +  " )");
+
         if (!IsShortRope)
         {
             ////balance
@@ -95,7 +97,7 @@ public class Rope
             Two.Rigidbody2DAttachedTo.AddForce(Vector2.up);
         }
         //TODO: Rewrite this. Had to make mode public and doing this in update is rediculous;
-        else if (PlayerRopeUser.Instance.Mode == PlayerRopeUser.RopeUserMode.Grap)
+        else // if (PlayerRopeUser.Instance.Mode == PlayerRopeUser.RopeUserMode.Grap)
         {
             //override length in case the player is pulling
             One.SetJointDistance(length);

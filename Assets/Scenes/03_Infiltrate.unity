@@ -2452,6 +2452,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Box (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1482603712404808885, guid: 5834c0eb76e870d4bb2d05de8dbabc89, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5834c0eb76e870d4bb2d05de8dbabc89, type: 3}
 --- !u!4 &51073685 stripped
@@ -16429,6 +16433,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Box
       objectReference: {fileID: 0}
+    - target: {fileID: 1482603712404808885, guid: 5834c0eb76e870d4bb2d05de8dbabc89, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5834c0eb76e870d4bb2d05de8dbabc89, type: 3}
 --- !u!4 &430022259 stripped
@@ -16792,6 +16800,10 @@ PrefabInstance:
     - target: {fileID: 3148500536322644065, guid: 573e8099eec64d248b46e8a58d9dc3cf, type: 3}
       propertyPath: m_Name
       value: RopeAnchor
+      objectReference: {fileID: 0}
+    - target: {fileID: 3148500536322644065, guid: 573e8099eec64d248b46e8a58d9dc3cf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 573e8099eec64d248b46e8a58d9dc3cf, type: 3}
@@ -38247,7 +38259,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1197234889
 Transform:
   m_ObjectHideFlags: 0

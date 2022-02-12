@@ -9,7 +9,6 @@ public class RopeElementVisualizer : MonoBehaviour
     [SerializeField] RopeElementPhysicsBehaviour physicsBehaviour;
     [SerializeField] private Rigidbody2D start, end;
     [SerializeField] private Transform tween;
-    private TargetJoint2D tweenJoint;
     private LineRenderer lineRenderer;
 
     [SerializeField] private float smoothValue = 0.25f;
@@ -19,7 +18,6 @@ public class RopeElementVisualizer : MonoBehaviour
 
     void Start()
     {
-        tweenJoint = GetComponentInChildren<TargetJoint2D>();
         lineRenderer = GetComponent<LineRenderer>();
     }
 
@@ -37,7 +35,7 @@ public class RopeElementVisualizer : MonoBehaviour
         if (!physicsBehaviour && (!start || !end))
             return;
 
-        Vector2[] points = new Vector2[] { start.position, tween.position, end.position };
+        Vector2[] points = new Vector2[] { start.position, end.position };
         float distance = Vector2.Distance(start.position, end.position);
 
         if (physicsBehaviour != null)

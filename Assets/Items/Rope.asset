@@ -16,7 +16,7 @@ MonoBehaviour:
   Prefab: {fileID: 0}
   IsUseable: 1
   HandOnly: 0
-  ThrowForce: 20
+  ThrowForce: 25
   GravityScale: 3
   ropeThrow:
     Icon: {fileID: 21300000, guid: e95e39c1c7146134a93bef166ab36594, type: 3}

@@ -12,6 +12,7 @@ public class RopeElement : MonoBehaviour, IInputActionProvider
     [SerializeField] private RopeElementPhysicsBehaviour physicsInstance;
 
     [SerializeField] private AnchoredJoint2D attachJoint;
+    public float DistanceToAttachedObject => Vector2.Distance(transform.position, attachJoint.connectedBody.position);
 
     //[SerializeField] EdgeCollider2D ropeCollider;
 
