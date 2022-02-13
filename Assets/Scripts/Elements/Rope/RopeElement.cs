@@ -17,7 +17,7 @@ public class RopeElement : MonoBehaviour, IInputActionProvider
 
 
 
-    private float pullForce;
+    [SerializeField] private float pullForce;
     public float PullForce => pullForce;
 
 
@@ -39,19 +39,21 @@ public class RopeElement : MonoBehaviour, IInputActionProvider
 
     private void Update()
     {
-        pullForce = Mathf.Min(attachJoint.reactionForce.magnitude, 25, Time.time);
+        float newPullForce = Mathf.Min(attachJoint.reactionForce.magnitude, Time.time);
+
+        pullForce = attachJoint.reactionForce.magnitude; // newPullForce;
     }
 
-    public void Setup(Rigidbody2D attached, Rigidbody2D other, Vector2[] travelPoints = null)
+    public void Setup(Rigidbody2D attached, Rigidbody2D other, float length, Vector2[] travelPoints = null)
     {
         otherRigidbody = other;
 
         attachJoint.connectedBody = attached;
         attachJoint.connectedAnchor = Vector2.zero;
         if (travelPoints == null)
-            physicsInstance.Init(attached, otherRigidbody);
+            physicsInstance.Init(attached, otherRigidbody, length);
         else
-            physicsInstance.Init(attached, otherRigidbody, travelPoints);
+            physicsInstance.Init(attached, otherRigidbody, length, travelPoints);
 
         visualizerInstance = Instantiate(visualizerPrefab, LayerHandler.Parent);
         visualizerInstance.Init(attachJoint.connectedBody, otherRigidbody, physicsInstance);

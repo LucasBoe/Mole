@@ -8,6 +8,7 @@ public class RopeElementPhysicsBehaviour : MonoBehaviour
 {
     [SerializeField] RopePhysicsSegment segmentPrefab;
     [SerializeField] FixedJoint2D target;
+    [SerializeField] float debugLength;
     public FixedJoint2D Target => target;
 
     private List<RopePhysicsSegment> elements = new List<RopePhysicsSegment>();
@@ -18,26 +19,27 @@ public class RopeElementPhysicsBehaviour : MonoBehaviour
     private float length = 0;
     public float Length => length;
 
-    public void Init(Rigidbody2D endBody, Rigidbody2D startBody, Vector2[] travelPoints)
+    public void Init(Rigidbody2D endBody, Rigidbody2D startBody, float length, Vector2[] travelPoints)
     {
         connectedBody = startBody;
+        this.length = length;
 
-        length = travelPoints.GetDistance();
         Vector2[] pos = new Vector2[Mathf.CeilToInt(length)];
         for (int i = 0; i < length; i++)
             pos[i] = travelPoints[(int)(((pos.Length - 1 - (float)i) / pos.Length) * travelPoints.Length)];
 
         CreateRopeElements(length, pos);
     }
-    internal void Init(Rigidbody2D endBody, Rigidbody2D startBody)
+    internal void Init(Rigidbody2D endBody, Rigidbody2D startBody, float length)
     {
         connectedBody = startBody;
-        length = Vector2.Distance(endBody.position, startBody.position);
-        //Vector2[] pos = new Vector2[Mathf.CeilToInt(length)];
-        //for (int i = 0; i < length; i++)
-        //    pos[i] = Vector2.Lerp(startBody.position, endBody.position, i / length);
+        this.length = length;
 
-        CreateRopeElements(length);
+        Vector2[] pos = new Vector2[Mathf.CeilToInt(length)];
+        for (int i = 0; i < length; i++)
+            pos[i] = Vector2.Lerp(startBody.position, endBody.position, i / length);
+
+        CreateRopeElements(length, pos);
     }
 
     private void CreateRopeElements(float newLength, Vector2[] positions = null)
@@ -58,6 +60,7 @@ public class RopeElementPhysicsBehaviour : MonoBehaviour
 
             RopePhysicsSegment newElement = Instantiate(segmentPrefab, pos, Quaternion.identity, LayerHandler.Parent);
             Util.DebugDrawCircle(pos, Color.green, 0.5f, lifetime: 4);
+            Debug.LogWarning(index);
 
             newElement.Connected(previousElementExists ? Last.Rigidbody : connectedBody);
             elements.Add(newElement);
@@ -80,6 +83,9 @@ public class RopeElementPhysicsBehaviour : MonoBehaviour
 
     public void SetLength(float newLength)
     {
+        debugLength = newLength;
+        Debug.LogWarning(newLength);
+
         if (newLength < length)
         {
             if (Mathf.Floor(length) > newLength)
@@ -108,6 +114,8 @@ public class RopeElementPhysicsBehaviour : MonoBehaviour
         }
         else if (direction == ModifationDirection.Shorten)
         {
+            Debug.LogError("Shorten...");
+
             int toRemove = Mathf.CeilToInt(length) - Mathf.CeilToInt(newLengt);
             while (toRemove > 0)
             {

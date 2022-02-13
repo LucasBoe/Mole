@@ -36,10 +36,10 @@ public class RopeHandler : SingletonBehaviour<RopeHandler>
             playerStart.ConnectToRope(newRope, playerIsAtStart: false);
     }
 
-    internal RopeElement CreateRopeElement(Rigidbody2D start, Rigidbody2D end, Vector2[] travelPoints = null)
+    internal RopeElement CreateRopeElement(Rigidbody2D start, Rigidbody2D end, float length, Vector2[] travelPoints = null)
     {
         RopeElement instance = Instantiate(ropePrefab, start.position, Quaternion.identity, LayerHandler.Parent);
-        instance.Setup(start, end, travelPoints);
+        instance.Setup(start, end, length, travelPoints);
         return instance;
     }
 

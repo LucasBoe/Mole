@@ -20,6 +20,9 @@ public class Rope
 
     //length & distribution
     private float length;
+    private SmoothFloat smoothLength1;
+    private SmoothFloat smoothLength2;
+
     private float distribution = 0.5f;
     private float deadLength = 0;
 
@@ -35,21 +38,21 @@ public class Rope
         {
             if (travelPoints == null)
             {
-                elements[0] = RopeHandler.Instance.CreateRopeElement(start, end);
                 length = Vector2.Distance(start.position, end.position);
+                elements[0] = RopeHandler.Instance.CreateRopeElement(start, end, length);
             }
             else
             {
-                elements[0] = RopeHandler.Instance.CreateRopeElement(start, end, travelPoints);
                 length = travelPoints.GetDistance();
+                elements[0] = RopeHandler.Instance.CreateRopeElement(start, end, length, travelPoints);
             }
             distribution = 0;
         }
         else
         {
-            elements[0] = RopeHandler.Instance.CreateRopeElement(start, anchors[0].Rigidbody2D);
-            elements[1] = RopeHandler.Instance.CreateRopeElement(end, anchors[anchors.Length - 1].Rigidbody2D);
-            RecalulateLengthAndDistributionFromDistance();
+            RecalulateLengthAndDistributionFromDistance(start, end, bufferLength: 1f);
+            elements[0] = RopeHandler.Instance.CreateRopeElement(start, anchors[0].Rigidbody2D, smoothLength1.Value);
+            elements[1] = RopeHandler.Instance.CreateRopeElement(end, anchors[anchors.Length - 1].Rigidbody2D, smoothLength2.Value);
         }
 
     }
@@ -92,10 +95,16 @@ public class Rope
             float distributionChange = (BalanceOperationn() / length);
             distribution += distributionChange;
             distribution = Mathf.Clamp(distribution, 0, 1);
+            UpdateLength();
+
+            smoothLength1.Smooth();
+            smoothLength2.Smooth();
+
+            Debug.LogWarning("r1: " + smoothLength1.Value + " \n r2: " + smoothLength2.Value);
 
             //new distance
-            One.SetJointDistance((length - deadLength) * distribution);
-            Two.SetJointDistance((length - deadLength) * (1f - distribution));
+            One.SetJointDistance(smoothLength1.Value);
+            Two.SetJointDistance(smoothLength2.Value);
 
             //update bodies
             One.Rigidbody2DAttachedTo.AddForce(Vector2.up);
@@ -117,13 +126,25 @@ public class Rope
     private float BalanceOperationn()
     {
         float forceDifference = (One.PullForce - Two.PullForce) * Time.deltaTime;
-        smoothForceDifference = Mathf.Lerp(smoothForceDifference, forceDifference, Time.deltaTime);
+        smoothForceDifference = Mathf.Lerp(smoothForceDifference, forceDifference, Time.deltaTime * 0.01f);
         return smoothForceDifference;
     }
 
-    private void RecalulateLengthAndDistributionFromDistance()
+    private void UpdateLength()
     {
-        Vector2[] points = GetPointsFromRigidbodys();
+        float v1 = (length - deadLength) * distribution;
+        float v2 = (length - deadLength) * (1f - distribution);
+
+        if (smoothLength1 == null) smoothLength1 = new SmoothFloat(v1);
+        if (smoothLength2 == null) smoothLength2 = new SmoothFloat(v2);
+
+        smoothLength1.Value = v1;
+        smoothLength2.Value = v2;
+    }
+
+    private void RecalulateLengthAndDistributionFromDistance(Rigidbody2D start, Rigidbody2D end, float bufferLength)
+    {
+        Vector2[] points = GetPointsFromRigidbodys(start, end);
 
         float startLength = 0;
         float endLength = 0;
@@ -141,15 +162,16 @@ public class Rope
         }
 
         distribution = startLength / (startLength + endLength);
-        length = startLength + deadLength + endLength;
+        length = startLength + deadLength + endLength + bufferLength;
+        UpdateLength();
     }
 
-    private Vector2[] GetPointsFromRigidbodys()
+    private Vector2[] GetPointsFromRigidbodys(Rigidbody2D start, Rigidbody2D end)
     {
         List<Vector2> points = new List<Vector2>();
-        points.Add(elements[0].Rigidbody2DAttachedTo.position);
+        points.Add(start.position);
         points.AddRange(anchors.Select(a => a.Rigidbody2D.position));
-        points.Add(elements[1].Rigidbody2DAttachedTo.position);
+        points.Add(end.position);
 
         return points.ToArray();
     }
@@ -169,5 +191,33 @@ public class RopeLengthChange
     {
         Distribution = distribution;
         Amount = amount;
+    }
+}
+
+public class SmoothFloat
+{
+    private float raw;
+    private float smoothed;
+    private float v1;
+
+    public SmoothFloat(float startValue)
+    {
+        this.smoothed = startValue;
+    }
+
+    public float Value
+    {
+        get => smoothed;
+        set
+        {
+            raw = value;
+        }
+    }
+
+    public void Smooth(float duration = 1)
+    {
+        Debug.Log("smooth" + raw + " to " + smoothed);
+
+        smoothed = Mathf.Lerp(smoothed, raw, Time.deltaTime / duration);
     }
 }
