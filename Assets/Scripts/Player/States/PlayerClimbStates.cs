@@ -34,7 +34,6 @@ public class RopeClimbState : PlayerStateBase
 {
     Rigidbody2D climbingBody;
 
-
     public override void Enter()
     {
         base.Enter();

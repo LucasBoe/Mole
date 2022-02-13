@@ -14,9 +14,8 @@ public class RopeElement : MonoBehaviour, IInputActionProvider
     [SerializeField] private AnchoredJoint2D attachJoint;
     public float DistanceToAttachedObject => Vector2.Distance(transform.position, attachJoint.connectedBody.position);
 
-    //[SerializeField] EdgeCollider2D ropeCollider;
 
-    [SerializeField] private bool shouldOverrideDistance = true;
+
 
     private float pullForce;
     public float PullForce => pullForce;
@@ -28,29 +27,18 @@ public class RopeElement : MonoBehaviour, IInputActionProvider
 
     public void SetJointDistance(float newDistance)
     {
-        //if (shouldOverrideDistance)
-        //    otherJoint.distance = newDistance;
         physicsInstance.SetLength(newDistance);
     }
 
     public void Reconnect(Rigidbody2D to)
     {
-        Debug.LogWarning($"reconnected from {attachJoint.connectedBody.name} to {to.name}");
+        Debug.Log($"reconnected from {attachJoint.connectedBody.name} to {to.name}");
         attachJoint.connectedBody = to;
         visualizerInstance.Init(to, otherRigidbody, physicsInstance);
     }
 
     private void Update()
     {
-        /*
-        ropeCollider.SetPoints(new List<Vector2>(new Vector2[]
-        {
-            transform.InverseTransformPoint(Rigidbody2DAttachedTo.position),
-            transform.InverseTransformPoint(Rigidbody2DOther.position)
-        }));
-        */
-
-
         pullForce = Mathf.Min(attachJoint.reactionForce.magnitude, 25, Time.time);
     }
 
@@ -60,27 +48,14 @@ public class RopeElement : MonoBehaviour, IInputActionProvider
 
         attachJoint.connectedBody = attached;
         attachJoint.connectedAnchor = Vector2.zero;
-        physicsInstance.Init(attached, otherRigidbody, travelPoints);
+        if (travelPoints == null)
+            physicsInstance.Init(attached, otherRigidbody);
+        else
+            physicsInstance.Init(attached, otherRigidbody, travelPoints);
 
         visualizerInstance = Instantiate(visualizerPrefab);
         visualizerInstance.Init(attachJoint.connectedBody, otherRigidbody, physicsInstance);
     }
-
-    internal void FixateDistance(bool active)
-    {
-        shouldOverrideDistance = active;
-        //if (!shouldOverrideDistance)
-        //    otherJoint.distance = float.MaxValue;
-    }
-
-    public Vector2 GetClosestPoint(Vector2 point)
-    {
-        if (!otherRigidbody || !attachJoint)
-            return point;
-        else
-            return Util.GetClosestPointOnLineSegment(Rigidbody2DOther.position, Rigidbody2DAttachedTo.position, point);
-    }
-
     internal void Destroy()
     {
         Destroy(physicsInstance.gameObject);
@@ -91,11 +66,6 @@ public class RopeElement : MonoBehaviour, IInputActionProvider
 
     public InputAction FetchInputAction()
     {
-        return new InputAction() { ActionCallback = Climb, Stage = InputActionStage.WorldObject, Target = gameObject.AddComponent<SpriteRenderer>(), Text = "Climb" };
-    }
-
-    private void Climb()
-    {
-        PlayerStateMachine.Instance.SetState(new RopeClimbState());
+        return PlayerInputActionCreator.GetClimbRopeAction(transform);
     }
 }

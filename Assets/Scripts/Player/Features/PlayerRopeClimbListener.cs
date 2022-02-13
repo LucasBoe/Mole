@@ -15,18 +15,10 @@ public class PlayerRopeClimbListener : SingletonBehaviour<PlayerRopeClimbListene
 
     [SerializeField] private States currentState = States.Idle;
 
-    private InputAction startClimbing;
-
-    private void Start()
-    {
-        startClimbing = new InputAction() { ActionCallback = () => PlayerStateMachine.Instance.SetState(new RopeClimbState()), Input = ControlType.Use, Stage = InputActionStage.WorldObject, Target = transform, Text = "Climb Rope" };
-    }
-
     private void Update()
     {
         if (currentState == States.Climb)
             return;
-
 
         Collider2D[] ropeColliders = Physics2D.OverlapBoxAll(transform.position, Vector2.one, 0, LayerMask.GetMask("Rope"));
         TrySetState(ropeColliders.Length > 0 ? States.IdleHoverRope : States.Idle);
@@ -38,9 +30,9 @@ public class PlayerRopeClimbListener : SingletonBehaviour<PlayerRopeClimbListene
         currentState = toSet;
 
         if (currentState == States.IdleHoverRope)
-            PlayerInputActionRegister.Instance.RegisterInputAction(startClimbing);
+            PlayerInputActionRegister.Instance.RegisterInputAction(PlayerInputActionCreator.GetClimbRopeAction(transform));
         else
-            PlayerInputActionRegister.Instance.UnregisterInputAction(startClimbing);
+            PlayerInputActionRegister.Instance.UnregisterInputAction(PlayerInputActionCreator.GetClimbRopeAction(transform));
 
         springJoint2D.enabled = toSet == States.Climb;
     }

@@ -20,12 +20,23 @@ public class RopeElementPhysicsBehaviour : MonoBehaviour
 
     public void Init(Rigidbody2D endBody, Rigidbody2D startBody, Vector2[] travelPoints)
     {
+        connectedBody = startBody;
+
         length = travelPoints.GetDistance();
         Vector2[] pos = new Vector2[Mathf.CeilToInt(length)];
         for (int i = 0; i < length; i++)
             pos[i] = travelPoints[(int)(((pos.Length - 1 - (float)i) / pos.Length) * travelPoints.Length)];
 
+        CreateRopeElements(length, pos);
+    }
+    internal void Init(Rigidbody2D endBody, Rigidbody2D startBody)
+    {
         connectedBody = startBody;
+        length = Vector2.Distance(endBody.position, startBody.position);
+        Vector2[] pos = new Vector2[Mathf.CeilToInt(length)];
+        for (int i = 0; i < length; i++)
+            pos[i] = Vector2.Lerp(startBody.position, endBody.position, i / length);
+
         CreateRopeElements(length, pos);
     }
 

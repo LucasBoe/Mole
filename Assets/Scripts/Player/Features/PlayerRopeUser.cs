@@ -20,7 +20,6 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
         set
         {
             ropeUserMode = value;
-            currentElement.FixateDistance(ropeUserMode != RopeUserMode.Free);
         }
     }
 
@@ -33,22 +32,14 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
 
     float distBefore;
     float distanceDifference;
-
-    private InputAction startClimbing;
-
-    private void Start()
-    {
-        startClimbing = new InputAction() { ActionCallback = () => PlayerStateMachine.Instance.SetState(new RopeClimbState()) , Input = ControlType.Use, Stage = InputActionStage.WorldObject, Target = transform, Text = "Climb Rope" };
-    }
     public Rigidbody2D ConnectToRope(Rope newRope, bool playerIsAtStart)
     {
         current = newRope;
         playerConstrollsStart = playerIsAtStart;
         currentElement = playerConstrollsStart ? current.One : current.Two;
         distBefore = 0;
-        currentElement.FixateDistance(false);
 
-        PlayerInputActionRegister.Instance.RegisterInputAction(startClimbing);
+        PlayerInputActionRegister.Instance.RegisterInputAction(PlayerInputActionCreator.GetClimbRopeAction(transform));
 
         return playerRigidbody2D;
     }
@@ -64,10 +55,9 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
 
     public Rope HandoverRopeTo(Rigidbody2D newRigidbody)
     {
-        currentElement.FixateDistance(true);
         current.ReplaceConnectedBody(playerRigidbody2D, newRigidbody);
 
-        PlayerInputActionRegister.Instance.UnregisterInputAction(startClimbing);
+        PlayerInputActionRegister.Instance.UnregisterInputAction(PlayerInputActionCreator.GetClimbRopeAction(transform));
 
         Rope r = current;
         current = null;
@@ -85,14 +75,16 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
         if (!IsActive)
             return;
 
-        if (PlayerInputHandler.PlayerInput.LTDown)
+        PlayerInput input = PlayerInputHandler.PlayerInput;
+
+        if (input.LTDown)
             Mode = RopeUserMode.Grap;
-        else if (PlayerInputHandler.PlayerInput.LTUp)
+        else if (input.LTUp)
             Mode = RopeUserMode.Free;
 
 
         float dist = Vector2.Distance(currentElement.Rigidbody2DOther.position, currentElement.Rigidbody2DAttachedTo.position);
-        if (distBefore != 0f && Mode == RopeUserMode.Free)
+        if (distBefore != 0f && Mode == RopeUserMode.Free && input.Axis != Vector2.zero)
         {
             //distanceDifference = dist - distBefore;
             distanceDifference = distanceToRopeToLengthChangeCurve.Evaluate(currentElement.DistanceToAttachedObject);
