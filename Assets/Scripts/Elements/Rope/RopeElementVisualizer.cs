@@ -49,11 +49,6 @@ public class RopeElementVisualizer : MonoBehaviour
             points = Util.SmoothToCurve(points, smoothValue);
         }
 
-        foreach (Vector2 point in points)
-        {
-            Util.DebugDrawCircle(point, Color.yellow, 0.5f);
-        }
-
         lineRenderer.positionCount = points.Length;
         lineRenderer.SetPositions(points.ToVector3Array());
     }

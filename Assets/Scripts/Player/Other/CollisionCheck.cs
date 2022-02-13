@@ -66,9 +66,12 @@ public class CollisionCheck
         List<T> elements = new List<T>();
         foreach (Collider2D collider in colliders)
         {
-            var floor = collider.GetComponent<T>();
-            if (floor != null)
-                elements.Add(floor);
+            if (collider != null)
+            {
+                var floor = collider.GetComponent<T>();
+                if (floor != null)
+                    elements.Add(floor);
+            }
         }
 
         return elements.ToArray();

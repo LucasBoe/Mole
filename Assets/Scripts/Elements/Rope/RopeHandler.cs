@@ -10,14 +10,14 @@ public class RopeHandler : SingletonBehaviour<RopeHandler>
     [SerializeField] private RopeEnd ropeEndPrefab;
 
     private List<Rope> ropes = new List<Rope>();
-    internal Rope CreateRope(Rigidbody2D player, Rigidbody2D end)
+    internal Rope CreateRope(Rigidbody2D player, Rigidbody2D end, Vector2[] travelPoints)
     {
-        return CreateRope(player, new RopeAnchor[0], end);
+        return CreateRope(player, new RopeAnchor[0], end, travelPoints);
     }
 
-    internal Rope CreateRope(Rigidbody2D start, RopeAnchor[] anchors, Rigidbody2D end)
+    internal Rope CreateRope(Rigidbody2D start, RopeAnchor[] anchors, Rigidbody2D end, Vector2[] travelPoints = null)
     {
-        Rope newRope = new Rope(start, anchors, end);
+        Rope newRope = new Rope(start, anchors, end, travelPoints);
         ropes.Add(newRope);
 
         CheckAndPotentiallyConnectPlayer(newRope, start, end);
@@ -30,18 +30,16 @@ public class RopeHandler : SingletonBehaviour<RopeHandler>
         PlayerRopeUser playerStart = start.GetComponentInChildren<PlayerRopeUser>();
         PlayerRopeUser playerEnd = end.GetComponentInChildren<PlayerRopeUser>();
 
-        Debug.LogWarning(playerStart + " / " + playerEnd);
-
         if (playerStart != null || newRope.IsShortRope)
             playerStart.ConnectToRope(newRope, playerIsAtStart: true);
         else if (playerEnd != null)
             playerStart.ConnectToRope(newRope, playerIsAtStart: false);
     }
 
-    internal RopeElement CreateRopeElement(Rigidbody2D start, Rigidbody2D end)
+    internal RopeElement CreateRopeElement(Rigidbody2D start, Rigidbody2D end, Vector2[] travelPoints = null)
     {
         RopeElement instance = Instantiate(ropePrefab, start.position, Quaternion.identity);
-        instance.Setup(start, end);
+        instance.Setup(start, end, travelPoints);
         return instance;
     }
 

@@ -18,19 +18,27 @@ public class RopeElementPhysicsBehaviour : MonoBehaviour
     private float length = 0;
     public float Length => length;
 
-    public void Init(Rigidbody2D endBody, Rigidbody2D startBody)
+    public void Init(Rigidbody2D endBody, Rigidbody2D startBody, Vector2[] travelPoints)
     {
-        length = Vector2.Distance(startBody.position, endBody.position);
+        length = travelPoints.GetDistance();
         Vector2[] pos = new Vector2[Mathf.CeilToInt(length)];
         for (int i = 0; i < length; i++)
-            pos[i] = Vector2.Lerp(startBody.position, endBody.position, (float)i / length);
+            pos[i] = travelPoints[(int)(((pos.Length - 1 - (float)i) / pos.Length) * travelPoints.Length)];
 
-        this.connectedBody = startBody;
+        connectedBody = startBody;
         CreateRopeElements(length, pos);
     }
 
     private void CreateRopeElements(float newLength, Vector2[] positions = null)
     {
+        if (positions != null)
+        {
+            foreach (Vector2 item in positions)
+            {
+                Util.DebugDrawCross(item, Color.yellow, 0.6f, 4);
+            }
+        }
+
         int index = 0;
         while (newLength > 0)
         {
@@ -38,6 +46,7 @@ public class RopeElementPhysicsBehaviour : MonoBehaviour
             Vector2 pos = (positions != null) ? positions[index] : (previousElementExists ? Last.transform.position.ToVector2() : transform.position.ToVector2());
 
             RopePhysicsSegment newElement = Instantiate(segmentPrefab, pos, Quaternion.identity);
+            Util.DebugDrawCircle(pos, Color.green, 0.5f, lifetime: 4);
 
             newElement.Connected(previousElementExists ? Last.Rigidbody : connectedBody);
             elements.Add(newElement);

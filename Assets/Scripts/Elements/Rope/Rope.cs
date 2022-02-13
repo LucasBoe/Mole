@@ -28,13 +28,13 @@ public class Rope
 
     List<RopeLengthChange> lengthChanges = new List<RopeLengthChange>();
 
-    public Rope(Rigidbody2D start, RopeAnchor[] anchors, Rigidbody2D end)
+    public Rope(Rigidbody2D start, RopeAnchor[] anchors, Rigidbody2D end, Vector2[] travelPoints)
     {
         this.anchors = new List<RopeAnchor>(anchors);
         if (IsShortRope)
         {
-            elements[0] = RopeHandler.Instance.CreateRopeElement(start, end);
-            length = Vector2.Distance(start.position, end.position);
+            elements[0] = RopeHandler.Instance.CreateRopeElement(start, end, travelPoints);
+            length = travelPoints.GetDistance();
             distribution = 0;
         }
         else
@@ -78,8 +78,6 @@ public class Rope
                 lengthChanges.RemoveAt(i);
             }
         }
-
-        Debug.LogWarning("new length: " + length + " (is short? " + IsShortRope +  " )");
 
         if (!IsShortRope)
         {

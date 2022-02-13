@@ -54,13 +54,13 @@ public class RopeElement : MonoBehaviour, IInputActionProvider
         pullForce = Mathf.Min(attachJoint.reactionForce.magnitude, 25, Time.time);
     }
 
-    public void Setup(Rigidbody2D attached, Rigidbody2D other)
+    public void Setup(Rigidbody2D attached, Rigidbody2D other, Vector2[] travelPoints = null)
     {
         otherRigidbody = other;
 
         attachJoint.connectedBody = attached;
         attachJoint.connectedAnchor = Vector2.zero;
-        physicsInstance.Init(attached, otherRigidbody);
+        physicsInstance.Init(attached, otherRigidbody, travelPoints);
 
         visualizerInstance = Instantiate(visualizerPrefab);
         visualizerInstance.Init(attachJoint.connectedBody, otherRigidbody, physicsInstance);

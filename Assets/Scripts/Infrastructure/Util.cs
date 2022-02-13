@@ -50,6 +50,15 @@ public static class Util
         return result.ToArray();
     }
 
+    public static float GetDistance(this Vector2[] points)
+    {
+        float d = 0;
+        for (int i = 1; i < points.Length; i++)
+            d += Vector2.Distance(points[i - 1], points[i]);
+
+        return d;
+    }
+
     public static bool CheckLineOfSight(Vector2 from, Vector2 to, string layer)
     {
         return CheckLineOfSight(from, to, new string[] { layer });
