@@ -14,21 +14,14 @@ public class RopeHook : CollectablePlayerItem
 
     [SerializeField] private Rigidbody2D rigidbody2D;
     [SerializeField] private Collider2D collider;
-    [SerializeField] private RopeElementVisualizer ropeElementVisualizerPrefab;
+    [SerializeField] private LineRenderer lineRenderer;
 
     private States current = States.Throw;
-    private Vector2 startPos;
-    private float lastDistance;
-    private RopeElementVisualizer visualizer;
     private List<Vector2> travelPositions = new List<Vector2>();
 
     private void Start()
     {
-        startPos = transform.position;
-        travelPositions.Add(startPos);
-        visualizer = Instantiate(ropeElementVisualizerPrefab);
-        visualizer.Init(PlayerController.Context.Rigidbody, rigidbody2D);
-        Time.timeScale = 0.33f;
+        travelPositions.Add(transform.position);
     }
 
     private void Update()
@@ -61,16 +54,38 @@ public class RopeHook : CollectablePlayerItem
                 FixateHook();
                 current = States.Static;
             }
+
+            UpateLineRenderer();
         }
+    }
+
+    private void UpateLineRenderer()
+    {
+        Vector3[] pos = InterpolatePathWihPlayer(travelPositions.ToArray()).ToVector3Array();
+
+        lineRenderer.positionCount = pos.Length;
+        lineRenderer.SetPositions(pos);
+    }
+
+    private Vector2[] InterpolatePathWihPlayer(Vector2[] path)
+    {
+        int length = path.Length;
+        Vector2[] pos = new Vector2[length];
+        for (int i = 0; i < pos.Length; i++)
+        {
+            pos[i] = Vector2.Lerp(PlayerController.Instance.transform.position, path[i], (float)i / Mathf.Max(length - 1, 1));
+        }
+
+        return pos;
     }
 
     private void FixateHook()
     {
-        rigidbody2D.constraints = RigidbodyConstraints2D.FreezePosition;
+        rigidbody2D.bodyType = RigidbodyType2D.Static;
         collider.enabled = false;
         travelPositions.Add(transform.position);
-        RopeHandler.Instance.CreateRope(PlayerController.Context.Rigidbody, rigidbody2D, travelPositions.ToArray());
-        Destroy(visualizer.gameObject);
+        Destroy(lineRenderer);
+        RopeHandler.Instance.CreateRope(PlayerController.Context.Rigidbody, rigidbody2D, InterpolatePathWihPlayer(travelPositions.ToArray()));
     }
 
     public override void Collect()
