@@ -38,7 +38,7 @@ public class RopeHandler : SingletonBehaviour<RopeHandler>
 
     internal RopeElement CreateRopeElement(Rigidbody2D start, Rigidbody2D end, Vector2[] travelPoints = null)
     {
-        RopeElement instance = Instantiate(ropePrefab, start.position, Quaternion.identity);
+        RopeElement instance = Instantiate(ropePrefab, start.position, Quaternion.identity, LayerHandler.Parent);
         instance.Setup(start, end, travelPoints);
         return instance;
     }
@@ -79,7 +79,7 @@ public class RopeHandler : SingletonBehaviour<RopeHandler>
 
     internal RopeEnd CreateRopeEnd(Vector2 position)
     {
-        return Instantiate(ropeEndPrefab, position, Quaternion.identity);
+        return Instantiate(ropeEndPrefab, position, Quaternion.identity, LayerHandler.Parent);
     }
 
     private void Update()

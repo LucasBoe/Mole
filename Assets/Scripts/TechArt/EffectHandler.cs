@@ -17,7 +17,7 @@ public class EffectHandler : SingletonBehaviour<EffectHandler>
             result = new EffectSpawnResult()
             {
                 ResultType = EffectSpawnType.ParticleSystem,
-                ParticleSystem = Instantiate(Instance.waterSplashPrefab, position, Quaternion.identity)
+                ParticleSystem = Instantiate(Instance.waterSplashPrefab, position, Quaternion.identity, LayerHandler.Parent)
             };
         }
 
@@ -28,7 +28,7 @@ public class EffectHandler : SingletonBehaviour<EffectHandler>
 
             if (customEffect.CustomSpawnType == EffectSpawnType.ParticleSystem)
             {
-                ParticleSystem instance = Instantiate(customEffect.PSPrefab, position, Quaternion.identity);
+                ParticleSystem instance = Instantiate(customEffect.PSPrefab, position, Quaternion.identity, LayerHandler.Parent);
 
                 result = new EffectSpawnResult()
                 {
@@ -42,7 +42,7 @@ public class EffectHandler : SingletonBehaviour<EffectHandler>
                 result = new EffectSpawnResult()
                 {
                     ResultType = EffectSpawnType.GameObject,
-                    GameObject = Instantiate(customEffect.GOPrefab, position, Quaternion.identity)
+                    GameObject = Instantiate(customEffect.GOPrefab, position, Quaternion.identity, LayerHandler.Parent)
                 };
             }
         }

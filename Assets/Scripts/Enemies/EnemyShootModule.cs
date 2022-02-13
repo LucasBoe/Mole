@@ -9,7 +9,7 @@ public class EnemyShootModule : EnemyModule<EnemyShootModule>
     public void Shoot(Vector3 target, float shootingVelocity)
     {
         Vector3 origin = Vector3.MoveTowards(transform.position, target, 1);
-        Rigidbody2D projectile = Instantiate(projectilePrefab, origin, Quaternion.identity);
+        Rigidbody2D projectile = Instantiate(projectilePrefab, origin, Quaternion.identity, LayerHandler.Parent);
         projectile.velocity = (target - transform.position).normalized * shootingVelocity;
     }
 }

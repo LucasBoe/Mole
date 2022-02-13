@@ -31,7 +31,7 @@ public class ThrowablePlayerItem : PlayerItem
     public override PlayerItemUseResult AimInteract(PlayerItemUser playerItemUser)
     {
         var playerPos = playerItemUser.transform.position;
-        GameObject instance = Instantiate(GetObjectToInstatiate(), playerPos + Vector3.up, Quaternion.identity);
+        GameObject instance = Instantiate(GetObjectToInstatiate(), playerPos + Vector3.up, Quaternion.identity, LayerHandler.Parent);
         Rigidbody2D rigidbody2D = instance.GetComponent<Rigidbody2D>();
         rigidbody2D.velocity = (PlayerInputHandler.PlayerInput.VirtualCursorToDir(playerPos) * ThrowForce);
         rigidbody2D.gravityScale = GravityScale;

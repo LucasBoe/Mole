@@ -19,7 +19,7 @@ public class EnemyDeathVisualizationSpawner : MonoBehaviour
 
         foreach (GameObject gameObject in toSpawn)
         {
-            GameObject instance = Instantiate(gameObject, (Vector2)transform.position + offset, Quaternion.identity);
+            GameObject instance = Instantiate(gameObject, (Vector2)transform.position + offset, Quaternion.identity, LayerHandler.Parent);
             instance.transform.localScale = scale;
         }
     }

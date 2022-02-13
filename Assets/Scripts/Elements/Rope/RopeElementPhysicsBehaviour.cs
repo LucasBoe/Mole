@@ -33,11 +33,11 @@ public class RopeElementPhysicsBehaviour : MonoBehaviour
     {
         connectedBody = startBody;
         length = Vector2.Distance(endBody.position, startBody.position);
-        Vector2[] pos = new Vector2[Mathf.CeilToInt(length)];
-        for (int i = 0; i < length; i++)
-            pos[i] = Vector2.Lerp(startBody.position, endBody.position, i / length);
+        //Vector2[] pos = new Vector2[Mathf.CeilToInt(length)];
+        //for (int i = 0; i < length; i++)
+        //    pos[i] = Vector2.Lerp(startBody.position, endBody.position, i / length);
 
-        CreateRopeElements(length, pos);
+        CreateRopeElements(length);
     }
 
     private void CreateRopeElements(float newLength, Vector2[] positions = null)
@@ -56,7 +56,7 @@ public class RopeElementPhysicsBehaviour : MonoBehaviour
             bool previousElementExists = Last != null;
             Vector2 pos = (positions != null) ? positions[index] : (previousElementExists ? Last.transform.position.ToVector2() : transform.position.ToVector2());
 
-            RopePhysicsSegment newElement = Instantiate(segmentPrefab, pos, Quaternion.identity);
+            RopePhysicsSegment newElement = Instantiate(segmentPrefab, pos, Quaternion.identity, LayerHandler.Parent);
             Util.DebugDrawCircle(pos, Color.green, 0.5f, lifetime: 4);
 
             newElement.Connected(previousElementExists ? Last.Rigidbody : connectedBody);

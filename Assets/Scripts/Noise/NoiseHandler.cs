@@ -11,7 +11,7 @@ public class NoiseHandler : SingletonBehaviour<NoiseHandler>
     internal void MakeNoise(Vector3 position, float volume)
     {
         Util.DebugDrawCross(position, Color.white, 1, 5f);
-        ParticleSystem particleSystem = Instantiate(noiseVisualization, position, Quaternion.identity);
+        ParticleSystem particleSystem = Instantiate(noiseVisualization, position, Quaternion.identity, LayerHandler.Parent);
         SetNoiseParticleSize(particleSystem, volume * 0.1f);
         Destroy(particleSystem.gameObject, 4);
         OnNoise?.Invoke(position, volume);

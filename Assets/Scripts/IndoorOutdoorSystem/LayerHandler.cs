@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEditor;
 
 public enum Layers
 {
@@ -15,8 +16,10 @@ public class LayerHandler : SingletonBehaviour<LayerHandler>
 {
     [SerializeField] LayerDataPackage[] layerEnumGameobjectPair;
     public GameObject[] LayerGameObjects => layerEnumGameobjectPair.Select(p => p.GameObject).ToArray();
+    public bool HideInactiveLayers = true;
     public static LayerHandler EditorInstance => (Instance == null) ? FindInstance() : Instance;
     public static System.Action<Layers, LayerDataPackage, bool> OnChangeLayer;
+    public static Transform Parent => Instance.layerEnumGameobjectPair.Where(l => l.IsActive).Select(l => l.GameObject.transform).First();
 
     private static LayerHandler FindInstance()
     {
@@ -34,6 +37,7 @@ public class LayerHandler : SingletonBehaviour<LayerHandler>
             if (package.Layer != newLayer)
             {
                 package.GameObject.SetActive(false);
+                package.IsActive = false;
             }
         }
 
@@ -43,11 +47,50 @@ public class LayerHandler : SingletonBehaviour<LayerHandler>
             {
                 OnChangeLayer?.Invoke(currentLayer, package, spy);
                 package.GameObject.SetActive(true);
+                package.IsActive = true;
                 currentLayer = newLayer;
                 return;
             }
         }
+    }
 
+    public void SwitchLayerEditor(int index)
+    {
+
+        Layers newLayer = layerEnumGameobjectPair[index].Layer;
+
+        foreach (LayerDataPackage package in layerEnumGameobjectPair)
+        {
+            package.GameObject.SetActive(false);
+            if (HideInactiveLayers)
+            {
+                package.GameObject.hideFlags = HideFlags.HideInHierarchy;
+                Debug.Log("Hide " + package.GameObject);
+            }
+            else
+            {
+                package.GameObject.hideFlags = HideFlags.None;
+            }
+        }
+
+        foreach (LayerDataPackage package in layerEnumGameobjectPair)
+        {
+            if (package.Layer == newLayer)
+            {
+                package.GameObject.SetActive(true);
+                package.GameObject.hideFlags = HideFlags.None;
+                currentLayer = newLayer;
+                return;
+            }
+        }
+    }
+
+    public void ShowAllLayersEditor()
+    {
+        foreach (LayerDataPackage package in layerEnumGameobjectPair)
+        {
+            package.GameObject.hideFlags = HideFlags.None;
+        }
     }
 }
 
@@ -57,4 +100,5 @@ public class LayerDataPackage
     public Layers Layer;
     public GameObject GameObject;
     public bool IsTunnel;
+    public bool IsActive = false;
 }

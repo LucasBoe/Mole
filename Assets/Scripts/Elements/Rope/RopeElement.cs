@@ -53,7 +53,7 @@ public class RopeElement : MonoBehaviour, IInputActionProvider
         else
             physicsInstance.Init(attached, otherRigidbody, travelPoints);
 
-        visualizerInstance = Instantiate(visualizerPrefab);
+        visualizerInstance = Instantiate(visualizerPrefab, LayerHandler.Parent);
         visualizerInstance.Init(attachJoint.connectedBody, otherRigidbody, physicsInstance);
     }
     internal void Destroy()

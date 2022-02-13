@@ -23,7 +23,7 @@ public class CrossbowItem : PlayerItem
     {
         var playerPos = playerItemUser.transform.position;
         var dir = PlayerInputHandler.PlayerInput.VirtualCursorToDir(playerPos);
-        GameObject instance = Instantiate(ProjectilePrefab, playerPos + Vector3.up, Quaternion.identity);
+        GameObject instance = Instantiate(ProjectilePrefab, playerPos + Vector3.up, Quaternion.identity, LayerHandler.Parent);
         instance.transform.right = dir;
         instance.GetComponent<Rigidbody2D>().velocity = (dir * ProjectileForce);
 

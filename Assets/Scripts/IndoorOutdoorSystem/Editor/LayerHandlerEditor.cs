@@ -37,22 +37,29 @@ public class LayerHandlerEditor : Editor
 
         int newSelectedLayer = GUI.SelectionGrid(new Rect(25, 25, 100, 25 * buttonText.Count), selectedLayer, buttonText.ToArray(), 1);
 
+        if (GUI.Button(new Rect(25, 50 + 25 * buttonText.Count, 30, 30), EditorGUIUtility.FindTexture(layerHandler.HideInactiveLayers ? "animationvisibilitytoggleoff" : "animationvisibilitytoggleon")))
+        {
+            layerHandler.HideInactiveLayers = !layerHandler.HideInactiveLayers;
+            selectedLayer = -1;
+        }
+            //GUI.DrawTexture(new Rect(25, 50 + 25 * buttonText.Count, 20, 20), );
+
         if (newSelectedLayer != selectedLayer)
         {
+            layerHandler.SwitchLayerEditor(newSelectedLayer);
+
             //ativate / deactivate layer
-            for (int i = 0; i < layerHandler.LayerGameObjects.Length; i++)
-                layerHandler.LayerGameObjects[i].SetActive(i == newSelectedLayer);
+            //for (int i = 0; i < layerHandler.LayerGameObjects.Length; i++)
+            //    layerHandler.LayerGameObjects[i].SetActive(i == newSelectedLayer);
 
             update = true;
-
-
         }
 
         selectedLayer = newSelectedLayer;
 
         GUILayout.EndArea();
 
-        if (GUI.Button(new Rect(Screen.width / 2 - 100,25,100,25), selectedGround))
+        if (GUI.Button(new Rect(Screen.width / 2 - 100, 25, 100, 25), selectedGround))
         {
             if (selectedGround == "Foreground")
                 selectedGround = "Background";
@@ -71,5 +78,16 @@ public class LayerHandlerEditor : Editor
         }
 
         Handles.EndGUI();
+    }
+
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        if (GUILayout.Button("Show Hidden Layer GameObjects"))
+        {
+            LayerHandler layerHandler = LayerHandler.EditorInstance;
+            layerHandler.ShowAllLayersEditor();
+        }
     }
 }
