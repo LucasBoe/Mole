@@ -23,11 +23,15 @@ public class Rope
     private SmoothFloat smoothLength1;
     private SmoothFloat smoothLength2;
 
-    private float distribution = 0.5f;
+    [SerializeField, Range(0,1)] private float distribution = 0.5f;
     private float deadLength = 0;
 
     //smoothing
-    private float smoothForceDifference = 0;
+    [SerializeField, Range(-5f, 5f)] private float smoothForceDifference = 0;
+    [SerializeField, Range(-100f, 100f)] private float forceDifferenceDebug = 0;
+
+    [SerializeField] private float forceSmoothDuration = 0.1f;
+    [SerializeField] private float durationChangeMultiplier = 0.5f;
 
     List<RopeLengthChange> lengthChanges = new List<RopeLengthChange>();
 
@@ -92,9 +96,10 @@ public class Rope
         if (!IsShortRope)
         {
             ////balance
-            float distributionChange = (BalanceOperationn() / length);
+            float distributionChange = (Mathf.Sign(BalanceOperationn()) * Time.deltaTime * durationChangeMultiplier) / length;
             distribution += distributionChange;
             distribution = Mathf.Clamp(distribution, 0, 1);
+
             UpdateLength();
 
             smoothLength1.Smooth();
@@ -125,8 +130,9 @@ public class Rope
 
     private float BalanceOperationn()
     {
-        float forceDifference = (One.PullForce - Two.PullForce) * Time.deltaTime;
-        smoothForceDifference = Mathf.Lerp(smoothForceDifference, forceDifference, Time.deltaTime * 0.01f);
+        float forceDifference = (One.PullForce - Two.PullForce);
+        forceDifferenceDebug = forceDifference;
+        smoothForceDifference = Mathf.Lerp(smoothForceDifference, forceDifference, Time.deltaTime / forceSmoothDuration);
         return smoothForceDifference;
     }
 

@@ -50,6 +50,7 @@ MonoBehaviour:
   visualizerPrefab: {fileID: 6650807411414497711, guid: 4a79223125b276c4abee3c5a22a9111c, type: 3}
   physicsInstance: {fileID: -8123407555963876636}
   attachJoint: {fileID: 3300375738520965301}
+  pullForce: 0
 --- !u!114 &-8123407555963876636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,6 +65,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segmentPrefab: {fileID: 5796486872293685237, guid: 4a1b5adb2ce9bc042b6aca323df517f1, type: 3}
   target: {fileID: 5310473274132933561}
+  debugLength: 0
 --- !u!50 &8770418620656433984
 Rigidbody2D:
   serializedVersion: 4
@@ -104,7 +106,7 @@ SpringJoint2D:
   m_AutoConfigureDistance: 0
   m_Distance: 0.005
   m_DampingRatio: 1
-  m_Frequency: 2
+  m_Frequency: 4
 --- !u!255 &5310473274132933561
 FixedJoint2D:
   m_ObjectHideFlags: 0

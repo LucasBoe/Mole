@@ -9,7 +9,7 @@ public class RopeHandler : SingletonBehaviour<RopeHandler>
     [SerializeField] private RopeElement ropePrefab;
     [SerializeField] private RopeEnd ropeEndPrefab;
 
-    private List<Rope> ropes = new List<Rope>();
+    [SerializeField] private List<Rope> ropes = new List<Rope>();
     internal Rope CreateRope(Rigidbody2D player, Rigidbody2D end, Vector2[] travelPoints)
     {
         return CreateRope(player, new RopeAnchor[0], end, travelPoints);
