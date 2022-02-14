@@ -28,7 +28,7 @@ public class RopeCreator : MonoBehaviour
         }
         else
         {
-            Destroy(gameObject);       
+            Destroy(gameObject);
         }
     }
 
@@ -43,7 +43,17 @@ public class RopeCreator : MonoBehaviour
     {
         List<Vector3> points = new List<Vector3>();
         if (dynamicStart != null) points.Add(dynamicStart.position);
-        points.AddRange(anchors.Select(a => a.transform.position));
+
+        for (int i = 0; i < anchors.Count; i++)
+        {
+            RopeAnchor anchor = anchors[i];
+            Vector2 inVector = GetDirVector((i == 0 ? dynamicStart.position : anchors[i - 1].transform.position.ToVector2()), anchor.transform.position.ToVector2());
+            Vector2 outVector = GetDirVector(anchor.transform.position.ToVector2(), (i == anchors.Count - 1 ? staticEnd.position : anchors[i + 1].transform.position.ToVector2()));
+            points.Add(anchor.GetAroundPosition(inVector));
+            points.Add(anchor.GetAroundPosition(outVector));
+        }
+
+        //points.AddRange(anchors.Select(a => a.transform.position));
         if (staticEnd != null) points.Add(staticEnd.position);
 
         Gizmos.color = Color.yellow;
@@ -53,6 +63,20 @@ public class RopeCreator : MonoBehaviour
 
         foreach (RopeAnchor anchor in anchors)
             Gizmos.DrawWireSphere(anchor.transform.position, 0.5f);
+
+        //Vector2[] remapped = Util.RemapLengthToPointsOfCertainDistance(points, 1f);
+        Vector2[] remapped = Util.RemapComplexLengthToPointsOfCertainDistance(points, 1f);
+
+        Gizmos.color = Color.red;
+
+        foreach (Vector2 point in remapped)
+            Gizmos.DrawWireSphere(point, 0.2f);
+
+    }
+
+    private Vector2 GetDirVector(Vector3 from, Vector3 to)
+    {
+        return (to - from).normalized;
     }
 
     public IEnumerator DelayRoutine(float delay, System.Action executeOnFinish)

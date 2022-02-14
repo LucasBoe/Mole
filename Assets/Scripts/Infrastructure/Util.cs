@@ -81,6 +81,7 @@ public static class Util
 
         return true;
     }
+
     public static void DebugDrawCircle(Vector3 position, Color color, float size, int segmentLength = 15, float lifetime = -1f)
     {
         Vector3 lastPosition = Vector3.zero;
@@ -177,6 +178,54 @@ public static class Util
         else
         {
             return vector3.z;
+        }
+    }
+    public static Vector2[] RemapLengthToPointsOfCertainDistance(List<Vector3> source, float distance)
+    {
+        List<Vector2> points = new List<Vector2>();
+        Vector2 startPoint = source[0];
+        points.Add(startPoint);
+
+        for (int i = 1; i < source.Count; i++)
+        {
+            Vector2 targetPoint = source[i];
+            while (Vector2.Distance(points.Last(), targetPoint) > distance)
+                points.Add(Vector2.MoveTowards(points.Last(), targetPoint, distance));
+            points.Add(targetPoint);
+        }
+
+        return points.ToArray();
+    }
+
+    public static Vector2[] RemapComplexLengthToPointsOfCertainDistance(List<Vector3> source, float distance)
+    {
+        Vector2[] remapRough = RemapLengthToPointsOfCertainDistance(source, 2);
+        Vector2[] smoothMany = GetSmoothMany(remapRough, 2);
+        List<Vector2> points = new List<Vector2>();
+        points.Add(source[0]);
+
+        foreach (Vector2 smoothPoint in smoothMany)
+        {
+            float d = Vector2.Distance(points.Last(), smoothPoint);
+            if (d >= distance)
+            {
+                float dDifference = d - distance;
+
+                Vector2 newPoint = Vector2.MoveTowards(smoothPoint, points.Last(), dDifference);
+                points.Add(newPoint);
+            }
+        }
+
+        return points.ToArray();
+
+        static Vector2[] GetSmoothMany(Vector2[] points, int stepCount)
+        {
+            for (int i = 0; i < stepCount; i++)
+            {
+                points = SmoothToCurve(points);
+            }
+
+            return points;
         }
     }
 

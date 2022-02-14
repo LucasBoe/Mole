@@ -14,4 +14,9 @@ public class RopeAnchor : MonoBehaviour
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
     }
+
+    public Vector2 GetAroundPosition(Vector2 inVector)
+    {
+        return transform.position.ToVector2() - Vector2.Perpendicular(inVector);
+    }
 }
