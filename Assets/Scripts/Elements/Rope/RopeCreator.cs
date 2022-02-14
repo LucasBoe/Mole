@@ -13,9 +13,7 @@ public class RopeCreator : MonoBehaviour
     private void Start()
     {
         if (anchors.Count > 0)
-            RopeHandler.Instance.CreateRope(dynamicStart, anchors.ToArray(), staticEnd);
-        else
-            RopeHandler.Instance.CreateRope(dynamicStart, new RopeAnchor[0], staticEnd);
+            RopeHandler.Instance.CreateRope(dynamicStart, staticEnd, CreateRopePoints());
 
         if (freezeTime > 0)
         {
@@ -30,6 +28,25 @@ public class RopeCreator : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private Vector2[] CreateRopePoints()
+    {
+        List<Vector3> points = new List<Vector3>();
+        if (dynamicStart != null) points.Add(dynamicStart.position);
+
+        for (int i = 0; i < anchors.Count; i++)
+        {
+            RopeAnchor anchor = anchors[i];
+            Vector2 inVector = GetDirVector((i == 0 ? dynamicStart.position : anchors[i - 1].transform.position.ToVector2()), anchor.transform.position.ToVector2());
+            Vector2 outVector = GetDirVector(anchor.transform.position.ToVector2(), (i == anchors.Count - 1 ? staticEnd.position : anchors[i + 1].transform.position.ToVector2()));
+            points.Add(anchor.GetAroundPosition(inVector));
+            points.Add(anchor.GetAroundPosition(outVector));
+        }
+
+        if (staticEnd != null) points.Add(staticEnd.position);
+
+        return Util.RemapComplexLengthToPointsOfCertainDistance(points, 1f);
     }
 
     private void FreezeObjects(bool freeze)
