@@ -30,6 +30,21 @@ public static class Util
         }
     }
 
+    internal static List<T> Merge<T>(params T[][] vector2s)
+    {
+        List<T> vectorList = new List<T>();
+
+        foreach (T[] array in vector2s)
+        {
+            foreach (T vector in array)
+            {
+                vectorList.Add(vector);
+            }
+        }
+
+        return vectorList;
+    }
+
     internal static Vector2[] SmoothToCurve(Vector2[] points, float distribution = 0.25f)
     {
         Vector2 start = points[0];

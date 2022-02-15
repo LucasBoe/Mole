@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class RopeAnchor : MonoBehaviour
+public class CableAnchor : MonoBehaviour
 {
     private Rigidbody2D rigidbody2D;
     public Rigidbody2D Rigidbody2D => rigidbody2D;

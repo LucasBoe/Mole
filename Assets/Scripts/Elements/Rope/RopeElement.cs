@@ -1,73 +1,169 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
+using System.Linq;
 using UnityEngine;
 
-public class RopeElement : MonoBehaviour, IInputActionProvider
+public class RopeElement : CableElement, IInputActionProvider
 {
-    [SerializeField] private RopeElementVisualizer visualizerPrefab;
-    private RopeElementVisualizer visualizerInstance;
+    [SerializeField] RopePhysicsSegment segmentPrefab;
+    [SerializeField] FixedJoint2D target;
+    [SerializeField] float debugLength;
+    public FixedJoint2D Target => target;
 
-    [SerializeField] private RopeElementPhysicsBehaviour physicsInstance;
+    private List<RopePhysicsSegment> elements = new List<RopePhysicsSegment>();
+    private RopePhysicsSegment Last => elements.Count == 0 ? null : elements[elements.Count - 1];
 
-    [SerializeField] private AnchoredJoint2D attachJoint;
     public float DistanceToAttachedObject => Vector2.Distance(transform.position, attachJoint.connectedBody.position);
 
 
+    private Rigidbody2D connectedBody;
+    private float length = 0;
+    public float Length => length;
 
-
-    [SerializeField] private float pullForce;
-    public float PullForce => pullForce;
-
-
-    private Rigidbody2D otherRigidbody;
-    public Rigidbody2D Rigidbody2DOther { get => otherRigidbody; }
-    public Rigidbody2D Rigidbody2DAttachedTo { get => attachJoint.connectedBody; }
-
-    public void SetJointDistance(float newDistance)
+    public void Init(Rigidbody2D endBody, Rigidbody2D startBody, float length, Vector2[] travelPoints)
     {
-        physicsInstance.SetLength(newDistance);
+        connectedBody = startBody;
+        this.length = length;
+
+        Vector2[] pos = new Vector2[Mathf.CeilToInt(length)];
+        for (int i = 0; i < length; i++)
+            pos[i] = travelPoints[(int)(((pos.Length - 1 - (float)i) / pos.Length) * travelPoints.Length)];
+
+        CreateRopeElements(length, pos);
+    }
+    internal void Init(Rigidbody2D endBody, Rigidbody2D startBody, float length)
+    {
+        connectedBody = startBody;
+        this.length = length;
+
+        Vector2[] pos = new Vector2[Mathf.CeilToInt(length)];
+        for (int i = 0; i < length; i++)
+            pos[i] = Vector2.Lerp(startBody.position, endBody.position, i / length);
+
+        CreateRopeElements(length, pos);
     }
 
-    public void Reconnect(Rigidbody2D to)
+    private void CreateRopeElements(float newLength, Vector2[] positions = null)
     {
-        Debug.Log($"reconnected from {attachJoint.connectedBody.name} to {to.name}");
-        attachJoint.connectedBody = to;
-        visualizerInstance.Init(to, otherRigidbody, physicsInstance);
+        if (positions != null)
+        {
+            foreach (Vector2 item in positions)
+            {
+                Util.DebugDrawCross(item, Color.yellow, 0.6f, 4);
+            }
+        }
+
+        int index = 0;
+        while (newLength > 0)
+        {
+            bool previousElementExists = Last != null;
+            Vector2 pos = (positions != null) ? positions[index] : (previousElementExists ? Last.transform.position.ToVector2() : transform.position.ToVector2());
+
+            RopePhysicsSegment newElement = Instantiate(segmentPrefab, pos, Quaternion.identity, LayerHandler.Parent);
+            Util.DebugDrawCircle(pos, Color.green, 0.5f, lifetime: 4);
+            Debug.LogWarning(index);
+
+            newElement.Connected(previousElementExists ? Last.Rigidbody : connectedBody);
+            elements.Add(newElement);
+            if (newLength >= 1)
+                newLength--;
+            else
+            {
+                newElement.SetDistance(newLength);
+                newLength = 0;
+            }
+
+            index++;
+        }
+    }
+
+    internal Vector2[] GetPoints()
+    {
+        return elements.Select(e => e.Rigidbody.position).ToArray();
+    }
+
+    public void SetLength(float newLength)
+    {
+        debugLength = newLength;
+        Debug.LogWarning(newLength);
+
+        if (newLength < length)
+        {
+            if (Mathf.Floor(length) > newLength)
+                ModifyElements(newLength, ModifationDirection.Shorten);
+            else
+                SetLastElementLength(newLength - Mathf.Floor(newLength));
+        }
+        else
+        {
+            if (Mathf.Floor(newLength) >= length)
+                ModifyElements(newLength, ModifationDirection.Lengthen);
+            else
+                SetLastElementLength(newLength - Mathf.Floor(newLength));
+        }
+        length = newLength;
+    }
+
+    private void ModifyElements(float newLengt, ModifationDirection direction)
+    {
+        if (direction == ModifationDirection.Lengthen)
+        {
+            float lastElementDifference = Mathf.Ceil(length) - length;
+            SetLastElementLength(1);
+            float rest = (newLengt - length) - lastElementDifference;
+            CreateRopeElements(rest);
+        }
+        else if (direction == ModifationDirection.Shorten)
+        {
+            Debug.LogError("Shorten...");
+
+            int toRemove = Mathf.CeilToInt(length) - Mathf.CeilToInt(newLengt);
+            while (toRemove > 0)
+            {
+                toRemove--;
+                int index = elements.Count - 1;
+                RopePhysicsSegment element = elements[index];
+                elements.RemoveAt(index);
+                Destroy(element.gameObject);
+            }
+            SetLastElementLength(newLengt - Mathf.Floor(newLengt));
+        }
+    }
+
+    private void SetLastElementLength(float lastLength)
+    {
+        if (Last != null)
+            Last.SetDistance(lastLength);
     }
 
     private void Update()
     {
-        float newPullForce = Mathf.Min(attachJoint.reactionForce.magnitude, Time.time);
-
-        pullForce = attachJoint.reactionForce.magnitude; // newPullForce;
+        if (Last != null)
+            target.connectedBody = Last.Rigidbody;
     }
 
-    public void Setup(Rigidbody2D attached, Rigidbody2D other, float length, Vector2[] travelPoints = null)
+    private void OnDestroy()
     {
-        otherRigidbody = other;
-
-        attachJoint.connectedBody = attached;
-        attachJoint.connectedAnchor = Vector2.zero;
-        if (travelPoints == null)
-            physicsInstance.Init(attached, otherRigidbody, length);
-        else
-            physicsInstance.Init(attached, otherRigidbody, length, travelPoints);
-
-        visualizerInstance = Instantiate(visualizerPrefab, LayerHandler.Parent);
-        visualizerInstance.Init(attachJoint.connectedBody, otherRigidbody, physicsInstance);
+        for (int i = elements.Count - 1; i >= 0; i--)
+            Destroy(elements[i].gameObject);
     }
-    internal void Destroy()
+
+    private enum ModifationDirection
     {
-        Destroy(physicsInstance.gameObject);
-        Destroy(visualizerInstance.gameObject);
-        Destroy(gameObject);
-        Destroy(this);
+        Shorten,
+        Lengthen,
     }
-
     public InputAction FetchInputAction()
     {
         return PlayerInputActionCreator.GetClimbRopeAction(transform);
     }
+    public override  void Reconnect(Rigidbody2D to)
+    {
+        Debug.Log($"reconnected from {attachJoint.connectedBody.name} to {to.name}");
+        attachJoint.connectedBody = to;
+    }
+
+
+
 }

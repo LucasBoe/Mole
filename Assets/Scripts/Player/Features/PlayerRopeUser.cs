@@ -36,7 +36,7 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
     {
         current = newRope;
         playerConstrollsStart = playerIsAtStart;
-        currentElement = playerConstrollsStart ? current.One : current.Two;
+        currentElement = newRope.GetPlayerControlledElement();
         distBefore = 0;
 
         PlayerInputActionRegister.Instance.RegisterInputAction(PlayerInputActionCreator.GetClimbRopeAction(transform));
@@ -49,7 +49,7 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
     /// </summary>
     internal void DropCurrentRope()
     {
-        RopeEnd ropeEnd = RopeHandler.Instance.CreateRopeEnd(playerRigidbody2D.position);
+        RopeEnd ropeEnd = CableHandler.Instance.CreateRopeEnd(playerRigidbody2D.position);
         HandoverRopeTo(ropeEnd.SetRope(current));
     }
 

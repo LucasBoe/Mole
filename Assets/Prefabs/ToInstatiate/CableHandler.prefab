@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8488637475411633759}
   - component: {fileID: 8488637475411633758}
   m_Layer: 0
-  m_Name: RopeHandler
+  m_Name: CableHandler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,5 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08a162620304c744d83e8e82d4798287, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ropePrefab: {fileID: 8770418620656433986, guid: e6a1984f5450100418be6f6839b6f8d3, type: 3}
+  chainElementPrefab: {fileID: 8770418620656433986, guid: d3d364f6391028645b9f4f479a889b6c, type: 3}
+  ropeElementPrefab: {fileID: -8123407555963876636, guid: e6a1984f5450100418be6f6839b6f8d3, type: 3}
   ropeEndPrefab: {fileID: 2438953284383065058, guid: eb3d2b87398d094468d24896b1ae2db8, type: 3}
+  cables: []

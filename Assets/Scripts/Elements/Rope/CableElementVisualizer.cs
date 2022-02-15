@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
-public class RopeElementVisualizer : MonoBehaviour
+public class CableElementVisualizer : MonoBehaviour
 {
-    [SerializeField] RopeElementPhysicsBehaviour physicsBehaviour;
+    [SerializeField] RopeElement physicsBehaviour;
     [SerializeField] private Rigidbody2D start, end;
     [SerializeField] private Transform tween;
     private LineRenderer lineRenderer;
@@ -21,7 +21,7 @@ public class RopeElementVisualizer : MonoBehaviour
         lineRenderer = GetComponent<LineRenderer>();
     }
 
-    internal void Init(Rigidbody2D start, Rigidbody2D end, RopeElementPhysicsBehaviour physicsBehaviour = null)
+    internal void Init(Rigidbody2D start, Rigidbody2D end, RopeElement physicsBehaviour = null)
     {
         this.start = start;
         this.end = end;

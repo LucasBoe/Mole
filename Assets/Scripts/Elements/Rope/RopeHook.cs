@@ -85,12 +85,12 @@ public class RopeHook : CollectablePlayerItem
         collider.enabled = false;
         travelPositions.Add(transform.position);
         Destroy(lineRenderer);
-        RopeHandler.Instance.CreateRope(PlayerController.Context.Rigidbody, rigidbody2D, InterpolatePathWihPlayer(travelPositions.ToArray()));
+        CableHandler.Instance.CreateCable(PlayerController.Context.Rigidbody, rigidbody2D, InterpolatePathWihPlayer(travelPositions.ToArray()));
     }
 
     public override void Collect()
     {
-        RopeHandler.Instance.DestroyRope(rigidbody2D);
+        CableHandler.Instance.DestroyCable(rigidbody2D);
         base.Collect();
     }
 }
