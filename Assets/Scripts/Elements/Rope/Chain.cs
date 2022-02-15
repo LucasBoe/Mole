@@ -21,33 +21,17 @@ public class Chain : Cable
     [SerializeField] protected float forceSmoothDuration = 0.1f;
     [SerializeField] protected float durationChangeMultiplier = 0.5f;
 
-    public Chain(Rigidbody2D start, List<CableAnchor> cableAnchors, Rigidbody2D end)
-    {
-        anchors = cableAnchors;
-        totalLength = Util.GetDistance(Util.Merge(new Vector2[] { start.position }, cableAnchors.Select(c => (Vector2)c.transform.position).ToArray(), new Vector2[] { end.position }).ToArray());
+    public Chain(Rigidbody2D start, List<CableAnchor> cableAnchors, Rigidbody2D end) : base(start, cableAnchors, end) { }
 
-        if (IsShortCable)
-        {
-            CreateChainElementResult newElement = CreateElementBetween(start, end);
-            DefineElementsShort(newElement);
-        }
-        else
-        {
-            CreateChainElementResult newElement1 = CreateElementBetween(start, cableAnchors[0].Rigidbody2D);
-            CreateChainElementResult newElement2 = CreateElementBetween(end, cableAnchors.Last().Rigidbody2D);
-            DefineElementsLong(newElement1, newElement2);
-        }
-    }
-
-    private CreateChainElementResult CreateElementBetween(Rigidbody2D start, Rigidbody2D end)
+    protected override CreateCableElementResult CreateElementBetween(Rigidbody2D start, Rigidbody2D end)
     {
-        CreateChainElementResult result = new CreateChainElementResult()
+        CreateCableElementResult result = new CreateCableElementResult()
         {
-            Instance = CableHandler.Instance.CreateChainElement(start, end),
+            Instance = CableHandler.Instance.SpawnChainElement(start, end),
             Length = Vector2.Distance(start.position, end.position)
         };
 
-        result.Instance.Setup(start, end, result.Length);
+        (result.Instance as ChainElement).Setup(start, end, result.Length);
         return result;
     }
 
@@ -67,7 +51,7 @@ public class Chain : Cable
         float newDistributionChange = (Mathf.Sign(BalanceOperationn()) * Time.deltaTime * durationChangeMultiplier) / totalLength;
 
         if (Mathf.Sign(newDistributionChange) != Mathf.Sign(distributionChangeBefore))
-            CableHandler.Instance.LockFor(tidalLockDuration, this);
+            CableHandler.Instance.LockChainFor(tidalLockDuration, this);
 
         if (!TidalLock)
         {
@@ -80,8 +64,8 @@ public class Chain : Cable
     }
 }
 
-public class CreateChainElementResult
+public class CreateCableElementResult
 {
     public float Length;
-    public ChainElement Instance;
+    public CableElement Instance;
 }

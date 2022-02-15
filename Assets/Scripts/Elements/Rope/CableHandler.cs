@@ -15,53 +15,23 @@ public class CableHandler : SingletonBehaviour<CableHandler>
     private Dictionary<Chain, Coroutine> chainLockRegister = new Dictionary<Chain, Coroutine>();
 
 
-    [SerializeField] public Chain[] chains;
+    [SerializeField] public Chain[] chainDebug;
 
-    [System.Obsolete("Use Create Rope / Chain for the specific types")]
-    public Rope CreateCable(Rigidbody2D player, Rigidbody2D end, Vector2[] travelPoints)
-    {
-        return CreateCable(player, new CableAnchor[0], end, travelPoints);
-    }
-
-    [System.Obsolete("Use Create Rope / Chain for the specific types")]
-    public Rope CreateCable(Rigidbody2D start, CableAnchor[] anchors, Rigidbody2D end, Vector2[] travelPoints = null)
-    {
-        Rope newRope = null; // new Rope(start, anchors, end, travelPoints);
-        cables.Add(newRope);
-
-        CheckAndPotentiallyConnectPlayer(newRope, start, end);
-
-        return newRope;
-    }
-
-    internal ChainElement CreateChainElement(Rigidbody2D start, Rigidbody2D end)
-    {
-        return Instantiate(chainElementPrefab, start.position, Quaternion.identity, LayerHandler.Parent);
-    }
-    internal RopeElement CreateRopeElement(Rigidbody2D start, Rigidbody2D end)
-    {
-        return Instantiate(ropeElementPrefab, start.position, Quaternion.identity, LayerHandler.Parent);
-    }
-
-    public Chain CreateChain(Rigidbody2D start, List<CableAnchor> anchors, Rigidbody2D end)
+    public Chain CreateChain(Rigidbody2D start, Rigidbody2D end, List<CableAnchor> anchors)
     {
         Chain newChain = new Chain(start, anchors, end);
         cables.Add(newChain);
 
-        chains = new Chain[1];
-
-        chains[0] = cables[0] as Chain;
-
-        Debug.Log(chains.Length);
+        chainDebug = new Chain[1];
+        chainDebug[0] = cables[0] as Chain;
 
         return newChain;
     }
 
-    public Rope CreateRope(Rigidbody2D start, List<CableAnchor> anchors, Rigidbody2D end)
+    public Rope CreateRope(Rigidbody2D start, Rigidbody2D end, List<CableAnchor> anchors = null, Vector2[] pathPoints = null)
     {
-        Rope newRope = new Rope(start, anchors.ToArray(), end);
+        Rope newRope = (pathPoints == null) ?  new Rope(start, anchors, end) : new Rope(start, end, pathPoints);
         cables.Add(newRope);
-
         return newRope;
     }
 
@@ -109,6 +79,15 @@ public class CableHandler : SingletonBehaviour<CableHandler>
         }
         cables.Remove(cable);
     }
+    public ChainElement SpawnChainElement(Rigidbody2D start, Rigidbody2D end)
+    {
+        return Instantiate(chainElementPrefab, start.position, Quaternion.identity, LayerHandler.Parent);
+    }
+    public RopeElement SpawnRopeElement(Rigidbody2D start, Rigidbody2D end)
+    {
+        Util.DebugDrawCircle(start.position, Color.yellow, 1, lifetime: 5);
+        return Instantiate(ropeElementPrefab, start.position, Quaternion.identity, LayerHandler.Parent);
+    }
 
     internal RopeEnd CreateRopeEnd(Vector2 position)
     {
@@ -120,7 +99,7 @@ public class CableHandler : SingletonBehaviour<CableHandler>
         foreach (Cable rope in cables)
             rope.Update();
     }
-    internal void LockFor(float duration, Chain toLock)
+    internal void LockChainFor(float duration, Chain toLock)
     {
         if (chainLockRegister.ContainsKey(toLock))
         {

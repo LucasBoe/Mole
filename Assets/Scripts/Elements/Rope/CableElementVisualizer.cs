@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(LineRenderer))]
 public class CableElementVisualizer : MonoBehaviour
 {
-    [SerializeField] RopeElement physicsBehaviour;
+    [SerializeField] RopeElement ropeElement;
     [SerializeField] private Rigidbody2D start, end;
     [SerializeField] private Transform tween;
     private LineRenderer lineRenderer;
@@ -21,30 +21,37 @@ public class CableElementVisualizer : MonoBehaviour
         lineRenderer = GetComponent<LineRenderer>();
     }
 
-    internal void Init(Rigidbody2D start, Rigidbody2D end, RopeElement physicsBehaviour = null)
+    public void Init(RopeElement ropeElement)
+    {
+        this.ropeElement = ropeElement;
+    }
+
+    public void Init(Rigidbody2D start, Rigidbody2D end, RopeElement physicsBehaviour = null)
     {
         this.start = start;
         this.end = end;
-        this.physicsBehaviour = physicsBehaviour;
-        tween.position = (start.position + end.position) / 2;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!physicsBehaviour && (!start || !end))
-            return;
-
-        Vector2[] points = new Vector2[] { start.position, end.position };
-        float distance = Vector2.Distance(start.position, end.position);
-
-        if (physicsBehaviour != null)
+        if (ropeElement)
         {
-            points = physicsBehaviour.GetPoints();
-            distance = physicsBehaviour.Length;
+            Vector2[] points = ropeElement.GetPoints();
+            float distance = ropeElement.Length;
+            DisplayPoints(points, distance);
         }
+        else if (start && end)
+        {
+            Vector2[] points = new Vector2[] { start.position, end.position };
+            float distance = Vector2.Distance(start.position, end.position);
+            DisplayPoints(points, distance);
+        }
+    }
 
-        for (int i = 0; i < distance / Mathf.Pow(points.Length + 1, 2) ; i++)
+    private void DisplayPoints(Vector2[] points, float distance)
+    {
+        for (int i = 0; i < distance / Mathf.Pow(points.Length + 1, 2); i++)
         {
             points = Util.SmoothToCurve(points, smoothValue);
         }

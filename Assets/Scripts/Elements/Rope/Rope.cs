@@ -14,6 +14,32 @@ public class Rope : Cable
 
     private Modes mode;
 
+    //use same constructor as chain
+    public Rope(Rigidbody2D start, List<CableAnchor> cableAnchors, Rigidbody2D end) : base(start, cableAnchors, end) { }
+
+    //custom rope contructor for thrown ropes
+    public Rope(Rigidbody2D start, Rigidbody2D end, Vector2[] pathPoints) : base(start, end, pathPoints)
+    {
+        anchors = new List<CableAnchor>();
+        totalLength = pathPoints.GetDistance();
+
+        RopeElement ropeElement = CableHandler.Instance.SpawnRopeElement(start, end);
+        ropeElement.Setup(start, end, pathPoints);
+        DefineElementsShort(new CreateCableElementResult() { Instance = ropeElement, Length = totalLength });
+    }
+
+    protected override CreateCableElementResult CreateElementBetween(Rigidbody2D start, Rigidbody2D end)
+    {
+        CreateCableElementResult result = new CreateCableElementResult()
+        {
+            Instance = CableHandler.Instance.SpawnRopeElement(start, end),
+            Length = Vector2.Distance(start.position, end.position)
+        };
+
+        (result.Instance as RopeElement).Setup(start, end, result.Length);
+        return result;
+    }
+
 
     //public Rope(Rigidbody2D start, CableAnchor[] anchors, Rigidbody2D end, Vector2[] travelPoints)
     //{
@@ -78,10 +104,6 @@ public class Rope : Cable
         //TODO: Remove this failsave
         if (IsShortCable)
             One.SetJointDistance(totalLength);
-    }
-
-    public Rope(Rigidbody2D start, CableAnchor[] cableAnchors, Rigidbody2D end)
-    {
     }
 
     private void CheckAndPotentiallyConnectPlayer(Rope newRope, Rigidbody2D start, Rigidbody2D end)

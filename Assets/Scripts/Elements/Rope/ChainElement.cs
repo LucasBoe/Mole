@@ -26,17 +26,18 @@ public class ChainElement : CableElement
         pullForce = attachJoint.reactionForce.y; // newPullForce;
     }
 
-    public void Setup(Rigidbody2D attached, Rigidbody2D other, float startDistance)
+    public void Setup(Rigidbody2D start, Rigidbody2D end, float startDistance)
     {
-        otherRigidbody = other;
+        otherRigidbody = end;
 
-        distanceJoint2D.connectedBody = other;
+        distanceJoint2D.connectedBody = end;
         distanceJoint2D.distance = startDistance;
 
-        attachJoint.connectedBody = attached;
+        attachJoint.connectedBody = start;
         attachJoint.connectedAnchor = Vector2.zero;
+
         visualizerInstance = Instantiate(visualizerPrefab, transform.position, Quaternion.identity, LayerHandler.Parent);
-        visualizerInstance.Init(attached, other);
+        visualizerInstance.Init(start, end);
     }
     internal void Destroy()
     {

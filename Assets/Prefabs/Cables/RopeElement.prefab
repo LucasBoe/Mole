@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63f50976384ed7749b3160e631653873, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attachJoint: {fileID: 3300375738520965301}
+  visualizerPrefab: {fileID: 6650807411414497711, guid: 4a79223125b276c4abee3c5a22a9111c, type: 3}
   segmentPrefab: {fileID: 5796486872293685237, guid: 4a1b5adb2ce9bc042b6aca323df517f1, type: 3}
   target: {fileID: 5310473274132933561}
   debugLength: 0

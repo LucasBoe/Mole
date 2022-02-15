@@ -24,10 +24,10 @@ public class CableCreator : MonoBehaviour
 
         if (mode == Modes.Chain)
         {
-            CableHandler.Instance.CreateChain(start, anchors , end);
+            CableHandler.Instance.CreateChain(start, end, anchors);
         } else
         {
-            CableHandler.Instance.CreateRope(start, anchors, end);
+            CableHandler.Instance.CreateRope(start, end, anchors);
         }
 
         if (freezeTime > 0)
@@ -79,7 +79,7 @@ public class CableCreator : MonoBehaviour
         points.AddRange(anchors.Select(a => a.transform.position));
         if (end != null) points.Add(end.position);
 
-        Gizmos.color = Color.yellow;
+        Gizmos.color = mode == Modes.Rope ? Color.yellow : Color.gray;
 
         for (int i = 1; i < points.Count; i++)
             Gizmos.DrawLine(points[i - 1], points[i]);

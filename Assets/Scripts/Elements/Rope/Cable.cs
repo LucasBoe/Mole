@@ -11,7 +11,7 @@ public class Cable
     protected List<CableAnchor> anchors;
 
     //elememts
-    protected CableElement[] elements = new ChainElement[2];
+    protected CableElement[] elements = new CableElement[2];
     public CableElement[] Elements => elements;
     public CableElement One => elements[0];
     public CableElement Two => elements[1];
@@ -28,13 +28,38 @@ public class Cable
 
     protected List<RopeLengthChange> lengthChanges = new List<RopeLengthChange>();
 
-    protected void DefineElementsShort(CreateChainElementResult newElement)
+    public Cable(Rigidbody2D start, List<CableAnchor> cableAnchors, Rigidbody2D end)
+    {
+        anchors = cableAnchors;
+        totalLength = Util.GetDistance(Util.Merge(new Vector2[] { start.position }, cableAnchors.Select(c => (Vector2)c.transform.position).ToArray(), new Vector2[] { end.position }).ToArray());
+
+        if (IsShortCable)
+        {
+            CreateCableElementResult newElement = CreateElementBetween(start, end);
+            DefineElementsShort(newElement);
+        }
+        else
+        {
+            CreateCableElementResult newElement1 = CreateElementBetween(start, cableAnchors[0].Rigidbody2D);
+            CreateCableElementResult newElement2 = CreateElementBetween(end, cableAnchors.Last().Rigidbody2D);
+            DefineElementsLong(newElement1, newElement2);
+        }
+    }
+
+    public Cable(Rigidbody2D start, Rigidbody2D end, Vector2[] pathPoints) { }
+
+    protected virtual CreateCableElementResult CreateElementBetween(Rigidbody2D start, Rigidbody2D end)
+    {
+        return null;
+    }
+
+    protected void DefineElementsShort(CreateCableElementResult newElement)
     {
         elements[0] = newElement.Instance;
     }
 
 
-    protected void DefineElementsLong(CreateChainElementResult one, CreateChainElementResult two)
+    protected void DefineElementsLong(CreateCableElementResult one, CreateCableElementResult two)
     {
         elements[0] = one.Instance;
         elements[1] = two.Instance;
