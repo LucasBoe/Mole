@@ -6,9 +6,6 @@ using UnityEngine;
 
 public class RopeElement : CableElement, IInputActionProvider
 {
-    [SerializeField] private CableElementVisualizer visualizerPrefab;
-    private CableElementVisualizer visualizerInstance;
-
     [SerializeField] RopePhysicsSegment segmentPrefab;
     [SerializeField] FixedJoint2D target;
     [SerializeField] float debugLength;
@@ -19,53 +16,40 @@ public class RopeElement : CableElement, IInputActionProvider
 
     public float DistanceToAttachedObject => Vector2.Distance(transform.position, attachJoint.connectedBody.position);
 
-
-    private Rigidbody2D connectedBody;
     private float length = 0;
     public float Length => length;
 
     internal void Setup(Rigidbody2D start, Rigidbody2D end, float length)
     {
-        Debug.LogWarning("setup 1");
-
-        otherRigidbody = start;
-
-        connectedBody = end;
-
-        attachJoint.connectedBody = start;
-        attachJoint.connectedAnchor = Vector2.zero;
-
-        this.length = length;
+        StartSetup(start, end, length);
 
         Vector2[] pos = new Vector2[Mathf.CeilToInt(length)];
         for (int i = 0; i < length; i++)
             pos[i] = Vector2.Lerp(start.position, end.position, 1f - (i / length));
 
-        CreatePhysicsSegments(length, pos);
-
-        visualizerInstance = Instantiate(visualizerPrefab, transform.position, Quaternion.identity, LayerHandler.Parent);
-        visualizerInstance.Init(this);
+        FinishSetup(length, pos);
     }
-
     public void Setup(Rigidbody2D start, Rigidbody2D end, Vector2[] travelPoints)
     {
-        Debug.LogWarning("setup 2");
-
-        connectedBody = end;
-
-        attachJoint.connectedBody = start;
-        attachJoint.connectedAnchor = Vector2.zero;
-
-        length = travelPoints.GetDistance();
+        StartSetup(start, end, travelPoints.GetDistance());
 
         Vector2[] remapped = Util.RemapComplexLengthToPointsOfCertainDistance(new List<Vector3>(travelPoints.ToVector3Array()), 1);
         Vector2[] pos = new Vector2[Mathf.CeilToInt(length)];
         for (int i = 0; i < length; i++)
             pos[i] = remapped[(int)(((pos.Length - 1 - (float)i) / pos.Length) * remapped.Length)];
 
-        CreatePhysicsSegments(length, pos);
+        FinishSetup(length, pos);
+    }
 
-        visualizerInstance = Instantiate(visualizerPrefab, transform.position, Quaternion.identity, LayerHandler.Parent);
+    private void StartSetup(Rigidbody2D start, Rigidbody2D end, float length)
+    {
+        BasicSetup(start, end);
+        this.length = length;
+    }
+
+    private void FinishSetup(float length, Vector2[] pos)
+    {
+        CreatePhysicsSegments(length, pos);
         visualizerInstance.Init(this);
     }
 
@@ -88,7 +72,7 @@ public class RopeElement : CableElement, IInputActionProvider
             RopePhysicsSegment newElement = Instantiate(segmentPrefab, pos, Quaternion.identity, LayerHandler.Parent);
             Util.DebugDrawCircle(pos, Color.green, 0.5f, lifetime: 4);
 
-            newElement.Connected(previousElementExists ? Last.Rigidbody : connectedBody);
+            newElement.Connected(previousElementExists ? Last.Rigidbody : otherRigidbody);
             elements.Add(newElement);
             if (newLength >= 1)
                 newLength--;
@@ -107,7 +91,7 @@ public class RopeElement : CableElement, IInputActionProvider
         return elements.Select(e => e.Rigidbody.position).ToArray();
     }
 
-    public void SetLength(float newLength)
+    public override void SetJointDistance(float newLength)
     {
         debugLength = newLength;
         Debug.LogWarning(newLength);
@@ -140,8 +124,6 @@ public class RopeElement : CableElement, IInputActionProvider
         }
         else if (direction == ModifationDirection.Shorten)
         {
-            Debug.LogError("Shorten...");
-
             int toRemove = Mathf.CeilToInt(length) - Mathf.CeilToInt(newLengt);
             while (toRemove > 0)
             {
@@ -187,7 +169,4 @@ public class RopeElement : CableElement, IInputActionProvider
         Debug.Log($"reconnected from {attachJoint.connectedBody.name} to {to.name}");
         attachJoint.connectedBody = to;
     }
-
-
-
 }
