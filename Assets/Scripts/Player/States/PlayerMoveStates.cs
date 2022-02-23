@@ -42,6 +42,9 @@ public class IdleState : MoveBaseState
     {
         base.Update();
 
+        if (RopeClimbState.TryEnter())
+            return;
+
         IsCrouching = !context.Input.Sprinting;
 
         if (context.Input.Axis.x != 0 && !triesMovingIntoWall)
@@ -50,6 +53,7 @@ public class IdleState : MoveBaseState
         //jumping
         if (context.Input.Jump)
             SetState(new JumpState());
+
 
         //dropping down
         if (IsColliding(CheckType.DropDownable) && context.Input.Axis.y < -0.9f)
@@ -180,6 +184,9 @@ public class FallState : MoveBaseState
                 SetState(new CombatStrangleState(targets[0]));
             }
         }
+
+        if (RopeClimbState.TryEnter())
+            return;
 
         //gravity
         ApplyGravity(Time.time - startFallTime);

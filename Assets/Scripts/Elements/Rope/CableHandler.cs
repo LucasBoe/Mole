@@ -54,7 +54,7 @@ public class CableHandler : SingletonBehaviour<CableHandler>
         foreach (Cable rope in cables)
         {
             List<Rigidbody2D> rigidbody2Ds = new List<Rigidbody2D>();
-            foreach (ChainElement element in rope.Elements)
+            foreach (CableElement element in rope.Elements)
             {
                 if (element != null)
                 {

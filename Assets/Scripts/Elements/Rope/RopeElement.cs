@@ -94,7 +94,6 @@ public class RopeElement : CableElement, IInputActionProvider
     public override void SetJointDistance(float newLength)
     {
         debugLength = newLength;
-        Debug.LogWarning(newLength);
 
         if (newLength < length)
         {

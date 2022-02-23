@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class CableElement : MonoBehaviour
 {
+    [SerializeField] private Rigidbody2D ownRigidbody;
+    public Rigidbody2D OwnRigidbody => ownRigidbody;
     [SerializeField] protected AnchoredJoint2D attachJoint;
     [SerializeField] private CableElementVisualizer visualizerPrefab;
     protected CableElementVisualizer visualizerInstance;

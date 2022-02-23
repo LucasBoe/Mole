@@ -46,9 +46,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbd06a0a4d3b4ab49a1485dc20ecc3a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ownRigidbody: {fileID: 8770418620656433984}
   attachJoint: {fileID: 3300375738520965301}
-  distanceJoint2D: {fileID: 4247117162392698674}
   visualizerPrefab: {fileID: 6650807411414497711, guid: 565ee3289f488af409c0a5575c85a1a7, type: 3}
+  distanceJoint2D: {fileID: 4247117162392698674}
   pullForce: 0
 --- !u!50 &8770418620656433984
 Rigidbody2D:

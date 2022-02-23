@@ -34,6 +34,8 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
     float distanceDifference;
     public Rigidbody2D ConnectToRope(Rope newRope, bool playerIsAtStart)
     {
+        Debug.LogWarning("connect to rope: " + newRope + " / " + playerIsAtStart);
+
         current = newRope;
         playerConstrollsStart = playerIsAtStart;
         currentElement = newRope.GetPlayerControlledElement(playerIsAtStart);
@@ -42,6 +44,11 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
         PlayerInputActionRegister.Instance.RegisterInputAction(PlayerInputActionCreator.GetClimbRopeAction(transform));
 
         return playerRigidbody2D;
+    }
+
+    public Rigidbody2D GetRopeElementBody()
+    {
+        return currentElement.OwnRigidbody;
     }
 
     /// <summary>
@@ -68,6 +75,11 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
     {
         rope.ReplaceConnectedBody(rigidbody2D, playerRigidbody2D);
         ConnectToRope(rope, rope.IsRigidbodyStart(playerRigidbody2D));
+    }
+
+    public void SetPlayerDragActive(bool active)
+    {
+        playerRigidbody2D.drag = active ? 10f : 0f;
     }
 
     private void Update()
