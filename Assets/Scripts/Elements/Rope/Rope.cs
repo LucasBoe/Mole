@@ -89,9 +89,9 @@ public class Rope : Cable
         return (((lengthBefore - deadLength) * distribution) + (lengthChange.Amount * lengthChange.Distribution)) / (newLength - deadLength);
     }
 
-    internal RopeElement GetPlayerControlledElement()
+    internal RopeElement GetPlayerControlledElement(bool playerIsAtStart)
     {
-        throw new NotImplementedException();
+        return (playerIsAtStart ? One : Two) as RopeElement;
     }
 
     public void ReplaceConnectedBody(Rigidbody2D from, Rigidbody2D to)
@@ -104,16 +104,5 @@ public class Rope : Cable
         //TODO: Remove this failsave
         if (IsShortCable)
             One.SetJointDistance(totalLength);
-    }
-
-    private void CheckAndPotentiallyConnectPlayer(Rope newRope, Rigidbody2D start, Rigidbody2D end)
-    {
-        PlayerRopeUser playerStart = start.GetComponentInChildren<PlayerRopeUser>();
-        PlayerRopeUser playerEnd = end.GetComponentInChildren<PlayerRopeUser>();
-
-        if (playerStart != null)
-            playerStart.ConnectToRope(newRope, playerIsAtStart: true);
-        else if (playerEnd != null)
-            playerStart.ConnectToRope(newRope, playerIsAtStart: false);
     }
 }

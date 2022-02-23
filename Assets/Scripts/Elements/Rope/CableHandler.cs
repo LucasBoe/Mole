@@ -31,6 +31,7 @@ public class CableHandler : SingletonBehaviour<CableHandler>
     public Rope CreateRope(Rigidbody2D start, Rigidbody2D end, List<CableAnchor> anchors = null, Vector2[] pathPoints = null)
     {
         Rope newRope = (pathPoints == null) ?  new Rope(start, anchors, end) : new Rope(start, end, pathPoints);
+        CheckAndPotentiallyConnectPlayer(newRope, start, end);
         cables.Add(newRope);
         return newRope;
     }
