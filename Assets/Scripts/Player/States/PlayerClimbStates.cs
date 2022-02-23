@@ -1,4 +1,5 @@
 using PlayerCollisionCheckType;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -80,6 +81,58 @@ public class RopeClimbState : PlayerStateBase
         base.Exit();
 
         PlayerRopeClimbListener.Instance.TrySetState(PlayerRopeClimbListener.States.Idle);
+    }
+}
+
+public class LadderClimbState : PlayerStateBase
+{
+    Ladder climbingLadder;
+
+    public static System.Action OnClimbEnter, OnClimbExit;
+
+    public static bool CheckEnter()
+    {
+        PlayerStateMachine stateMachine = PlayerStateMachine.Instance;
+        if (stateMachine.CurrentState.StateIs(typeof(LadderClimbState)))
+            return false;
+
+        if (PlayerInputHandler.PlayerInput.Axis.y == 0f)
+            return false;
+
+        return true;
+    }
+
+    public LadderClimbState(Ladder ladder)
+    {
+        climbingLadder = ladder;
+    }
+
+    public override void Update()
+    {
+        base.Update();
+        float dist = Mathf.Abs(context.PlayerPos.x - climbingLadder.transform.position.x);
+        Vector2 inputPos = context.PlayerPos + context.Input.Axis * Time.deltaTime * context.Values.LadderClimbVelocity;
+        Vector2 snappedToLadderPosition = Vector2.MoveTowards(inputPos, new Vector2(climbingLadder.transform.position.x, inputPos.y), Time.deltaTime * context.Values.LadderClimbVelocity * Mathf.Pow(dist * 2,2));
+        context.Rigidbody.MovePosition(snappedToLadderPosition);
+
+        if (IsColliding(CheckType.Ground) || !climbingLadder.PlayerIsAbove)
+            SetState(new IdleState());
+
+        if (context.Input.Jump)
+            JumpOff(context.Input.Axis);
+    }
+
+    public override void Enter()
+    {
+        OnClimbEnter?.Invoke();
+        base.Enter();
+    }
+
+    public override void Exit()
+    {
+        OnClimbExit?.Invoke();
+        context.Rigidbody.MovePosition(context.PlayerPos + new Vector2(0,0.25f));
+        base.Exit();
     }
 }
 

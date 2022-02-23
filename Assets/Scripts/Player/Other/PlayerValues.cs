@@ -33,6 +33,9 @@ public class PlayerValues : ScriptableObject
     public float RopeClimbVelocity = 10f;
 
     public float SnapToHideablePositionDuration = 0.5f;
+
+    //Ladders
+    public float LadderClimbVelocity;
 }
 
 [System.Serializable]

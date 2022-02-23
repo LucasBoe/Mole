@@ -90,3 +90,5 @@ MonoBehaviour:
   KeyPressTimeToDropDown: 0.05
   RopeClimbVelocity: 25
   SnapToHideablePositionDuration: 0.05
+  LadderClimbVelocity: 20
+  LadderSnapVelocity: 10
