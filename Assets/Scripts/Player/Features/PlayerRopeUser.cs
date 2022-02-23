@@ -41,8 +41,6 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
         currentElement = newRope.GetPlayerControlledElement(playerIsAtStart);
         distBefore = 0;
 
-        PlayerInputActionRegister.Instance.RegisterInputAction(PlayerInputActionCreator.GetClimbRopeAction(transform));
-
         return playerRigidbody2D;
     }
 
@@ -63,8 +61,6 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
     public Rope HandoverRopeTo(Rigidbody2D newRigidbody)
     {
         current.ReplaceConnectedBody(playerRigidbody2D, newRigidbody);
-
-        PlayerInputActionRegister.Instance.UnregisterInputAction(PlayerInputActionCreator.GetClimbRopeAction(transform));
 
         Rope r = current;
         current = null;
