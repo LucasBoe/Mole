@@ -43144,15 +43144,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac2ce3345ae40024cbe1cfea53f47c45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  indoor: {fileID: 671799403}
-  outdoor: {fileID: 1741348560}
   layerEnumGameobjectPair:
   - Layer: 0
     GameObject: {fileID: 671799403}
+    IsTunnel: 0
+    IsActive: 0
   - Layer: 1
     GameObject: {fileID: 1741348560}
+    IsTunnel: 0
+    IsActive: 1
   - Layer: 2
     GameObject: {fileID: 1522547012}
+    IsTunnel: 1
+    IsActive: 0
+  HideInactiveLayers: 1
 --- !u!156049354 &747041234
 Grid:
   m_ObjectHideFlags: 0
