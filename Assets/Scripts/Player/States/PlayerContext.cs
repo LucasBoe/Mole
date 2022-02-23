@@ -36,6 +36,7 @@ public class PlayerInput
     public bool ItemMenuRight => DPadRight || Tab;
 
 
+    public bool LT;
     public float LTAxis;
     public bool LTUp;
     public bool LTDown;

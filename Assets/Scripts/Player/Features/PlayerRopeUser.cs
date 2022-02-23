@@ -25,8 +25,8 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
 
     [SerializeField] Rigidbody2D playerRigidbody2D;
 
-    RopeElement currentElement;
-    Rope current;
+    [SerializeField] RopeElement currentElement;
+    [SerializeField] Rope current;
     bool playerConstrollsStart = false;
     public bool IsActive => current != null && currentElement != null;
 
@@ -36,7 +36,7 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
     {
         current = newRope;
         playerConstrollsStart = playerIsAtStart;
-        currentElement = newRope.GetPlayerControlledElement();
+        currentElement = newRope.GetPlayerControlledElement(playerIsAtStart);
         distBefore = 0;
 
         PlayerInputActionRegister.Instance.RegisterInputAction(PlayerInputActionCreator.GetClimbRopeAction(transform));
@@ -77,23 +77,26 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
 
         PlayerInput input = PlayerInputHandler.PlayerInput;
 
-        if (input.LTDown)
-            Mode = RopeUserMode.Grap;
-        else if (input.LTUp)
-            Mode = RopeUserMode.Free;
+        if (input.LT)
+            current.Elongate(-Time.deltaTime * input.LTAxis, distribution: playerConstrollsStart ? 1f : 0f);
 
-
-        float dist = Vector2.Distance(currentElement.Rigidbody2DOther.position, currentElement.Rigidbody2DAttachedTo.position);
-        if (distBefore != 0f && Mode == RopeUserMode.Free && input.Axis != Vector2.zero)
-        {
-            //distanceDifference = dist - distBefore;
-            distanceDifference = distanceToRopeToLengthChangeCurve.Evaluate(currentElement.DistanceToAttachedObject);
-
-            current.Elongate(distanceDifference * Time.deltaTime, distribution: playerConstrollsStart ? 1f : 0f);
-
-        }
-
-        distBefore = dist;
+        //if (input.LTDown)
+        //    Mode = RopeUserMode.Grap;
+        //else if (input.LTUp)
+        //    Mode = RopeUserMode.Free;
+        //
+        //
+        //float dist = Vector2.Distance(currentElement.Rigidbody2DOther.position, currentElement.Rigidbody2DAttachedTo.position);
+        //if (distBefore != 0f && Mode == RopeUserMode.Free && input.Axis != Vector2.zero)
+        //{
+        //    //distanceDifference = dist - distBefore;
+        //    distanceDifference = distanceToRopeToLengthChangeCurve.Evaluate(currentElement.DistanceToAttachedObject);
+        //
+        //    current.Elongate(distanceDifference * Time.deltaTime, distribution: playerConstrollsStart ? 1f : 0f);
+        //
+        //}
+        //
+        //distBefore = dist;
     }
 
     private void OnDrawGizmos()

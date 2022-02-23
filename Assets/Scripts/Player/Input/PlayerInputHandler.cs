@@ -9,7 +9,6 @@ public class PlayerInputHandler : SingletonBehaviour<PlayerInputHandler>
 
 
     bool DPadLock = false;
-    bool HoldingLT = false;
 
     private void Update()
     {
@@ -41,9 +40,9 @@ public class PlayerInputHandler : SingletonBehaviour<PlayerInputHandler>
         PlayerInput.JustPressedOpenInventoryButton = Input.GetKeyDown(KeyCode.I) || Input.GetAxis("Cross Y") != 0;
 
         PlayerInput.LTAxis = Input.GetAxis("LT");
-        PlayerInput.LTDown = !HoldingLT && PlayerInput.LTAxis > 0.5f;
-        PlayerInput.LTUp = HoldingLT && PlayerInput.LTAxis < 0.5f;
-        HoldingLT = PlayerInput.LTAxis > 0.5f;
+        PlayerInput.LTDown = !PlayerInput.LT && PlayerInput.LTAxis > 0.5f;
+        PlayerInput.LTUp = PlayerInput.LT && PlayerInput.LTAxis < 0.5f;
+        PlayerInput.LT = PlayerInput.LTAxis > 0.5f;
 
         PlayerInput.Back = Input.GetButtonDown("Back");
         PlayerInput.Jump = Input.GetButtonDown("Jump");

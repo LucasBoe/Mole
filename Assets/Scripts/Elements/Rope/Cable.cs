@@ -135,6 +135,8 @@ public class Cable
 
     public void Elongate(float amount, float distribution)
     {
+        Debug.Log("change : " + amount);
+
         lengthChanges.Add(new RopeLengthChange(distribution, amount));
     }
 }
