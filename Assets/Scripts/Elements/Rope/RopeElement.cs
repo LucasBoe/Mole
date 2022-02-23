@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class RopeElement : CableElement, IInputActionProvider
+public class RopeElement : CableElement
 {
     [SerializeField] RopePhysicsSegment segmentPrefab;
     [SerializeField] FixedJoint2D target;
@@ -158,10 +158,6 @@ public class RopeElement : CableElement, IInputActionProvider
     {
         Shorten,
         Lengthen,
-    }
-    public InputAction FetchInputAction()
-    {
-        return PlayerInputActionCreator.GetClimbRopeAction(transform);
     }
     public override void Reconnect(Rigidbody2D to)
     {
