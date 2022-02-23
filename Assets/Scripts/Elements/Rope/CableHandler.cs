@@ -72,7 +72,7 @@ public class CableHandler : SingletonBehaviour<CableHandler>
 
     internal void DestroyCable(Cable cable)
     {
-        foreach (ChainElement element in cable.Elements)
+        foreach (CableElement element in cable.Elements)
         {
 
             if (element != null)

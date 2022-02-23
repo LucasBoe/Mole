@@ -30,4 +30,10 @@ public class CableElement : MonoBehaviour
         attachJoint.connectedAnchor = Vector2.zero;
         visualizerInstance = Instantiate(visualizerPrefab, transform.position, Quaternion.identity, LayerHandler.Parent);
     }
+    public void Destroy()
+    {
+        Destroy(visualizerInstance.gameObject);
+        Destroy(gameObject);
+        Destroy(this);
+    }
 }

@@ -31,7 +31,7 @@ public class PlayerValues : ScriptableObject
     public float KeyPressTimeToDropDown = 0.5f;
 
     public float RopeClimbVelocity = 10f;
-    public float RopeSwingForce = 500f;
+    public AnimationCurve RopeSwingForceCurve = AnimationCurve.Linear(0, 250, 10, 750);
 
     public float SnapToHideablePositionDuration = 0.5f;
 

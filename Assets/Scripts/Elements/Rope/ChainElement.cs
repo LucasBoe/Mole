@@ -32,11 +32,4 @@ public class ChainElement : CableElement
 
         visualizerInstance.Init(start, end);
     }
-
-    internal void Destroy()
-    {
-        Destroy(visualizerInstance.gameObject);
-        Destroy(gameObject);
-        Destroy(this);
-    }
 }

@@ -59,7 +59,7 @@ public class RopeClimbState : PlayerStateBase
             JumpOff(context.Input.Axis);
 
         Rigidbody2D body = PlayerRopeUser.Instance.GetRopeElementBody();
-        body.AddForce(context.Input.Axis * Time.deltaTime * context.Values.RopeSwingForce);
+        body.AddForce(context.Input.Axis * Time.deltaTime * context.Values.RopeSwingForceCurve.Evaluate(body.velocity.magnitude));
         body.velocity = body.velocity * (1 + Time.deltaTime);
 
     }
