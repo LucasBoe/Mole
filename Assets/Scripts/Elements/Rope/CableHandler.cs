@@ -11,11 +11,11 @@ public class CableHandler : SingletonBehaviour<CableHandler>
     [SerializeField] private RopeElement ropeElementPrefab;
     [SerializeField] private RopeEnd ropeEndPrefab;
 
-    [SerializeField] private List<Cable> cables = new List<Cable>();
+    [ReadOnly, SerializeField] private List<Cable> cables = new List<Cable>();
     private Dictionary<Chain, Coroutine> chainLockRegister = new Dictionary<Chain, Coroutine>();
 
 
-    [SerializeField] public Chain[] chainDebug;
+    [ReadOnly, SerializeField] public Chain[] chainDebug;
 
     public Chain CreateChain(Rigidbody2D start, Rigidbody2D end, List<CableAnchor> anchors)
     {

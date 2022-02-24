@@ -19,7 +19,7 @@ public class Cable
 
 
     //length & distribution
-    [SerializeField] protected float totalLength;
+    [ReadOnly, SerializeField] protected float totalLength;
     protected SmoothFloat smoothLength1;
     protected SmoothFloat smoothLength2;
 

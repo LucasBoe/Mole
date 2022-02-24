@@ -25,8 +25,8 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
 
     [SerializeField] Rigidbody2D playerRigidbody2D;
 
-    [SerializeField] RopeElement currentElement;
-    [SerializeField] Rope current;
+    [ReadOnly, SerializeField] RopeElement currentElement;
+    [ReadOnly, SerializeField] Rope current;
     bool playerConstrollsStart = false;
     public bool IsActive => current != null && currentElement != null;
 

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TunnelUser : MonoBehaviour
 {
-    public bool IsInTunnel = false;
+    [ReadOnly] public bool IsInTunnel = false;
     SpriteRenderer[] playerSpriteRenderers;
     [SerializeField] string defaultLayer, inTunnselLayer;
 
