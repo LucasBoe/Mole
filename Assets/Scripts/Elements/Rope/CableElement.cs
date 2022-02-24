@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class CableElement : MonoBehaviour
 {
+    [SerializeField] private Rigidbody2D ownRigidbody;
+    public Rigidbody2D OwnRigidbody => ownRigidbody;
     [SerializeField] protected AnchoredJoint2D attachJoint;
     [SerializeField] private CableElementVisualizer visualizerPrefab;
     protected CableElementVisualizer visualizerInstance;
@@ -27,5 +29,11 @@ public class CableElement : MonoBehaviour
         attachJoint.connectedBody = start;
         attachJoint.connectedAnchor = Vector2.zero;
         visualizerInstance = Instantiate(visualizerPrefab, transform.position, Quaternion.identity, LayerHandler.Parent);
+    }
+    public void Destroy()
+    {
+        Destroy(visualizerInstance.gameObject);
+        Destroy(gameObject);
+        Destroy(this);
     }
 }

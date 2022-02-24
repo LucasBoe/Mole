@@ -18,7 +18,7 @@ public class RopeEnd : AboveCooldownInteractable
     {
         //TODO: Replace with PlayerAboveInputActionProvider
         if (ShouldShowPrompt()) 
-            PlayerInputActionRegister.Instance.RegisterInputAction(new InputAction() { Input = ControlType.Interact, Stage = InputActionStage.WorldObject, Target = transform, ActionCallback = PlayerTryInteract });
+            PlayerInputActionRegister.Instance.RegisterInputAction(new InputAction() { Input = ControlType.Interact, Stage = InputActionStage.WorldObject, Target = transform, ActionCallback = PlayerTryInteract, Text="Take Rope" });
     }
 
     protected override void OnPlayerExit()

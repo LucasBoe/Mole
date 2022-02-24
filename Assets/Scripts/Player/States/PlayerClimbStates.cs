@@ -33,54 +33,45 @@ public class ClimbStateBase : PlayerStateBase
 
 public class RopeClimbState : PlayerStateBase
 {
-    Rigidbody2D climbingBody;
+    internal static bool TryEnter()
+    {
+        if (PlayerRopeUser.Instance.IsActive)
+        {
+            PlayerStateMachine.Instance.SetState(new RopeClimbState());
+            return true;
+        }
+
+        return false;
+    }
 
     public override void Enter()
     {
         base.Enter();
-        if (PlayerRopeUser.Instance.IsActive)
-            PlayerRopeUser.Instance.DropCurrentRope();
-
-        PlayerRopeClimbListener.Instance.TrySetState(PlayerRopeClimbListener.States.Climb);
-
+        //PlayerRopeClimbListener.Instance.TrySetState(PlayerRopeClimbListener.States.Climb);
+        PlayerRopeUser.Instance.SetPlayerDragActive(false);
     }
 
     public override void Update()
     {
         base.Update();
 
-        RopePhysicsSegment[] segments = GetCheck(CheckType.Rope).Get<RopePhysicsSegment>();
-        if (segments.Length > 0)
-        {
-            Rigidbody2D closest = segments.Select(s => s.Rigidbody).GetClosest(context.PlayerPos);
-            if (closest != null)
-            {
-                climbingBody = closest;
-                PlayerRopeClimbListener.Instance.SetClimbingBody(climbingBody);
-            }
-        }
-
         if (context.Input.Jump)
             JumpOff(context.Input.Axis);
 
-        if (climbingBody == null)
-            SetState(new FallState());
-        else
-        {
-            ColliderDistance2D distanceToClimbingBody = PlayerRopeClimbListener.Instance.GetDistanceToBody();
-            float movementModifier = Mathf.Clamp(0.5f - distanceToClimbingBody.distance, 0, 10);
+        Rigidbody2D body = PlayerRopeUser.Instance.GetRopeElementBody();
+        body.AddForce(context.Input.Axis * Time.deltaTime * context.Values.RopeSwingForceCurve.Evaluate(body.velocity.magnitude));
+        body.velocity = body.velocity * (1 + Time.deltaTime);
 
-            if (context.Input.Axis != Vector2.zero)
-                context.Rigidbody.MovePosition(context.PlayerPos + context.Input.Axis * Time.deltaTime * movementModifier * context.Values.RopeClimbVelocity);
-            else
-                context.Rigidbody.MovePosition(Vector2.MoveTowards(context.PlayerPos, distanceToClimbingBody.pointB, context.Values.RopeClimbVelocity * Time.deltaTime));
-        }
     }
+
+
+
     public override void Exit()
     {
         base.Exit();
-
-        PlayerRopeClimbListener.Instance.TrySetState(PlayerRopeClimbListener.States.Idle);
+        //PlayerRopeClimbListener.Instance.TrySetState(PlayerRopeClimbListener.States.Idle);
+        PlayerRopeUser.Instance.DropCurrentRope();
+        PlayerRopeUser.Instance.SetPlayerDragActive(true);
     }
 }
 
@@ -112,7 +103,7 @@ public class LadderClimbState : PlayerStateBase
         base.Update();
         float dist = Mathf.Abs(context.PlayerPos.x - climbingLadder.transform.position.x);
         Vector2 inputPos = context.PlayerPos + context.Input.Axis * Time.deltaTime * context.Values.LadderClimbVelocity;
-        Vector2 snappedToLadderPosition = Vector2.MoveTowards(inputPos, new Vector2(climbingLadder.transform.position.x, inputPos.y), Time.deltaTime * context.Values.LadderClimbVelocity * Mathf.Pow(dist * 2,2));
+        Vector2 snappedToLadderPosition = Vector2.MoveTowards(inputPos, new Vector2(climbingLadder.transform.position.x, inputPos.y), Time.deltaTime * context.Values.LadderClimbVelocity * Mathf.Pow(dist * 2, 2));
         context.Rigidbody.MovePosition(snappedToLadderPosition);
 
         if (IsColliding(CheckType.Ground) || !climbingLadder.PlayerIsAbove)
@@ -131,7 +122,7 @@ public class LadderClimbState : PlayerStateBase
     public override void Exit()
     {
         OnClimbExit?.Invoke();
-        context.Rigidbody.MovePosition(context.PlayerPos + new Vector2(0,0.25f));
+        context.Rigidbody.MovePosition(context.PlayerPos + new Vector2(0, 0.25f));
         base.Exit();
     }
 }

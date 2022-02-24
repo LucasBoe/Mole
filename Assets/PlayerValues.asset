@@ -88,7 +88,30 @@ MonoBehaviour:
   WallSnapXVelocity: 10
   JumpOffVelocity: 1.5
   KeyPressTimeToDropDown: 0.05
-  RopeClimbVelocity: 25
+  RopeClimbVelocity: 50
+  RopeSwingForceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 100
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 20
+      value: 1000
+      inSlope: 2.2029512
+      outSlope: 2.2029512
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.14462022
+      outWeight: 0
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 4
   SnapToHideablePositionDuration: 0.05
   LadderClimbVelocity: 20
-  LadderSnapVelocity: 10

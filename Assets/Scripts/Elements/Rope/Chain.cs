@@ -23,16 +23,11 @@ public class Chain : Cable
 
     public Chain(Rigidbody2D start, List<CableAnchor> cableAnchors, Rigidbody2D end) : base(start, cableAnchors, end) { }
 
-    protected override CreateCableElementResult CreateElementBetween(Rigidbody2D start, Rigidbody2D end)
+    protected override CableElement CreateElementBetween(Rigidbody2D start, Rigidbody2D end, float length)
     {
-        CreateCableElementResult result = new CreateCableElementResult()
-        {
-            Instance = CableHandler.Instance.SpawnChainElement(start, end),
-            Length = Vector2.Distance(start.position, end.position)
-        };
-
-        (result.Instance as ChainElement).Setup(start, end, result.Length);
-        return result;
+        ChainElement instance = CableHandler.Instance.SpawnChainElement(start, end);
+        instance.Setup(start, end, length);
+        return instance;
     }
 
     private float BalanceOperationn()
