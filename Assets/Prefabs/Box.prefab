@@ -14,10 +14,11 @@ GameObject:
   - component: {fileID: 5136582279318627103}
   - component: {fileID: 1482603712404808887}
   - component: {fileID: 514133845079640751}
-  - component: {fileID: 4007296649126255273}
   - component: {fileID: 4308749922883843476}
   - component: {fileID: 452245798}
   - component: {fileID: 452245797}
+  - component: {fileID: 5956164242862739922}
+  - component: {fileID: 5136763323440919342}
   m_Layer: 11
   m_Name: Box
   m_TagString: Untagged
@@ -165,20 +166,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocityForSound: 10
   noise: 5
---- !u!114 &4007296649126255273
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1482603712404808885}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ea26c27a07db844fb22ef091210880d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Item: {fileID: 11400000, guid: 2b25d12318da1334d8c31d6e9729e733, type: 2}
-  SpriteRenderer: {fileID: 1482603712404808880}
 --- !u!114 &4308749922883843476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,6 +220,39 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3, y: 3}
   m_EdgeRadius: 0
+--- !u!114 &5956164242862739922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1482603712404808885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c732606d663ed46a3cb6808178e467, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Item: {fileID: 11400000, guid: 17991d9c846f729469abf59ab76ca9b0, type: 2}
+  distanceJoint2D: {fileID: 5136763323440919342}
+--- !u!232 &5136763323440919342
+DistanceJoint2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1482603712404808885}
+  m_Enabled: 0
+  serializedVersion: 4
+  m_EnableCollision: 0
+  m_ConnectedRigidBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_AutoConfigureConnectedAnchor: 0
+  m_Anchor: {x: 0, y: 0}
+  m_ConnectedAnchor: {x: 0, y: 0}
+  m_AutoConfigureDistance: 0
+  m_Distance: 0.005
+  m_MaxDistanceOnly: 0
 --- !u!1 &6056599287071788959
 GameObject:
   m_ObjectHideFlags: 0

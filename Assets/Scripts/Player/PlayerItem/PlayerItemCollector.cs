@@ -11,15 +11,13 @@ public interface IPlayerComponent
 
 public class PlayerItemCollector : MonoBehaviour
 {
-    CollectablePlayerItem playerItem;
+    CollectablePlayerItemWorldObject playerItem;
     InputAction current = null;
-
-    public int UpdatePrio => 100;
 
     public void Init(PlayerContext context) { }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        CollectablePlayerItem c = collision.GetComponent<CollectablePlayerItem>();
+        CollectablePlayerItemWorldObject c = collision.GetComponent<CollectablePlayerItemWorldObject>();
         if (c != null)
         {
             //TODO: Move this to input action register look at PlayerAboveInputActionProvider
@@ -31,7 +29,7 @@ public class PlayerItemCollector : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        CollectablePlayerItem c = collision.GetComponent<CollectablePlayerItem>();
+        CollectablePlayerItemWorldObject c = collision.GetComponent<CollectablePlayerItemWorldObject>();
         if (c != null && PlayerInputActionRegister.Instance.UnregisterAllInputActions(transform)) playerItem = null;
     }
 

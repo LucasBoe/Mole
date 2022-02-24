@@ -19,6 +19,10 @@ public class PlayerItemHolder : SingletonBehaviour<PlayerItemHolder>
             AddItem(pair.Item, pair.Amount);
         }
     }
+    public bool CanCollect(PlayerItem toCollect)
+    {
+        return true;
+    }
 
     public bool AddItem(PlayerItem item, int amount = 1)
     {

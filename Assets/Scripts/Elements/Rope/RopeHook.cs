@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class RopeHook : CollectablePlayerItem
+public class RopeHook : CollectablePlayerItemWorldObject
 {
     public enum States
     {
