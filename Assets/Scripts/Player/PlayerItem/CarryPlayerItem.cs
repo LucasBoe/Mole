@@ -13,4 +13,9 @@ public class CarryPlayerItem : PlayerItem
             carriableReference = value;
         }
     }
+
+    public override bool DisplaySprite ()
+    {
+        return false;
+    }
 }

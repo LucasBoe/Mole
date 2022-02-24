@@ -76,7 +76,7 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
         if (selectedItem != null && drop && selectedItem.Prefab != null)
             Instantiate(selectedItem.Prefab, transform.position, Quaternion.identity);
 
-        spriteRenderer.sprite = (item != null) ? item.Sprite : null;
+        spriteRenderer.sprite = (item != null && item.DisplaySprite()) ? item.Sprite : null;
         transform.rotation = Quaternion.identity;
 
         selectedItem = item;

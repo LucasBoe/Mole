@@ -21,6 +21,11 @@ public class PlayerItem : ScriptableObject
     {
         return new ItemMode[] { new ItemMode() { Icon = Sprite, Name = "Item" } };
     }
+
+    public virtual bool DisplaySprite()
+    {
+        return true;
+    }
 }
 
 public class PlayerItemUseResult
