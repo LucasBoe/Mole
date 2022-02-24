@@ -19,36 +19,82 @@ public class Cable
 
 
     //length & distribution
-    protected float totalLength;
+    [SerializeField] protected float totalLength;
     protected SmoothFloat smoothLength1;
     protected SmoothFloat smoothLength2;
 
-    [SerializeField, Range(0,1)] protected float distribution = 0.5f;
-    protected float deadLength = 0;
+    [SerializeField, Range(0, 1)] protected float distribution = 0.5f;
+    [SerializeField] protected float deadLength = 0;
+    [SerializeField] bool debugTEMP = false;
+
+    public float RealLength => totalLength - deadLength;
 
     protected List<RopeLengthChange> lengthChanges = new List<RopeLengthChange>();
 
     public Cable(Rigidbody2D start, List<CableAnchor> cableAnchors, Rigidbody2D end)
     {
         anchors = cableAnchors;
-        totalLength = Util.GetDistance(Util.Merge(new Vector2[] { start.position }, cableAnchors.Select(c => (Vector2)c.transform.position).ToArray(), new Vector2[] { end.position }).ToArray());
+        CalculateLengthAndDistribution(start, cableAnchors, end);
 
         if (IsShortCable)
         {
-            CreateCableElementResult newElement = CreateElementBetween(start, end);
-            DefineElementsShort(newElement);
+            elements[0] = CreateElementBetween(start, end, totalLength);
         }
         else
         {
-            CreateCableElementResult newElement1 = CreateElementBetween(start, cableAnchors[0].Rigidbody2D);
-            CreateCableElementResult newElement2 = CreateElementBetween(end, cableAnchors.Last().Rigidbody2D);
-            DefineElementsLong(newElement1, newElement2);
+            elements[0] = CreateElementBetween(start, cableAnchors[0].Rigidbody2D, smoothLength1.Value);
+            elements[1] = CreateElementBetween(end, cableAnchors.Last().Rigidbody2D, smoothLength2.Value);
         }
     }
 
-    public Cable(Rigidbody2D start, Rigidbody2D end, Vector2[] pathPoints) { }
+    public Cable(Rigidbody2D start, Rigidbody2D end, Vector2[] pathPoints)
+    {
+        anchors = new List<CableAnchor>();
+        CalculateLengthAndDistribution(start, new List<CableAnchor>(), end, pathPoints);
+    }
 
-    protected virtual CreateCableElementResult CreateElementBetween(Rigidbody2D start, Rigidbody2D end)
+    private void CalculateLengthAndDistribution(Rigidbody2D start, List<CableAnchor> cableAnchors, Rigidbody2D end, Vector2[] pathPoints = null)
+    {
+        float length1;
+        float length2;
+        float lengthDead;
+
+        //predefined path
+        if (pathPoints != null)
+        {
+            length1 = pathPoints.GetDistance();
+            length2 = 0;
+            lengthDead = 0;
+        }
+
+        //shortcable
+        else if (cableAnchors.Count == 0)
+        {
+            length1 = Vector2.Distance(start.position, end.position);
+            length2 = 0;
+            lengthDead = 0;
+        }
+
+        //longcable
+        else
+        {
+            length1 = Vector2.Distance(start.position, cableAnchors[0].Rigidbody2D.position);
+            length2 = Vector2.Distance(end.position, cableAnchors.Last().Rigidbody2D.position);
+            lengthDead = cableAnchors.Select(c => c.Rigidbody2D.position).ToArray().GetDistance();
+        }
+
+        smoothLength1 = new SmoothFloat(length1);
+        smoothLength2 = new SmoothFloat(length2);
+        deadLength = lengthDead;
+
+        totalLength = length1 + length2 + lengthDead;
+        distribution = length1 / (length1 + length2);
+
+        if (debugTEMP)
+            Debug.LogWarning($"created cable: l: { totalLength } and d: {distribution} ");
+    }
+
+    protected virtual CableElement CreateElementBetween(Rigidbody2D start, Rigidbody2D end, float length)
     {
         return null;
     }
@@ -97,14 +143,14 @@ public class Cable
 
     private void UpdateLength()
     {
-        float v1 = (totalLength - deadLength) * distribution;
-        float v2 = (totalLength - deadLength) * (1f - distribution);
+        float updatedLength1 = (totalLength - deadLength) * distribution;
+        float updatedLength2 = (totalLength - deadLength) * (1f - distribution);
 
-        if (smoothLength1 == null) smoothLength1 = new SmoothFloat(v1);
-        if (smoothLength2 == null) smoothLength2 = new SmoothFloat(v2);
+        if (debugTEMP)
+            Debug.LogWarning($"updated l1:{updatedLength1} and l2:{updatedLength2} by d:{distribution}");
 
-        smoothLength1.Value = v1;
-        smoothLength2.Value = v2;
+        smoothLength1.Value = updatedLength1;
+        smoothLength2.Value = updatedLength2;
     }
 
     /*
@@ -135,8 +181,6 @@ public class Cable
 
     public void Elongate(float amount, float distribution)
     {
-        Debug.Log("change : " + amount);
-
         lengthChanges.Add(new RopeLengthChange(distribution, amount));
     }
 }
@@ -157,11 +201,11 @@ public class SmoothFloat
 {
     private float raw;
     private float smoothed;
-    private float v1;
 
     public SmoothFloat(float startValue)
     {
         this.smoothed = startValue;
+        this.raw = startValue;
     }
 
     public float Value

@@ -20,24 +20,17 @@ public class Rope : Cable
     //custom rope contructor for thrown ropes
     public Rope(Rigidbody2D start, Rigidbody2D end, Vector2[] pathPoints) : base(start, end, pathPoints)
     {
-        anchors = new List<CableAnchor>();
-        totalLength = pathPoints.GetDistance();
-
         RopeElement ropeElement = CableHandler.Instance.SpawnRopeElement(start, end);
         ropeElement.Setup(start, end, pathPoints);
         DefineElementsShort(new CreateCableElementResult() { Instance = ropeElement, Length = totalLength });
     }
 
-    protected override CreateCableElementResult CreateElementBetween(Rigidbody2D start, Rigidbody2D end)
+    protected override CableElement CreateElementBetween(Rigidbody2D start, Rigidbody2D end, float length)
     {
-        CreateCableElementResult result = new CreateCableElementResult()
-        {
-            Instance = CableHandler.Instance.SpawnRopeElement(start, end),
-            Length = Vector2.Distance(start.position, end.position)
-        };
-
-        (result.Instance as RopeElement).Setup(start, end, result.Length);
-        return result;
+        RopeElement instance = CableHandler.Instance.SpawnRopeElement(start, end);
+        instance.Setup(start, end, length);
+        Debug.LogWarning("create rope element with l: " + length);
+        return instance;
     }
 
 

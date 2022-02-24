@@ -8,7 +8,7 @@ public class RopeElement : CableElement
 {
     [SerializeField] RopePhysicsSegment segmentPrefab;
     [SerializeField] FixedJoint2D target;
-    [SerializeField] float debugLength;
+    [SerializeField] float debugLength, debugLength2;
     public FixedJoint2D Target => target;
 
     private List<RopePhysicsSegment> elements = new List<RopePhysicsSegment>();
@@ -49,8 +49,27 @@ public class RopeElement : CableElement
 
     private void FinishSetup(float length, Vector2[] pos)
     {
+
         CreatePhysicsSegments(length, pos);
+        UnfreezePhysicsSegments(0.1f);
         visualizerInstance.Init(this);
+    }
+
+
+    private void UnfreezePhysicsSegments(float delay)
+    {
+
+        StartCoroutine(Delay(delay, () =>
+        {
+            foreach (RopePhysicsSegment segment in elements)
+                segment.Rigidbody.constraints = RigidbodyConstraints2D.None;
+        }));
+
+        IEnumerator Delay(float time, System.Action callback)
+        {
+            yield return new WaitForSeconds(time);
+            callback?.Invoke();
+        }
     }
 
     private void CreatePhysicsSegments(float newLength, Vector2[] positions = null)
@@ -114,6 +133,8 @@ public class RopeElement : CableElement
 
     private void ModifyElements(float newLengt, ModifationDirection direction)
     {
+        Debug.LogWarning("modiy length from " + length + " to " + newLengt);
+
         if (direction == ModifationDirection.Lengthen)
         {
             float lastElementDifference = Mathf.Ceil(length) - length;
@@ -146,6 +167,8 @@ public class RopeElement : CableElement
     {
         if (Last != null)
             target.connectedBody = Last.Rigidbody;
+
+        debugLength2 = Vector2.Distance(Rigidbody2DOther.position, Rigidbody2DAttachedTo.position);
     }
 
     private void OnDestroy()
