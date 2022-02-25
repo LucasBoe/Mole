@@ -7,6 +7,8 @@ using UnityEngine;
 //TODO: Generalize this to not need a separate layer but share it with other action providers
 public class Hideable : AboveInputActionProvider, IStaticTargetProvider
 {
+    [SerializeField] Transform inputActionTransform;
+
     public InputAction GetCustomExitAction() { return null; }
     public Transform GetTransform() { return transform; }
     public bool ProvidesCustomActionCallback() { return false; }
@@ -16,7 +18,7 @@ public class Hideable : AboveInputActionProvider, IStaticTargetProvider
         return new InputAction[] { new InputAction()
         {
             Input = ControlType.Use,
-            Target = transform,
+            Target = inputActionTransform,
             Stage= InputActionStage.WorldObject,
             Text = "Hide",
             ActionCallback = Hide

@@ -1,39 +1,65 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerItemCarrierComponent : MonoBehaviour
+public class PlayerItemCarrierComponent : SingletonBehaviour<PlayerItemCarrierComponent>
 {
     [SerializeField] Rigidbody2D rigidbody2D;
-    CarriablePlayerItemWorldObject carryable;
-    InputAction current = null;
+    CarriablePlayerItemWorldObject potCarryable, currentlyCarried;
+    InputAction carryAction = null;
+
+    private void OnEnable()
+    {
+        CarriablePlayerItemWorldObject.OnStartCarry += OnStartCarry;
+        CarriablePlayerItemWorldObject.OnEndCarry += OnEndCarry;
+    }
+
+    private void OnDisable()
+    {
+        CarriablePlayerItemWorldObject.OnStartCarry -= OnStartCarry;
+        CarriablePlayerItemWorldObject.OnEndCarry -= OnEndCarry;
+    }
+
+    private void OnEndCarry(CarriablePlayerItemWorldObject worldObject)
+    {
+        if (currentlyCarried == worldObject)
+            currentlyCarried = null;
+    }
+
+    private void OnStartCarry(CarriablePlayerItemWorldObject worldObject)
+    {
+        currentlyCarried = worldObject;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         CarriablePlayerItemWorldObject c = collision.GetComponent<CarriablePlayerItemWorldObject>();
-        if (c != null)
+
+        if (c != null && c != currentlyCarried)
         {
-            //TODO: Move this to input action register look at PlayerAboveInputActionProvider
-            current = new InputAction() { Text = "Carry " + c.Item.name, Target = transform, Stage = InputActionStage.WorldObject, ActionCallback = TryCarry };
-            PlayerInputActionRegister.Instance.RegisterInputAction(current);
-            carryable = c;
+            potCarryable = c;
+            carryAction = potCarryable.GetCarryAction();
+            PlayerInputActionRegister.Instance.RegisterInputAction(carryAction);
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        CollectablePlayerItemWorldObject c = collision.GetComponent<CollectablePlayerItemWorldObject>();
-        if (c != null && PlayerInputActionRegister.Instance.UnregisterAllInputActions(transform)) carryable = null;
+
+        CarriablePlayerItemWorldObject c = collision.GetComponent<CarriablePlayerItemWorldObject>();
+
+        if (c != null && PlayerInputActionRegister.Instance.UnregisterAllInputActions(c.transform)) potCarryable = null;
     }
 
-    private void TryCarry()
+    public void TryCarry(CarriablePlayerItemWorldObject carriablePlayerItemWorldObject)
     {
-        if (carryable != null && PlayerItemHolder.Instance.CanCollect(carryable.Item))
+        if (potCarryable != null && currentlyCarried != potCarryable && PlayerItemHolder.Instance.CanCollect(potCarryable.Item))
         {
-            if (current != null)
-                PlayerInputActionRegister.Instance.UnregisterInputAction(current);
+            if (carryAction != null)
+                PlayerInputActionRegister.Instance.UnregisterInputAction(carryAction);
 
-            carryable.StartCarry(rigidbody2D);
+            potCarryable.StartCarry(rigidbody2D);
         }
     }
 }

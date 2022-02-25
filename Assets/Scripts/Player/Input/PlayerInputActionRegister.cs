@@ -50,6 +50,7 @@ public class PlayerInputActionRegister : SingletonBehaviour<PlayerInputActionReg
         if (oldAction == null)
             return;
 
+
         ControlType controlType = oldAction.Input;
         if (register[controlType].Contains(oldAction))
         {

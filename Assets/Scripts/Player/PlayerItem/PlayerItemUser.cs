@@ -73,8 +73,14 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
         if (selectedItem == item)
             return;
 
-        if (selectedItem != null && drop && selectedItem.Prefab != null)
-            Instantiate(selectedItem.Prefab, transform.position, Quaternion.identity);
+        if (selectedItem != null)
+        {
+            if (selectedItem.IsCarryable())
+                (selectedItem as CarryPlayerItem).Carriable.SetCarryActive(false);
+
+            if (drop && selectedItem.Prefab != null)
+                Instantiate(selectedItem.Prefab, transform.position, Quaternion.identity);
+        }
 
         spriteRenderer.sprite = (item != null && item.DisplaySprite()) ? item.Sprite : null;
         transform.rotation = Quaternion.identity;

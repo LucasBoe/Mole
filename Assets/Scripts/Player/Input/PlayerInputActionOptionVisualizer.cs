@@ -79,7 +79,9 @@ public class PlayerInputActionOptionVisualizer : MonoBehaviour
         RectTransform parent;
 
         if (uiParents.ContainsKey(targetTransform))
+        {
             parent = uiParents[targetTransform];
+        }
         else
         {
             parent = Instantiate(inputUIParentPrefab, targetType == InputAction.TargetTypes.RectTransform ? uiSpaceParent : worldSpaceParent);

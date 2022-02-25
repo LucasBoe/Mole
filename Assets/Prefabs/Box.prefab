@@ -325,6 +325,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerIsAbove: 0
   useCooldown: 0
+  inputActionTransform: {fileID: 1482603712404808884}
 --- !u!1 &8337605467304274045
 GameObject:
   m_ObjectHideFlags: 0

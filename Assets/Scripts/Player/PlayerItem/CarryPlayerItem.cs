@@ -18,4 +18,9 @@ public class CarryPlayerItem : PlayerItem
     {
         return false;
     }
+
+    public override bool IsCarryable()
+    {
+        return true;
+    }
 }

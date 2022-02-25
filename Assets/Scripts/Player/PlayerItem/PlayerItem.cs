@@ -26,6 +26,11 @@ public class PlayerItem : ScriptableObject
     {
         return true;
     }
+
+    public virtual bool IsCarryable()
+    {
+        return false;
+    }
 }
 
 public class PlayerItemUseResult
