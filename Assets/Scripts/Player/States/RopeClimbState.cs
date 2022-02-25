@@ -29,7 +29,7 @@ public class RopeClimbState : PlayerStateBase
         PlayerRopeUser ropeUser = PlayerRopeUser.Instance;
 
         if (context.Input.Jump)
-            JumpOff(context.Input.Axis);
+            SetState(new JumpState());
 
         if (!ropeUser.IsActive)
             SetState(new IdleState());

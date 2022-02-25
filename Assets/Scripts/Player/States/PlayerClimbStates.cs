@@ -145,7 +145,6 @@ public class PullUpState : ClimbStateBase
 
             context.Rigidbody.velocity = Vector2.zero;
             SetState(new IdleState());
-            PlayerStateMachine.Instance.enabled = false;
         }
     }
     public override void Exit()
