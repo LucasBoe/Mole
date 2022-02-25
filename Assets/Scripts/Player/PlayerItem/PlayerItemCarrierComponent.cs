@@ -59,6 +59,9 @@ public class PlayerItemCarrierComponent : SingletonBehaviour<PlayerItemCarrierCo
             if (carryAction != null)
                 PlayerInputActionRegister.Instance.UnregisterInputAction(carryAction);
 
+            if (currentlyCarried != null)
+                PlayerItemHolder.Instance.RemoveItem(currentlyCarried.Item);
+
             potCarryable.StartCarry(rigidbody2D);
         }
     }
