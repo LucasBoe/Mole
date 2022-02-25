@@ -55,6 +55,9 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
 
     public Rope HandoverRopeTo(Rigidbody2D newRigidbody)
     {
+        if (current == null)
+            return null;
+
         current.ReplaceConnectedBody(playerRigidbody2D, newRigidbody);
 
         Rope r = current;

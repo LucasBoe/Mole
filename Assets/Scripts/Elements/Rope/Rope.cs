@@ -29,7 +29,6 @@ public class Rope : Cable
     {
         RopeElement instance = CableHandler.Instance.SpawnRopeElement(start, end);
         instance.Setup(start, end, length);
-        Debug.LogWarning("create rope element with l: " + length);
         return instance;
     }
 

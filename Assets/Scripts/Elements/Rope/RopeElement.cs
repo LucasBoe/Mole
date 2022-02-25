@@ -133,8 +133,6 @@ public class RopeElement : CableElement
 
     private void ModifyElements(float newLengt, ModifationDirection direction)
     {
-        Debug.LogWarning("modiy length from " + length + " to " + newLengt);
-
         if (direction == ModifationDirection.Lengthen)
         {
             float lastElementDifference = Mathf.Ceil(length) - length;
