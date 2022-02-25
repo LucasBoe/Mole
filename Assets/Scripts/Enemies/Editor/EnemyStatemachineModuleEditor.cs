@@ -6,7 +6,7 @@ using UnityEditor;
 [CustomEditor(typeof(EnemyStatemachineModule))]
 public class EnemyStatemachineModuleEditor : Editor
 {
-    EnemyStatemachineModule target;
+    private new EnemyStatemachineModule target;
 
     void OnEnable()
     {

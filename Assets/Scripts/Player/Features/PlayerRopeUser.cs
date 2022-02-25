@@ -30,16 +30,11 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
     bool playerConstrollsStart = false;
     public bool IsActive => current != null && currentElement != null;
 
-    float distBefore;
-    float distanceDifference;
     public Rigidbody2D ConnectToRope(Rope newRope, bool playerIsAtStart)
     {
-        Debug.LogWarning("connect to rope: " + newRope + " / " + playerIsAtStart);
-
         current = newRope;
         playerConstrollsStart = playerIsAtStart;
         currentElement = newRope.GetPlayerControlledElement(playerIsAtStart);
-        distBefore = 0;
 
         return playerRigidbody2D;
     }
@@ -87,34 +82,11 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
 
         if (input.LT)
             current.Elongate(-Time.deltaTime * input.LTAxis, distribution: playerConstrollsStart ? 1f : 0f);
-
-        //if (input.LTDown)
-        //    Mode = RopeUserMode.Grap;
-        //else if (input.LTUp)
-        //    Mode = RopeUserMode.Free;
-        //
-        //
-        //float dist = Vector2.Distance(currentElement.Rigidbody2DOther.position, currentElement.Rigidbody2DAttachedTo.position);
-        //if (distBefore != 0f && Mode == RopeUserMode.Free && input.Axis != Vector2.zero)
-        //{
-        //    //distanceDifference = dist - distBefore;
-        //    distanceDifference = distanceToRopeToLengthChangeCurve.Evaluate(currentElement.DistanceToAttachedObject);
-        //
-        //    current.Elongate(distanceDifference * Time.deltaTime, distribution: playerConstrollsStart ? 1f : 0f);
-        //
-        //}
-        //
-        //distBefore = dist;
     }
 
     private void OnDrawGizmos()
     {
         if (currentElement == null)
             return;
-
-        if (distanceDifference > 0)
-            Util.GizmoDrawArrowLine(currentElement.Rigidbody2DAttachedTo.position, currentElement.Rigidbody2DOther.position);
-        else if (distanceDifference < 0)
-            Util.GizmoDrawArrowLine(currentElement.Rigidbody2DOther.position, currentElement.Rigidbody2DAttachedTo.position);
     }
 }

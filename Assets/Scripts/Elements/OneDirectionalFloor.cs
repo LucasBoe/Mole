@@ -14,7 +14,7 @@ public class OneDirectionalFloor : MonoBehaviour, IFloor
     float playerYonDeactivation;
     const float upperFadeValue = 0.2f /* small buffer */, lowerFadeValue = 2f; //player hight + buffer
 
-    [SerializeField] Collider2D collider;
+    [SerializeField] private new Collider2D collider;
 
     public void DeactivateUntilPlayerIsAboveAgain(PlayerController playerController)
     {

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerItemCarrierComponent : SingletonBehaviour<PlayerItemCarrierComponent>
 {
-    [SerializeField] Rigidbody2D rigidbody2D;
+    [SerializeField] private new Rigidbody2D rigidbody2D;
     CarriablePlayerItemWorldObject potCarryable, currentlyCarried;
     InputAction carryAction = null;
 

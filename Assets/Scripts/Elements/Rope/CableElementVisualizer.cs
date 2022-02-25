@@ -12,9 +12,6 @@ public class CableElementVisualizer : MonoBehaviour
     private LineRenderer lineRenderer;
 
     [SerializeField] private float smoothValue = 0.25f;
-    [SerializeField] private float gravityValue = 0.2f;
-
-    [SerializeField] private float buffer;
 
     void Start()
     {
@@ -58,10 +55,5 @@ public class CableElementVisualizer : MonoBehaviour
 
         lineRenderer.positionCount = points.Length;
         lineRenderer.SetPositions(points.ToVector3Array());
-    }
-
-    internal void SetBuffer(float buffer)
-    {
-        this.buffer = buffer;
     }
 }

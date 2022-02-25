@@ -7,7 +7,7 @@ using UnityEngine;
 public class CameraController : SingletonBehaviour<CameraController>
 {
     [SerializeField] private RenderTexture renderTexture;
-    [SerializeField] private Camera camera;
+    [SerializeField] private new Camera camera;
 
     CinemachineVirtualCamera virtualCamera;
     CinemachineFramingTransposer transposer;

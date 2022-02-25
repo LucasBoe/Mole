@@ -15,9 +15,9 @@ public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
 
     List<CollisionCheck> collisionChecks = new List<CollisionCheck>();
 
-    Transform followTarget;
-    Vector2 moveTarget;
-    Rigidbody2D rigidbody2D;
+    private Transform followTarget;
+    private Vector2 moveTarget;
+    private new Rigidbody2D rigidbody2D;
 
     public bool isMoving;
     public Vector2 MoveDir => rigidbody2D.velocity.normalized;

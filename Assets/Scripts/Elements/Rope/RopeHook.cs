@@ -12,8 +12,8 @@ public class RopeHook : CollectablePlayerItemWorldObject
         Static,
     }
 
-    [SerializeField] private Rigidbody2D rigidbody2D;
-    [SerializeField] private Collider2D collider;
+    [SerializeField] new private Rigidbody2D rigidbody2D;
+    [SerializeField] new private Collider2D collider;
     [SerializeField] private LineRenderer lineRenderer;
 
     private States current = States.Throw;

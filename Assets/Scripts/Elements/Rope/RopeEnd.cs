@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class RopeEnd : AboveCooldownInteractable
 {
-    [SerializeField] protected Rigidbody2D rigidbody2D;
+    [SerializeField] new protected Rigidbody2D rigidbody2D;
 
     protected Rope rope;
+
 
     public Rigidbody2D SetRope (Rope rope)
     {

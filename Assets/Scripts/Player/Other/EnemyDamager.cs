@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyDamager : MonoBehaviour
 {
-    [SerializeField] Rigidbody2D rigidbody2D;
+    [SerializeField] private new Rigidbody2D rigidbody2D;
     [SerializeField] private int damageMultiplier = 10;
     [SerializeField] private int treshhold = 5;
 

@@ -63,11 +63,7 @@ public class PlayerStateBase : PlayerStateObject
 
     public virtual void Enter() { }
 
-    public virtual void Exit()
-    {
-        //TODO: remove manually checking for transitions
-        //transitionCheck.Rope.TryExit();
-    }
+    public virtual void Exit() { }
 
     public virtual void Update() { }
     protected void SetCollisionActive(bool active)

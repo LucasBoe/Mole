@@ -7,7 +7,7 @@ public class RopePhysicsSegment : MonoBehaviour
 {
     [SerializeField] private CapsuleCollider2D capsuleCollider;
     [SerializeField] private HingeJoint2D joint;
-    [SerializeField] private Rigidbody2D rigidbody;
+    [SerializeField] private new Rigidbody2D rigidbody;
     public Rigidbody2D Rigidbody => rigidbody;
 
     public void Connected(Rigidbody2D connect)

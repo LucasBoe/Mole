@@ -8,15 +8,14 @@ using UnityEngine;
 public class PlayerController : SingletonBehaviour<PlayerController>
 {
     public static System.Action<Transform> OnPlayerSpawned;
-
-    [SerializeField] PlayerContext context;
     public static PlayerContext Context => Instance.context;
 
-    bool jumpBlocker = false;
-    IPlayerComponent[] playerComponents;
+    [SerializeField] private PlayerContext context;
+    [SerializeField] private PlayerValues playerValues;
+    [SerializeField, ReadOnly] private CheckType[] toDebug;
 
-    [SerializeField] PlayerValues playerValues;
-    [SerializeField] private CheckType[] toDebug;
+    private IPlayerComponent[] playerComponents;
+
 
     protected override void Awake()
     {
