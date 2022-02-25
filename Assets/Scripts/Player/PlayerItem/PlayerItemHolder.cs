@@ -56,8 +56,8 @@ public class PlayerItemHolder : SingletonBehaviour<PlayerItemHolder>
 
             if (newAmount <= 0 || isHandItem)
             {
-                OnRemoveItem?.Invoke(item);
                 items.Remove(item);
+                OnRemoveItem?.Invoke(item);
                 return toSubtract - newAmount;
             } else
             {

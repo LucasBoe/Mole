@@ -6,6 +6,8 @@ using System.Linq;
 
 public interface IStaticTargetProvider
 {
+    bool IsActive { get; }
+
     Transform GetTransform();
     bool ProvidesCustomActionCallback();
     InputAction GetCustomExitAction();
@@ -61,7 +63,7 @@ public class PlayerStaticState : PlayerStateBase
     public override void Update()
     {
         Transform targetTransform = target.GetTransform();
-        if (targetTransform == null)
+        if (targetTransform == null || !target.IsActive)
             DefaultExitCallback();
         else
         {

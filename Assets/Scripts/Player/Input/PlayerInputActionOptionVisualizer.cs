@@ -73,7 +73,6 @@ public class PlayerInputActionOptionVisualizer : MonoBehaviour
         }
     }
 
-    //TODO: Make parenting work for inworld actions
     private void Position(Transform targetTransform, PlayerControlPromptUI prompt, InputAction.TargetTypes targetType)
     {
         RectTransform parent;

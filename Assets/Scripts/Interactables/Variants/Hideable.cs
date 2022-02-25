@@ -9,8 +9,10 @@ public class Hideable : AboveInputActionProvider, IStaticTargetProvider
 {
     [SerializeField] Transform inputActionTransform;
 
+    public bool IsActive => isActiveAndEnabled;
+
     public InputAction GetCustomExitAction() { return null; }
-    public Transform GetTransform() { return transform; }
+    public Transform GetTransform() { return inputActionTransform; }
     public bool ProvidesCustomActionCallback() { return false; }
 
     protected override InputAction[] CreateInputActions()

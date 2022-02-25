@@ -14,7 +14,7 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
 {
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Material lineRendererMat;
-    PlayerItem selectedItem;
+    [SerializeField, ReadOnly] PlayerItem selectedItem;
     LineRenderer aimLine;
 
     public int UpdatePrio => 100;
@@ -76,7 +76,11 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
         if (selectedItem != null)
         {
             if (selectedItem.IsCarryable())
+            {
                 (selectedItem as CarryPlayerItem).Carriable.SetCarryActive(false);
+                PlayerItemHolder.Instance.RemoveItem(selectedItem);
+            }
+
 
             if (drop && selectedItem.Prefab != null)
                 Instantiate(selectedItem.Prefab, transform.position, Quaternion.identity);

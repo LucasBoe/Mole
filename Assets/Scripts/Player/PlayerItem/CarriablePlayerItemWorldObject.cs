@@ -18,8 +18,13 @@ public class CarriablePlayerItemWorldObject : InteractablePlayerItemWorldObject
 
     public void SetCarryActive(bool carry)
     {
+        Debug.LogWarning("set carry: " + carry);
+
         distanceJoint2D.enabled = carry;
         (carry ? OnStartCarry : OnEndCarry)?.Invoke(this);
+
+        foreach (Transform child in transform)
+            child.gameObject.SetActive(!carry);
     }
 
     internal void StartCarry(Rigidbody2D targetBody)

@@ -35,6 +35,7 @@ public class PlayerItemUI : UIBehaviour
     }
     private void SelectItem(PlayerItem item)
     {
+        Debug.LogWarning("SelectItem: " + item);
         PlayerInputActionRegister.Instance.UnregisterAllInputActions(transform);
         PlayerItemUser.Instance.OverrideSelectedItem(item, drop: false);
 
@@ -98,6 +99,7 @@ public class PlayerItemUI : UIBehaviour
         }
 
         UpdateSelectedItem();
+        DeselectItem();
     }
     private void SetSelectionIndicatorAlpha(float alpha)
     {
@@ -140,6 +142,8 @@ public class PlayerItemUI : UIBehaviour
             //prevent overflow when old index is outside range
             selectedItemSlotIndex = Mathf.Min(selectedItemSlotIndex, itemSlots.Count - 1);
         }
+
+        Debug.LogWarning(selectedItemSlotIndex);
 
         SelectItem(itemSlots[selectedItemSlotIndex].Item);
 
