@@ -1,21 +1,25 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 //TODO: Connect to rope system
 public class Clothline : MonoBehaviour
 {
-    [SerializeField] HingeJoint2D start, end;
-    [SerializeField] HingeJoint2D lineElementPrefab;
-    [SerializeField] LineRenderer lineRenderer;
+    [SerializeField] private HingeJoint2D start, end;
+    [SerializeField] private HingeJoint2D lineElementPrefab;
+    [SerializeField] private LineRenderer lineRenderer;
 
-    Transform[] elements;
+    private Transform[] elements;
+
+    public System.Action<Clothline> OnFinishInit;
 
     // Start is called before the first frame update
     void Start()
     {
         elements = CreateLineElements();
+        OnFinishInit?.Invoke(this);
     }
 
     private Transform[] CreateLineElements()
@@ -59,10 +63,14 @@ public class Clothline : MonoBehaviour
             lineRenderer.SetPositions(pos);
         }
     }
+    public Rigidbody2D GetClosestElement(Vector2 position)
+    {
+        return elements.OrderBy(e => Vector2.Distance(position, e.position)).First().GetComponent<Rigidbody2D>();
+    }
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.yellow;
+        Gizmos.color = Color.black;
         Gizmos.DrawSphere(start.transform.position, 0.25f);
         Gizmos.DrawSphere(end.transform.position, 0.25f);
         Gizmos.DrawLine(start.transform.position, end.transform.position);
