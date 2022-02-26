@@ -3,13 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ItemUserState
-{
-    Hidden,
-    Idle,
-    Using,
-}
-
 public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerComponent
 {
     [SerializeField] SpriteRenderer spriteRenderer;

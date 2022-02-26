@@ -14,6 +14,7 @@ public class PlayerItemUI : UIBehaviour
     [SerializeField] private List<ItemSlot> itemSlots = new List<ItemSlot>();
     [SerializeField] private int selectedItemSlotIndex = 0;
     private Image currentSelectionImage;
+    private ItemUseState currentUseState;
 
     [SerializeField] RectTransform parent;
     [SerializeField] Text itemNameText;
@@ -33,15 +34,38 @@ public class PlayerItemUI : UIBehaviour
         ac_stopUsing = new InputAction() { Stage = InputActionStage.ModeSpecific, Target = transform, Input = ControlType.Back, Text = "Stop", ActionCallback = StopUse };
         ac_confirmUsage = new InputAction() { Stage = InputActionStage.ModeSpecific, Target = transform, Input = ControlType.Interact, Text = "Confirm", ActionCallback = ConfirmUse };
     }
+
+    public void SetUseState(ItemUseState newUseState)
+    {
+        if (currentUseState != newUseState)
+        {
+            PlayerInputActionRegister.Instance.UnregisterAllInputActions(transform);
+
+            switch (newUseState)
+            {
+                case ItemUseState.Active:
+                    PlayerInputActionRegister.Instance.RegisterInputAction(ac_useItem);
+                    PlayerInputActionRegister.Instance.RegisterInputAction(ac_deselectItem);
+                    break;
+
+                case ItemUseState.Use:
+                    PlayerInputActionRegister.Instance.RegisterInputAction(ac_confirmUsage);
+                    PlayerInputActionRegister.Instance.RegisterInputAction(ac_stopUsing);
+                    break;
+            }
+
+            currentUseState = newUseState;
+        }
+    }
+
     private void SelectItem(PlayerItem item)
     {
-        PlayerInputActionRegister.Instance.UnregisterAllInputActions(transform);
         PlayerItemUser.Instance.OverrideSelectedItem(item, drop: false);
 
         if (item != null)
         {
-            PlayerInputActionRegister.Instance.RegisterInputAction(ac_useItem);
-            PlayerInputActionRegister.Instance.RegisterInputAction(ac_deselectItem);
+            if (currentUseState != ItemUseState.Use)
+                SetUseState(ItemUseState.Active);
             SetSelectionIndicatorAlpha(1f);
         }
     }
@@ -50,20 +74,20 @@ public class PlayerItemUI : UIBehaviour
     {
         PlayerItemUser.Instance.Stop();
         SelectItem(null);
+        SetUseState(ItemUseState.Passive);
         SetSelectionIndicatorAlpha(0.1f);
     }
 
     private void TryUseItem()
     {
-        PlayerInputActionRegister.Instance.UnregisterAllInputActions(transform);
         PlayerItemUser.Instance.Use(itemSlots[selectedItemSlotIndex].Item);
-        PlayerInputActionRegister.Instance.RegisterInputAction(ac_confirmUsage);
-        PlayerInputActionRegister.Instance.RegisterInputAction(ac_stopUsing);
+        SetUseState(ItemUseState.Use);
     }
 
     private void StopUse()
     {
         PlayerItemUser.Instance.Stop();
+        SetUseState(ItemUseState.Active);
         SelectItem(itemSlots[selectedItemSlotIndex].Item);
     }
 
@@ -97,7 +121,7 @@ public class PlayerItemUI : UIBehaviour
             }
         }
 
-        UpdateSelectedItem();
+        UpdateSelectedItem(stopUse: true);
         DeselectItem();
     }
     private void SetSelectionIndicatorAlpha(float alpha)
@@ -128,7 +152,7 @@ public class PlayerItemUI : UIBehaviour
         }
     }
 
-    private void UpdateSelectedItem()
+    private void UpdateSelectedItem(bool stopUse = false)
     {
         if (itemSlots.Count == 0)
         {
@@ -143,6 +167,9 @@ public class PlayerItemUI : UIBehaviour
         }
 
         SelectItem(itemSlots[selectedItemSlotIndex].Item);
+
+        if (stopUse && PlayerItemUser.Instance.IsAiming)
+            StopUse();
 
         //visuals
         for (int i = 0; i < itemSlots.Count; i++)
@@ -184,7 +211,7 @@ public class PlayerItemUI : UIBehaviour
 
     public override void UpdateUI(PlayerInput input)
     {
-        if (itemSlots.Count == 0 || PlayerItemUser.Instance.IsAiming)
+        if (itemSlots.Count == 0)
             return;
 
         bool update = false;
@@ -232,6 +259,13 @@ public class PlayerItemUI : UIBehaviour
 
         if (update)
             UpdateSelectedItem();
+    }
+
+    public enum ItemUseState
+    {
+        Passive,
+        Active,
+        Use,
     }
 }
 
