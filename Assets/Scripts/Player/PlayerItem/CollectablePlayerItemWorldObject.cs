@@ -5,15 +5,13 @@ using UnityEngine;
 
 public class CollectablePlayerItemWorldObject : InteractablePlayerItemWorldObject
 {
-    public SpriteRenderer SpriteRenderer;
-
-    private void OnEnable()
-    {
-        SpriteRenderer = GetComponent<SpriteRenderer>();
-    }
+    [SerializeField] GameObject customGameObject;
 
     public virtual void Collect()
     {
-        Destroy(gameObject);
+        if (customGameObject != null)
+            Destroy(customGameObject);
+        else
+            Destroy(gameObject);
     }
 }

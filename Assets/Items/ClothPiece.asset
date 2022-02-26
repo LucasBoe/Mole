@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 394da66407e7e5f4ab628222805c7824, type: 3}
-  m_Name: Bottle
+  m_Script: {fileID: 11500000, guid: c538c5d3a4b8b3f498a294a2d1183915, type: 3}
+  m_Name: ClothPiece
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 21300000, guid: fb68f2920417f5a4e8ef6253d4cef7cf, type: 3}
-  Prefab: {fileID: 5322391908145038696, guid: 9188a09b2f626c547b0d810c54fd390f, type: 3}
+  Sprite: {fileID: -2692897874812119320, guid: 4242c85d0e64e784ca94b6ab5b5b9e45, type: 3}
+  Prefab: {fileID: 8522751827972833360, guid: bbfdf188fb54a954ba452a66568f4058, type: 3}
   IsUseable: 1
   HandOnly: 0
-  ThrowForce: 7
-  GravityScale: 5
+  ThrowForce: 10
+  GravityScale: 0.5

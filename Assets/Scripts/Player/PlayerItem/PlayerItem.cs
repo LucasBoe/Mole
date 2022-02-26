@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerItem : ScriptableObject
 {
     public Sprite Sprite;
-    public CollectablePlayerItemWorldObject Prefab;
+    public GameObject Prefab;
     public bool IsUseable;
     public bool HandOnly = false;
 

@@ -14,6 +14,9 @@ public class EnemyDamageModule : EnemyModule<EnemyDamageModule>, IHealth
 
     public void DoDamage(int amount)
     {
+
+        Debug.LogWarning($"DoDamage {amount}");
+
         currentHealth -= amount;
         if (currentHealth <= 0)
             OnOutOfHealth?.Invoke();
@@ -29,6 +32,7 @@ public class EnemyDamageModule : EnemyModule<EnemyDamageModule>, IHealth
         EnemyDamager damager = collision.GetComponent<EnemyDamager>();
         if (damager != null)
         {
+
             DoDamage(damager.FetchDamageAmout());
         }
     }
