@@ -39,6 +39,14 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
         return playerRigidbody2D;
     }
 
+    public void TryConnectCrossbowRopeBolt(RopeFixture ropeFixture)
+    {
+        if (!IsActive)
+            CableHandler.Instance.CreateRope(playerRigidbody2D, ropeFixture.Rigidbody2D);
+        else
+            CableHandler.Instance.ExtendRope(current ,ropeFixture, playerRigidbody2D);
+    }
+
     public Rigidbody2D GetRopeElementBody()
     {
         return currentElement.OwnRigidbody;
@@ -49,6 +57,9 @@ public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
     /// </summary>
     internal void DropCurrentRope()
     {
+        if (!IsActive)
+            return;
+
         RopeEnd ropeEnd = CableHandler.Instance.CreateRopeEnd(playerRigidbody2D.position);
         HandoverRopeTo(ropeEnd.SetRope(current));
     }

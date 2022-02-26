@@ -30,12 +30,29 @@ public class CableHandler : SingletonBehaviour<CableHandler>
 
     public Rope CreateRope(Rigidbody2D start, Rigidbody2D end, List<CableAnchor> anchors = null, Vector2[] pathPoints = null)
     {
-        Rope newRope = (pathPoints == null) ?  new Rope(start, anchors, end) : new Rope(start, end, pathPoints);
+        Rope newRope = (pathPoints == null) ? new Rope(start, anchors, end) : new Rope(start, end, pathPoints);
         CheckAndPotentiallyConnectPlayer(newRope, start, end);
         cables.Add(newRope);
         return newRope;
     }
 
+    private void CreateRope(Rope rope, Rigidbody2D startOverride = null, Rigidbody2D endOverride = null)
+    {
+        CreateRope(startOverride != null ? startOverride : rope.RigidbodyStart, endOverride != null ? endOverride : rope.RigidbodyEnd, rope.Anchors);
+    }
+
+    internal void ExtendRope(Rope rope, RopeFixture ropeFixture, Rigidbody2D playerRigidbody2D)
+    {
+        if (rope.IsRigidbodyStart(playerRigidbody2D))
+        {
+            CreateRope(rope, startOverride: ropeFixture.Rigidbody2D);
+        } else if (rope.IsRigidbodyEnd(playerRigidbody2D))
+        {
+            CreateRope(rope, endOverride: ropeFixture.Rigidbody2D);
+        }
+
+        DestroyCable(rope);
+    }
     private void CheckAndPotentiallyConnectPlayer(Cable newRope, Rigidbody2D start, Rigidbody2D end)
     {
         PlayerRopeUser playerStart = start.GetComponentInChildren<PlayerRopeUser>();

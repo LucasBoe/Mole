@@ -31,12 +31,16 @@ public class RopeClimbState : PlayerStateBase
         if (context.Input.Jump)
             SetState(new JumpState());
 
-        if (!ropeUser.IsActive)
+        if (ropeUser.IsActive)
+        {
+            Rigidbody2D body = ropeUser.GetRopeElementBody();
+            body.AddForce(context.Input.Axis * Time.deltaTime * context.Values.RopeSwingForceCurve.Evaluate(body.velocity.magnitude));
+            body.velocity = body.velocity * (1 + Time.deltaTime);
+        }
+        else
+        {
             SetState(new IdleState());
-
-        Rigidbody2D body = ropeUser.GetRopeElementBody();
-        body.AddForce(context.Input.Axis * Time.deltaTime * context.Values.RopeSwingForceCurve.Evaluate(body.velocity.magnitude));
-        body.velocity = body.velocity * (1 + Time.deltaTime);
+        }
 
     }
 

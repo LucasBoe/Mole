@@ -29,7 +29,7 @@ public class ThrowablePlayerItem : PlayerItem
         aimLine.SetPositions(points.ToVector3Array());
     }
 
-    public override PlayerItemUseResult AimInteract(PlayerItemUser playerItemUser)
+    public override PlayerItemUseResult AimInteract(PlayerItemUser playerItemUser, int activeModeIndex)
     {
         var playerPos = playerItemUser.transform.position;
         GameObject instance = Instantiate(GetObjectToInstatiate(), playerPos + Vector3.up, Quaternion.identity, LayerHandler.Parent);

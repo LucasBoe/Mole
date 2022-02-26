@@ -29,7 +29,7 @@ public class ThrowableCarryItem : CarryPlayerItem
         aimLine.SetPositions(points.ToVector3Array());
     }
 
-    public override PlayerItemUseResult AimInteract(PlayerItemUser playerItemUser)
+    public override PlayerItemUseResult AimInteract(PlayerItemUser playerItemUser, int activeModeIndex)
     {
         var playerPos = playerItemUser.transform.position;
         Carriable.SetCarryActive(false);

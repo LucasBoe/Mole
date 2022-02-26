@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class CrossbowItem : PlayerItem
 {
-    [SerializeField] private GameObject ProjectilePrefab;
     [SerializeField] private float ProjectileForce;
-    [SerializeField] private ItemMode[] itemModes;
+    [SerializeField] private CrossbowItemMode[] itemModes;
 
     public override void AimUpdate(PlayerItemUser playerItemUser, PlayerContext context, LineRenderer aimLine)
     {
@@ -19,11 +18,11 @@ public class CrossbowItem : PlayerItem
         aimLine.SetPositions(new Vector3[] { origin, origin + (dir * 100) });
     }
 
-    public override PlayerItemUseResult AimInteract(PlayerItemUser playerItemUser)
+    public override PlayerItemUseResult AimInteract(PlayerItemUser playerItemUser, int activeModeIndex)
     {
         var playerPos = playerItemUser.transform.position;
         var dir = PlayerInputHandler.PlayerInput.VirtualCursorToDir(playerPos);
-        GameObject instance = Instantiate(ProjectilePrefab, playerPos + Vector3.up, Quaternion.identity, LayerHandler.Parent);
+        GameObject instance = Instantiate(itemModes[activeModeIndex].ProjectilePrefab, playerPos + Vector3.up, Quaternion.identity, LayerHandler.Parent);
         instance.transform.right = dir;
         instance.GetComponent<Rigidbody2D>().velocity = (dir * ProjectileForce);
 
@@ -34,4 +33,10 @@ public class CrossbowItem : PlayerItem
     {
         return itemModes;
     }
+}
+
+[System.Serializable]
+public class CrossbowItemMode : ItemMode
+{
+    public GameObject ProjectilePrefab;
 }

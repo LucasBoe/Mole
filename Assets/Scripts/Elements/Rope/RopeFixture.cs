@@ -23,4 +23,15 @@ public class RopeFixture : RopeEnd
             rope = null;
         }
     }
+
+    protected override void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.GetComponent<CrossbowBoltRopeCreator>() != null)
+        {
+            PlayerRopeUser.Instance.TryConnectCrossbowRopeBolt(this);
+            Destroy(collision.gameObject);
+        }
+
+        base.OnTriggerEnter2D(collision);
+    }
 }

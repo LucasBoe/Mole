@@ -69,7 +69,7 @@ public class PlayerItemUI : UIBehaviour
 
     private void ConfirmUse()
     {
-        PlayerItemUser.Instance.Confirm();
+        PlayerItemUser.Instance.Confirm(itemSlots[selectedItemSlotIndex].SelectedModeIndex);
     }
 
 
@@ -249,6 +249,6 @@ public class ItemMode
 {
     public Sprite Icon;
     public string Name;
-    public Image IconImage;
-    public Image SelectedImage;
+    [ReadOnly] public Image IconImage;
+    [ReadOnly] public Image SelectedImage;
 }

@@ -45,9 +45,9 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
         Crosshair.SetMode(Crosshair.Mode.Active);
     }
 
-    internal void Confirm()
+    internal void Confirm(int selectedModeIndex)
     {
-        PlayerItemUseResult useResult = selectedItem.AimInteract(this);
+        PlayerItemUseResult useResult = selectedItem.AimInteract(this, selectedModeIndex);
 
         switch (useResult.ResultType)
         {

@@ -14,6 +14,10 @@ public class Rope : Cable
 
     private Modes mode;
 
+    public Rigidbody2D RigidbodyStart => One.Rigidbody2DAttachedTo;
+    public Rigidbody2D RigidbodyEnd => IsShortCable ? One.Rigidbody2DOther : Two.Rigidbody2DAttachedTo;
+    public List<CableAnchor> Anchors => anchors;
+
     //use same constructor as chain
     public Rope(Rigidbody2D start, List<CableAnchor> cableAnchors, Rigidbody2D end) : base(start, cableAnchors, end) { }
 

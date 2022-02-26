@@ -33,8 +33,8 @@ public class Cable
 
     public Cable(Rigidbody2D start, List<CableAnchor> cableAnchors, Rigidbody2D end)
     {
-        anchors = cableAnchors;
-        CalculateLengthAndDistribution(start, cableAnchors, end);
+        anchors = cableAnchors == null ? new List<CableAnchor>() : cableAnchors;
+        CalculateLengthAndDistribution(start, anchors, end);
 
         if (IsShortCable)
         {
@@ -114,6 +114,11 @@ public class Cable
     public bool IsRigidbodyStart(Rigidbody2D rigidbody2D)
     {
         return One.Rigidbody2DAttachedTo == rigidbody2D;
+    }
+
+    public bool IsRigidbodyEnd(Rigidbody2D rigidbody2D)
+    {
+        return Two.Rigidbody2DAttachedTo == rigidbody2D;
     }
 
     public virtual void Update()
