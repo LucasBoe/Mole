@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class RopeElement : CableElement
+public class RopeElement : CableElement, ISlideable
 {
     [SerializeField] RopePhysicsSegment segmentPrefab;
     [SerializeField] FixedJoint2D target;
@@ -184,5 +184,10 @@ public class RopeElement : CableElement
     {
         Debug.Log($"reconnected from {attachJoint.connectedBody.name} to {to.name}");
         attachJoint.connectedBody = to;
+    }
+
+    public Vector2 GetClosestPosition(Vector2 playerPos, Vector2 axis)
+    {
+        return transform.position;
     }
 }

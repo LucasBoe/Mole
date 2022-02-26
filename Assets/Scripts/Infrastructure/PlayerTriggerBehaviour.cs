@@ -17,6 +17,6 @@ public class PlayerTriggerBehaviour : MonoBehaviour
             OnPlayerExit2D(collision);
     }
 
-    protected virtual void OnPlayerEnter2D(Collider2D collision) { }
-    protected virtual void OnPlayerExit2D(Collider2D collision) { }
+    protected virtual void OnPlayerEnter2D(Collider2D playerCollider) { }
+    protected virtual void OnPlayerExit2D(Collider2D playerCollider) { }
 }

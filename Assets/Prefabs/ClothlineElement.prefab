@@ -71,7 +71,7 @@ GameObject:
   - component: {fileID: 1931180799326707930}
   - component: {fileID: 1931180799326707935}
   - component: {fileID: 1931180799326707932}
-  - component: {fileID: 1630082301261493661}
+  - component: {fileID: 2357624479524496572}
   - component: {fileID: 4660013766753591145}
   m_Layer: 6
   m_Name: ClothlineElement
@@ -141,7 +141,7 @@ HingeJoint2D:
   m_AngleLimits:
     m_LowerAngle: 0
     m_UpperAngle: 359
---- !u!114 &1630082301261493661
+--- !u!114 &2357624479524496572
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -150,7 +150,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1931180799326707931}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c85285c50e9f8ed42a58d5fe25e68603, type: 3}
+  m_Script: {fileID: 11500000, guid: 230f3a6026ff3254780db4f4cdbb71bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   point1: {fileID: 1543366205088782085}

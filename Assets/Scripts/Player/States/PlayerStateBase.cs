@@ -68,12 +68,18 @@ public class PlayerStateBase : PlayerStateObject
     public virtual void Update() { }
     protected void SetCollisionActive(bool active)
     {
-        PlayerColliderModifier.Instance.SetActive(active);
+        PlayerPhysicsModifier.Instance.SetCollisionActive(active);
     }
     protected void SetGravityActive(bool active)
     {
-        context.Rigidbody.gravityScale = active ? 2 : 0;
+        PlayerPhysicsModifier.Instance.SetGracityActive(active);
     }
+
+    protected void SetPlayerDragActive(bool active)
+    {
+        PlayerPhysicsModifier.Instance.SetPlayerDragActive(active);
+    }
+
     protected void JumpOff(Vector2 input)
     {
         context.Rigidbody.velocity = input * context.Values.JumpOffVelocity;

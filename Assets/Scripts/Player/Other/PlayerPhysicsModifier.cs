@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerColliderModifier : SingletonBehaviour<PlayerColliderModifier>
+public class PlayerPhysicsModifier : SingletonBehaviour<PlayerPhysicsModifier>
 {
     public enum ColliderMode
     {
@@ -12,19 +12,20 @@ public class PlayerColliderModifier : SingletonBehaviour<PlayerColliderModifier>
         Hanging,
     }
 
+    [SerializeField] Rigidbody2D PlayerRigidbody2D;
     [SerializeField] Collider2D defaultCollider, inTunnelCollider, hangingCollider;
 
     private bool isActive = true;
     private ColliderMode mode = ColliderMode.Default;
     public ColliderMode Mode => mode;
 
-    internal void SetActive(bool active)
+    internal void SetCollisionActive(bool active)
     {
         isActive = active;
         UpdateColliders();
     }
 
-    internal void SetMode(ColliderMode colliderMode)
+    internal void SetColliderMode(ColliderMode colliderMode)
     {
         mode = colliderMode;
         UpdateColliders();
@@ -40,5 +41,15 @@ public class PlayerColliderModifier : SingletonBehaviour<PlayerColliderModifier>
     internal Collider2D GetActiveCollider()
     {
         return mode == ColliderMode.Tunnel ? inTunnelCollider : defaultCollider;
+    }
+
+    internal void SetGracityActive(bool active)
+    {
+        PlayerRigidbody2D.gravityScale = active ? 2 : 0;
+    }
+
+    internal void SetPlayerDragActive(bool active)
+    {
+        PlayerRigidbody2D.drag = active ? 10 : 0;
     }
 }

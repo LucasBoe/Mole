@@ -343,12 +343,12 @@ public class HangingBaseState : ClimbStateBase
 
 public class HangingState : HangingBaseState
 {
-    PlayerColliderModifier.ColliderMode modeBefore;
+    PlayerPhysicsModifier.ColliderMode modeBefore;
     public override void Enter()
     {
         base.Enter();
-        modeBefore = PlayerColliderModifier.Instance.Mode;
-        PlayerColliderModifier.Instance.SetMode(PlayerColliderModifier.ColliderMode.Hanging);
+        modeBefore = PlayerPhysicsModifier.Instance.Mode;
+        PlayerPhysicsModifier.Instance.SetColliderMode(PlayerPhysicsModifier.ColliderMode.Hanging);
     }
 
     public override void Update()
@@ -378,7 +378,7 @@ public class HangingState : HangingBaseState
     public override void Exit()
     {
         base.Exit();
-        PlayerColliderModifier.Instance.SetMode(modeBefore);
+        PlayerPhysicsModifier.Instance.SetColliderMode(modeBefore);
     }
 }
 

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RopePhysicsSegment : MonoBehaviour
+public class RopePhysicsSegment : MonoBehaviour, ISlideable
 {
     [SerializeField] private CapsuleCollider2D capsuleCollider;
     [SerializeField] private HingeJoint2D joint;
@@ -25,5 +25,10 @@ public class RopePhysicsSegment : MonoBehaviour
     internal Vector2 GetEnd()
     {
         return rigidbody.position + transform.right.ToVector2() * capsuleCollider.size.x / 2;
+    }
+
+    public Vector2 GetClosestPosition(Vector2 playerPos, Vector2 axis)
+    {
+        return transform.position;
     }
 }

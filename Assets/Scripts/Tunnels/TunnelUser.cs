@@ -31,7 +31,7 @@ public class TunnelUser : MonoBehaviour
     private void SetTunnelState(bool inTunnel)
     {
         IsInTunnel = inTunnel;
-        PlayerColliderModifier.Instance.SetMode(inTunnel ? PlayerColliderModifier.ColliderMode.Tunnel : PlayerColliderModifier.ColliderMode.Default);
+        PlayerPhysicsModifier.Instance.SetColliderMode(inTunnel ? PlayerPhysicsModifier.ColliderMode.Tunnel : PlayerPhysicsModifier.ColliderMode.Default);
 
         foreach (SpriteRenderer spriteRenderer in playerSpriteRenderers)
             spriteRenderer.sortingLayerName = inTunnel ? inTunnselLayer : defaultLayer;
