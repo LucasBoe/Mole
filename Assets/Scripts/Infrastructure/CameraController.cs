@@ -7,7 +7,9 @@ using UnityEngine;
 public class CameraController : SingletonBehaviour<CameraController>
 {
     [SerializeField] private RenderTexture renderTexture;
+    [SerializeField] private Transform textureDisplayTransform;
     [SerializeField] private new Camera camera;
+    [SerializeField] private bool smooth;
 
     CinemachineVirtualCamera virtualCamera;
     CinemachineFramingTransposer transposer;
@@ -18,6 +20,8 @@ public class CameraController : SingletonBehaviour<CameraController>
         transposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
         PlayerController.OnPlayerSpawned += ConnectPlayerTransformToVirtualCamera;
     }
+
+
 
     private void ConnectPlayerTransformToVirtualCamera(Transform player)
     {
@@ -38,6 +42,25 @@ public class CameraController : SingletonBehaviour<CameraController>
 
     private void Update()
     {
-        transposer.m_TrackedObjectOffset = PlayerInputHandler.PlayerInput.VirtualCursorToScreenCenter * new Vector2(4,3);
+
+        transposer.m_TrackedObjectOffset = PlayerInputHandler.PlayerInput.VirtualCursorToScreenCenter * new Vector2(4, 3);
+    }
+
+    private void LateUpdate()
+    {
+        SmoothCamera();
+    }
+
+    private void SmoothCamera()
+    {
+        Vector2 camPosRaw = camera.transform.position;
+        Vector2 camPosRounded = new Vector2(RoundTo8PixelPerUnit(camPosRaw.x), RoundTo8PixelPerUnit(camPosRaw.y));
+        Vector3 rest = (Vector3)(camPosRounded - camPosRaw) + Vector3.forward;
+        textureDisplayTransform.localPosition = smooth ? rest : Vector3.forward;
+    }
+
+    private float RoundTo8PixelPerUnit(float raw)
+    {
+        return Mathf.Round(raw * 8f) / 8f;
     }
 }

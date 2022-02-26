@@ -483,7 +483,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   renderTexture: {fileID: 8400000, guid: 89245a977d6203d4e8b192fd9d385acc, type: 2}
+  textureDisplayTransform: {fileID: 5542582927387973787}
   camera: {fileID: 5542582926614080967}
+  smooth: 1
 --- !u!1 &5542582927387973784
 GameObject:
   m_ObjectHideFlags: 0
