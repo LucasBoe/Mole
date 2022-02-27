@@ -9,7 +9,7 @@ public class PlayerItemHolder : SingletonBehaviour<PlayerItemHolder>
 
     private ItemSlotContainer items = new ItemSlotContainer();
 
-    public static System.Action<PlayerItem, bool> OnAddNewItem;
+    public static System.Action<PlayerItem> OnAddNewItem;
     public static System.Action<PlayerItem> OnRemoveItem;
 
     private void Start()
@@ -36,7 +36,7 @@ public class PlayerItemHolder : SingletonBehaviour<PlayerItemHolder>
         {
             if (items.Add(item, amount))
             {
-                OnAddNewItem?.Invoke(item, item.HandOnly);
+                OnAddNewItem?.Invoke(item);
             }
             else
                 return false;
@@ -59,7 +59,8 @@ public class PlayerItemHolder : SingletonBehaviour<PlayerItemHolder>
                 items.Remove(item);
                 OnRemoveItem?.Invoke(item);
                 return toSubtract - newAmount;
-            } else
+            }
+            else
             {
                 items[item] = newAmount;
                 return toSubtract;
@@ -88,18 +89,7 @@ public class PlayerItemHolder : SingletonBehaviour<PlayerItemHolder>
 
         public bool Add(PlayerItem item, int amount)
         {
-            if (item.HandOnly)
-            {
-                if (handItem == null)
-                    handItem = item;
-                else
-                    return false;
-            }
-            else
-            {
-                playerItemAmountPairs.Add(item, amount);
-            }
-
+            playerItemAmountPairs.Add(item, amount);
             return true;
         }
 

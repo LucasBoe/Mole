@@ -11,8 +11,6 @@ public class Ladder : AboveCooldownInteractable
     private void Start()
     {
         SetUpEdgCollider();
-        LadderClimbState.OnClimbEnter += () => { topEdge.enabled = false; };
-        LadderClimbState.OnClimbExit += () => { topEdge.enabled = true; };
     }
 
     private void SetUpEdgCollider()
@@ -31,5 +29,30 @@ public class Ladder : AboveCooldownInteractable
     {
         if (playerIsAbove && LadderClimbState.CheckEnter())
             PlayerStateMachine.Instance.SetState(new LadderClimbState(this));
+    }
+
+    public Vector2 GetExitPointTop()
+    {
+        Vector2 pos = new Vector2(transform.position.x, transform.position.y + triggerArea.size.y / 2f + 1f);
+        while (Physics2D.OverlapBox(pos, new Vector2(0.9f, 2f), 0, LayerMask.GetMask("Default")) != null)
+            pos += Vector2.down;
+
+        return pos;
+    }
+
+    public Vector2 GetExitPointBottom()
+    {
+        Vector2 pos = new Vector2(transform.position.x, transform.position.y - triggerArea.size.y / 2f - 1f);
+        while (Physics2D.OverlapBox(pos + new Vector2(0, 0.25f), new Vector2(0.9f, 2f), 0, LayerMask.GetMask("Default")) != null)
+            pos += Vector2.up;
+
+        return pos;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawSphere(GetExitPointBottom(), 0.5f);
+        Gizmos.DrawSphere(GetExitPointTop(), 0.5f);
     }
 }

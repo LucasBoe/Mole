@@ -34,8 +34,7 @@ public class ClimbStateBase : PlayerStateBase
 public class LadderClimbState : PlayerStateBase
 {
     Ladder climbingLadder;
-
-    public static System.Action OnClimbEnter, OnClimbExit;
+    Vector2 top, bottom;
 
     public static bool CheckEnter()
     {
@@ -43,7 +42,7 @@ public class LadderClimbState : PlayerStateBase
         if (stateMachine.CurrentState.StateIs(typeof(LadderClimbState)))
             return false;
 
-        if (PlayerInputHandler.PlayerInput.Axis.y == 0f)
+        if (Mathf.Abs(PlayerInputHandler.PlayerInput.Axis.y) < Mathf.Abs(PlayerInputHandler.PlayerInput.Axis.x))
             return false;
 
         return true;
@@ -52,18 +51,21 @@ public class LadderClimbState : PlayerStateBase
     public LadderClimbState(Ladder ladder)
     {
         climbingLadder = ladder;
+        top = ladder.GetExitPointTop();
+        bottom = ladder.GetExitPointBottom();
     }
 
     public override void Update()
     {
         base.Update();
-        float dist = Mathf.Abs(context.PlayerPos.x - climbingLadder.transform.position.x);
-        Vector2 inputPos = context.PlayerPos + context.Input.Axis * Time.deltaTime * context.Values.LadderClimbVelocity;
-        Vector2 snappedToLadderPosition = Vector2.MoveTowards(inputPos, new Vector2(climbingLadder.transform.position.x, inputPos.y), Time.deltaTime * context.Values.LadderClimbVelocity * Mathf.Pow(dist * 2, 2));
-        context.Rigidbody.MovePosition(snappedToLadderPosition);
 
-        if (IsColliding(CheckType.Ground) || !climbingLadder.PlayerIsAbove)
-            SetState(new IdleState());
+        Vector2 pos = Util.GetClosestPointOnLineSegment(top, bottom, context.PlayerPos + context.Input.Axis);
+        context.Rigidbody.MovePosition(Vector2.MoveTowards(context.PlayerPos, pos, context.Values.LadderClimbVelocity * Time.deltaTime));
+
+        bool closeToTopOrBottom = Vector2.Distance(context.PlayerPos, top) < 0.2f || Vector2.Distance(context.PlayerPos, bottom) < 0.2f;
+
+        if (closeToTopOrBottom && context.TriesMoveLeftRight)
+            SetState(new WalkState());
 
         if (context.Input.Jump)
             JumpOff(context.Input.Axis);
@@ -71,14 +73,13 @@ public class LadderClimbState : PlayerStateBase
 
     public override void Enter()
     {
-        OnClimbEnter?.Invoke();
+        SetCollisionActive(false);
         base.Enter();
     }
 
     public override void Exit()
     {
-        OnClimbExit?.Invoke();
-        context.Rigidbody.MovePosition(context.PlayerPos + new Vector2(0, 0.25f));
+        SetCollisionActive(true);
         base.Exit();
     }
 }

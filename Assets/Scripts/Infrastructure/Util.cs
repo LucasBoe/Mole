@@ -311,6 +311,10 @@ public static class Util
         return collision.CompareTag("Player");
     }
 
+    public static bool IsEnemy(this Collider2D collision)
+    {
+        return collision.gameObject.layer == LayerMask.NameToLayer("Enemy");
+    }
     public static T GetComponentInChildrenExcludeOwn<T>(this Component origin)
     {
         T own = origin.GetComponent<T>();

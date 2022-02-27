@@ -97,14 +97,12 @@ public class PlayerItemUI : UIBehaviour
     }
 
 
-    private void OnAddItem(PlayerItem item, bool forceSelection)
+    private void OnAddItem(PlayerItem item)
     {
         ItemSlot newSlot = new ItemSlot() { Item = item, Modes = item.GetItemModes() };
         itemSlots.Add(newSlot);
         CreateInstancesForSlot(newSlot);
-
-        if (forceSelection)
-            selectedItemSlotIndex = itemSlots.IndexOf(newSlot);
+        selectedItemSlotIndex = itemSlots.IndexOf(newSlot);
 
         UpdateSelectedItem();
     }

@@ -29,7 +29,7 @@ public class EnemyDamageModule : EnemyModule<EnemyDamageModule>, IHealth
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        EnemyDamager damager = collision.GetComponent<EnemyDamager>();
+        EnemyDamager damager = collision.GetComponentInChildren<EnemyDamager>();
         if (damager != null)
         {
 

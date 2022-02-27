@@ -8,6 +8,7 @@ public class EnemyAnimator : EnemyModule<EnemyAnimator>
     SpriteRenderer spriteRenderer;
     Animator animator;
     EnemyViewconeModule viewconeModule;
+    string amimationName;
 
     private void Start()
     {
@@ -15,10 +16,22 @@ public class EnemyAnimator : EnemyModule<EnemyAnimator>
         animator = GetComponent<Animator>();
         viewconeModule = GetModule<EnemyViewconeModule>();
 
-        viewconeModule.OnStartLookingAround += delegate () { animator.Play("Enemy_LookAround"); };
-        GetModule<EnemyMoveModule>().OnStartMovingToPosition += delegate () { animator.Play("Enemy_Walk"); };
-        GetModule<EnemyStatemachineModule>().OnStartWaiting += delegate () { animator.Play("Enemy_Idle"); };
-        GetModule<EnemyAIModule>().OnStartBeeingStrangled += delegate () { animator.Play("Enemy_Strangled"); };
+        viewconeModule.OnStartLookingAround += delegate () { PlayAnimation("Enemy_LookAround"); };
+        GetModule<EnemyMoveModule>().OnStartMovingToPosition += delegate () { PlayAnimation("Enemy_Walk"); };
+        GetModule<EnemyStatemachineModule>().OnStartWaiting += delegate () { PlayAnimation("Enemy_Idle"); };
+        GetModule<EnemyAIModule>().OnStartBeeingStrangled += delegate () { PlayAnimation("Enemy_Strangled"); };
+    }
+
+    private void PlayAnimation(string layerName)
+    {
+        amimationName = layerName;
+        animator.Play(layerName);
+    }
+
+    private void OnEnable()
+    {
+        if (!string.IsNullOrEmpty(amimationName))
+            PlayAnimation(amimationName);
     }
 
     private void Update()
