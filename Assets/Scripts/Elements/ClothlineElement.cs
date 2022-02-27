@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class ClothlineElement : BasicHangable, ISlideable
 {
-
     public Vector2 GetClosestPosition(Vector2 playerPos, Vector2 input)
     {
 
