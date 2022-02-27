@@ -114,4 +114,4 @@ MonoBehaviour:
     m_PostInfinity: 0
     m_RotationOrder: 4
   SnapToHideablePositionDuration: 0.05
-  LadderClimbVelocity: 20
+  LadderClimbVelocity: 30

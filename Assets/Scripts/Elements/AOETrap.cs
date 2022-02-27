@@ -49,6 +49,7 @@ public class AOETrap : MonoBehaviour
         }
 
         EffectHandler.Spawn(new CustomEffect(explosionEffectPrefab, 5f), transform.position);
+        NoiseHandler.Instance.MakeNoise(transform.position, 10);
         Destroy(gameObject);
     }
 
