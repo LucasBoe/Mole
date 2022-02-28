@@ -34,8 +34,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - Background
+  - Shadow
   - RenderTexture
   m_SortingLayers:
   - name: Bachground_Tunnel
