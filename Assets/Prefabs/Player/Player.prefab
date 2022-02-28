@@ -316,7 +316,7 @@ GameObject:
   - component: {fileID: 7193096734908276478}
   - component: {fileID: 7193096734908276472}
   - component: {fileID: 7193096734908276473}
-  m_Layer: 3
+  m_Layer: 30
   m_Name: DynanicViewAreaDetector
   m_TagString: Untagged
   m_Icon: {fileID: 0}

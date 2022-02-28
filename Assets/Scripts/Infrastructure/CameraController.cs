@@ -7,7 +7,7 @@ using UnityEngine;
 public class CameraController : SingletonBehaviour<CameraController>
 {
     [SerializeField] private RenderTexture renderTexture;
-    [SerializeField] private Transform textureDisplayTransform;
+    [SerializeField] private Transform[] textureDisplayTransforms;
     [SerializeField] private new Camera camera;
     [SerializeField] private bool smooth;
 
@@ -55,8 +55,13 @@ public class CameraController : SingletonBehaviour<CameraController>
     {
         Vector2 camPosRaw = camera.transform.position;
         Vector2 camPosRounded = new Vector2(RoundTo8PixelPerUnit(camPosRaw.x), RoundTo8PixelPerUnit(camPosRaw.y));
-        Vector3 rest = (Vector3)(camPosRounded - camPosRaw) + Vector3.forward;
-        textureDisplayTransform.localPosition = smooth ? rest : Vector3.forward;
+        Vector3 rest = (Vector3)(camPosRounded - camPosRaw);
+
+        foreach (Transform transform in textureDisplayTransforms)
+        {
+            float z = transform.localPosition.z;
+            transform.localPosition = new Vector3(smooth ? rest.x : 0, smooth ? rest.y : 0, z);
+        }
     }
 
     private float RoundTo8PixelPerUnit(float raw)
