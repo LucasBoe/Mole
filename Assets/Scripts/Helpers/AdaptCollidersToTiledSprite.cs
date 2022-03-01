@@ -10,6 +10,7 @@ public class AdaptCollidersToTiledSprite : MonoBehaviour
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] BoxCollider2D boxCollider2D;
     [SerializeField] EdgeCollider2D edgeCollider2D;
+    [SerializeField] Vector2 axisMultiplier = Vector2.one;
 
     // Update is called once per frame
     void Update()
@@ -23,7 +24,7 @@ public class AdaptCollidersToTiledSprite : MonoBehaviour
             edgeCollider2D.points = new Vector2[] { new Vector2(-sizeX, 0), new Vector2(sizeX, 0) };
 
         if (boxCollider2D != null)
-            boxCollider2D.size = new Vector2(sizeX * 2, sizeY * 2);
+            boxCollider2D.size = new Vector2(sizeX * 2 * axisMultiplier.x, sizeY * 2 * axisMultiplier.y);
 
     }
     public enum ColliderAdpationDirection
