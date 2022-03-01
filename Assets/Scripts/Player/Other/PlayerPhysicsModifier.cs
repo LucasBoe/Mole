@@ -3,7 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerPhysicsModifier : SingletonBehaviour<PlayerPhysicsModifier>
+public interface ICollisionModifier
+{
+    void SetCollisionActive(bool active);
+}
+
+public class PlayerPhysicsModifier : SingletonBehaviour<PlayerPhysicsModifier>, ICollisionModifier
 {
     public enum ColliderMode
     {
@@ -19,13 +24,13 @@ public class PlayerPhysicsModifier : SingletonBehaviour<PlayerPhysicsModifier>
     private ColliderMode mode = ColliderMode.Default;
     public ColliderMode Mode => mode;
 
-    internal void SetCollisionActive(bool active)
+    public void SetCollisionActive(bool active)
     {
         isActive = active;
         UpdateColliders();
     }
 
-    internal void SetColliderMode(ColliderMode colliderMode)
+    public void SetColliderMode(ColliderMode colliderMode)
     {
         mode = colliderMode;
         UpdateColliders();

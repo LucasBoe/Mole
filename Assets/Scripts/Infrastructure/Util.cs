@@ -118,6 +118,17 @@ public static class Util
         }
     }
 
+    public static void Delay(this MonoBehaviour gameObject,float delay, System.Action callback)
+    {
+        gameObject.StartCoroutine(DelayRoutine(delay, callback));
+    }
+
+    static IEnumerator DelayRoutine(float delay, System.Action callback)
+    {
+        yield return new WaitForSeconds(delay);
+        callback?.Invoke();
+    }
+
     public static Rigidbody2D GetClosest(this IEnumerable<Rigidbody2D> rigidbodies, Vector2 toPos)
     {
         return rigidbodies.ToArray().OrderBy(r => Vector2.Distance(r.position, toPos)).First();

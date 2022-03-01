@@ -10,4 +10,5 @@ public class ClothlineElement : BasicHangable, ISlideable
 
         return GetClosestHangablePosition(playerPos, input);
     }
+
 }
