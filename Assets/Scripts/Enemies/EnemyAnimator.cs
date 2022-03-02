@@ -10,6 +10,8 @@ public class EnemyAnimator : EnemyModule<EnemyAnimator>
     EnemyViewconeModule viewconeModule;
     string amimationName;
 
+    bool block;
+
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -20,10 +22,15 @@ public class EnemyAnimator : EnemyModule<EnemyAnimator>
         GetModule<EnemyMoveModule>().OnStartMovingToPosition += delegate () { PlayAnimation("Enemy_Walk"); };
         GetModule<EnemyStatemachineModule>().OnStartWaiting += delegate () { PlayAnimation("Enemy_Idle"); };
         GetModule<EnemyAIModule>().OnStartBeeingStrangled += delegate () { PlayAnimation("Enemy_Strangled"); };
+        GetModule<EnemyGroundCheckModule>().LeftGround += delegate () { PlayAnimation("Enemy_Fall"); block = true; };
+        GetModule<EnemyGroundCheckModule>().EnteredGround += delegate () { block = false; };
     }
 
     private void PlayAnimation(string layerName)
     {
+        if (block)
+            return;
+
         amimationName = layerName;
         animator.Play(layerName);
     }

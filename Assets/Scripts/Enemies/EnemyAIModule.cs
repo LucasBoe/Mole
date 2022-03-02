@@ -10,9 +10,10 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
         Interrupted,
         Attack,
         BeeingStrangled,
+        Falling,
     }
 
-    private AIMode mode;
+    [SerializeField, ReadOnly] private AIMode mode;
     private AIMode Mode
     {
         get => mode;
@@ -29,6 +30,7 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
     EnemyMemoryModule memoryModule;
     EnemyMoveModule moveModule;
     EnemyDamageModule damageModule;
+    EnemyGroundCheckModule groundCheckModule;
 
     [SerializeField] private NoiseListener noiseListener;
     [SerializeField] private new Rigidbody2D rigidbody2D;
@@ -45,11 +47,32 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
         routineModule = GetModule<EnemyRoutineModule>();
         moveModule = GetModule<EnemyMoveModule>();
         damageModule = GetModule<EnemyDamageModule>();
+        groundCheckModule = GetModule<EnemyGroundCheckModule>();
 
         moveModule.OnStartMovingToPosition += SetViewconeModeToForward;
         viewconeModule.OnPlayerEnter += OnPlayerEnteredViewcone;
         noiseListener.OnNoise += CheckOutLocation;
         damageModule.OutOfHealth += Kill;
+        groundCheckModule.EnteredGround += () => SetGrounded(true);
+        groundCheckModule.LeftGround += () => SetGrounded(false);
+    }
+
+    private void SetGrounded(bool grounded)
+    {
+
+        if (Mode == AIMode.Falling && grounded)
+        {
+            statemachineModule.StopCurrent();
+            Mode = AIMode.Interrupted;
+
+            Debug.Log($"Mode = { Mode }");
+        }
+        else if (!grounded)
+        {
+            Mode = AIMode.Falling;
+
+            Debug.Log($"Mode = { Mode }");
+        }
     }
 
     private void SetViewconeModeToForward()
@@ -113,6 +136,10 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
         {
             newStates.Add(new EnemyWaitState(CombatStrangleState.strangleDuration));
         }
+        else if (Mode == AIMode.Falling)
+        {
+            newStates.Add(new EnemyWaitState(1f));
+        }
         else
         {
             return routineModule.GetRoutineStates();
@@ -123,7 +150,8 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
 
     public void Kill()
     {
-        if (gameObject != null) {
+        if (gameObject != null)
+        {
             enemyBase.OnEnemyDeath?.Invoke();
             Destroy(gameObject);
         }
