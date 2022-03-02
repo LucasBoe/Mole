@@ -3,22 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerActionTriggerEnemyKick : PlayerActionTriggerBase
+public class PlayerCombatTriggerEnemyKick : PlayerCombatStateTrigger<KickState>
 {
     protected override InputAction CreateInputAction()
     {
-        return new InputAction() { Input = ControlType.Interact, Stage = InputActionStage.WorldObject, Text = "Kick", ActionCallback = Kick };
+        return new InputAction() { Input = ControlType.Interact, Stage = InputActionStage.WorldObject, Text = "Kick", ActionCallback = EnterCombatState };
     }
 
-    private void Kick()
+    protected override PlayerStateBase CreateStateInstance(ICombatTarget combatTarget)
     {
-        if (ActionTarget == null)
-            return;
-
-        ICombatTarget combatTarget = ActionTarget.GetComponent<ICombatTarget>();
-
-        if (combatTarget != null)
-            PlayerStateMachine.Instance.SetState(new KickState(combatTarget));
+        return new KickState(combatTarget);
     }
 
     protected override bool ConditionsMet(Collider2D collider2D)

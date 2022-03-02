@@ -34,6 +34,9 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
     [SerializeField] private new Rigidbody2D rigidbody2D;
     public Rigidbody2D Rigidbody2D => rigidbody2D;
 
+    [SerializeField] private EnemyColliderModule colliderModule;
+    public EnemyColliderModule ColliderModule => colliderModule;
+
     private void Start()
     {
         statemachineModule = GetModule<EnemyStatemachineModule>();

@@ -449,6 +449,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   noiseListener: {fileID: 7324263897917580387}
   rigidbody2D: {fileID: 7324263897917580386}
+  colliderModule: {fileID: 2969398704904647627}
 --- !u!114 &7324263897917580390
 MonoBehaviour:
   m_ObjectHideFlags: 0
