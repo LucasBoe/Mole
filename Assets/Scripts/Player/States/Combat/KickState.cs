@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerKickState : PlayerCombatState
+public class KickState : PlayerCombatState
 {
     Vector2 targetPos;
     Vector2 kickDirection;
@@ -10,7 +10,7 @@ public class PlayerKickState : PlayerCombatState
     bool finished = false;
     public bool Finished => finished;
     public bool DirectionIsRight => kickDirection.x > 0;
-    public PlayerKickState(ICombatTarget target) : base(target)
+    public KickState(ICombatTarget target) : base(target)
     {
         targetBody = target.Rigidbody2D;
     }

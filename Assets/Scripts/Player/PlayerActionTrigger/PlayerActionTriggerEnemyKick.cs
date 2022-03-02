@@ -18,7 +18,7 @@ public class PlayerActionTriggerEnemyKick : PlayerActionTriggerBase
         ICombatTarget combatTarget = ActionTarget.GetComponent<ICombatTarget>();
 
         if (combatTarget != null)
-            PlayerStateMachine.Instance.SetState(new PlayerKickState(combatTarget));
+            PlayerStateMachine.Instance.SetState(new KickState(combatTarget));
     }
 
     protected override bool ConditionsMet(Collider2D collider2D)
