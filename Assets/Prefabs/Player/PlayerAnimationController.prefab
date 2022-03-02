@@ -353,6 +353,9 @@ MonoBehaviour:
     - ClimbState: WalkState
       ParamAnimation: {fileID: 11400000, guid: bbb05537a851a8744a9b2af5a0bd73a3, type: 2}
       showCoat: 1
+    - ClimbState: PlayerKickState
+      ParamAnimation: {fileID: 11400000, guid: 03977039ea621c340b4fc9fa589e3e1e, type: 2}
+      showCoat: 1
   coatGameObject: {fileID: 9031940380163258740}
 --- !u!212 &5582010506033126746
 SpriteRenderer:

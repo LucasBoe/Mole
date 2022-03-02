@@ -6,8 +6,7 @@ public class PlayerIdleParamAnimation : ParameterBasedAnimation<IdleState>
 {
     [SerializeField] Sprite atWallSprite;
     [SerializeField] Sprite[] idleStand, idleCrouch;
-    private Sprite[] idle => state.IsCrouching ? idleCrouch : idleStand;
-    private IdleState state;
+    private Sprite[] idle => State.IsCrouching ? idleCrouch : idleStand;
 
     public override void Init(PlayerStateMachine playerStateMachine)
     {
@@ -16,9 +15,7 @@ public class PlayerIdleParamAnimation : ParameterBasedAnimation<IdleState>
 
     public override Sprite Update()
     {
-        state = PlayerStateMachine.Instance.CurrentState as IdleState;
-
-        if (state.IsAtWall)
+        if (State.IsAtWall)
             return atWallSprite;
 
         return idle[(int)(Mathf.Floor(Time.time * (idle.Length + 0.5f)) % idle.Length)];

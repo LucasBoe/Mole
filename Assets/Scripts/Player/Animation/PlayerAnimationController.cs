@@ -10,7 +10,7 @@ public class PlayerAnimationController : MonoBehaviour
     Animator animator;
     SpriteRenderer spriteRenderer;
 
-    ClimbStateParamAnimationPair current;
+    ParamBasedAnimationPair current;
 
     [SerializeField] StateToAnimationHolder stateToAnimationHolder;
     [SerializeField] GameObject coatGameObject;
@@ -26,7 +26,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     private void Start()
     {
-        foreach (ClimbStateParamAnimationPair param in stateToAnimationHolder.climbStateParamAnimationPairs)
+        foreach (ParamBasedAnimationPair param in stateToAnimationHolder.climbStateParamAnimationPairs)
             param.ParamAnimation.Init(player);
     }
 
@@ -39,7 +39,7 @@ public class PlayerAnimationController : MonoBehaviour
             if (!animator.isActiveAndEnabled)
                 animator.enabled = true;
 
-            MoveStateAnimationPair clip = stateToAnimationHolder.GetClip(state);
+            ClipBasedAnimationPair clip = stateToAnimationHolder.GetClip(state);
             if (clip != null)
             {
                 animator.Play(clip.AnimationClip.name);
@@ -48,6 +48,7 @@ public class PlayerAnimationController : MonoBehaviour
         }
         else
         {
+            current.ParamAnimation.SetState(state);
             coatGameObject.SetActive(current.showCoat);
 
             if (animator.isActiveAndEnabled)
@@ -60,23 +61,19 @@ public class PlayerAnimationController : MonoBehaviour
         if (player.CurrentState == null)
             return;
 
-        if (player.CurrentState.GetType() != typeof(WallStretchState))
-        {
-            bool flip = playerRigidbody.velocity.x < 0.01f;
-
-            if (player.CurrentState.GetType() == typeof(WallState))
-            {
-                flip = (player.CurrentState as WallState).IsLeft;
-            }
-
-            spriteRenderer.flipX = flip;
-        }
-
         animator.SetFloat("speed", playerRigidbody.velocity.magnitude);
 
         if (current != null)
         {
-            spriteRenderer.sprite = current.ParamAnimation.Update();
+            ParameterBasedAnimationBase param = current.ParamAnimation;
+            spriteRenderer.sprite = param.Update();
+            if (param.FlipOverride != ParameterBasedAnimationBase.FlipOverrides.DontUpdate)
+            {
+                if (param.FlipOverride == ParameterBasedAnimationBase.FlipOverrides.None)
+                    spriteRenderer.flipX = playerRigidbody.velocity.x < 0.01f;
+                else
+                    spriteRenderer.flipX = param.FlipOverride == ParameterBasedAnimationBase.FlipOverrides.Left ? true : false;
+            }
         }
     }
 
@@ -89,12 +86,12 @@ public class PlayerAnimationController : MonoBehaviour
 [System.Serializable]
 public class StateToAnimationHolder
 {
-    public MoveStateAnimationPair[] moveStateAnimationPairs;
-    public ClimbStateParamAnimationPair[] climbStateParamAnimationPairs;
+    public ClipBasedAnimationPair[] moveStateAnimationPairs;
+    public ParamBasedAnimationPair[] climbStateParamAnimationPairs;
 
-    internal MoveStateAnimationPair GetClip(PlayerStateBase state)
+    internal ClipBasedAnimationPair GetClip(PlayerStateBase state)
     {
-        foreach (MoveStateAnimationPair pair in moveStateAnimationPairs)
+        foreach (ClipBasedAnimationPair pair in moveStateAnimationPairs)
         {
             if (pair.MoveState == state.ToString())
                 return pair;
@@ -103,9 +100,9 @@ public class StateToAnimationHolder
         return null;
     }
 
-    internal ClimbStateParamAnimationPair GetClipParam(PlayerStateBase state)
+    internal ParamBasedAnimationPair GetClipParam(PlayerStateBase state)
     {
-        foreach (ClimbStateParamAnimationPair pair in climbStateParamAnimationPairs)
+        foreach (ParamBasedAnimationPair pair in climbStateParamAnimationPairs)
         {
             if (pair.ClimbState == state.ToString())
                 return pair;
@@ -116,7 +113,7 @@ public class StateToAnimationHolder
 }
 
 [System.Serializable]
-public class MoveStateAnimationPair
+public class ClipBasedAnimationPair
 {
     public string MoveState;
     public AnimationClip AnimationClip;
@@ -124,7 +121,7 @@ public class MoveStateAnimationPair
 }
 
 [System.Serializable]
-public class ClimbStateParamAnimationPair
+public class ParamBasedAnimationPair
 {
     public string ClimbState;
     public ParameterBasedAnimationBase ParamAnimation;

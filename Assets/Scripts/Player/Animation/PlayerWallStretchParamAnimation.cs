@@ -5,19 +5,18 @@ using UnityEngine;
 public class PlayerWallStretchParamAnimation : ParameterBasedAnimation<WallStretchState>
 {
     [SerializeField] FloatSpritePair[] wallStretch;
-    WallStretchState state;
 
     public override void Init(PlayerStateMachine playerStateMachine)
     {
         base.Init(playerStateMachine);
+        FlipOverride = FlipOverrides.DontUpdate;
     }
 
     public override Sprite Update()
     {
-        state = PlayerStateMachine.Instance.CurrentState as WallStretchState;
         foreach (FloatSpritePair pair in wallStretch)
         {
-            if (state.Distance < pair.Value)
+            if (State.Distance < pair.Value)
                 return pair.Sprite;
         }
 

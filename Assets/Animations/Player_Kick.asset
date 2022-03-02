@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85823dd673d3efe4eb3b8b7234bb2a87, type: 3}
+  m_Name: Player_Kick
+  m_EditorClassIdentifier: 
+  FlipOverride: 0
+  before: {fileID: -2649956176504804315, guid: 0d5a2d32bcc66164bae4a6737f4a8fe3, type: 3}
+  after: {fileID: 2943811293440480355, guid: 0d5a2d32bcc66164bae4a6737f4a8fe3, type: 3}
