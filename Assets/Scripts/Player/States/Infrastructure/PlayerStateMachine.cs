@@ -50,6 +50,12 @@ public class PlayerStateMachine : SingletonBehaviour<PlayerStateMachine>, IPlaye
 
     public void SetState(PlayerStateBase newState)
     {
+        if (!newState.CheckEnter())
+        {
+            Debug.Log("could not enter: " + newState);
+            return;
+        }
+
         CurrentState.Exit();
 
         string from = CurrentState.ToString();

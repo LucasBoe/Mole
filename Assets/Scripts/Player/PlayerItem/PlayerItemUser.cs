@@ -84,4 +84,9 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
 
         selectedItem = item;
     }
+
+    public bool BlocksClimb()
+    {
+        return selectedItem != null && selectedItem.BlockCimb;
+    }
 }

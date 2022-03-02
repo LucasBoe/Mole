@@ -7,6 +7,11 @@ using UnityEngine;
 
 public class ClimbStateBase : PlayerStateBase
 {
+    public override bool CheckEnter()
+    {
+        return (!PlayerItemUser.Instance.BlocksClimb());
+    }
+
     public ClimbStateBase() : base() { }
 
     public override void Enter()

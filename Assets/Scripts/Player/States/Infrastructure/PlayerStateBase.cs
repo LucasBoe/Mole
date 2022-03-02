@@ -65,11 +65,9 @@ public class PlayerStateBase : PlayerStateObject
     //hideable
     protected bool checkForHideable;
 
-
+    public virtual bool CheckEnter() { return true; }
     public virtual void Enter() { }
-
     public virtual void Exit() { }
-
     public virtual void Update() { }
     protected void SetCollisionActive(bool active)
     {
