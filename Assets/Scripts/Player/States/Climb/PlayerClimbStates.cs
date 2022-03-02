@@ -220,7 +220,7 @@ public class WallState : ClimbStateBase
         if (!IsColliding(CheckType.WallAbove))
         {
             Vector2 origin = context.PlayerPos + Vector2.up + (IsLeft ? Vector2.left : Vector2.right);
-            RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down, 2, LayerMask.GetMask("Default"));
+            RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down, 2, LayerMask.GetMask("Climbable"));
             if (hit == true)
             {
                 DistanceFromTop = Vector2.Distance(origin, hit.point);
@@ -233,7 +233,7 @@ public class WallState : ClimbStateBase
         bool triesMoveAwayFromWall = ((IsLeft && context.Input.Axis.x > 0) || (!IsLeft && context.Input.Axis.x < 0));
         if (triesMoveAwayFromWall)
         {
-            RaycastHit2D hit = Physics2D.Raycast(context.PlayerPos, new Vector2(IsLeft ? -1 : 1, 0), 2, LayerMask.GetMask("Default"));
+            RaycastHit2D hit = Physics2D.Raycast(context.PlayerPos, new Vector2(IsLeft ? -1 : 1, 0), 2, LayerMask.GetMask("Climbable"));
             if (hit == true)
             {
                 SetState(new WallStretchState());
@@ -274,7 +274,7 @@ public class WallStretchState : ClimbStateBase
 
         float directionToWall = enterStateX < context.PlayerPos.x ? -1f : 1f;
 
-        RaycastHit2D hit = Physics2D.Raycast(context.PlayerPos, new Vector2(directionToWall, 0), 2, LayerMask.GetMask("Default"));
+        RaycastHit2D hit = Physics2D.Raycast(context.PlayerPos, new Vector2(directionToWall, 0), 2, LayerMask.GetMask("Climbable"));
         if (hit == true)
         {
             Distance = Vector2.Distance(context.PlayerPos, hit.point);
