@@ -5,7 +5,8 @@ public class EnemyDamageModule : EnemyModule<EnemyDamageModule>, IHealth
     [SerializeField] private int maxHealth;
     private int currentHealth;
 
-    public System.Action OnOutOfHealth;
+    public System.Action OutOfHealth;
+    public System.Action<float> HealthChanged;
 
     private void Start()
     {
@@ -19,12 +20,15 @@ public class EnemyDamageModule : EnemyModule<EnemyDamageModule>, IHealth
 
         currentHealth -= amount;
         if (currentHealth <= 0)
-            OnOutOfHealth?.Invoke();
+            OutOfHealth?.Invoke();
+
+        HealthChanged?.Invoke(currentHealth / maxHealth);
     }
 
     public void Heal(int amount)
     {
         currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
+        HealthChanged?.Invoke(currentHealth / maxHealth);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

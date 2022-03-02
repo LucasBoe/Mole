@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody2D: {fileID: 1482603712404808881}
-  damageMultiplier: 10
+  damageMultiplier: 2
   treshhold: 5
 --- !u!1 &1482603712404808885
 GameObject:

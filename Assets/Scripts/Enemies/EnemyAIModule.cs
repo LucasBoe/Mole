@@ -49,7 +49,7 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
         moveModule.OnStartMovingToPosition += SetViewconeModeToForward;
         viewconeModule.OnPlayerEnter += OnPlayerEnteredViewcone;
         noiseListener.OnNoise += CheckOutLocation;
-        damageModule.OnOutOfHealth += Kill;
+        damageModule.OutOfHealth += Kill;
     }
 
     private void SetViewconeModeToForward()
