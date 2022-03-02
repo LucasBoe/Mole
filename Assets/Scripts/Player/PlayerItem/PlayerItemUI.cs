@@ -18,6 +18,7 @@ public class PlayerItemUI : UIBehaviour
 
     [SerializeField] RectTransform parent;
     [SerializeField] Text itemNameText;
+    [SerializeField] Text amount;
 
     [SerializeField] RectTransform itemSlotPrefab;
     [SerializeField] Image itemSlotModePrefab;
