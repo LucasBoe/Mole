@@ -26,6 +26,7 @@ public class PlayerInputActionRegister : SingletonBehaviour<PlayerInputActionReg
     }
     //needs higher update prio then item user to clear inputs for it
     public int UpdatePrio => 200;
+    public bool debug;
 
     public void Init(PlayerContext context)
     {
@@ -102,19 +103,22 @@ public class PlayerInputActionRegister : SingletonBehaviour<PlayerInputActionReg
 
     private void OnGUI()
     {
-        for (int i = 0; i < 4; i++)
+        if (debug)
         {
-            if (register.ContainsKey((ControlType)i))
+            for (int i = 0; i < 4; i++)
             {
-                string str = ((ControlType)i).ToString() + ":\n";
-
-                foreach (InputAction action in register[(ControlType)i].OrderBy(ac => ac.Stage))
+                if (register.ContainsKey((ControlType)i))
                 {
-                    if (action.TargetObject != null)
-                        str += action.Text + " (" + action.TargetObject.name + " - " + action.Stage.ToString() + " )\n";
-                }
+                    string str = ((ControlType)i).ToString() + ":\n";
 
-                GUI.Box(new Rect(100 + 200 * i, 100, 190, 90), str);
+                    foreach (InputAction action in register[(ControlType)i].OrderBy(ac => ac.Stage))
+                    {
+                        if (action.TargetObject != null)
+                            str += action.Text + " (" + action.TargetObject.name + " - " + action.Stage.ToString() + " )\n";
+                    }
+
+                    GUI.Box(new Rect(100 + 200 * i, 100, 190, 90), str);
+                }
             }
         }
     }
