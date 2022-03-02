@@ -2,20 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IInterfaceable
-{
-    bool IsNull { get; }
-}
-
-
-public interface ICombatTarget : IInterfaceable
-{
-    Vector2 StranglePosition { get; }
-    void Kill();
-    bool StartStrangling();
-    void StopStrangling(Vector2 playerPos);
-}
-
 public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
 {
     private enum AIMode
@@ -34,8 +20,8 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
     }
     public Vector2 StranglePosition => transform.position + Vector3.left;
     public bool IsNull => this == null;
-    public Action OnStartBeeingStrangled;
 
+    public System.Action OnStartBeeingStrangled;
 
     EnemyRoutineModule routineModule;
     EnemyStatemachineModule statemachineModule;
@@ -44,7 +30,9 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
     EnemyMoveModule moveModule;
     EnemyDamageModule damageModule;
 
-    [SerializeField] NoiseListener noiseListener;
+    [SerializeField] private NoiseListener noiseListener;
+    [SerializeField] private new Rigidbody2D rigidbody2D;
+    public Rigidbody2D Rigidbody2D => rigidbody2D;
 
     private void Start()
     {

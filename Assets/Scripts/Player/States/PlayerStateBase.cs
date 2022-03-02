@@ -32,6 +32,11 @@ public class PlayerStateObject
         PlayerStateMachine.Instance.SetState(state);
     }
 
+    protected void SetStateDelayed(PlayerStateBase state, float delay = 1)
+    {
+        PlayerStateMachine.Instance.SetStateDelayed(state, delay);
+    }
+
     protected bool StateIs(PlayerStateBase state)
     {
         return StateIs(state.GetType());

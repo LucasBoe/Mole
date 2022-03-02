@@ -43,6 +43,11 @@ public class PlayerStateMachine : SingletonBehaviour<PlayerStateMachine>, IPlaye
         context.StateTransitonChecks.TryCheckAll();
     }
 
+    public void SetStateDelayed(PlayerStateBase newState, float delay)
+    {
+        this.Delay(delay, () => SetState(newState));
+    }
+
     public void SetState(PlayerStateBase newState)
     {
         CurrentState.Exit();

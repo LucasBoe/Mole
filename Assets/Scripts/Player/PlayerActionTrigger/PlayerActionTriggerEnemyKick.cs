@@ -15,13 +15,10 @@ public class PlayerActionTriggerEnemyKick : PlayerActionTriggerBase
         if (ActionTarget == null)
             return;
 
-        Rigidbody2D body = ActionTarget.GetComponent<Rigidbody2D>();
+        ICombatTarget combatTarget = ActionTarget.GetComponent<ICombatTarget>();
 
-        if (body == null)
-            return;
-
-        Vector2 dir = (ActionTarget.position - transform.position) + Vector3.up;
-        body.AddForce(dir.normalized * 50f, ForceMode2D.Impulse);
+        if (combatTarget != null)
+            PlayerStateMachine.Instance.SetState(new PlayerKickState(combatTarget));
     }
 
     protected override bool ConditionsMet(Collider2D collider2D)

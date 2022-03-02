@@ -129,6 +129,13 @@ public static class Util
         callback?.Invoke();
     }
 
+    public static float Distance(this Rigidbody2D body, Rigidbody2D other)
+    {
+        List<Collider2D> result = new List<Collider2D>();
+        other.GetAttachedColliders(result);
+        return result.Select(r => body.Distance(r)).OrderByDescending(d => d.distance).First().distance;
+    }
+
     public static Rigidbody2D GetClosest(this IEnumerable<Rigidbody2D> rigidbodies, Vector2 toPos)
     {
         return rigidbodies.ToArray().OrderBy(r => Vector2.Distance(r.position, toPos)).First();
