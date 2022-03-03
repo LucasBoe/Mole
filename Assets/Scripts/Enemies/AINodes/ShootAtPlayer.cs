@@ -14,6 +14,7 @@ public class ShootAtPlayer : ActionNode
     {
         if (context.memory.CanSeePlayer)
         {
+            context.memory.Forward = context.PlayerPos.x < context.transform.position.x ? Direction2D.Left : Direction2D.Right;
             context.shootModule.Shoot(context.PlayerPos, shootingVelocity);
         }
         return State.Success;

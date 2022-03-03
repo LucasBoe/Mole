@@ -88,8 +88,8 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
-  animationOverride: {fileID: 0}
-  shootingVelocity: 0
+  animationOverride: {fileID: 7400000, guid: 3803a1578f842d24fa3ec589c12b63b5, type: 2}
+  shootingVelocity: 25
 --- !u!114 &-6643416536428564573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -536,5 +536,5 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
-  animationOverride: {fileID: 7400000, guid: d3d73bd6ae384ee45a7c84a7cebe4c43, type: 2}
+  animationOverride: {fileID: 7400000, guid: eab35113bc9a94d4d81d9af59084c685, type: 2}
   duration: 1

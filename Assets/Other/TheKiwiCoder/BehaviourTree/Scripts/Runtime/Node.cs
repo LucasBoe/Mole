@@ -26,13 +26,12 @@ namespace TheKiwiCoder
         public State Update()
         {
             bool init = false;
-
             if (!started)
             {
                 OnStart();
                 started = true;
-                init = true;
 
+                init = true;
             }
 
             state = OnUpdate();
