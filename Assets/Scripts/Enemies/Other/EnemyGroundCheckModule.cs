@@ -12,6 +12,8 @@ public class EnemyGroundCheckModule : EnemyModule<EnemyGroundCheckModule>
 
     public System.Action EnteredGround;
     public System.Action LeftGround;
+    public bool IsGrounded => currentLayers.Count != 0;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         int layer = collision.gameObject.layer;
@@ -29,14 +31,14 @@ public class EnemyGroundCheckModule : EnemyModule<EnemyGroundCheckModule>
         if (currentLayers.Contains(layer))
         {
             currentLayers.Remove(layer);
-            if (currentLayers.Count == 0)
+            if (!IsGrounded)
                 this.Delay(0.01f, CheckForGround);
         }
     }
 
     private void CheckForGround()
     {
-        if (currentLayers.Count == 0)
+        if (!IsGrounded)
             LeftGround?.Invoke();
     }
 }

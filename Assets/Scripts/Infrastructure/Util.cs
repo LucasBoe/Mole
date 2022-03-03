@@ -346,3 +346,9 @@ public static class Util
         return own;
     }
 }
+
+public enum Direction2D
+{
+    Left,
+    Right,
+}

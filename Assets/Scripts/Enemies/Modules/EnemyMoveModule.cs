@@ -9,6 +9,7 @@ public enum EnemyAISmartType
     Thorough,
 }
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
 {
     CollisionCheck jumpHelperLeft, jumpHelperRight, ground, fallDetectionLeft, fallDetectionRight;

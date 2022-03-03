@@ -15,6 +15,9 @@ public class EnemyFallDamageModule : EnemyModule<EnemyFallDamageModule>
     {
         groundCheckModule.LeftGround += () => { isFalling = true;  };
         groundCheckModule.EnteredGround += () => { isFalling = false; HandleFalldamage(currentFallDuration); };
+
+        if (damageModule == null)
+            damageModule = GetModule<EnemyDamageModule>();
     }
 
     private void HandleFalldamage(float currentFallDuration)
