@@ -22,6 +22,7 @@ namespace TheKiwiCoder
         public EnemyDamageModule damageModule;
         public EnemyGroundCheckModule groundCheck;
         public Vector2 PlayerPos => memory.PlayerPos;
+        public System.Action<Node> EnteredState;
 
         // Add other game specific systems here
 

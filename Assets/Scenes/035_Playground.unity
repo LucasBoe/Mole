@@ -105558,6 +105558,7 @@ GameObject:
   - component: {fileID: 963804461}
   - component: {fileID: 963804459}
   - component: {fileID: 963804460}
+  - component: {fileID: 963804468}
   m_Layer: 10
   m_Name: AIEnemy
   m_TagString: Untagged
@@ -105780,6 +105781,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 868ee47e3d87dc04b808f710a4b00a68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 963804468}
   spriteRenderer: {fileID: 963804461}
 --- !u!114 &963804467
 MonoBehaviour:
@@ -105796,6 +105798,25 @@ MonoBehaviour:
   maxHealth: 10000
   currentHealth: 0
   falldamage: {fileID: 284915838078974419, guid: 711c3262425250d43a3240b2d650cb4d, type: 3}
+--- !u!95 &963804468
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963804454}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ab1295f685646ee4db7676f4aa4a16d6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &968335098
 PrefabInstance:
   m_ObjectHideFlags: 0

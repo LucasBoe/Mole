@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[SelectionBase]
 public class EnemyBase : MonoBehaviour
 {
     Dictionary<System.Type, object> modules = new Dictionary<System.Type, object>();

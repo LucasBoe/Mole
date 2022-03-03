@@ -21,6 +21,7 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
+  animationOverride: {fileID: 0}
 --- !u!114 &-7872291670321148611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42,6 +43,7 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
+  animationOverride: {fileID: 7400000, guid: d3d73bd6ae384ee45a7c84a7cebe4c43, type: 2}
   duration: 1
 --- !u!114 &-7398591756061302975
 MonoBehaviour:
@@ -64,6 +66,7 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
+  animationOverride: {fileID: 7400000, guid: 44896d97520aff044a4a8341a3e5aced, type: 2}
 --- !u!114 &-6909722623495966168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,6 +88,7 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
+  animationOverride: {fileID: 0}
   shootingVelocity: 0
 --- !u!114 &-6643416536428564573
 MonoBehaviour:
@@ -107,6 +111,7 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
+  animationOverride: {fileID: 7400000, guid: 0e0ab2f8ddb4007459ed30799bf2084e, type: 2}
   targetPosition:
     VarName: End
 --- !u!114 &-6049629707236192690
@@ -130,6 +135,7 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
+  animationOverride: {fileID: 0}
   children:
   - {fileID: 2312534505177209428}
   - {fileID: 6119309847267971973}
@@ -154,6 +160,7 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
+  animationOverride: {fileID: 7400000, guid: 0e0ab2f8ddb4007459ed30799bf2084e, type: 2}
   targetPosition:
     VarName: Start
 --- !u!114 &-3901640935913422298
@@ -177,6 +184,7 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
+  animationOverride: {fileID: 0}
 --- !u!114 &-2957796630697912729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,6 +206,7 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
+  animationOverride: {fileID: 0}
   child: {fileID: 5421345740670496205}
 --- !u!114 &-1897428851468558057
 MonoBehaviour:
@@ -220,6 +229,7 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
+  animationOverride: {fileID: 7400000, guid: d3d73bd6ae384ee45a7c84a7cebe4c43, type: 2}
   duration: 1
 --- !u!114 &-1388539613692111472
 MonoBehaviour:
@@ -242,6 +252,7 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
+  animationOverride: {fileID: 7400000, guid: 0e0ab2f8ddb4007459ed30799bf2084e, type: 2}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,6 +312,7 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
+  animationOverride: {fileID: 7400000, guid: 52e57727acc016145a2fd04dc00df008, type: 2}
 --- !u!114 &2312534505177209428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,6 +334,7 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
+  animationOverride: {fileID: 7400000, guid: b79f3bcd74ad1fd499cf5ff9ccaf2d66, type: 2}
 --- !u!114 &3752875956636505175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,6 +356,7 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
+  animationOverride: {fileID: 0}
 --- !u!114 &4880964243389557828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -364,6 +378,7 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: Routine
   drawGizmos: 0
+  animationOverride: {fileID: 0}
   children:
   - {fileID: -4348461666887065187}
   - {fileID: -1897428851468558057}
@@ -390,6 +405,7 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
+  animationOverride: {fileID: 0}
   child: {fileID: 6987580830103883313}
   restartOnSuccess: 1
   restartOnFailure: 0
@@ -414,6 +430,7 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
+  animationOverride: {fileID: 0}
   duration: 1
 --- !u!114 &6780891958858532144
 MonoBehaviour:
@@ -436,6 +453,7 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: Attack
   drawGizmos: 0
+  animationOverride: {fileID: 0}
   children:
   - {fileID: 3752875956636505175}
   - {fileID: 8758951590883576937}
@@ -461,6 +479,7 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
+  animationOverride: {fileID: 0}
   children:
   - {fileID: -6049629707236192690}
   - {fileID: -7398591756061302975}
@@ -491,6 +510,7 @@ MonoBehaviour:
 
 '
   drawGizmos: 0
+  animationOverride: {fileID: 0}
   children:
   - {fileID: -3901640935913422298}
   - {fileID: -1388539613692111472}
@@ -516,4 +536,5 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
+  animationOverride: {fileID: 7400000, guid: d3d73bd6ae384ee45a7c84a7cebe4c43, type: 2}
   duration: 1

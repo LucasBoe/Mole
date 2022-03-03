@@ -11,9 +11,15 @@ namespace TheKiwiCoder {
         // Storage container object to hold game object subsystems
         Context context;
 
+        public Context Context => context;
+
+        private void Awake()
+        {
+            context = CreateBehaviourTreeContext();
+        }
+
         // Start is called before the first frame update
         void Start() {
-            context = CreateBehaviourTreeContext();
             tree = tree.Clone();
             tree.Bind(context);
         }
