@@ -17,7 +17,7 @@ public class PlayerCombatCheckerDropKill : MonoBehaviour
 
     private void DropKill()
     {
-        PlayerStateMachine.Instance.SetState(new CombatStrangleState(target));
+        PlayerStateMachine.Instance.SetState(new DropKillState(target));
     }
 
     IEnumerator DoRaycastRoutine()
@@ -31,15 +31,16 @@ public class PlayerCombatCheckerDropKill : MonoBehaviour
 
     private void DoRaycast()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 10f, LayerMask.GetMask("Default", "Enemy"));
+        Vector2 start = transform.position + Vector3.down * 2;
+        RaycastHit2D hit = Physics2D.Raycast(start, Vector2.down, 10f, LayerMask.GetMask("Default", "Enemy"));
         if (hit.collider != null)
         {
             Debug.Log($"hit.collider = { hit.collider }");
             ICombatTarget newTarget = hit.rigidbody.GetComponent<ICombatTarget>();
             Debug.Log($"newTarget = { newTarget }");
-            if (newTarget != null)
+            if (newTarget != null && Util.CheckLineOfSight(transform.position, hit.point, "Default"))
             {
-                Debug.DrawLine(transform.position, hit.point, Color.green, updateFrequency);
+                Debug.DrawLine(start, hit.point, Color.green, updateFrequency);
 
                 if (newTarget != target)
                     UpdateTarget(newTarget);
@@ -47,13 +48,13 @@ public class PlayerCombatCheckerDropKill : MonoBehaviour
             else
             {
                 UpdateTarget(null);
-                Debug.DrawLine(transform.position, hit.point, Color.red, updateFrequency);
+                Debug.DrawLine(start, hit.point, Color.red, updateFrequency);
             }
         }
         else
         {
             UpdateTarget(null);
-            Debug.DrawRay(transform.position, Vector2.down * 10f, Color.red, updateFrequency);
+            Debug.DrawRay(start, Vector2.down * 10f, Color.red, updateFrequency);
         }
     }
 

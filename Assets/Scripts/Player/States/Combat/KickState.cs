@@ -38,9 +38,4 @@ public class KickState : PlayerCombatState
             SetStateDelayed(new IdleState(), 0.5f);
         }
     }
-
-    public override void Exit()
-    {
-        targetBody.AddTorque(999999999999999f);
-    }
 }
