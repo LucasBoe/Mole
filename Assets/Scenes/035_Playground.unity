@@ -105853,11 +105853,11 @@ MonoBehaviour:
   Variables:
   - Name: Start
     Type: 0
-    localPosition: {x: -12, y: 0}
+    localPosition: {x: -1.61, y: 0}
     worldPosition: {x: 0, y: 0}
   - Name: End
     Type: 0
-    localPosition: {x: 0, y: 0}
+    localPosition: {x: 6.94, y: 0}
     worldPosition: {x: 0, y: 0}
 --- !u!50 &963804459
 Rigidbody2D:
@@ -118837,11 +118837,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1277542900069462900, guid: 5000b7a239c87c14883b16e2c7eb45ab, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.75
+      value: 10.9
       objectReference: {fileID: 0}
     - target: {fileID: 1277542900069462900, guid: 5000b7a239c87c14883b16e2c7eb45ab, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3
+      value: 28.6
       objectReference: {fileID: 0}
     - target: {fileID: 1277542900069462900, guid: 5000b7a239c87c14883b16e2c7eb45ab, type: 3}
       propertyPath: m_LocalPosition.z
