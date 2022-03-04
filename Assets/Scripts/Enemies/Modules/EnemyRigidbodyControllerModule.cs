@@ -28,7 +28,6 @@ public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControll
         } else
         {
             transform.rotation = Quaternion.identity;
-            Debug.Log($"rotation => { rigidbody2D.rotation }");
         }
         FallmodeChanged?.Invoke(active);
     }

@@ -12,7 +12,10 @@ public class EnemyGroundCheckModule : EnemyModule<EnemyGroundCheckModule>
 
     public System.Action EnteredGround;
     public System.Action LeftGround;
-    public bool IsGrounded => currentLayers.Count != 0;
+
+    private bool isGroundedReal => currentLayers.Count != 0;
+    [SerializeField, ReadOnly] private bool isGroundedBuffered = true;
+    public bool IsGrounded => isGroundedBuffered;
     [SerializeField, ReadOnly] private float groundTime = 10f;
     public float GroundTime => groundTime;
 
@@ -37,6 +40,7 @@ public class EnemyGroundCheckModule : EnemyModule<EnemyGroundCheckModule>
     private void OnFallmodeChanged(bool fallModeActive)
     {
         enableCorrectio = fallModeActive;
+        if (!fallModeActive) transform.localRotation = Quaternion.identity;
     }
 
     private void LateUpdate()
@@ -64,7 +68,8 @@ public class EnemyGroundCheckModule : EnemyModule<EnemyGroundCheckModule>
             if (currentLayers.Count == 1)
             {
                 groundTime = 0f;
-                EnteredGround?.Invoke();
+                StopAllCoroutines();
+                this.Delay(0.05f, CheckForGround);
             }
         }
     }
@@ -75,16 +80,24 @@ public class EnemyGroundCheckModule : EnemyModule<EnemyGroundCheckModule>
         if (currentLayers.Contains(layer))
         {
             currentLayers.Remove(layer);
-            if (!IsGrounded)
-                this.Delay(0.01f, CheckForGround);
+            if (!isGroundedReal)
+            {
+                StopAllCoroutines();
+                this.Delay(0.05f, CheckForGround);
+            }
         }
     }
 
     private void CheckForGround()
     {
-        if (!IsGrounded)
+        if (isGroundedReal != isGroundedBuffered)
         {
-            LeftGround?.Invoke();
+            isGroundedBuffered = isGroundedReal;
+
+            if (IsGrounded)
+                EnteredGround?.Invoke();
+            else
+                LeftGround?.Invoke();
         }
     }
 }
