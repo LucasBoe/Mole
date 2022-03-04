@@ -13,7 +13,7 @@ public class SlidingState : PlayerStateBase
     public SlidingState(ISlideable currentSlideable)
     {
         this.startSlideable = currentSlideable;
-        cancelAction = new InputAction() { ActionCallback = () => { SetState(new JumpState()); }, Input = ControlType.Back, Stage = InputActionStage.ModeSpecific, TargetTransform = PlayerController.Instance.transform, Text = "Cancel" };
+        cancelAction = new InputAction() { ActionCallback = () => { SetState(new JumpState()); }, Input = ControlType.Back, Stage = InputActionStage.ModeSpecific, Target = PlayerController.Instance.transform, Text = "Cancel" };
     }
     public override void Enter()
     {

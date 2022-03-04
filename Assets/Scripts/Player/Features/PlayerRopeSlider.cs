@@ -12,7 +12,7 @@ public class PlayerRopeSlider : SingletonBehaviour<PlayerRopeSlider>
 
     private void OnEnable()
     {
-        startSlidingAction = new InputAction() { Input = ControlType.Use, Text = "Slide", TargetTransform = transform, Stage = InputActionStage.WorldObject, ActionCallback = SetStateToSlide };
+        startSlidingAction = new InputAction() { Input = ControlType.Use, Text = "Slide", Target = transform, Stage = InputActionStage.WorldObject, ActionCallback = SetStateToSlide };
     }
 
     internal void SetSliderActive(bool active)

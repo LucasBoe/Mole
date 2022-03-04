@@ -133,9 +133,9 @@ public class InputAction
     public InputActionStage Stage;
 
     public TargetTypes TargetType;
-    public Transform TargetTransform;
-    public RectTransform TargetRectTransform;
-    public UnityEngine.Object TargetObject;
+    public Transform TargetTransform { get; private set; }
+    public RectTransform TargetRectTransform { get; private set; }
+    public UnityEngine.Object TargetObject { get; private set; }
 
     public UnityEngine.Object Target { set => SetTarget(value); }
     public void SetTarget(UnityEngine.Object target)
