@@ -1,10 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControllerModule>, ICollisionModifier
 {
-    [SerializeField] Collider2D bodyCollider;
+    [SerializeField] CapsuleCollider2D bodyCollider;
+
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Sprite fall_spritesheet;
     [SerializeField] Material defaultMat, fallMat;
@@ -16,6 +18,50 @@ public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControll
     [SerializeField, ReadOnly] private bool isFalling = false;
     public bool IsFalling => isFalling;
 
+    public bool IsStanding = false;
+    public bool TriesStandingUp;
+
+    private void Start()
+    {
+        GetModule<EnemyGroundCheckModule>().LeftGround += OnLeftGround;
+    }
+
+    private void OnLeftGround()
+    {
+        StopAllCoroutines();
+        EndStandingUp();
+        IsStanding = false;
+    }
+
+    internal void StartStandingUp()
+    {
+        TriesStandingUp = true;
+        StopAllCoroutines();
+        StartCoroutine(StandingUpRoutine());
+    }
+
+    private void EndStandingUp()
+    {
+        rigidbody2D.simulated = true;
+        IsStanding = true;
+        TriesStandingUp = false;
+    }
+
+    private IEnumerator StandingUpRoutine()
+    {
+        rigidbody2D.simulated = false;
+        Vector2 targetPos = new Vector2(rigidbody2D.position.x, rigidbody2D.position.y);
+        while (Physics2D.OverlapCapsule(targetPos, bodyCollider.size, CapsuleDirection2D.Vertical, 0, LayerMask.GetMask("Default", "Hangable")))
+            targetPos += Vector2.up * 0.25f;
+        
+
+        transform.position = targetPos;
+        transform.rotation = Quaternion.identity;
+
+        yield return new WaitForSeconds(1f);
+        EndStandingUp();
+    }
+
     public void SetFallmodeActive(bool active)
     {
         isFalling = active;
@@ -25,9 +71,6 @@ public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControll
         if (active)
         {
             spriteRenderer.sprite = fall_spritesheet;
-        } else
-        {
-            transform.rotation = Quaternion.identity;
         }
         FallmodeChanged?.Invoke(active);
     }

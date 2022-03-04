@@ -37,7 +37,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 119fa8ab74124204282c0b3c0511778c
-  position: {x: -696.6976, y: 576.90564}
+  position: {x: -757.62726, y: 580.07544}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -92,6 +92,53 @@ MonoBehaviour:
   children:
   - {fileID: 2312534505177209428}
   - {fileID: 6119309847267971973}
+--- !u!114 &-4482993052354264686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61431bba79d7d7843b82bf1de71703f5, type: 3}
+  m_Name: Sequencer
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: a23709d75bee3144f9903faf523209b0
+  position: {x: -682.41516, y: 415.69812}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    variableModule: {fileID: 0}
+  description: 
+  drawGizmos: 0
+  animationOverride: {fileID: 0}
+  children:
+  - {fileID: -7398591756061302975}
+  - {fileID: -3970566769343910874}
+--- !u!114 &-3970566769343910874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2854e5d284b50543972c0a6737b1ef2, type: 3}
+  m_Name: StandUp
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: d01e2b89effe4db41bdfbf89ba40036e
+  position: {x: -583.4579, y: 580.07544}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    variableModule: {fileID: 0}
+  description: 
+  drawGizmos: 0
+  animationOverride: {fileID: 0}
 --- !u!114 &-3901640935913422298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,6 +262,8 @@ MonoBehaviour:
   - {fileID: 6119309847267971973}
   - {fileID: -7398591756061302975}
   - {fileID: 7699688998866909702}
+  - {fileID: -4482993052354264686}
+  - {fileID: -3970566769343910874}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -407,7 +456,7 @@ MonoBehaviour:
   animationOverride: {fileID: 0}
   children:
   - {fileID: -6049629707236192690}
-  - {fileID: -7398591756061302975}
+  - {fileID: -4482993052354264686}
   - {fileID: 6780891958858532144}
   - {fileID: 6780891958858532144}
   - {fileID: 7097208365887988318}

@@ -2,27 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TheKiwiCoder;
+using System;
 
 public class CheckFalling : ActionNode
 {
     protected override void OnStart()
     {
-        if (!IsGrounded())
+
+        if (!context.groundCheck.IsGrounded && !context.rigigbodyController.IsFalling)
             context.rigigbodyController.SetFallmodeActive(true);
     }
 
+
+
     protected override void OnStop()
     {
-        context.rigigbodyController.SetFallmodeActive(false);
+        if (context.rigigbodyController.IsFalling)
+            context.rigigbodyController.SetFallmodeActive(false);
     }
 
     protected override State OnUpdate()
     {
-        return IsGrounded() ? State.Failure : State.Running;
-    }
-
-    private bool IsGrounded()
-    {
-        return context.groundCheck.IsGrounded && context.groundCheck.GroundTime > 1f;
+        if (!context.groundCheck.IsGrounded)
+        {
+            return State.Running;
+        }
+        else
+        {
+            return (context.rigigbodyController.IsStanding) ? State.Failure : State.Success;
+        }
     }
 }

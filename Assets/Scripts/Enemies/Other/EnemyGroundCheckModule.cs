@@ -13,91 +13,44 @@ public class EnemyGroundCheckModule : EnemyModule<EnemyGroundCheckModule>
     public System.Action EnteredGround;
     public System.Action LeftGround;
 
-    private bool isGroundedReal => currentLayers.Count != 0;
-    [SerializeField, ReadOnly] private bool isGroundedBuffered = true;
-    public bool IsGrounded => isGroundedBuffered;
-    [SerializeField, ReadOnly] private float groundTime = 10f;
-    public float GroundTime => groundTime;
+    [SerializeField, ReadOnly] private bool isGrounded = false;
 
-    [SerializeField, ReadOnly] private bool enableCorrectio = false;
-
-    private EnemyRigidbodyControllerModule rigidbodyControllerModule;
+    public bool IsGrounded => isGrounded;
 
     private void Start()
     {
-        rigidbodyControllerModule = GetModule<EnemyRigidbodyControllerModule>();
-        if (rigidbodyControllerModule != null)
-            rigidbodyControllerModule.FallmodeChanged += OnFallmodeChanged;
+
+        StartCoroutine(RaycastForGroundRoutine());
 
     }
 
-    private void OnDestroy()
+    IEnumerator RaycastForGroundRoutine()
     {
-        if (rigidbodyControllerModule != null)
-            rigidbodyControllerModule.FallmodeChanged -= OnFallmodeChanged;
-    }
-
-    private void OnFallmodeChanged(bool fallModeActive)
-    {
-        enableCorrectio = fallModeActive;
-        if (!fallModeActive) transform.localRotation = Quaternion.identity;
-    }
-
-    private void LateUpdate()
-    {
-        if (enableCorrectio)
-            transform.rotation = Quaternion.identity;
-    }
-
-    private void FixedUpdate()
-    {
-        if (IsGrounded)
-            groundTime += Time.fixedDeltaTime;
-        else
-            groundTime = 0;
-    }
-
-
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        int layer = collision.gameObject.layer;
-        if (!currentLayers.Contains(layer) && validLayers.Contains(layer))
+        while (true)
         {
-            currentLayers.Add(layer);
-            if (currentLayers.Count == 1)
+            yield return new WaitForSeconds(0.25f);
+
+            var pos1 = new Vector2(transform.position.x - 0.5f, transform.position.y);
+            var pos2 = new Vector2(transform.position.x + 0.5f, transform.position.y);
+            var length = 2;
+
+            bool before = isGrounded;
+            isGrounded = DoRaycast(pos1, length) || DoRaycast(pos2, length);
+
+            Debug.DrawRay(pos1, Vector2.down * length, isGrounded ? Color.green : Color.red, 0.25f);
+            Debug.DrawRay(pos2, Vector2.down * length, isGrounded ? Color.green : Color.red, 0.25f);
+
+            if (before != isGrounded)
             {
-                groundTime = 0f;
-                StopAllCoroutines();
-                this.Delay(0.05f, CheckForGround);
+                if (!isGrounded) LeftGround?.Invoke();
+                else EnteredGround?.Invoke();
             }
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private bool DoRaycast(Vector3 pos, int length)
     {
-        int layer = collision.gameObject.layer;
-        if (currentLayers.Contains(layer))
-        {
-            currentLayers.Remove(layer);
-            if (!isGroundedReal)
-            {
-                StopAllCoroutines();
-                this.Delay(0.05f, CheckForGround);
-            }
-        }
-    }
-
-    private void CheckForGround()
-    {
-        if (isGroundedReal != isGroundedBuffered)
-        {
-            isGroundedBuffered = isGroundedReal;
-
-            if (IsGrounded)
-                EnteredGround?.Invoke();
-            else
-                LeftGround?.Invoke();
-        }
+        RaycastHit2D hit = Physics2D.Raycast(pos, Vector2.down, length, LayerMask.GetMask("Default", "Hangable"));
+        return hit.collider != null;
     }
 }

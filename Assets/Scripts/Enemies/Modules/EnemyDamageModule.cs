@@ -31,9 +31,6 @@ public class EnemyDamageModule : EnemyModule<EnemyDamageModule>, IHealth
     }
     public void DoDamage(int amount)
     {
-
-        Debug.LogWarning($"DoDamage {amount}");
-
         currentHealth -= amount;
         if (currentHealth <= 0)
             OutOfHealth?.Invoke();
