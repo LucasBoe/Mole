@@ -28,6 +28,6 @@ public class EnemyPullState : PlayerCombatState
 
     public override void Exit()
     {
-        target.CollisionModifier.SetCollisionActive(false);
+        target.CollisionModifier.SetCollisionActive(true);
     }
 }

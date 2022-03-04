@@ -9,7 +9,7 @@ public class CheckFalling : ActionNode
     protected override void OnStart()
     {
 
-        if (!context.groundCheck.IsGrounded && !context.rigigbodyController.IsFalling)
+        if (!context.groundCheck.IsGrounded && !context.rigigbodyController.IsFallmodeActive)
             context.rigigbodyController.SetFallmodeActive(true);
     }
 
@@ -17,7 +17,7 @@ public class CheckFalling : ActionNode
 
     protected override void OnStop()
     {
-        if (context.rigigbodyController.IsFalling)
+        if (context.rigigbodyController.IsFallmodeActive)
             context.rigigbodyController.SetFallmodeActive(false);
     }
 

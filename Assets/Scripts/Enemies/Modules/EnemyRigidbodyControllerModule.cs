@@ -15,8 +15,8 @@ public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControll
 
     public System.Action<bool> FallmodeChanged;
 
-    [SerializeField, ReadOnly] private bool isFalling = false;
-    public bool IsFalling => isFalling;
+    [SerializeField, ReadOnly] private bool isFallmodeActive = false;
+    public bool IsFallmodeActive => isFallmodeActive;
 
     public bool IsStanding = false;
     public bool TriesStandingUp;
@@ -64,7 +64,7 @@ public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControll
 
     public void SetFallmodeActive(bool active)
     {
-        isFalling = active;
+        isFallmodeActive = active;
         rigidbody2D.constraints = active ? RigidbodyConstraints2D.None : RigidbodyConstraints2D.FreezeRotation;
         animator.enabled = !active;
         spriteRenderer.material = active ? fallMat : defaultMat;
@@ -77,12 +77,13 @@ public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControll
 
     public void SetCollisionActive(bool active)
     {
+        Debug.LogWarning($"SetCollisionActive = { active }");
         bodyCollider.enabled = active;
     }
 
     private void FixedUpdate()
     {
-        if (isFalling && rigidbody2D.velocity.magnitude > 1f)
+        if (isFallmodeActive && rigidbody2D.velocity.magnitude > 1f)
         {
             float current = rigidbody2D.rotation;
             float target = Vector2.Angle(rigidbody2D.velocity, Vector2.left);
