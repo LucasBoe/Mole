@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 5086609206467038262}
   - component: {fileID: 5086609206467038254}
   m_Layer: 10
-  m_Name: Looking Enemy
+  m_Name: BaseEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
