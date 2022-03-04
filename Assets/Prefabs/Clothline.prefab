@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4203535394661989468}
   - component: {fileID: 4203535394661989470}
   - component: {fileID: 4203535394661989469}
-  m_Layer: 8
+  m_Layer: 28
   m_Name: Clothline
   m_TagString: Untagged
   m_Icon: {fileID: 0}

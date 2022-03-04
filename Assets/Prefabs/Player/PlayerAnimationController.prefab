@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1837576132666007705}
   - component: {fileID: 7753889927274414662}
   - component: {fileID: 1459342565}
-  m_Layer: 3
+  m_Layer: 28
   m_Name: CoatElment1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -141,7 +141,7 @@ GameObject:
   - component: {fileID: 6302076014914271641}
   - component: {fileID: 354697637365574103}
   - component: {fileID: 1387891952}
-  m_Layer: 3
+  m_Layer: 28
   m_Name: CoatBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -475,7 +475,7 @@ GameObject:
   - component: {fileID: 887156394466771395}
   - component: {fileID: 947604869508476193}
   - component: {fileID: 1227133548094695603}
-  m_Layer: 3
+  m_Layer: 28
   m_Name: CoatElment2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -603,7 +603,7 @@ GameObject:
   - component: {fileID: 8288808619057778721}
   - component: {fileID: 255148927343140446}
   - component: {fileID: 3948233365426785331}
-  m_Layer: 3
+  m_Layer: 28
   m_Name: CoatElment3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -681,7 +681,7 @@ GameObject:
   - component: {fileID: 1148255233574792612}
   - component: {fileID: 6983886989534992400}
   - component: {fileID: 640083578989379481}
-  m_Layer: 3
+  m_Layer: 28
   m_Name: Coat
   m_TagString: Untagged
   m_Icon: {fileID: 0}

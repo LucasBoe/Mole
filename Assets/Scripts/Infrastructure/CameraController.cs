@@ -9,8 +9,9 @@ public class CameraController : SingletonBehaviour<CameraController>
 {
     [SerializeField] private RenderTexture renderTexture;
     [SerializeField] private Transform[] textureDisplayTransforms;
-    [SerializeField] private Camera cameraPixel;
     [SerializeField] private Camera cameraRaw;
+    [SerializeField] private Camera cameraPixel;
+    [SerializeField] private Camera cameraPixel2;
     [SerializeField] private TMP_Text renderModeDisplayText;
     [SerializeField] private bool smooth;
 
@@ -63,6 +64,17 @@ public class CameraController : SingletonBehaviour<CameraController>
         transposer.m_TrackedObjectOffset = PlayerInputHandler.PlayerInput.VirtualCursorToScreenCenter * new Vector2(4, 3);
     }
 
+    public Camera ActiveCamera()
+    {
+        RenderModes currentMode = allRenderModes[renderModeIndex];
+        if (currentMode == RenderModes.RAW)
+            return cameraRaw;
+        else if (currentMode == RenderModes.PIXELNEW)
+            return cameraPixel2;
+
+        return cameraPixel;
+    }
+
     private void UpdateRenderMode(RenderModes renderMode)
     {
         renderModeDisplayText.text = "RenderMode: " + renderMode;
@@ -72,12 +84,22 @@ public class CameraController : SingletonBehaviour<CameraController>
             case RenderModes.RAW:
                 cameraRaw.gameObject.SetActive(true);
                 cameraPixel.gameObject.SetActive(false);
+                cameraPixel2.gameObject.SetActive(false);
                 break;
 
             case RenderModes.PIXELOLD:
                 cameraRaw.gameObject.SetActive(false);
                 cameraPixel.gameObject.SetActive(true);
+                cameraPixel2.gameObject.SetActive(false);
                 break;
+
+            case RenderModes.PIXELNEW:
+                cameraRaw.gameObject.SetActive(false);
+                cameraPixel.gameObject.SetActive(false);
+                cameraPixel2.gameObject.SetActive(true);
+                break;
+
+
         }
     }
 
@@ -88,7 +110,9 @@ public class CameraController : SingletonBehaviour<CameraController>
 
     private void SmoothCamera()
     {
-        Vector2 camPosRaw = cameraPixel.transform.position;
+        Camera active = ActiveCamera();
+        Debug.Log($"active = { active }");
+        Vector2 camPosRaw = active.transform.position;
         Vector2 camPosRounded = new Vector2(RoundTo8PixelPerUnit(camPosRaw.x), RoundTo8PixelPerUnit(camPosRaw.y));
         Vector3 rest = (Vector3)(camPosRounded - camPosRaw);
 
@@ -96,12 +120,17 @@ public class CameraController : SingletonBehaviour<CameraController>
         {
             float z = transform.localPosition.z;
             transform.localPosition = new Vector3(smooth ? rest.x : 0, smooth ? rest.y : 0, z);
+
+            Debug.Log($"{transform.name} => transform.localPosition = { rest }");
         }
     }
 
     private float RoundTo8PixelPerUnit(float raw)
     {
-        return Mathf.Round(raw * 8f) / 8f;
+        
+        float rounded = Mathf.Ceil(raw * 8f) / 8f;
+        Debug.Log($"round raw {raw} to { rounded }");
+        return rounded;
     }
 
     public enum RenderModes
