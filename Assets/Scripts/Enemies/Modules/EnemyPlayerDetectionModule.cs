@@ -79,7 +79,7 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
         while (Mathf.Abs(Mathf.DeltaAngle(from, to)) > 0.1f)
         {
             Vector2 start = transform.position;
-            Vector2 direction = new Vector2(Mathf.Cos(from / Mathf.Rad2Deg), Mathf.Sin(from / Mathf.Rad2Deg));
+            Vector2 direction = Util.Vector2FromAngle(from);
             float length = viewRange;
 
 

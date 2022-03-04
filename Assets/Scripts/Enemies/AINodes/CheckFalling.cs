@@ -7,7 +7,8 @@ public class CheckFalling : ActionNode
 {
     protected override void OnStart()
     {
-        context.rigigbodyController.SetFallmodeActive(true);
+        if (!IsGrounded())
+            context.rigigbodyController.SetFallmodeActive(true);
     }
 
     protected override void OnStop()
@@ -17,6 +18,11 @@ public class CheckFalling : ActionNode
 
     protected override State OnUpdate()
     {
-        return context.groundCheck.IsGrounded || context.groundCheck.GroundTime < 1f ?  State.Failure : State.Running;
+        return IsGrounded() ? State.Failure : State.Running;
+    }
+
+    private bool IsGrounded()
+    {
+        return context.groundCheck.IsGrounded && context.groundCheck.GroundTime > 1f;
     }
 }

@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   validLayers: 0000000006000000
   currentLayers: 
+  groundTime: 0
 --- !u!61 &3598408139011781054
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -71,7 +72,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 2}
   m_EdgeRadius: 0
 --- !u!114 &284915838078974419
 MonoBehaviour:

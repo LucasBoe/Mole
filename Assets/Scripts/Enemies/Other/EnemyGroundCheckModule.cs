@@ -13,10 +13,10 @@ public class EnemyGroundCheckModule : EnemyModule<EnemyGroundCheckModule>
     public System.Action EnteredGround;
     public System.Action LeftGround;
     public bool IsGrounded => currentLayers.Count != 0;
-    private float groundTime = 0f;
+    [SerializeField, ReadOnly] private float groundTime = 10f;
     public float GroundTime => groundTime;
 
-    private bool enableCorrectio = false;
+    [SerializeField, ReadOnly] private bool enableCorrectio = false;
 
     private EnemyRigidbodyControllerModule rigidbodyControllerModule;
 
@@ -39,12 +39,18 @@ public class EnemyGroundCheckModule : EnemyModule<EnemyGroundCheckModule>
         enableCorrectio = fallModeActive;
     }
 
-    private void FixedUpdate()
+    private void LateUpdate()
     {
         if (enableCorrectio)
             transform.rotation = Quaternion.identity;
+    }
 
-        groundTime += Time.fixedDeltaTime;
+    private void FixedUpdate()
+    {
+        if (IsGrounded)
+            groundTime += Time.fixedDeltaTime;
+        else
+            groundTime = 0;
     }
 
 

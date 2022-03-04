@@ -45,6 +45,11 @@ public static class Util
         return vectorList;
     }
 
+    public static Vector2 Vector2FromAngle(float angle)
+    {
+        return new Vector2(Mathf.Cos(angle / Mathf.Rad2Deg), Mathf.Sin(angle / Mathf.Rad2Deg));
+    }
+
     internal static Vector2[] SmoothToCurve(Vector2[] points, float distribution = 0.25f)
     {
         Vector2 start = points[0];
