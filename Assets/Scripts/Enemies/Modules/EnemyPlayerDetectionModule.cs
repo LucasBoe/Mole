@@ -52,7 +52,8 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
     {
         memoryModule.Player = playerCollider.attachedRigidbody;
         float playerHiddenValue = PlayerHidingHandler.Instance.PlayerHiddenValue;
-        if (playerHiddenValue > 0.1f && Util.CheckLineOfSight(transform.position, playerCollider.attachedRigidbody.position, "Default"))
+        if (playerHiddenValue > 0.1f && Util.CheckLineOfSight(transform.position, playerCollider.attachedRigidbody.position, new string[] { "Hangable", "Default" })
+            || playerHiddenValue > 0.6f)
         {
             memoryModule.CanSeePlayer = true;
             memoryModule.IsAlerted = true;
