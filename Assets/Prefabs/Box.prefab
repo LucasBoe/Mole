@@ -357,6 +357,8 @@ MonoBehaviour:
   playerIsAbove: 0
   useCooldown: 0
   inputActionTransform: {fileID: 1482603712404808884}
+  allowMovement: 1
+  movementBody: {fileID: 1482603712404808881}
 --- !u!1 &8337605467304274045
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,12 +7,26 @@ public class EnemyNewMemoryModule : EnemyModule<EnemyNewMemoryModule>
     [SerializeField]
     SpriteRenderer spriteRenderer;
     [SerializeField, ReadOnly] private Vector2 playerPos;
-    public bool CanSeePlayer { get; internal set; }
+
+    [SerializeField, ReadOnly] private bool canSeePlayer = false;
+    public bool CanSeePlayer
+    {
+        get
+        {
+            return canSeePlayer;
+        }
+
+        set
+        {
+            canSeePlayer = value;
+            Debug.Log($"canSeePlayer = { canSeePlayer }");
+        }
+    }
     public bool IsAlerted { get; internal set; }
 
     public System.Action<Direction2D> ChangedForward;
 
-    private Rigidbody2D playerBody;
+    [SerializeField, ReadOnly] private Rigidbody2D playerBody;
     public Rigidbody2D Player { set { playerBody = value; } }
 
     public System.Action<EnemyNewMemoryModule> CheckedForPlayerPos;

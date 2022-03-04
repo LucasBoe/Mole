@@ -6,8 +6,25 @@ using UnityEngine;
 
 public class PlayerHidingHandler : SingletonBehaviour<PlayerHidingHandler>
 {
-    public float PlayerHiddenValue => hiddenByState ? 0 : playerHiddenValue;
+    public float PlayerHiddenValue => GetHiddenValue();
+
+    private float GetHiddenValue()
+    {
+        switch (hidingMode)
+        {
+            case HidingMode.StateStatic:
+                return 0;
+
+            case HidingMode.StateDynamic:
+                return hidingState.HiddenValue;
+        }
+
+        return playerHiddenValue;
+    }
+
     [SerializeField, ReadOnly] private float playerHiddenValue;
+    [SerializeField, ReadOnly] private HidingMode hidingMode;
+    [SerializeField] private HidingState hidingState;
 
     private bool hiddenByState = false;
     [SerializeField, ReadOnly] private List<PlayerHidingTrigger> playerTriggers = new List<PlayerHidingTrigger>();
@@ -34,6 +51,12 @@ public class PlayerHidingHandler : SingletonBehaviour<PlayerHidingHandler>
             playerTriggers.Add(trigger);
 
         UpdateHiddenValueFromTriggers(playerTriggers);
+    }
+
+    public void SetHidingMode(HidingMode newHidingMode, HidingState newHidingState = null)
+    {
+        hidingMode = newHidingMode;
+        hidingState = newHidingState;
     }
 
     private void OnPlayerEnterState(PlayerStateBase state)
@@ -76,5 +99,12 @@ public class PlayerHidingHandler : SingletonBehaviour<PlayerHidingHandler>
         Hidden,
         Neutral,
         Visible,
+    }
+
+    public enum HidingMode
+    {
+        Auto,
+        StateStatic,
+        StateDynamic
     }
 }

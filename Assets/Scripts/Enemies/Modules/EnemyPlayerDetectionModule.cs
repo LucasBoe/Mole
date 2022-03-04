@@ -8,27 +8,29 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
 {
     [SerializeField] private EnemyPlayerTrigger trigger;
 
+    [SerializeField, ReadOnly] private bool IsPlayerInRange;
     [SerializeField] private float viewRange = 5f;
     [ReadOnly] public bool IsChecking;
     private EnemyNewMemoryModule memoryModule;
 
+    private Coroutine checkBackOnPlayerRoutine, searchForPlayerRoutine;
+
     internal void StartChecking()
     {
-        StopAllCoroutines();
-        StartCoroutine(CheckSurroundingRoutine());
+        this.StopRunningCoroutine(searchForPlayerRoutine);
+        searchForPlayerRoutine = StartCoroutine(SearchForPlayerRoutine());
         IsChecking = true;
     }
 
     internal void StopChecking()
     {
-        StopAllCoroutines();
+        this.StopRunningCoroutine(searchForPlayerRoutine);
         IsChecking = false;
     }
 
     private void Start()
     {
         memoryModule = GetModule<EnemyNewMemoryModule>();
-        memoryModule.CheckedForPlayerPos += UpdatePlayerPos;
 
         trigger = Instantiate(trigger, transform);
         trigger.Init(viewRange);
@@ -41,40 +43,71 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
         trigger.PlayerEnter -= OnPlayerEnter;
         trigger.PlayerExit -= OnPlayerExit;
     }
-    private void OnPlayerExit(Collider2D playerCollider)
-    {
-        memoryModule.PlayerPos = playerCollider.transform.position;
-        memoryModule.CanSeePlayer = false;
-        memoryModule.IsAlerted = true;
-    }
 
     private void OnPlayerEnter(Collider2D playerCollider)
     {
-        memoryModule.Player = playerCollider.attachedRigidbody;
-        float playerHiddenValue = PlayerHidingHandler.Instance.PlayerHiddenValue;
-        if (playerHiddenValue > 0.1f && Util.CheckLineOfSight(transform.position, playerCollider.attachedRigidbody.position, new string[] { "Hangable", "Default" })
-            || playerHiddenValue > 0.6f)
-        {
-            memoryModule.CanSeePlayer = true;
-            memoryModule.IsAlerted = true;
-        }
+
+        Rigidbody2D player = playerCollider.attachedRigidbody;
+
+        if (CouldSee(player))
+            FoundPlayer(player);
+
+        checkBackOnPlayerRoutine = StartCoroutine(CheckBackOnPlayer(player));
+        IsPlayerInRange = true;
+
     }
 
-    IEnumerator CheckSurroundingRoutine()
+    private void OnPlayerExit(Collider2D playerCollider)
+    {
+        if (memoryModule.CanSeePlayer)
+            LoosePlayer(playerCollider.attachedRigidbody);
+
+        this.StopRunningCoroutine(checkBackOnPlayerRoutine);
+        IsPlayerInRange = false;
+    }
+
+
+    private void FoundPlayer(Rigidbody2D player)
+    {
+        memoryModule.CanSeePlayer = true;
+        memoryModule.IsAlerted = true;
+        memoryModule.Player = player;
+    }
+
+    private void LoosePlayer(Rigidbody2D playerBody)
+    {
+        memoryModule.PlayerPos = playerBody.position;
+        memoryModule.IsAlerted = true;
+        memoryModule.CanSeePlayer = false;
+    }
+
+    private bool CouldSee(Rigidbody2D player)
+    {
+        float playerHiddenValue = PlayerHidingHandler.Instance.PlayerHiddenValue;
+        bool VisibleInPlainSight = playerHiddenValue > 0.6f && Util.CheckLineOfSight(transform.position, player.position, "Default");
+        bool VisibleInTwighlight = playerHiddenValue > 0.1f && Util.CheckLineOfSight(transform.position, player.position, new string[] { "Hangable", "Default" });
+        bool playerIsInFrontOfEnemy = player.position.x < transform.position.x == (memoryModule.Forward == Direction2D.Left);
+
+        Debug.Log($"visible: { VisibleInPlainSight } / {VisibleInTwighlight}  && {playerIsInFrontOfEnemy} ");
+
+        return ((VisibleInPlainSight || VisibleInTwighlight) && playerIsInFrontOfEnemy);
+    }
+
+    IEnumerator SearchForPlayerRoutine()
     {
         float offset = memoryModule.Forward == Direction2D.Right ? 0 : 180;
 
-        yield return CheckRangeRoutine(offset + 0f, offset + 45f);
-        yield return CheckRangeRoutine(offset + 45f, offset - 45f);
+        yield return SearchInAgleRoutine(offset + 0f, offset + 45f);
+        yield return SearchInAgleRoutine(offset + 45f, offset - 45f);
 
-        yield return CheckRangeRoutine(offset + 180f, offset + 135f);
-        yield return CheckRangeRoutine(offset + 135f, offset - 135f);
+        yield return SearchInAgleRoutine(offset + 180f, offset + 135f);
+        yield return SearchInAgleRoutine(offset + 135f, offset - 135f);
 
         memoryModule.IsAlerted = false;
         IsChecking = false;
     }
 
-    private IEnumerator CheckRangeRoutine(float from, float to)
+    private IEnumerator SearchInAgleRoutine(float from, float to)
     {
         memoryModule.Forward = from < 90 || from > 270 ? Direction2D.Right : Direction2D.Left;
         while (Mathf.Abs(Mathf.DeltaAngle(from, to)) > 0.1f)
@@ -85,10 +118,9 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
 
 
             RaycastHit2D collider = Physics2D.Raycast(start, direction, length, LayerMask.GetMask("Player"));
-            if (collider.collider != null && collider.collider.IsPlayer())
+            if (collider.collider != null && collider.collider.IsPlayer() && CouldSee(collider.rigidbody))
             {
-                memoryModule.Player = collider.rigidbody;
-                memoryModule.CanSeePlayer = true;
+                FoundPlayer(collider.rigidbody);
                 Debug.DrawRay(start, direction * length, Color.green, 5);
             }
             else
@@ -99,9 +131,23 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
         }
     }
 
-    private void UpdatePlayerPos(EnemyNewMemoryModule memory)
+    private IEnumerator CheckBackOnPlayer(Rigidbody2D player)
     {
-        //
+        while (true)
+        {
+            yield return new WaitForSeconds(0.5f);
+
+            bool before = memoryModule.CanSeePlayer;
+            bool now = CouldSee(player);
+
+            if (before != now)
+            {
+                if (now == false)
+                    LoosePlayer(player);
+                else
+                    FoundPlayer(player);
+            }
+        }
     }
 
     private void OnDrawGizmosSelected()

@@ -83,6 +83,16 @@ public class PlayerStateBase : PlayerStateObject
         PlayerPhysicsModifier.Instance.SetPlayerDragActive(active);
     }
 
+    protected void SetHidingMode(PlayerHidingHandler.HidingMode mode)
+    {
+        PlayerHidingHandler.Instance.SetHidingMode(mode);
+    }
+
+    protected void SetHidingMode(HidingState hidingState)
+    {
+        PlayerHidingHandler.Instance.SetHidingMode(PlayerHidingHandler.HidingMode.StateDynamic, hidingState);
+    }
+
     protected void JumpOff(Vector2 input)
     {
         context.Rigidbody.velocity = input * context.Values.JumpOffVelocity;

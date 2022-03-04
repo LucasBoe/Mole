@@ -79,6 +79,11 @@ public static class Util
         return d;
     }
 
+    public static void StopRunningCoroutine(this MonoBehaviour component, Coroutine coroutine)
+    {
+        if (coroutine != null) component.StopCoroutine(coroutine);
+    }
+
     public static bool CheckLineOfSight(Vector2 from, Vector2 to, string layer)
     {
         return CheckLineOfSight(from, to, new string[] { layer });
@@ -123,7 +128,7 @@ public static class Util
         }
     }
 
-    public static void Delay(this MonoBehaviour gameObject,float delay, System.Action callback)
+    public static void Delay(this MonoBehaviour gameObject, float delay, System.Action callback)
     {
         gameObject.StartCoroutine(DelayRoutine(delay, callback));
     }
