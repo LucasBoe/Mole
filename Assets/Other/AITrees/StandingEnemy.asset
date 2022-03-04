@@ -22,29 +22,6 @@ MonoBehaviour:
   description: 
   drawGizmos: 0
   animationOverride: {fileID: 0}
---- !u!114 &-7872291670321148611
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a5134d9de14153468b48928d3e7359a, type: 3}
-  m_Name: Wait
-  m_EditorClassIdentifier: 
-  state: 0
-  started: 0
-  guid: f8a9b1a255a50a149a973cfd7efc7698
-  position: {x: 1362.7047, y: 572.3775}
-  blackboard:
-    moveToPosition: {x: 0, y: 0, z: 0}
-    variableModule: {fileID: 0}
-  description: 
-  drawGizmos: 0
-  animationOverride: {fileID: 7400000, guid: d3d73bd6ae384ee45a7c84a7cebe4c43, type: 2}
-  duration: 1
 --- !u!114 &-7398591756061302975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90,30 +67,6 @@ MonoBehaviour:
   drawGizmos: 0
   animationOverride: {fileID: 7400000, guid: 3803a1578f842d24fa3ec589c12b63b5, type: 2}
   shootingVelocity: 25
---- !u!114 &-6643416536428564573
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcfc32cf041748947b87befb3044f26c, type: 3}
-  m_Name: MoveToPosition
-  m_EditorClassIdentifier: 
-  state: 0
-  started: 0
-  guid: 848b2210c63fea9428f1f0d407044234
-  position: {x: 1175.72, y: 572.3775}
-  blackboard:
-    moveToPosition: {x: 0, y: 0, z: 0}
-    variableModule: {fileID: 0}
-  description: 
-  drawGizmos: 0
-  animationOverride: {fileID: 7400000, guid: 0e0ab2f8ddb4007459ed30799bf2084e, type: 2}
-  targetPosition:
-    VarName: End
 --- !u!114 &-6049629707236192690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,30 +92,6 @@ MonoBehaviour:
   children:
   - {fileID: 2312534505177209428}
   - {fileID: 6119309847267971973}
---- !u!114 &-4348461666887065187
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcfc32cf041748947b87befb3044f26c, type: 3}
-  m_Name: MoveToPosition
-  m_EditorClassIdentifier: 
-  state: 0
-  started: 0
-  guid: 61e95cfe1bfcb6845be851b91640b1b1
-  position: {x: 757, y: 572}
-  blackboard:
-    moveToPosition: {x: 0, y: 0, z: 0}
-    variableModule: {fileID: 0}
-  description: 
-  drawGizmos: 0
-  animationOverride: {fileID: 7400000, guid: 0e0ab2f8ddb4007459ed30799bf2084e, type: 2}
-  targetPosition:
-    VarName: Start
 --- !u!114 &-3901640935913422298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,7 +152,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: ead30ab1821dd5244b3da715690d9d8d
-  position: {x: 956.5502, y: 572.3775}
+  position: {x: 1041, y: 548}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -263,7 +192,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d285eb63c2cdd74180de7cfceaa96ad, type: 3}
-  m_Name: PatroulingEnemyAI
+  m_Name: StandingEnemy
   m_EditorClassIdentifier: 
   rootNode: {fileID: -2957796630697912729}
   treeState: 0
@@ -278,12 +207,9 @@ MonoBehaviour:
   - {fileID: -1388539613692111472}
   - {fileID: 2003725769853554306}
   - {fileID: 4880964243389557828}
-  - {fileID: -4348461666887065187}
-  - {fileID: -6643416536428564573}
   - {fileID: 5421345740670496205}
   - {fileID: 7097208365887988318}
   - {fileID: -1897428851468558057}
-  - {fileID: -7872291670321148611}
   - {fileID: 2312534505177209428}
   - {fileID: -6049629707236192690}
   - {fileID: 6119309847267971973}
@@ -380,10 +306,7 @@ MonoBehaviour:
   drawGizmos: 0
   animationOverride: {fileID: 0}
   children:
-  - {fileID: -4348461666887065187}
   - {fileID: -1897428851468558057}
-  - {fileID: -6643416536428564573}
-  - {fileID: -7872291670321148611}
 --- !u!114 &5421345740670496205
 MonoBehaviour:
   m_ObjectHideFlags: 0

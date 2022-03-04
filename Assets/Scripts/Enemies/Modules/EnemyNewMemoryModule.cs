@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyNewMemoryModule : EnemyModule<EnemyNewMemoryModule>
 {
+    [SerializeField]
+    SpriteRenderer spriteRenderer;
     [SerializeField, ReadOnly] private Vector2 playerPos;
     public bool CanSeePlayer { get; internal set; }
     public bool IsAlerted { get; internal set; }
@@ -15,6 +17,11 @@ public class EnemyNewMemoryModule : EnemyModule<EnemyNewMemoryModule>
 
     public System.Action<EnemyNewMemoryModule> CheckedForPlayerPos;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        forward = spriteRenderer.flipX ? Direction2D.Left : Direction2D.Right;
+    }
     public Vector2 PlayerPos
     {
         get
