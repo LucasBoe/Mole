@@ -2,6 +2,7 @@ using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class CameraController : SingletonBehaviour<CameraController>
@@ -10,6 +11,7 @@ public class CameraController : SingletonBehaviour<CameraController>
     [SerializeField] private Transform[] textureDisplayTransforms;
     [SerializeField] private Camera cameraPixel;
     [SerializeField] private Camera cameraRaw;
+    [SerializeField] private TMP_Text renderModeDisplayText;
     [SerializeField] private bool smooth;
 
     CinemachineVirtualCamera virtualCamera;
@@ -63,6 +65,8 @@ public class CameraController : SingletonBehaviour<CameraController>
 
     private void UpdateRenderMode(RenderModes renderMode)
     {
+        renderModeDisplayText.text = "RenderMode: " + renderMode;
+
         switch (renderMode)
         {
             case RenderModes.RAW:
