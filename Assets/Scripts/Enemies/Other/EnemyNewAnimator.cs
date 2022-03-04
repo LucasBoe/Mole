@@ -12,6 +12,7 @@ public class EnemyNewAnimator : EnemyModule<EnemyNewAnimator>
     private void Start()
     {
         GetModule<EnemyNewMemoryModule>().ChangedForward += OnChangedForward;
+        Debug.Log($"GetComponent<BehaviourTreeRunner>().Context = { GetComponent<BehaviourTreeRunner>().Context }");
         GetComponent<BehaviourTreeRunner>().Context.EnteredState += OnStateEnter;
     }
 

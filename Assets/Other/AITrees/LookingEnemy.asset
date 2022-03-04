@@ -152,7 +152,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: ead30ab1821dd5244b3da715690d9d8d
-  position: {x: 1041, y: 548}
+  position: {x: 1041.5095, y: 547.92456}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}

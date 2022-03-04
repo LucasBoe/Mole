@@ -19,7 +19,7 @@ public class CameraController : SingletonBehaviour<CameraController>
     CinemachineFramingTransposer transposer;
 
     List<RenderModes> allRenderModes = new List<RenderModes>();
-    int renderModeIndex = 1;
+    int renderModeIndex = 0;
 
     private void OnEnable()
     {
@@ -111,7 +111,6 @@ public class CameraController : SingletonBehaviour<CameraController>
     private void SmoothCamera()
     {
         Camera active = ActiveCamera();
-        Debug.Log($"active = { active }");
         Vector2 camPosRaw = active.transform.position;
         Vector2 camPosRounded = new Vector2(RoundTo8PixelPerUnit(camPosRaw.x), RoundTo8PixelPerUnit(camPosRaw.y));
         Vector3 rest = (Vector3)(camPosRounded - camPosRaw);
@@ -120,8 +119,6 @@ public class CameraController : SingletonBehaviour<CameraController>
         {
             float z = transform.localPosition.z;
             transform.localPosition = new Vector3(smooth ? rest.x : 0, smooth ? rest.y : 0, z);
-
-            Debug.Log($"{transform.name} => transform.localPosition = { rest }");
         }
     }
 
@@ -129,7 +126,6 @@ public class CameraController : SingletonBehaviour<CameraController>
     {
         
         float rounded = Mathf.Ceil(raw * 8f) / 8f;
-        Debug.Log($"round raw {raw} to { rounded }");
         return rounded;
     }
 
