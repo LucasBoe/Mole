@@ -13,13 +13,9 @@ namespace TheKiwiCoder {
 
         public Context Context => context;
 
-        private void Awake()
-        {
-            context = CreateBehaviourTreeContext();
-        }
-
         // Start is called before the first frame update
         void Start() {
+            context = CreateBehaviourTreeContext();
             tree = tree.Clone();
             tree.Bind(context);
         }

@@ -11,6 +11,7 @@ public class EnemyBase : MonoBehaviour
     public void Register<T>(object module)
     {
         modules.Add(typeof(T), module);
+        Debug.Log($"registered {module}");
     }
 
     public T GetModule<T>()

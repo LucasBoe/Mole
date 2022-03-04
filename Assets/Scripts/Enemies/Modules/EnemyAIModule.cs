@@ -37,7 +37,7 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
     public Rigidbody2D Rigidbody2D => rigidbody2D;
 
     [SerializeField] private EnemyColliderModule colliderModule;
-    public EnemyColliderModule ColliderModule => colliderModule;
+    public ICollisionModifier CollisionModifier => colliderModule;
 
     private void Start()
     {

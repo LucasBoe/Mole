@@ -13,6 +13,41 @@ public class EnemyGroundCheckModule : EnemyModule<EnemyGroundCheckModule>
     public System.Action EnteredGround;
     public System.Action LeftGround;
     public bool IsGrounded => currentLayers.Count != 0;
+    private float groundTime = 0f;
+    public float GroundTime => groundTime;
+
+    private bool enableCorrectio = false;
+
+    private EnemyRigidbodyControllerModule rigidbodyControllerModule;
+
+    private void Start()
+    {
+        rigidbodyControllerModule = GetModule<EnemyRigidbodyControllerModule>();
+        if (rigidbodyControllerModule != null)
+            rigidbodyControllerModule.FallmodeChanged += OnFallmodeChanged;
+
+    }
+
+    private void OnDestroy()
+    {
+        if (rigidbodyControllerModule != null)
+            rigidbodyControllerModule.FallmodeChanged -= OnFallmodeChanged;
+    }
+
+    private void OnFallmodeChanged(bool fallModeActive)
+    {
+        enableCorrectio = fallModeActive;
+    }
+
+    private void FixedUpdate()
+    {
+        if (enableCorrectio)
+            transform.rotation = Quaternion.identity;
+
+        groundTime += Time.fixedDeltaTime;
+    }
+
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -21,8 +56,11 @@ public class EnemyGroundCheckModule : EnemyModule<EnemyGroundCheckModule>
         {
             currentLayers.Add(layer);
             if (currentLayers.Count == 1)
+            {
+                groundTime = 0f;
                 EnteredGround?.Invoke();
-        }    
+            }
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -39,6 +77,8 @@ public class EnemyGroundCheckModule : EnemyModule<EnemyGroundCheckModule>
     private void CheckForGround()
     {
         if (!IsGrounded)
+        {
             LeftGround?.Invoke();
+        }
     }
 }

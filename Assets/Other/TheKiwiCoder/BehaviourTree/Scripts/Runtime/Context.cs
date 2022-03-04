@@ -21,6 +21,7 @@ namespace TheKiwiCoder
         public EnemyNewMemoryModule memory;
         public EnemyDamageModule damageModule;
         public EnemyGroundCheckModule groundCheck;
+        public EnemyRigidbodyControllerModule rigigbodyController;
         public Vector2 PlayerPos => memory.PlayerPos;
         public System.Action<Node> EnteredState;
 
@@ -39,6 +40,7 @@ namespace TheKiwiCoder
             context.memory = gameObject.GetComponent<EnemyNewMemoryModule>();
             context.damageModule = gameObject.GetComponent<EnemyDamageModule>();
             context.groundCheck = gameObject.GetComponentInChildren<EnemyGroundCheckModule>();
+            context.rigigbodyController = gameObject.GetComponent<EnemyRigidbodyControllerModule>();
 
             // Add whatever else you need here...
 

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class EnemyDamageModule : EnemyModule<EnemyDamageModule>, IHealth
@@ -18,6 +19,12 @@ public class EnemyDamageModule : EnemyModule<EnemyDamageModule>, IHealth
 
         base.Awake();
     }
+
+    internal void Kill()
+    {
+        DoDamage(int.MaxValue);
+    }
+
     private void Start()
     {
         currentHealth = maxHealth;
