@@ -104145,10 +104145,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Clothline
       objectReference: {fileID: 0}
-    - target: {fileID: 4203535394661989459, guid: 2a6ab7c70063c374e8af1c85ce1ca398, type: 3}
-      propertyPath: m_Layer
-      value: 28
-      objectReference: {fileID: 0}
     - target: {fileID: 4203535394661989468, guid: 2a6ab7c70063c374e8af1c85ce1ca398, type: 3}
       propertyPath: m_RootOrder
       value: 19
