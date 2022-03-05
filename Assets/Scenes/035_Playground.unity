@@ -108325,10 +108325,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: LightsourceTest
       objectReference: {fileID: 0}
-    - target: {fileID: 2187570304094665237, guid: c053e551abd89394ba6b62967b9b26b7, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2187570304094665258, guid: c053e551abd89394ba6b62967b9b26b7, type: 3}
       propertyPath: m_RootOrder
       value: 51
@@ -108347,7 +108343,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2187570304094665258, guid: c053e551abd89394ba6b62967b9b26b7, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.26277873
       objectReference: {fileID: 0}
     - target: {fileID: 2187570304094665258, guid: c053e551abd89394ba6b62967b9b26b7, type: 3}
       propertyPath: m_LocalRotation.x
@@ -108359,7 +108355,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2187570304094665258, guid: c053e551abd89394ba6b62967b9b26b7, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: 0.9648562
       objectReference: {fileID: 0}
     - target: {fileID: 2187570304094665258, guid: c053e551abd89394ba6b62967b9b26b7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -108371,15 +108367,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2187570304094665258, guid: c053e551abd89394ba6b62967b9b26b7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2187570304094665259, guid: c053e551abd89394ba6b62967b9b26b7, type: 3}
-      propertyPath: m_SortingLayer
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2187570304094665259, guid: c053e551abd89394ba6b62967b9b26b7, type: 3}
-      propertyPath: m_SortingLayerID
-      value: 17191105
+      value: 149.53
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c053e551abd89394ba6b62967b9b26b7, type: 3}
