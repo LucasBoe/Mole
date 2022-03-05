@@ -9,8 +9,9 @@ public class PlayerItemHolder : SingletonBehaviour<PlayerItemHolder>
 
     private ItemSlotContainer items = new ItemSlotContainer();
 
-    public static System.Action<PlayerItem> OnAddNewItem;
-    public static System.Action<PlayerItem> OnRemoveItem;
+    public static System.Action<PlayerItem> AddedItem;
+    public static System.Action<PlayerItem> Changedtem;
+    public static System.Action<PlayerItem> RemovedItem;
 
     private void Start()
     {
@@ -31,13 +32,12 @@ public class PlayerItemHolder : SingletonBehaviour<PlayerItemHolder>
         if (items.ContainsItem(item) && !isHandItem)
         {
             items[item] += amount;
+            Changedtem?.Invoke(item);
         }
         else
         {
             if (items.Add(item, amount))
-            {
-                OnAddNewItem?.Invoke(item);
-            }
+                AddedItem?.Invoke(item);
             else
                 return false;
         }
@@ -57,15 +57,24 @@ public class PlayerItemHolder : SingletonBehaviour<PlayerItemHolder>
             if (newAmount <= 0 || isHandItem)
             {
                 items.Remove(item);
-                OnRemoveItem?.Invoke(item);
+                RemovedItem?.Invoke(item);
                 return toSubtract - newAmount;
             }
             else
             {
                 items[item] = newAmount;
+                Changedtem?.Invoke(item);
                 return toSubtract;
             }
         }
+
+        return 0;
+    }
+
+    public int GetAmount(PlayerItem item)
+    {
+        if (items.ContainsItem(item))
+            return items.Pairs[item];
 
         return 0;
     }
@@ -74,6 +83,7 @@ public class PlayerItemHolder : SingletonBehaviour<PlayerItemHolder>
     {
         private PlayerItem handItem = null;
         private Dictionary<PlayerItem, int> playerItemAmountPairs = new Dictionary<PlayerItem, int>();
+        public Dictionary<PlayerItem, int> Pairs => playerItemAmountPairs;
 
         public int this[PlayerItem item]
         {
@@ -106,7 +116,7 @@ public class PlayerItemHolder : SingletonBehaviour<PlayerItemHolder>
                 playerItemAmountPairs.Remove(item);
         }
 
-        internal bool IsHandItem(PlayerItem item)
+        public bool IsHandItem(PlayerItem item)
         {
             return item == handItem;
         }

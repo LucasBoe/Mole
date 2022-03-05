@@ -17,8 +17,7 @@ public class PlayerItemUI : UIBehaviour
     private ItemUseState currentUseState;
 
     [SerializeField] RectTransform parent;
-    [SerializeField] Text itemNameText;
-    [SerializeField] Text amount;
+    [SerializeField] Text itemNameText, itemAmountText;
 
     [SerializeField] RectTransform itemSlotPrefab;
     [SerializeField] Image itemSlotModePrefab;
@@ -27,8 +26,9 @@ public class PlayerItemUI : UIBehaviour
     private void Start()
     {
         UIHandler.Instance.Show(this);
-        PlayerItemHolder.OnAddNewItem += OnAddItem;
-        PlayerItemHolder.OnRemoveItem += OnRemoveItem;
+        PlayerItemHolder.AddedItem += OnAddItem;
+        PlayerItemHolder.RemovedItem += OnRemoveItem;
+        PlayerItemHolder.Changedtem += UpdateSelectedItemDisplay;
 
         ac_useItem = new InputAction() { Stage = InputActionStage.ModeSpecific, Target = transform, Input = ControlType.Use, Text = "Use Item", ActionCallback = TryUseItem };
         ac_deselectItem = new InputAction() { Stage = InputActionStage.ModeSpecific, Target = transform, Input = ControlType.Back, Text = "Hide Item", ActionCallback = DeselectItem };
@@ -165,16 +165,21 @@ public class PlayerItemUI : UIBehaviour
             selectedItemSlotIndex = Mathf.Min(selectedItemSlotIndex, itemSlots.Count - 1);
         }
 
-        SelectItem(itemSlots[selectedItemSlotIndex].Item);
+        PlayerItem selected = itemSlots[selectedItemSlotIndex].Item;
+        SelectItem(selected);
 
         if (stopUse && PlayerItemUser.Instance.IsAiming)
             StopUse();
 
         //visuals
+        UpdateSelectedItemDisplay(selected);
+    }
+
+    private void UpdateSelectedItemDisplay(PlayerItem selected)
+    {
         for (int i = 0; i < itemSlots.Count; i++)
         {
             ItemSlot slot = itemSlots[i];
-
 
             int index = i < selectedItemSlotIndex ? selectedItemSlotIndex + i : i - selectedItemSlotIndex;
             slot.RectInstance.SetSiblingIndex(index);
@@ -190,7 +195,10 @@ public class PlayerItemUI : UIBehaviour
                 mode.IconImage.color = new Color(1, 1, 1, alpha * (isSelected ? 1f : 0.6f));
 
                 if (isSelected)
+                {
                     itemNameText.text = mode.Name;
+                    itemAmountText.text = PlayerItemHolder.Instance.GetAmount(selected).ToString();
+                }
             }
         }
     }
