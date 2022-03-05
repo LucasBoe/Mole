@@ -8,6 +8,8 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Material lineRendererMat;
     [SerializeField, ReadOnly] PlayerItem selectedItem;
+
+    private GameObject aimLineObject;
     LineRenderer aimLine;
 
     public int UpdatePrio => 100;
@@ -16,7 +18,13 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
     public static System.Action OnStartUsingItem;
     public static System.Action OnEndUsingItem;
 
-    public void Init(PlayerContext context) { }
+    public void Init(PlayerContext context)
+    {
+        aimLineObject = new GameObject();
+        aimLineObject.transform.parent = transform;
+        aimLineObject.transform.localPosition = Vector3.zero;
+        aimLineObject.layer = LayerMask.NameToLayer("Pixelate");
+    }
 
     public void UpdatePlayerComponent(PlayerContext context)
     {
@@ -28,9 +36,9 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
 
     internal void Use(PlayerItem item)
     {
-        aimLine = gameObject.GetComponent<LineRenderer>();
+        aimLine = aimLineObject.GetComponent<LineRenderer>();
         if (aimLine == null)
-            aimLine = gameObject.AddComponent<LineRenderer>();
+            aimLine = aimLineObject.AddComponent<LineRenderer>();
 
         aimLine.useWorldSpace = true;
         aimLine.widthCurve = AnimationCurve.Constant(0, 1, 0.125f);
