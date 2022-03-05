@@ -10,8 +10,8 @@ public class MoveBaseState : PlayerStateBase
     {
         get
         {
-            bool wallToLeft = IsColliding(CheckType.WallLeft);
-            bool wallToRight = IsColliding(CheckType.WallRight);
+            bool wallToLeft = IsColliding(CheckType.ClimbableLeft);
+            bool wallToRight = IsColliding(CheckType.ClimbableRight);
             return (wallToLeft && context.Input.Axis.x < 0) || (wallToRight && context.Input.Axis.x > 0);
         }
     }
@@ -34,7 +34,7 @@ public class IdleState : MoveBaseState
 
     public override void Enter()
     {
-        IsAtWall = IsColliding(CheckType.WallLeft) || IsColliding(CheckType.WallRight);
+        IsAtWall = IsColliding(CheckType.ClimbableLeft) || IsColliding(CheckType.ClimbableRight);
         dropDownTimer = 0;
     }
 
@@ -190,7 +190,7 @@ public class FallState : MoveBaseState
         bool isCollidingEdgeHelperLeft = IsColliding(CheckType.EdgeHelperLeft);
         bool isCollidingEdgeHelperRight = IsColliding(CheckType.EdgeHelperRight);
         bool isCollidingEdgeHelper = isCollidingEdgeHelperLeft || isCollidingEdgeHelperRight;
-        bool isNotCollidingWall = !IsColliding(CheckType.WallLeft, CheckType.WallRight);
+        bool isNotCollidingWall = !IsColliding(CheckType.AdditionalWallCheck);
         bool triesMovingUp = context.Input.Axis.y > 0.1f;
 
         //strave

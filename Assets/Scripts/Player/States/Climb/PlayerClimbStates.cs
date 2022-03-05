@@ -219,7 +219,7 @@ public class GutterClimbState : ClimbStateBase
 {
     public bool IsMoving;
     public float DistanceFromTop;
-    public bool IsLeft => IsColliding(CheckType.WallLeft);
+    public bool IsLeft => IsColliding(CheckType.ClimbableLeft);
 
     public GutterClimbState() : base() { }
 
@@ -366,7 +366,7 @@ public class HangingState : HangingBaseState
 
     public static void TryEnter(PlayerStateBase before, PlayerContext context)
     {
-        if (before.IsColliding(CheckType.Hangable) && ((!before.IsColliding(CheckType.WallLeft) && context.Input.Axis.x < 0) || (!before.IsColliding(CheckType.WallRight) && context.Input.Axis.x > 0)))
+        if (before.IsColliding(CheckType.Hangable) && ((!before.IsColliding(CheckType.ClimbableLeft) && context.Input.Axis.x < 0) || (!before.IsColliding(CheckType.ClimbableRight) && context.Input.Axis.x > 0)))
             SetState(new HangingState());
     }
 
