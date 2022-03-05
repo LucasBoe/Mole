@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 6650807411414497710}
   - component: {fileID: 6650807411414497711}
   - component: {fileID: 6650807411414497708}
-  m_Layer: 0
+  m_Layer: 28
   m_Name: RopeVisualizer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,12 +144,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed96dfb0ae1d4e945b95016630b410ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ropeElement: {fileID: 0}
   start: {fileID: 0}
   end: {fileID: 0}
   tween: {fileID: 6650807409666267507}
   smoothValue: 0.25
-  gravityValue: 0.1
-  buffer: 0
 --- !u!120 &6650807411414497708
 LineRenderer:
   m_ObjectHideFlags: 0

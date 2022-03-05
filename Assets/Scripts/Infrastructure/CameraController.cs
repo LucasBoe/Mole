@@ -7,11 +7,9 @@ using UnityEngine;
 
 public class CameraController : SingletonBehaviour<CameraController>
 {
-    [SerializeField] private RenderTexture renderTexture;
     [SerializeField] private Transform[] textureDisplayTransforms;
     [SerializeField] private Camera cameraRaw;
-    [SerializeField] private Camera cameraPixel;
-    [SerializeField] private Camera cameraPixel2;
+    [SerializeField] private Camera cameraHybrid;
     [SerializeField] private TMP_Text renderModeDisplayText;
     [SerializeField] private bool smooth;
 
@@ -42,26 +40,12 @@ public class CameraController : SingletonBehaviour<CameraController>
 
     public static Vector2 ScreenToWorldPoint(Vector2 vector2)
     {
-        Vector2 multiplier = Instance.GetMultiplierByRenderMode();
-        Vector2 remap = new Vector2((vector2.x / Screen.width) * multiplier.x, (vector2.y / Screen.height) * multiplier.y);
-        return Instance.ActiveCamera().ScreenToWorldPoint(remap);
+        return Instance.ActiveCamera().ScreenToWorldPoint(vector2);
     }
 
     internal static Vector3 WorldToScreenPoint(Vector3 worldPos)
     {
-        Vector2 multiplier = Instance.GetMultiplierByRenderMode();
-        Vector2 raw = Instance.ActiveCamera().WorldToScreenPoint(worldPos);
-        return new Vector2((raw.x / multiplier.x) * Screen.width, (raw.y / multiplier.y) * Screen.height);
-    }
-
-
-    private Vector2 GetMultiplierByRenderMode()
-    {
-        RenderModes currentMode = allRenderModes[renderModeIndex];
-        //if (currentMode == RenderModes.PIXELOLD)
-        //    return new Vector2(Instance.renderTexture.width, Instance.renderTexture.height);
-
-        return new Vector2(Screen.width, Screen.height);
+        return Instance.ActiveCamera().WorldToScreenPoint(worldPos);
     }
 
 
@@ -84,10 +68,9 @@ public class CameraController : SingletonBehaviour<CameraController>
         RenderModes currentMode = allRenderModes[renderModeIndex];
         if (currentMode == RenderModes.RAW)
             return cameraRaw;
-        else if (currentMode == RenderModes.PIXELNEW)
-            return cameraPixel2;
 
-        return cameraPixel;
+        return cameraHybrid;
+
     }
 
     private void UpdateRenderMode(RenderModes renderMode)
@@ -98,23 +81,13 @@ public class CameraController : SingletonBehaviour<CameraController>
         {
             case RenderModes.RAW:
                 cameraRaw.gameObject.SetActive(true);
-                cameraPixel.gameObject.SetActive(false);
-                cameraPixel2.gameObject.SetActive(false);
+                cameraHybrid.gameObject.SetActive(false);
                 break;
 
-            //case RenderModes.PIXELOLD:
-            //    cameraRaw.gameObject.SetActive(false);
-            //    cameraPixel.gameObject.SetActive(true);
-            //    cameraPixel2.gameObject.SetActive(false);
-            //    break;
-
-            case RenderModes.PIXELNEW:
+            case RenderModes.HYBRID:
                 cameraRaw.gameObject.SetActive(false);
-                cameraPixel.gameObject.SetActive(false);
-                cameraPixel2.gameObject.SetActive(true);
+                cameraHybrid.gameObject.SetActive(true);
                 break;
-
-
         }
     }
 
@@ -131,8 +104,7 @@ public class CameraController : SingletonBehaviour<CameraController>
 
         foreach (Transform transform in textureDisplayTransforms)
         {
-            float z = transform.position.z;
-            transform.position = new Vector3(smooth ? camPosRounded.x : 0, smooth ? camPosRounded.y : 0, z);
+            transform.position = new Vector3(smooth ? camPosRounded.x : 0, smooth ? camPosRounded.y : 0, transform.position.z);
         }
     }
 
@@ -146,7 +118,6 @@ public class CameraController : SingletonBehaviour<CameraController>
     public enum RenderModes
     {
         RAW,
-        //PIXELOLD,
-        PIXELNEW,
+        HYBRID,
     }
 }

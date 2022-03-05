@@ -19,6 +19,9 @@ public class PlayerBrightnessSampler : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (gameTexture == null)
+            return;   
+
         avgBrightness = Mathf.Lerp(avgBrightness, SampleBrightness(ReadPixels(sampleLocations)), 0.05f);
         OnSampleNewPlayerBrightness?.Invoke(avgBrightness);
     }
