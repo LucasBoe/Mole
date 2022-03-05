@@ -116,6 +116,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 53258049110605786}
   boxCollider2D: {fileID: 53258049110605791}
   edgeCollider2D: {fileID: 0}
+  axisMultiplier: {x: 1, y: 1}
 --- !u!61 &53258049110605791
 BoxCollider2D:
   m_ObjectHideFlags: 0
