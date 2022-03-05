@@ -45,7 +45,6 @@ public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerCompone
         switch (useResult.ResultType)
         {
             case PlayerItemUseResult.Type.Destroy:
-                Stop();
                 PlayerItemHolder.Instance.RemoveItem(selectedItem);
                 break;
 
