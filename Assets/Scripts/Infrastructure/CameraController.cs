@@ -128,19 +128,18 @@ public class CameraController : SingletonBehaviour<CameraController>
         Camera active = ActiveCamera();
         Vector2 camPosRaw = active.transform.position;
         Vector2 camPosRounded = new Vector2(RoundTo8PixelPerUnit(camPosRaw.x), RoundTo8PixelPerUnit(camPosRaw.y));
-        Vector3 rest = (Vector3)(camPosRounded - camPosRaw);
 
         foreach (Transform transform in textureDisplayTransforms)
         {
-            float z = transform.localPosition.z;
-            transform.localPosition = new Vector3(smooth ? rest.x : 0, smooth ? rest.y : 0, z);
+            float z = transform.position.z;
+            transform.position = new Vector3(smooth ? camPosRounded.x : 0, smooth ? camPosRounded.y : 0, z);
         }
     }
 
     private float RoundTo8PixelPerUnit(float raw)
     {
 
-        float rounded = Mathf.Ceil(raw * 8f) / 8f;
+        float rounded = Mathf.Round(raw * 8f) / 8f;
         return rounded;
     }
 
