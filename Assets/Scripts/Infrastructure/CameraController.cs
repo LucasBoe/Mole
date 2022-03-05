@@ -19,7 +19,7 @@ public class CameraController : SingletonBehaviour<CameraController>
     CinemachineFramingTransposer transposer;
 
     List<RenderModes> allRenderModes = new List<RenderModes>();
-    int renderModeIndex = 0;
+    int renderModeIndex = 1;
 
     private void OnEnable()
     {
@@ -29,6 +29,8 @@ public class CameraController : SingletonBehaviour<CameraController>
 
         foreach (RenderModes mode in Enum.GetValues(typeof(RenderModes)))
             allRenderModes.Add(mode);
+
+        UpdateRenderMode(allRenderModes[renderModeIndex]);
     }
 
 
@@ -40,15 +42,28 @@ public class CameraController : SingletonBehaviour<CameraController>
 
     public static Vector2 ScreenToWorldPoint(Vector2 vector2)
     {
-        Vector2 remap = new Vector2((vector2.x / Screen.width) * Instance.renderTexture.width, (vector2.y / Screen.height) * Instance.renderTexture.height);
-        return Instance.cameraPixel.ScreenToWorldPoint(remap);
+        Vector2 multiplier = Instance.GetMultiplierByRenderMode();
+        Vector2 remap = new Vector2((vector2.x / Screen.width) * multiplier.x, (vector2.y / Screen.height) * multiplier.y);
+        return Instance.ActiveCamera().ScreenToWorldPoint(remap);
     }
 
     internal static Vector3 WorldToScreenPoint(Vector3 worldPos)
     {
-        Vector2 raw = Instance.cameraPixel.WorldToScreenPoint(worldPos);
-        return new Vector2((raw.x / Instance.renderTexture.width) * Screen.width, (raw.y / Instance.renderTexture.height) * Screen.height);
+        Vector2 multiplier = Instance.GetMultiplierByRenderMode();
+        Vector2 raw = Instance.ActiveCamera().WorldToScreenPoint(worldPos);
+        return new Vector2((raw.x / multiplier.x) * Screen.width, (raw.y / multiplier.y) * Screen.height);
     }
+
+
+    private Vector2 GetMultiplierByRenderMode()
+    {
+        RenderModes currentMode = allRenderModes[renderModeIndex];
+        //if (currentMode == RenderModes.PIXELOLD)
+        //    return new Vector2(Instance.renderTexture.width, Instance.renderTexture.height);
+
+        return new Vector2(Screen.width, Screen.height);
+    }
+
 
     private void Update()
     {
@@ -87,11 +102,11 @@ public class CameraController : SingletonBehaviour<CameraController>
                 cameraPixel2.gameObject.SetActive(false);
                 break;
 
-            case RenderModes.PIXELOLD:
-                cameraRaw.gameObject.SetActive(false);
-                cameraPixel.gameObject.SetActive(true);
-                cameraPixel2.gameObject.SetActive(false);
-                break;
+            //case RenderModes.PIXELOLD:
+            //    cameraRaw.gameObject.SetActive(false);
+            //    cameraPixel.gameObject.SetActive(true);
+            //    cameraPixel2.gameObject.SetActive(false);
+            //    break;
 
             case RenderModes.PIXELNEW:
                 cameraRaw.gameObject.SetActive(false);
@@ -124,7 +139,7 @@ public class CameraController : SingletonBehaviour<CameraController>
 
     private float RoundTo8PixelPerUnit(float raw)
     {
-        
+
         float rounded = Mathf.Ceil(raw * 8f) / 8f;
         return rounded;
     }
@@ -132,7 +147,7 @@ public class CameraController : SingletonBehaviour<CameraController>
     public enum RenderModes
     {
         RAW,
-        PIXELOLD,
+        //PIXELOLD,
         PIXELNEW,
     }
 }
