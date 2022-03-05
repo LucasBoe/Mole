@@ -41,7 +41,7 @@ public class LadderClimbState : PlayerStateBase
     Ladder climbingLadder;
     Vector2 top, bottom;
 
-    public static bool CheckEnter()
+    public new static bool CheckEnter()
     {
         PlayerStateMachine stateMachine = PlayerStateMachine.Instance;
         if (stateMachine.CurrentState.StateIs(typeof(LadderClimbState)))
@@ -102,12 +102,18 @@ public class PullUpState : ClimbStateBase
 
     public PullUpState() : base() { }
 
+    public static void TryEnter(PlayerStateBase previous, PlayerContext context)
+    {
+        if (previous.IsColliding(CheckType.Hangable) && context.Input.Axis.y > 0.5f && !context.TriesMoveLeftRight)
+            PlayerStateMachine.Instance.SetState(new PullUpState());
+    }
+
     public override void Enter()
     {
         base.Enter();
 
         curve = context.Values.PullUpCurve;
-        mask = LayerMask.GetMask("Hangable", "OneDirectionalFloor");
+        mask = LayerMask.GetMask("Hangable", "OneDirectionalFloor", "Climbable");
         SetCollisionActive(false);
 
         t = 0;
@@ -158,6 +164,7 @@ public class PullUpState : ClimbStateBase
         base.Exit();
         SetCollisionActive(true);
     }
+
 }
 public class DropDownState : ClimbStateBase
 {
@@ -208,13 +215,13 @@ public class DropDownState : ClimbStateBase
         SetCollisionActive(true);
     }
 }
-public class WallState : ClimbStateBase
+public class GutterClimbState : ClimbStateBase
 {
     public bool IsMoving;
     public float DistanceFromTop;
     public bool IsLeft => IsColliding(CheckType.WallLeft);
 
-    public WallState() : base() { }
+    public GutterClimbState() : base() { }
 
     public override void Update()
     {
@@ -241,7 +248,7 @@ public class WallState : ClimbStateBase
             RaycastHit2D hit = Physics2D.Raycast(context.PlayerPos, new Vector2(IsLeft ? -1 : 1, 0), 2, LayerMask.GetMask("Climbable"));
             if (hit == true)
             {
-                SetState(new WallStretchState());
+                SetState(new GutterStretchState());
             }
         }
 
@@ -249,9 +256,10 @@ public class WallState : ClimbStateBase
         context.Rigidbody.velocity = new Vector2(context.Rigidbody.velocity.x + (IsLeft ? -1f : 1f) * context.Values.WallPushVelocity, context.Input.Axis.y * context.Values.WallClimbYvelocity);
 
         //transition to hanging
-        if (IsColliding(CheckType.Hangable)
-            && ((!IsColliding(CheckType.WallLeft) && context.Input.Axis.x < 0) || (!IsColliding(CheckType.WallRight) && context.Input.Axis.x > 0)))
-            SetState(new HangingState());
+        HangingState.TryEnter(this, context);
+
+        //transition to pullup
+        PullUpState.TryEnter(this, context);
 
         //player loses connection to wall
         if (!context.IsCollidingToAnyWall)
@@ -259,13 +267,13 @@ public class WallState : ClimbStateBase
     }
 }
 
-public class WallStretchState : ClimbStateBase
+public class GutterStretchState : ClimbStateBase
 {
     float enterStateX = 0;
 
     public float Distance = 0;
 
-    public WallStretchState() : base() { }
+    public GutterStretchState() : base() { }
 
     public override void Enter()
     {
@@ -303,7 +311,10 @@ public class WallStretchState : ClimbStateBase
         }
 
         if (moveUpDownThenLeftRight && context.IsCollidingToAnyWall && Distance < 0.65)
-            SetState(new WallState());
+            SetState(new GutterClimbState());
+
+        //transition to hanging
+        HangingState.TryEnter(this, context);
     }
 }
 
@@ -350,6 +361,13 @@ public class HangingBaseState : ClimbStateBase
 public class HangingState : HangingBaseState
 {
     PlayerPhysicsModifier.ColliderMode modeBefore;
+
+    public static void TryEnter(PlayerStateBase before, PlayerContext context)
+    {
+        if (before.IsColliding(CheckType.Hangable)&& ((!before.IsColliding(CheckType.WallLeft) && context.Input.Axis.x < 0) || (!before.IsColliding(CheckType.WallRight) && context.Input.Axis.x > 0)))
+            SetState(new HangingState());
+    }
+
     public override void Enter()
     {
         base.Enter();
@@ -363,22 +381,17 @@ public class HangingState : HangingBaseState
 
         //transition to wall climb
         if (context.IsCollidingToAnyWall && context.TriesMoveUpDown)
-            SetState(new WallState());
+            SetState(new GutterClimbState());
 
-        //pulling up
-        if (!IsColliding(CheckType.HangableAboveAir) && context.Input.Axis.y > 0.5f && !context.TriesMoveLeftRight)
-        {
-            SetState(new PullUpState());
-        }
-        else
-        {
-            CheckType[] checkTypes = new CheckType[] { CheckType.Hangable, CheckType.HangableLeft, CheckType.HangableRight };
-            Vector2 hangPosition = GetClosestHangablePosition(context.PlayerPos + context.Values.HangableOffset, context.Input.Axis * Time.deltaTime * 100f, checkTypes);
-            Vector2 toMoveTo = hangPosition - context.Values.HangableOffset;
 
-            Debug.DrawLine(context.PlayerPos, toMoveTo, Color.cyan);
-            context.Rigidbody.MovePosition(Vector2.MoveTowards(context.PlayerPos, toMoveTo, Time.deltaTime * 10f));
-        }
+        CheckType[] checkTypes = new CheckType[] { CheckType.Hangable, CheckType.HangableLeft, CheckType.HangableRight };
+        Vector2 hangPosition = GetClosestHangablePosition(context.PlayerPos + context.Values.HangableOffset, context.Input.Axis * Time.deltaTime * 100f, checkTypes);
+        Vector2 toMoveTo = hangPosition - context.Values.HangableOffset;
+
+        Debug.DrawLine(context.PlayerPos, toMoveTo, Color.cyan);
+        context.Rigidbody.MovePosition(Vector2.MoveTowards(context.PlayerPos, toMoveTo, Time.deltaTime * 10f));
+
+        PullUpState.TryEnter(this, context);
     }
 
     public override void Exit()

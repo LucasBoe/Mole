@@ -3,16 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using PlayerCollisionCheckType;
+using System.Reflection;
 
 public class PlayerStateObject
 {
     protected PlayerContext context;
-    protected bool IsColliding(CheckType type)
+    public PlayerContext Context => context;
+    public bool IsColliding(CheckType type)
     {
         return context.CollisionChecks[type].IsDetecting;
     }
 
-    protected bool IsColliding(params CheckType[] types)
+    public bool IsColliding(params CheckType[] types)
     {
         foreach (var type in types)
         {
@@ -27,7 +29,7 @@ public class PlayerStateObject
         return context.CollisionChecks[type];
     }
 
-    protected void SetState(PlayerStateBase state)
+    protected static void SetState(PlayerStateBase state)
     {
         PlayerStateMachine.Instance.SetState(state);
     }
@@ -54,21 +56,14 @@ public class PlayerStateObject
 }
 
 //Player State Base Class with common and abstract functions 
-public class PlayerStateBase : PlayerStateObject
+public abstract class PlayerStateBase : PlayerStateObject
 {
-
-    protected PlayerStateTransitionChecks transitionCheck => context.StateTransitonChecks;
-
-    //rope
-    protected bool checkForRope = true;
-
-    //hideable
-    protected bool checkForHideable;
 
     public virtual bool CheckEnter() { return true; }
     public virtual void Enter() { }
     public virtual void Exit() { }
     public virtual void Update() { }
+
     protected void SetCollisionActive(bool active)
     {
         PlayerPhysicsModifier.Instance.SetCollisionActive(active);

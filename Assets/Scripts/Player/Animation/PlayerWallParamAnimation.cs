@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerWallParamAnimation : ParameterBasedAnimation<WallState>
+public class PlayerWallParamAnimation : ParameterBasedAnimation<GutterClimbState>
 {
     [SerializeField] Sprite baseSprite;
     [SerializeField] Sprite[] climbing;

@@ -26,14 +26,13 @@ public class PlayerController : SingletonBehaviour<PlayerController>
 
         context = new PlayerContext();
         context.Input = PlayerInputHandler.PlayerInput;
-        context.StateTransitonChecks = new PlayerStateTransitionChecks(context);
         context.Rigidbody = GetComponent<Rigidbody2D>();
         context.PlayerController = this;
         context.Values = playerValues;
 
         //base
-        context.CollisionChecks.Add(CheckType.Ground, new CollisionCheck(0f, -1.25f, 0.5f, 0.25f, LayerMask.GetMask("Default", "Hangable", "OneDirectionalFloor", "Pushable"), Color.green));
-        context.CollisionChecks.Add(CheckType.Hangable, new CollisionCheck(0f, 1.375f, 1.5f, 1f, LayerMask.GetMask("Hangable"), Color.yellow));
+        context.CollisionChecks.Add(CheckType.Ground, new CollisionCheck(0f, -1.25f, 0.5f, 0.25f, LayerMask.GetMask("Default", "Hangable", "OneDirectionalFloor", "Climbable"), Color.green));
+        context.CollisionChecks.Add(CheckType.Hangable, new CollisionCheck(0f, 1.250f, 1.5f, 1.25f, LayerMask.GetMask("Hangable"), Color.yellow));
         context.CollisionChecks.Add(CheckType.HangableJumpInLeft, new CollisionCheck(-0.7f, 0.2f, 0.3f, 1.5f, LayerMask.GetMask("Hangable"), Color.yellow));
         context.CollisionChecks.Add(CheckType.HangableJumpInRight, new CollisionCheck(0.7f, 0.2f, 0.3f, 1.5f, LayerMask.GetMask("Hangable"), Color.yellow));
         context.CollisionChecks.Add(CheckType.WallLeft, new CollisionCheck(-0.55f, 0, 0.45f, 1f, LayerMask.GetMask("Climbable"), Color.green));
@@ -47,12 +46,8 @@ public class PlayerController : SingletonBehaviour<PlayerController>
         context.CollisionChecks.Add(CheckType.HangableRight, new CollisionCheck(0.75f, 1.5f, .5f, 1.25f, LayerMask.GetMask("Hangable"), Color.yellow));
         context.CollisionChecks.Add(CheckType.HangableAboveAir, new CollisionCheck(0f, 2.875f, 1f, 2f, LayerMask.GetMask("Default", "Hangable"), Color.yellow));
         context.CollisionChecks.Add(CheckType.DropDownable, new CollisionCheck(0, -1.5f, 0.5f, 1f, LayerMask.GetMask("Hangable"), Color.cyan));
-        context.CollisionChecks.Add(CheckType.EdgeHelperLeft, new CollisionCheck(-0.2f, -0.75f, 0.4f, 0.75f, LayerMask.GetMask("Default", "Hangable", "Pushable"), Color.cyan));
-        context.CollisionChecks.Add(CheckType.EdgeHelperRight, new CollisionCheck(0.2f, -0.75f, 0.4f, 0.75f, LayerMask.GetMask("Default", "Hangable", "Pushable"), Color.cyan));
-
-        //pushable
-        context.CollisionChecks.Add(CheckType.PushableLeft, new CollisionCheck(-0.75f, 0f, 0.5f, 0.75f, LayerMask.GetMask("Pushable"), Color.red));
-        context.CollisionChecks.Add(CheckType.PushableRight, new CollisionCheck(0.75f, 0f, 0.5f, 0.75f, LayerMask.GetMask("Pushable"), Color.red));
+        context.CollisionChecks.Add(CheckType.EdgeHelperLeft, new CollisionCheck(-0.2f, -0.75f, 0.4f, 0.75f, LayerMask.GetMask("Default", "Hangable", "Climbable"), Color.cyan));
+        context.CollisionChecks.Add(CheckType.EdgeHelperRight, new CollisionCheck(0.2f, -0.75f, 0.4f, 0.75f, LayerMask.GetMask("Default", "Hangable", "Climbable"), Color.cyan));
 
         //Enemy
         context.CollisionChecks.Add(CheckType.EnemyBelow, new CollisionCheck(0f, -1.5f, 1f, 1.5f, LayerMask.GetMask("Enemy"), Color.red));
@@ -136,8 +131,6 @@ namespace PlayerCollisionCheckType
         DropDownable,
         EdgeHelperLeft,
         EdgeHelperRight,
-        PushableLeft,
-        PushableRight,
         WallAbove,
         EnemyBelow,
         EnemySideways,

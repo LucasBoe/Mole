@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerWallStretchParamAnimation : ParameterBasedAnimation<WallStretchState>
+public class PlayerWallStretchParamAnimation : ParameterBasedAnimation<GutterStretchState>
 {
     [SerializeField] FloatSpritePair[] wallStretch;
 

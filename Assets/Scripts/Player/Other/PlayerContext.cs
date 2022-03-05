@@ -15,7 +15,6 @@ public class PlayerContext
     internal bool TriesMoveLeftRight;
     internal bool TriesMoveUpDown;
     public PlayerInput Input;
-    public PlayerStateTransitionChecks StateTransitonChecks;
 
     public ICombatTarget CombatTarget;
 
@@ -109,22 +108,4 @@ public class PlayerInput
 
     }
 
-}
-
-public class PlayerStateTransitionChecks
-{
-
-    public PlayerStateTransition Rope;
-    public PlayerStateTransition EnterTunnel;
-    public PlayerStateTransition ExitTunnel;
-    public PlayerStateTransitionChecks(PlayerContext context)
-    {
-        //TODO: Change to type based dictionary
-        //Rope = new PlayerStateTransition(context, new RopeClimbState(null), CheckType.Rope, ControlType.Use);
-    }
-
-    internal void TryCheckAll()
-    {
-        //Rope.TryCheck();
-    }
 }

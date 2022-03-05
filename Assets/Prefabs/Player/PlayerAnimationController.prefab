@@ -341,13 +341,13 @@ MonoBehaviour:
       AnimationClip: {fileID: 7400000, guid: 12cd0f16e42aa434e9f2bce7bec75295, type: 2}
       showCoat: 0
     climbStateParamAnimationPairs:
-    - ClimbState: WallState
+    - ClimbState: GutterClimbState
       ParamAnimation: {fileID: 11400000, guid: 3afece717e8f78a45848be079c1a3a43, type: 2}
       showCoat: 1
     - ClimbState: IdleState
       ParamAnimation: {fileID: 11400000, guid: c12ad59d003d60041be1ee949107159c, type: 2}
       showCoat: 1
-    - ClimbState: WallStretchState
+    - ClimbState: GutterStretchState
       ParamAnimation: {fileID: 11400000, guid: 7df0d3a36875589468a9cb466a16cfd5, type: 2}
       showCoat: 1
     - ClimbState: WalkState

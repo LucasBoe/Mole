@@ -21,7 +21,7 @@ public class MoveBaseState : PlayerStateBase
         base.Update();
 
         if (context.IsCollidingToAnyWall && context.TriesMoveUpDown && !context.TriesMoveLeftRight)
-            SetState(new WallState());
+            SetState(new GutterClimbState());
     }
 }
 
@@ -94,22 +94,6 @@ public class WalkState : MoveBaseState
 
         if (context.Input.Jump)
             SetState(new JumpState());
-
-        if (!StateIs(typeof(WalkPushState)) && ((xInput < 0 && IsColliding(CheckType.PushableLeft)) || (xInput > 0 && IsColliding(CheckType.PushableRight))))
-            SetState(new WalkPushState());
-
-    }
-}
-
-public class WalkPushState : WalkState
-{
-    public WalkPushState() : base() { }
-    public override void Update()
-    {
-        base.Update();
-
-        if (!IsColliding(CheckType.PushableLeft) && !IsColliding(CheckType.PushableRight))
-            SetState(new WalkState());
     }
 }
 
@@ -201,7 +185,7 @@ public class FallState : MoveBaseState
 
         //autograp to wall
         if (triesMovingIntoWall)
-            SetState(new WallState());
+            SetState(new GutterClimbState());
 
         bool isCollidingEdgeHelperLeft = IsColliding(CheckType.EdgeHelperLeft);
         bool isCollidingEdgeHelperRight = IsColliding(CheckType.EdgeHelperRight);
