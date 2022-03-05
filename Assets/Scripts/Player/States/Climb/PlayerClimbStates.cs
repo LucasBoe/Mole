@@ -231,13 +231,15 @@ public class GutterClimbState : ClimbStateBase
         DistanceFromTop = 0;
         if (!IsColliding(CheckType.WallAbove))
         {
-            Vector2 origin = context.PlayerPos + Vector2.up + (IsLeft ? Vector2.left : Vector2.right);
+            Vector2 origin = context.PlayerPos + Vector2.up + (IsLeft ? Vector2.left : Vector2.right) * 0.5f;
             RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down, 2, LayerMask.GetMask("Climbable"));
             if (hit == true)
             {
                 DistanceFromTop = Vector2.Distance(origin, hit.point);
                 Debug.DrawLine(origin, hit.point, Color.red);
             }
+            else
+                Debug.DrawRay(origin, Vector2.down * 2, Color.green);
         }
         IsMoving = context.Rigidbody.velocity.y != 0;
 
@@ -364,7 +366,7 @@ public class HangingState : HangingBaseState
 
     public static void TryEnter(PlayerStateBase before, PlayerContext context)
     {
-        if (before.IsColliding(CheckType.Hangable)&& ((!before.IsColliding(CheckType.WallLeft) && context.Input.Axis.x < 0) || (!before.IsColliding(CheckType.WallRight) && context.Input.Axis.x > 0)))
+        if (before.IsColliding(CheckType.Hangable) && ((!before.IsColliding(CheckType.WallLeft) && context.Input.Axis.x < 0) || (!before.IsColliding(CheckType.WallRight) && context.Input.Axis.x > 0)))
             SetState(new HangingState());
     }
 
