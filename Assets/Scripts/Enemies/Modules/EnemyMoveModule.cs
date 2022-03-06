@@ -31,13 +31,13 @@ public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
 
         int mask = LayerMask.GetMask("Default", "Hangable");
 
-        jumpHelperLeft = new CollisionCheck(-0.5f, -0.73f, 0.5f, 0.4f, mask, Color.yellow);
+        jumpHelperLeft = new CollisionCheck(-0.5f, -1.23f, 0.5f, 0.4f, mask, Color.yellow);
         collisionChecks.Add(jumpHelperLeft);
 
-        jumpHelperRight = new CollisionCheck(0.5f, -0.73f, 0.5f, 0.4f, mask, Color.yellow);
+        jumpHelperRight = new CollisionCheck(0.5f, -1.23f, 0.5f, 0.4f, mask, Color.yellow);
         collisionChecks.Add(jumpHelperRight);
 
-        ground = new CollisionCheck(0f, -1f, 0.5f, 0.2f, mask, Color.yellow);
+        ground = new CollisionCheck(0f, -1.5f, 0.5f, 0.2f, mask, Color.yellow);
         collisionChecks.Add(ground);
 
         fallDetectionLeft = new CollisionCheck(-1, -1f, 0.5f, 2.5f, mask, Color.red);
