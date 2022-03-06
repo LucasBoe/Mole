@@ -7,6 +7,7 @@ using System;
 
 public class HidingState : PlayerStaticState
 {
+    public static System.Action EnterState, ExitState;
     public virtual float HiddenValue => 0;
     public HidingState(IStaticTargetProvider targetProvider) : base()
     {
@@ -16,12 +17,14 @@ public class HidingState : PlayerStaticState
     public override void Enter()
     {
         base.Enter();
+        EnterState?.Invoke();
         SetHiding(true);
     }
 
     public override void Exit()
     {
         base.Exit();
+        ExitState?.Invoke();
         SetHiding(false);
     }
 
