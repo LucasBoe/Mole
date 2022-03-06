@@ -11,6 +11,7 @@ public class EnemyHealthVisualizer : MonoBehaviour
 
     private void Start()
     {
+        healthbarRenderer = Instantiate(healthbarRenderer, transform);
         materialInstance = new Material(healthbarRenderer.material);
         healthbarRenderer.material = materialInstance;
     }

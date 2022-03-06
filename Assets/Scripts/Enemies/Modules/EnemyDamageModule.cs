@@ -6,6 +6,7 @@ public class EnemyDamageModule : EnemyModule<EnemyDamageModule>, IHealth
     [SerializeField] private int maxHealth;
     [SerializeField, ReadOnly] private int currentHealth;
     [SerializeField] EnemyFallDamageModule falldamage;
+    [SerializeField] EnemyDamageTrigger damageTrigger;
 
     public System.Action OutOfHealth;
     public System.Action<float> HealthChanged;
@@ -16,6 +17,9 @@ public class EnemyDamageModule : EnemyModule<EnemyDamageModule>, IHealth
     {
         if (falldamage != null)
             falldamage = Instantiate(falldamage, transform);
+
+        damageTrigger = Instantiate(damageTrigger, transform);
+        damageTrigger.TriggerEntered += OnTriggerEntered;
 
         base.Awake();
     }
@@ -42,13 +46,9 @@ public class EnemyDamageModule : EnemyModule<EnemyDamageModule>, IHealth
         currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
         HealthChanged?.Invoke((float)currentHealth / maxHealth);
     }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        EnemyDamager damager = collision.GetComponentInChildren<EnemyDamager>();
-        if (damager != null)
-        {
 
-            DoDamage(damager.FetchDamageAmout());
-        }
+    private void OnTriggerEntered(EnemyDamager damager)
+    {
+        DoDamage(damager.FetchDamageAmout());
     }
 }

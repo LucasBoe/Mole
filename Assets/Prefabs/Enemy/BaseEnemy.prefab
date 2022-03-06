@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 5086609206467038257}
   - component: {fileID: 5086609206467038262}
   - component: {fileID: 5086609206467038254}
+  - component: {fileID: 9061843052702163448}
   m_Layer: 10
   m_Name: BaseEnemy
   m_TagString: Untagged
@@ -84,6 +85,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 5086609206467038263}
   playerPos: {x: 0, y: 0}
+  canSeePlayer: 0
+  playerBody: {fileID: 0}
   forward: 0
 --- !u!114 &5086609206467038256
 MonoBehaviour:
@@ -124,6 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trigger: {fileID: 1375977230327957607, guid: c4a014aa77b972244b661cc5f5545b44, type: 3}
+  IsPlayerInRange: 0
   viewRange: 5
   IsChecking: 0
 --- !u!114 &5086609206467038251
@@ -151,9 +155,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dd0c5a30e55697459d877de7296562c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10000
+  maxHealth: 100
   currentHealth: 0
   falldamage: {fileID: 284915838078974419, guid: 711c3262425250d43a3240b2d650cb4d, type: 3}
+  damageTrigger: {fileID: 5222500405285840242, guid: 37e9d50bec48ab749a273ba1df5a449e, type: 3}
 --- !u!114 &5086609206467038248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,7 +243,9 @@ MonoBehaviour:
   fallMat: {fileID: 2100000, guid: 0f918b111666d5b4885eb2cba7119497, type: 2}
   rigidbody2D: {fileID: 5086609206467038257}
   animator: {fileID: 5086609206467038254}
-  isFalling: 0
+  isFallmodeActive: 0
+  IsStanding: 0
+  TriesStandingUp: 0
 --- !u!114 &5086609206467038252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,3 +315,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &9061843052702163448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5086609206467038268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82ea6085d7f5b114aa8cb1a80d0fe1c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthbarRenderer: {fileID: 5878509442551127774, guid: 22e6306b8af850647942acfb9b9b2ef5, type: 3}
+  damageModule: {fileID: 5086609206467038249}
+  materialInstance: {fileID: 0}

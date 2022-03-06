@@ -13,6 +13,6 @@ public class IsDead : ActionNode
 
     protected override State OnUpdate()
     {
-        return context.damageModule.Dead ? State.Success : State.Failure;
+        return context.damageModule.Dead ? State.Running : State.Failure;
     }
 }
