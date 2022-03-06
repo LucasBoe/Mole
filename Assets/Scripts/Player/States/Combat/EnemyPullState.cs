@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,19 +16,21 @@ public class EnemyPullState : PlayerCombatState
     public override void Enter()
     {
         target.CollisionModifier.SetCollisionActive(false);
+        SetPlayerConstrained(true);
     }
 
     public override void Update()
     {
         float distance = Vector2.Distance(targetBody.position, context.PlayerPos);
-        targetBody.MovePosition(Vector2.MoveTowards(targetBody.position, context.PlayerPos, Time.deltaTime * 20f));
+        targetBody.MovePosition(Vector2.MoveTowards(targetBody.position, context.PlayerPos, Time.deltaTime * 40f));
 
-        if (distance < 0.1f)
+        if (distance < 0.25f)
             SetState(stateBefore);
     }
 
     public override void Exit()
     {
         target.CollisionModifier.SetCollisionActive(true);
+        SetPlayerConstrained(false);
     }
 }

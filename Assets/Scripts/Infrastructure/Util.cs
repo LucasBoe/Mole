@@ -84,24 +84,26 @@ public static class Util
         if (coroutine != null) component.StopCoroutine(coroutine);
     }
 
-    public static bool CheckLineOfSight(Vector2 from, Vector2 to, string layer)
+    public static bool CheckLineOfSight(Vector2 from, Vector2 to, string layer, float lifetime = -1)
     {
-        return CheckLineOfSight(from, to, new string[] { layer });
+        return CheckLineOfSight(from, to, new string[] { layer }, lifetime);
     }
 
-    public static bool CheckLineOfSight(Vector2 from, Vector2 to, string[] layers)
+    public static bool CheckLineOfSight(Vector2 from, Vector2 to, string[] layers, float lifetime = -1)
     {
+        lifetime = lifetime == -1 ? Time.deltaTime : lifetime;
+
         RaycastHit2D hit = Physics2D.Raycast(from, (to - from).normalized, Vector2.Distance(from, to), LayerMask.GetMask(layers));
         if (hit == true)
         {
-            Debug.DrawLine(from, hit.point, Color.yellow);
-            Debug.DrawLine(hit.point, to, Color.red);
-            DebugDrawCross(hit.point, Color.red, 5);
+            Debug.DrawLine(from, hit.point, Color.yellow, lifetime);
+            Debug.DrawLine(hit.point, to, Color.red, lifetime);
+            DebugDrawCross(hit.point, Color.red, 1, lifetime);
             return false;
         }
         else
         {
-            Debug.DrawLine(from, to, Color.green);
+            Debug.DrawLine(from, to, Color.green, lifetime);
         }
 
         return true;

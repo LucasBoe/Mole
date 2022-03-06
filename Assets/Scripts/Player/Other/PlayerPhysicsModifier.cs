@@ -57,4 +57,9 @@ public class PlayerPhysicsModifier : SingletonBehaviour<PlayerPhysicsModifier>, 
     {
         PlayerRigidbody2D.drag = active ? 10 : 0;
     }
+
+    internal void SetPlayerConstrained(bool constrained)
+    {
+        PlayerRigidbody2D.constraints = constrained ? RigidbodyConstraints2D.FreezeAll : RigidbodyConstraints2D.FreezeRotation; 
+    }
 }

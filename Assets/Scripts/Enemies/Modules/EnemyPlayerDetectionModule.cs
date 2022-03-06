@@ -62,6 +62,11 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
         if (memoryModule.CanSeePlayer)
             LoosePlayer(playerCollider.attachedRigidbody);
 
+        SetPlayerOutOfRange();
+    }
+
+    private void SetPlayerOutOfRange()
+    {
         this.StopRunningCoroutine(checkBackOnPlayerRoutine);
         IsPlayerInRange = false;
     }
@@ -81,14 +86,22 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
         memoryModule.CanSeePlayer = false;
     }
 
-    private bool CouldSee(Rigidbody2D player)
+    private bool CouldSee(Rigidbody2D player, float drawLineOfSightWith = -1)
     {
-        float playerHiddenValue = PlayerHidingHandler.Instance.PlayerHiddenValue;
-        bool VisibleInPlainSight = playerHiddenValue > 0.6f && Util.CheckLineOfSight(transform.position, player.position, "Default");
-        bool VisibleInTwighlight = playerHiddenValue > 0.1f && Util.CheckLineOfSight(transform.position, player.position, new string[] { "Hangable", "Default" });
-        bool playerIsInFrontOfEnemy = player.position.x < transform.position.x == (memoryModule.Forward == Direction2D.Left);
+        bool playerIsInRange = Vector2.Distance(transform.position, player.position) <= viewRange;
 
-        return ((VisibleInPlainSight || VisibleInTwighlight) && playerIsInFrontOfEnemy);
+        if (!playerIsInRange)
+        {
+            SetPlayerOutOfRange();
+            return false;
+        }
+
+        float playerHiddenValue = PlayerHidingHandler.Instance.PlayerHiddenValue;
+        bool playerIsInFrontOfEnemy = player.position.x < transform.position.x == (memoryModule.Forward == Direction2D.Left);
+        bool VisibleInPlainSight = playerHiddenValue > 0.6f && Util.CheckLineOfSight(transform.position, player.position, "Default", drawLineOfSightWith);
+        bool VisibleInTwighlight = playerHiddenValue > 0.1f && Util.CheckLineOfSight(transform.position, player.position, new string[] { "Hangable", "Default" }, drawLineOfSightWith);
+
+        return (playerIsInRange && playerIsInFrontOfEnemy && (VisibleInPlainSight || VisibleInTwighlight));
     }
 
     IEnumerator SearchForPlayerRoutine()
@@ -136,7 +149,7 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
             yield return new WaitForSeconds(0.5f);
 
             bool before = memoryModule.CanSeePlayer;
-            bool now = CouldSee(player);
+            bool now = CouldSee(player, drawLineOfSightWith: 0.5f);
 
             if (before != now)
             {

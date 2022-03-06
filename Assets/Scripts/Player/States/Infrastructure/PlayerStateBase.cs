@@ -73,6 +73,11 @@ public abstract class PlayerStateBase : PlayerStateObject
         PlayerPhysicsModifier.Instance.SetGracityActive(active);
     }
 
+    protected void SetPlayerConstrained(bool constrained)
+    {
+        PlayerPhysicsModifier.Instance.SetPlayerConstrained(constrained);
+    }
+
     protected void SetPlayerDragActive(bool active)
     {
         PlayerPhysicsModifier.Instance.SetPlayerDragActive(active);
