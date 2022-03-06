@@ -33,9 +33,9 @@ public class PlayerTunnelParamAnimation : ParameterBasedAnimation<TunnelState>
         Sprite[] sprites = null;
 
         if (Mathf.Abs(moveDir.x) > Mathf.Abs(moveDir.y))
-            sprites = vertical;
-        else
             sprites = horizontal;
+        else
+            sprites = vertical;
 
         return sprites[(int)(Mathf.Floor(Time.time * (sprites.Length + 0.5f)) % sprites.Length)];
     }

@@ -13,5 +13,15 @@ MonoBehaviour:
   m_Name: Player_Tunnel
   m_EditorClassIdentifier: 
   FlipOverride: 0
-  vertical: []
-  horizontal: []
+  vertical:
+  - {fileID: 8324804681080059710, guid: 60936ef30b8cbf54f9e4120ff4aac6d5, type: 3}
+  - {fileID: 8635547096869260448, guid: 60936ef30b8cbf54f9e4120ff4aac6d5, type: 3}
+  - {fileID: -9063421449600771851, guid: 60936ef30b8cbf54f9e4120ff4aac6d5, type: 3}
+  - {fileID: -4226568134176329651, guid: 60936ef30b8cbf54f9e4120ff4aac6d5, type: 3}
+  horizontal:
+  - {fileID: -7324839117160489817, guid: b2875b2678b41b74bb6abc203df70173, type: 3}
+  - {fileID: -1708475201116102694, guid: b2875b2678b41b74bb6abc203df70173, type: 3}
+  - {fileID: -7701493551656625870, guid: b2875b2678b41b74bb6abc203df70173, type: 3}
+  - {fileID: -6063746330349367123, guid: b2875b2678b41b74bb6abc203df70173, type: 3}
+  - {fileID: 7498027688089662876, guid: b2875b2678b41b74bb6abc203df70173, type: 3}
+  - {fileID: 2753754155547065456, guid: b2875b2678b41b74bb6abc203df70173, type: 3}
