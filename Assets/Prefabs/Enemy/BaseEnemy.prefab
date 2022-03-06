@@ -158,7 +158,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trigger: {fileID: 1375977230327957607, guid: c4a014aa77b972244b661cc5f5545b44, type: 3}
   IsPlayerInRange: 0
-  viewRange: 5
+  alertRange: 5
+  viewRange: 8
   IsChecking: 0
 --- !u!114 &5086609206467038251
 MonoBehaviour:
@@ -264,7 +265,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d79445a273c0959479014e094b8b447b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 10
+  radius: 15
   volumeThreshold: 1
 --- !u!114 &3810135767740900596
 MonoBehaviour:

@@ -9,7 +9,8 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
     [SerializeField] private EnemyPlayerTrigger trigger;
 
     [SerializeField, ReadOnly] private bool IsPlayerInRange;
-    [SerializeField] private float viewRange = 5f;
+    [SerializeField] private float alertRange = 5f;
+    [SerializeField] private float viewRange = 7f;
     [ReadOnly] public bool IsChecking;
     private EnemyMemoryModule memoryModule;
 
@@ -33,15 +34,13 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
         memoryModule = GetModule<EnemyMemoryModule>();
 
         trigger = Instantiate(trigger, transform);
-        trigger.Init(viewRange);
+        trigger.Init(alertRange);
         trigger.PlayerEnter += OnPlayerEnter;
-        trigger.PlayerExit += OnPlayerExit;
     }
 
     private void OnDestroy()
     {
         trigger.PlayerEnter -= OnPlayerEnter;
-        trigger.PlayerExit -= OnPlayerExit;
     }
 
     private void OnPlayerEnter(Collider2D playerCollider)
@@ -52,21 +51,17 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
         if (CouldSee(player))
             FoundPlayer(player);
 
+        this.StopRunningCoroutine(checkBackOnPlayerRoutine);
         checkBackOnPlayerRoutine = StartCoroutine(CheckBackOnPlayer(player));
         IsPlayerInRange = true;
 
     }
 
-    private void OnPlayerExit(Collider2D playerCollider)
+    private void SetPlayerOutOfRange(Rigidbody2D player)
     {
         if (memoryModule.CanSeePlayer)
-            LoosePlayer(playerCollider.attachedRigidbody);
+            LoosePlayer(player);
 
-        SetPlayerOutOfRange();
-    }
-
-    private void SetPlayerOutOfRange()
-    {
         this.StopRunningCoroutine(checkBackOnPlayerRoutine);
         IsPlayerInRange = false;
     }
@@ -92,7 +87,7 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
 
         if (!playerIsInRange)
         {
-            SetPlayerOutOfRange();
+            SetPlayerOutOfRange(player);
             return false;
         }
 
@@ -125,7 +120,7 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
         {
             Vector2 start = transform.position;
             Vector2 direction = Util.Vector2FromAngle(from);
-            float length = viewRange;
+            float length = alertRange;
 
 
             RaycastHit2D collider = Physics2D.Raycast(start, direction, length, LayerMask.GetMask("Player"));
@@ -164,6 +159,8 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, alertRange);
+        Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, viewRange);
     }
 }

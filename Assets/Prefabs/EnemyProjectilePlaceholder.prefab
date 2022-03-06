@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1002304005164826049}
   - component: {fileID: 1002304005164826050}
   - component: {fileID: 3450050414017562252}
-  m_Layer: 2
+  m_Layer: 28
   m_Name: EnemyProjectilePlaceholder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,7 +174,7 @@ TrailRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -415891509
-  m_SortingLayer: -1
+  m_SortingLayer: -5
   m_SortingOrder: 0
   m_Time: 0.2
   m_Parameters:
