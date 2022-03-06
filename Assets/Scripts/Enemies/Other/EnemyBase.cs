@@ -7,6 +7,7 @@ public class EnemyBase : MonoBehaviour
 {
     Dictionary<System.Type, object> modules = new Dictionary<System.Type, object>();
     public System.Action OnEnemyDeath;
+    public DebugModes DebugMode;
 
     public void Register<T>(object module)
     {
@@ -29,4 +30,12 @@ public class EnemyBase : MonoBehaviour
         Gizmos.DrawSphere(new Vector2(transform.position.x, transform.position.y + 0.5f), 0.5f);
         Gizmos.DrawSphere(new Vector2(transform.position.x, transform.position.y - 0.5f), 0.5f);
     }
+}
+
+public enum DebugModes
+{
+    None,
+    Info,
+    Warning,
+    Error,
 }

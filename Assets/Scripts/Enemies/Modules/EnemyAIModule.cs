@@ -64,14 +64,10 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
         {
             statemachineModule.StopCurrent();
             Mode = AIMode.Interrupted;
-
-            Debug.Log($"Mode = { Mode }");
         }
         else if (!grounded)
         {
             Mode = AIMode.Falling;
-
-            Debug.Log($"Mode = { Mode }");
         }
     }
 
@@ -84,8 +80,6 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
     {
         Mode = AIMode.Interrupted;
         memoryModule.SetTarget(location);
-
-        Debug.LogWarning("check it out mode: " + Mode);
 
         statemachineModule.StopCurrent();
     }

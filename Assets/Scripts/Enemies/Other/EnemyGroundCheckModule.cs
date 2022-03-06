@@ -14,6 +14,7 @@ public class EnemyGroundCheckModule : EnemyModule<EnemyGroundCheckModule>
     public System.Action LeftGround;
 
     [SerializeField, ReadOnly] private bool isGrounded = false;
+    [SerializeField] bool debug;
 
     public bool IsGrounded => isGrounded;
 
@@ -37,8 +38,8 @@ public class EnemyGroundCheckModule : EnemyModule<EnemyGroundCheckModule>
             bool before = isGrounded;
             isGrounded = DoRaycast(pos1, length) || DoRaycast(pos2, length);
 
-            Debug.DrawRay(pos1, Vector2.down * length, isGrounded ? Color.green : Color.red, 0.25f);
-            Debug.DrawRay(pos2, Vector2.down * length, isGrounded ? Color.green : Color.red, 0.25f);
+            UnityEngine.Debug.DrawRay(pos1, Vector2.down * length, isGrounded ? Color.green : Color.red, 0.25f);
+            UnityEngine.Debug.DrawRay(pos2, Vector2.down * length, isGrounded ? Color.green : Color.red, 0.25f);
 
             if (before != isGrounded)
             {
@@ -50,6 +51,7 @@ public class EnemyGroundCheckModule : EnemyModule<EnemyGroundCheckModule>
 
     private bool DoRaycast(Vector3 pos, int length)
     {
+
         RaycastHit2D hit = Physics2D.Raycast(pos, Vector2.down, length, LayerMask.GetMask("Default", "Hangable"));
         return hit.collider != null;
     }

@@ -31,7 +31,7 @@ public class PlayerCombatCheckerDropKill : MonoBehaviour
 
     private void DoRaycast()
     {
-        Vector2 start = transform.position + Vector3.down * 2;
+        Vector2 start = transform.position + Vector3.down * 3;
         RaycastHit2D hit = Physics2D.Raycast(start, Vector2.down, 10f, LayerMask.GetMask("Default", "Enemy"));
         if (hit.collider != null)
         {

@@ -18,7 +18,8 @@ public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControll
     [SerializeField, ReadOnly] private bool isFallmodeActive = false;
     public bool IsFallmodeActive => isFallmodeActive;
 
-    public bool IsStanding = false;
+    
+    public bool IsStanding => rigidbody2D.rotation == 0 && !TriesStandingUp;
     public bool TriesStandingUp;
 
     private void Start()
@@ -30,11 +31,11 @@ public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControll
     {
         StopAllCoroutines();
         EndStandingUp();
-        IsStanding = false;
     }
 
     internal void StartStandingUp()
     {
+        Debug("start standing up");
         TriesStandingUp = true;
         StopAllCoroutines();
         StartCoroutine(StandingUpRoutine());
@@ -42,8 +43,8 @@ public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControll
 
     private void EndStandingUp()
     {
+        Debug("finish standing up");
         rigidbody2D.simulated = true;
-        IsStanding = true;
         TriesStandingUp = false;
     }
 
@@ -77,7 +78,7 @@ public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControll
 
     public void SetCollisionActive(bool active)
     {
-        Debug.LogWarning($"SetCollisionActive = { active }");
+        Debug($"SetCollisionActive = { active }");
         bodyCollider.enabled = active;
     }
 
@@ -90,9 +91,9 @@ public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControll
             float rotation = Mathf.MoveTowardsAngle(current, target, Time.fixedDeltaTime * (360f / 0.5f));
 
             var pos = transform.position;
-            Debug.DrawRay(new Vector2(pos.x + 0.1f, pos.y + 0.1f), Util.Vector2FromAngle(current), Color.red, Time.fixedDeltaTime);
-            Debug.DrawRay(new Vector2(pos.x + 0.0f, pos.y + 0.0f), Util.Vector2FromAngle(target), Color.green, Time.fixedDeltaTime);
-            Debug.DrawRay(new Vector2(pos.x - 0.1f, pos.y - 0.1f), Util.Vector2FromAngle(rotation), Color.yellow, Time.fixedDeltaTime);
+            UnityEngine.Debug.DrawRay(new Vector2(pos.x + 0.1f, pos.y + 0.1f), Util.Vector2FromAngle(current), Color.red, Time.fixedDeltaTime);
+            UnityEngine.Debug.DrawRay(new Vector2(pos.x + 0.0f, pos.y + 0.0f), Util.Vector2FromAngle(target), Color.green, Time.fixedDeltaTime);
+            UnityEngine.Debug.DrawRay(new Vector2(pos.x - 0.1f, pos.y - 0.1f), Util.Vector2FromAngle(rotation), Color.yellow, Time.fixedDeltaTime);
             rigidbody2D.SetRotation(rotation);
         }
     }

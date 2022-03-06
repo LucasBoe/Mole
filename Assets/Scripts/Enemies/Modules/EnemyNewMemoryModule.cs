@@ -19,7 +19,6 @@ public class EnemyNewMemoryModule : EnemyModule<EnemyNewMemoryModule>
         set
         {
             canSeePlayer = value;
-            Debug.Log($"canSeePlayer = { canSeePlayer }");
         }
     }
     public bool IsAlerted { get; internal set; }

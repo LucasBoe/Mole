@@ -88,8 +88,6 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
         bool VisibleInTwighlight = playerHiddenValue > 0.1f && Util.CheckLineOfSight(transform.position, player.position, new string[] { "Hangable", "Default" });
         bool playerIsInFrontOfEnemy = player.position.x < transform.position.x == (memoryModule.Forward == Direction2D.Left);
 
-        Debug.Log($"visible: { VisibleInPlainSight } / {VisibleInTwighlight}  && {playerIsInFrontOfEnemy} ");
-
         return ((VisibleInPlainSight || VisibleInTwighlight) && playerIsInFrontOfEnemy);
     }
 
@@ -121,10 +119,10 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
             if (collider.collider != null && collider.collider.IsPlayer() && CouldSee(collider.rigidbody))
             {
                 FoundPlayer(collider.rigidbody);
-                Debug.DrawRay(start, direction * length, Color.green, 5);
+                UnityEngine.Debug.DrawRay(start, direction * length, Color.green, 5);
             }
             else
-                Debug.DrawRay(start, direction * length, Color.red, Time.deltaTime);
+                UnityEngine.Debug.DrawRay(start, direction * length, Color.red, Time.deltaTime);
 
             from = Mathf.MoveTowardsAngle(from, to, Time.deltaTime * 45f);
             yield return null;

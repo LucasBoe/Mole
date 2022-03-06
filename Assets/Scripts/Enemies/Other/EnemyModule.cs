@@ -15,4 +15,22 @@ public class EnemyModule<T> : MonoBehaviour
     {
         return enemyBase.GetModule<T1>();
     }
+
+    protected void Debug(string message)
+    {
+        switch (enemyBase.DebugMode)
+        {
+            case DebugModes.Info:
+                UnityEngine.Debug.Log(message);
+                break;
+
+            case DebugModes.Warning:
+                UnityEngine.Debug.LogWarning(message);
+                break;
+
+            case DebugModes.Error:
+                UnityEngine.Debug.LogError(message);
+                break;
+        }
+    }
 }

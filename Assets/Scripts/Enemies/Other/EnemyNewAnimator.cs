@@ -18,7 +18,10 @@ public class EnemyNewAnimator : EnemyModule<EnemyNewAnimator>
     private void OnStateEnter(Node node)
     {
         if (node.animationOverride != null)
+        {
+            UnityEngine.Debug.Log("Try play animation: " + node.animationOverride.name);
             animator.Play(node.animationOverride.name);
+        }
     }
 
     private void OnChangedForward(Direction2D forward)
