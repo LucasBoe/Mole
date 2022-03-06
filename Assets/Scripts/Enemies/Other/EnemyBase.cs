@@ -22,14 +22,6 @@ public class EnemyBase : MonoBehaviour
         Debug.LogWarning("tried getting module of type " + typeof(T).ToString());
         return default(T);
     }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(new Vector2(transform.position.x, transform.position.y), 0.5f);
-        Gizmos.DrawSphere(new Vector2(transform.position.x, transform.position.y + 0.5f), 0.5f);
-        Gizmos.DrawSphere(new Vector2(transform.position.x, transform.position.y - 0.5f), 0.5f);
-    }
 }
 
 public enum DebugModes

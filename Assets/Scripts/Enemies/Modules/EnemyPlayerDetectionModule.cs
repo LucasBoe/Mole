@@ -11,7 +11,7 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
     [SerializeField, ReadOnly] private bool IsPlayerInRange;
     [SerializeField] private float viewRange = 5f;
     [ReadOnly] public bool IsChecking;
-    private EnemyNewMemoryModule memoryModule;
+    private EnemyMemoryModule memoryModule;
 
     private Coroutine checkBackOnPlayerRoutine, searchForPlayerRoutine;
 
@@ -30,7 +30,7 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
 
     private void Start()
     {
-        memoryModule = GetModule<EnemyNewMemoryModule>();
+        memoryModule = GetModule<EnemyMemoryModule>();
 
         trigger = Instantiate(trigger, transform);
         trigger.Init(viewRange);

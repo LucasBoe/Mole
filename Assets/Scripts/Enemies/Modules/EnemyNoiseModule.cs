@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(NoiseListener))]
 public class EnemyNoiseModule : EnemyModule<EnemyNoiseModule>
 {
-    EnemyNewMemoryModule memoryModule;
+    EnemyMemoryModule memoryModule;
     NoiseListener noiseListener;
     protected override void Awake()
     {
@@ -16,7 +16,7 @@ public class EnemyNoiseModule : EnemyModule<EnemyNoiseModule>
 
     private void Start()
     {
-        memoryModule = GetModule<EnemyNewMemoryModule>();
+        memoryModule = GetModule<EnemyMemoryModule>();
     }
 
     private void OnEnable() { noiseListener.OnNoise += OnNoise; }

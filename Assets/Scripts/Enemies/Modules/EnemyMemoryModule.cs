@@ -1,40 +1,61 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 public class EnemyMemoryModule : EnemyModule<EnemyMemoryModule>
 {
-    public EnemyMemoryTargetType TargetType;
-    public Transform TargetTransform;
-    public Vector2 TargetPos;
-    public bool TargetIsTransform => TargetType == EnemyMemoryTargetType.Tranform;
-    public System.Action Callback;
+    [SerializeField]
+    SpriteRenderer spriteRenderer;
+    [SerializeField, ReadOnly] private Vector2 playerPos;
 
-    public int ScannedCounter = 0;
-
-    [SerializeField] GameObject lastSeenTargetEffectPrefab;
-
-    public void SetTarget(Transform target)
+    [SerializeField, ReadOnly] private bool canSeePlayer = false;
+    public bool CanSeePlayer
     {
-        TargetType = EnemyMemoryTargetType.Tranform;
-        TargetPos = Vector2.zero;
-        TargetTransform = target;
+        get
+        {
+            return canSeePlayer;
+        }
+
+        set
+        {
+            canSeePlayer = value;
+        }
+    }
+    public bool IsAlerted { get; internal set; }
+
+    public System.Action<Direction2D> ChangedForward;
+
+    [SerializeField, ReadOnly] private Rigidbody2D playerBody;
+    public Rigidbody2D Player { set { playerBody = value; } }
+
+    public System.Action<EnemyMemoryModule> CheckedForPlayerPos;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        forward = spriteRenderer.flipX ? Direction2D.Left : Direction2D.Right;
+    }
+    public Vector2 PlayerPos
+    {
+        get
+        {
+            CheckedForPlayerPos?.Invoke(this);
+            return CanSeePlayer ? playerBody.position : playerPos;
+        }
+        set
+        {
+            playerPos = value;
+        }
     }
 
-    public void SetTarget(Vector2 target)
+    [SerializeField, ReadOnly] private Direction2D forward;
+    public Direction2D Forward
     {
-        ScannedCounter = 0;
-        TargetType = EnemyMemoryTargetType.Vector2;
-        TargetPos = target;
-        TargetTransform = null;
-
-        
-        if (target != Vector2.zero)
-            EffectHandler.Spawn(new CustomEffect(lastSeenTargetEffectPrefab, 3f), target );
-    }
-
-    public enum EnemyMemoryTargetType
-    {
-        Tranform,
-        Vector2,
+        get => forward;
+        set
+        {
+            forward = value;
+            ChangedForward?.Invoke(forward);
+        }
     }
 }
