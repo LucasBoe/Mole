@@ -56,21 +56,25 @@ public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
 
     public void MoveTo(Vector2 position)
     {
+        Util.DebugDrawCross(position, color: Color.red, 1, 3);
         moveTarget = position;
         isMoving = true;
         OnStartMovingToPosition?.Invoke();
     }
 
-    public void StopMoving()
+    public void StopMovingTo(Vector2 target)
     {
-        followTarget = null;
-        moveTarget = Vector2.zero;
-        isMoving = false;
+        if (moveTarget == target)
+        {
+            followTarget = null;
+            moveTarget = Vector2.zero;
+            isMoving = false;
+        }
     }
 
     private void TargetReached()
     {
-        StopMoving();
+        StopMovingTo(moveTarget);
     }
 
 
@@ -98,6 +102,7 @@ public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
 
         if (Mathf.Abs(transform.position.x - moveTarget.x) < 0.1f)
             TargetReached();
+        
     }
 
     private void OnDrawGizmos()

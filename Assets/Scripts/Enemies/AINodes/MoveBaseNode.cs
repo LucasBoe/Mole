@@ -6,10 +6,12 @@ namespace TheKiwiCoder
 {
     public class MoveBaseNode : ActionNode
     {
+        protected Vector2 target;
+
         protected override void OnStart() { }
         protected override void OnStop()
         {
-            context.moveModule.StopMoving();
+            context.moveModule.StopMovingTo(target);
         }
 
         protected override State OnUpdate()
@@ -19,6 +21,7 @@ namespace TheKiwiCoder
 
         protected void MoveTo(Vector2 target)
         {
+            this.target = target;
             context.memory.Forward = target.x < context.transform.position.x ? Direction2D.Left : Direction2D.Right;
             context.moveModule.MoveTo(target);
         }

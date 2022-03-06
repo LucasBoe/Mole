@@ -158,7 +158,7 @@ public class EnemyAIModule : EnemyModule<EnemyAIModule>, ICombatTarget
             return false;
 
         Mode = AIMode.BeeingStrangled;
-        moveModule.StopMoving();
+        //moveModule.StopMoving(Vector2.zero);
         viewconeModule.IsPassive = true;
         statemachineModule.StopCurrent();
         OnStartBeeingStrangled?.Invoke();

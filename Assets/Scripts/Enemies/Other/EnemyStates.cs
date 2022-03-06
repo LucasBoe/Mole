@@ -76,7 +76,7 @@ public class EnemyAlertState : EnemyStateBase
 
     public override void ForceExit()
     {
-        moveModule.StopMoving();
+        //moveModule.StopMoving();
     }
 
     public override bool TryExit(EnemyBase enemyBase)
