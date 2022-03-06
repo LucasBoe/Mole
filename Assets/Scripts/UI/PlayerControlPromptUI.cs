@@ -19,13 +19,13 @@ public static class ControlTypeExtention
     {
         switch (type)
         {
-            case ControlType.Interact:
+            case ControlType.Jump:
                 return Color.green;
 
             case ControlType.Use:
                 return Color.blue;
 
-            case ControlType.Jump:
+            case ControlType.Interact:
                 return Color.yellow;
 
             case ControlType.Back:
@@ -38,13 +38,13 @@ public static class ControlTypeExtention
     {
         switch (type)
         {
-            case ControlType.Interact:
+            case ControlType.Jump:
                 return "A";
 
             case ControlType.Use:
                 return "X";
 
-            case ControlType.Jump:
+            case ControlType.Interact:
                 return "Y";
 
             case ControlType.Back:

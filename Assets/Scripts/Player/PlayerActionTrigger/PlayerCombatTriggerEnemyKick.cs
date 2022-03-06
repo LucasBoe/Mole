@@ -21,7 +21,7 @@ public class PlayerCombatTriggerEnemyKick : PlayerCombatStateTrigger<KickState>
         Debug.Log(position);
 
         float dir = ((position.x < transform.position.x) ? -1f : 1f);
-        Vector2 pos = position + new Vector2(dir * dir, -2f);
+        Vector2 pos = position + new Vector2(dir * 2, -2f);
         Vector2 size = new Vector2(0.9f, 1.8f);
         bool isFree = Physics2D.OverlapBox(pos, size, 0, LayerMask.GetMask("Default")) == null;
         Util.DebugDrawBox(pos, size, isFree ? Color.green : Color.yellow, 10);
