@@ -64,7 +64,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   velocityForDestruction: 1
-  prefab: {fileID: 4187955652319119676, guid: b20e30c0056870e4e8ff1b9e90eeb5ac, type: 3}
+  prefab: {fileID: 8118633074463970087, guid: 50f3c355a5e307b41bdb5319d7b37ee9, type: 3}
 --- !u!212 &5322391908145038697
 SpriteRenderer:
   m_ObjectHideFlags: 0
