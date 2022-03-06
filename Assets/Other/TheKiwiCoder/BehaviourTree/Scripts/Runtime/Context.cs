@@ -18,7 +18,7 @@ namespace TheKiwiCoder
         public EnemyVariableModule variable;
         public EnemyPlayerDetectionModule playerDetectionModule;
         public EnemyShootModule shootModule;
-        public EnemyNewMemoryModule memory;
+        public EnemyMemoryModule memory;
         public EnemyDamageModule damageModule;
         public EnemyGroundCheckModule groundCheck;
         public EnemyRigidbodyControllerModule rigigbodyController;
@@ -37,7 +37,7 @@ namespace TheKiwiCoder
             context.variable = gameObject.GetComponent<EnemyVariableModule>();
             context.shootModule = gameObject.GetComponent<EnemyShootModule>();
             context.playerDetectionModule = gameObject.GetComponent<EnemyPlayerDetectionModule>();
-            context.memory = gameObject.GetComponent<EnemyNewMemoryModule>();
+            context.memory = gameObject.GetComponent<EnemyMemoryModule>();
             context.damageModule = gameObject.GetComponent<EnemyDamageModule>();
             context.groundCheck = gameObject.GetComponentInChildren<EnemyGroundCheckModule>();
             context.rigigbodyController = gameObject.GetComponent<EnemyRigidbodyControllerModule>();

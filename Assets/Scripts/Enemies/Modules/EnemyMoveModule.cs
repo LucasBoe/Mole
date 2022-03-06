@@ -31,13 +31,13 @@ public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
 
         int mask = LayerMask.GetMask("Default", "Hangable");
 
-        jumpHelperLeft = new CollisionCheck(-0.5f, -0.73f, 0.5f, 0.4f, mask, Color.yellow);
+        jumpHelperLeft = new CollisionCheck(-0.5f, -1.23f, 0.5f, 0.4f, mask, Color.yellow);
         collisionChecks.Add(jumpHelperLeft);
 
-        jumpHelperRight = new CollisionCheck(0.5f, -0.73f, 0.5f, 0.4f, mask, Color.yellow);
+        jumpHelperRight = new CollisionCheck(0.5f, -1.23f, 0.5f, 0.4f, mask, Color.yellow);
         collisionChecks.Add(jumpHelperRight);
 
-        ground = new CollisionCheck(0f, -1f, 0.5f, 0.2f, mask, Color.yellow);
+        ground = new CollisionCheck(0f, -1.5f, 0.5f, 0.2f, mask, Color.yellow);
         collisionChecks.Add(ground);
 
         fallDetectionLeft = new CollisionCheck(-1, -1f, 0.5f, 2.5f, mask, Color.red);
@@ -56,21 +56,25 @@ public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
 
     public void MoveTo(Vector2 position)
     {
+        Util.DebugDrawCross(position, color: Color.red, 1, 3);
         moveTarget = position;
         isMoving = true;
         OnStartMovingToPosition?.Invoke();
     }
 
-    public void StopMoving()
+    public void StopMovingTo(Vector2 target)
     {
-        followTarget = null;
-        moveTarget = Vector2.zero;
-        isMoving = false;
+        if (moveTarget == target)
+        {
+            followTarget = null;
+            moveTarget = Vector2.zero;
+            isMoving = false;
+        }
     }
 
     private void TargetReached()
     {
-        StopMoving();
+        StopMovingTo(moveTarget);
     }
 
 
@@ -98,6 +102,7 @@ public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
 
         if (Mathf.Abs(transform.position.x - moveTarget.x) < 0.1f)
             TargetReached();
+        
     }
 
     private void OnDrawGizmos()
