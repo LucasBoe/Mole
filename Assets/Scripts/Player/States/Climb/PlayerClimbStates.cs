@@ -363,6 +363,8 @@ public class HangingBaseState : ClimbStateBase
 public class HangingState : HangingBaseState
 {
     PlayerPhysicsModifier.ColliderMode modeBefore;
+    public bool IsMoving;
+    public int XMoveDir;
 
     public static void TryEnter(PlayerStateBase before, PlayerContext context)
     {
@@ -381,6 +383,7 @@ public class HangingState : HangingBaseState
     {
         base.Update();
 
+
         //transition to wall climb
         if (context.IsCollidingToAnyWall && context.TriesMoveUpDown)
             SetState(new GutterClimbState());
@@ -389,6 +392,13 @@ public class HangingState : HangingBaseState
         CheckType[] checkTypes = new CheckType[] { CheckType.Hangable, CheckType.HangableLeft, CheckType.HangableRight };
         Vector2 hangPosition = GetClosestHangablePosition(context.PlayerPos + context.Values.HangableOffset, context.Input.Axis * Time.deltaTime * 100f, checkTypes);
         Vector2 toMoveTo = hangPosition - context.Values.HangableOffset;
+
+        //animation params
+        float moveDir = toMoveTo.x - context.PlayerPos.x;
+        IsMoving = Mathf.Abs(moveDir) > 0.5;
+        if (IsMoving)
+            XMoveDir = (int)Mathf.Sign(moveDir);
+
 
         Debug.DrawLine(context.PlayerPos, toMoveTo, Color.cyan);
         context.Rigidbody.MovePosition(Vector2.MoveTowards(context.PlayerPos, toMoveTo, Time.deltaTime * 10f));

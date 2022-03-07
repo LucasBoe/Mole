@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "ParamAnimations/PlayerWallStretchParamAnimation")]
 public class PlayerWallStretchParamAnimation : ParameterBasedAnimation<GutterStretchState>
 {
     [SerializeField] FloatSpritePair[] wallStretch;

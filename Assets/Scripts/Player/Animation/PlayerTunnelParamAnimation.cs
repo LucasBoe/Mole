@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "ParamAnimations/PlayerTunnelParamAnimation")]
 public class PlayerTunnelParamAnimation : ParameterBasedAnimation<TunnelState>
 {
     [SerializeField] Sprite[] vertical, horizontal;

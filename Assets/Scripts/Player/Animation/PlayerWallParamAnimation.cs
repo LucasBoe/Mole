@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "ParamAnimations/PlayerWallParamAnimation")]
 public class PlayerWallParamAnimation : ParameterBasedAnimation<GutterClimbState>
 {
     [SerializeField] Sprite baseSprite;

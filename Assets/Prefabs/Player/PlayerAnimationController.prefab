@@ -307,9 +307,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stateToAnimationHolder:
     moveStateAnimationPairs:
-    - MoveState: HangingState
-      AnimationClip: {fileID: 7400000, guid: 2cc595aca30d5fa4383844d45a9a3542, type: 2}
-      showCoat: 1
     - MoveState: PullUpState
       AnimationClip: {fileID: 7400000, guid: 390b6048933a94041a100a52939eb2a8, type: 2}
       showCoat: 1
@@ -358,6 +355,9 @@ MonoBehaviour:
       showCoat: 1
     - ClimbState: TunnelState
       ParamAnimation: {fileID: 11400000, guid: 90a229a61ed68e34fb5586635dfe480c, type: 2}
+      showCoat: 1
+    - ClimbState: HangingState
+      ParamAnimation: {fileID: 11400000, guid: 8212fa89014ec69489a45c28292272c7, type: 2}
       showCoat: 1
   coatGameObject: {fileID: 9031940380163258740}
 --- !u!212 &5582010506033126746

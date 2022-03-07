@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "ParamAnimations/PlayerKickParamAnimation")]
 public class PlayerKickParamAnimation : ParameterBasedAnimation<KickState>
 {
     [SerializeField] Sprite before, after;

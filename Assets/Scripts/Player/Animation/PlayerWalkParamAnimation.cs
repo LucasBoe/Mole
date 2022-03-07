@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "ParamAnimations/PlayerWalkParamAnimation")]
 public class PlayerWalkParamAnimation : ParameterBasedAnimation<WalkState>
 {
     [SerializeField] Sprite[] sprint, crouch;
