@@ -5,14 +5,26 @@ using TheKiwiCoder;
 
 public class IsAlerted : ActionNode
 {
-    protected override void OnStart() { }
+    float enterTime;
+    protected override void OnStart()
+    {
+        enterTime = Time.time;
+    }
 
-    protected override void OnStop() { }
+    protected override void OnStop()
+    {
+        context.memory.ReactedToAlert = true;
+    }
 
     protected override State OnUpdate()
     {
         if (context.memory.IsAlerted)
-            return State.Success;
+        {
+            if (context.memory.ReactedToAlert || enterTime + 1 < Time.time)
+                return State.Success;
+
+            return State.Running;
+        }
         else
             return State.Failure;
     }

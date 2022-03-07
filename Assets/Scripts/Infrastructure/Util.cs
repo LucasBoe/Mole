@@ -336,6 +336,24 @@ public static class Util
         return angleToFix % 360;
     }
 
+    public static bool IsLeft(this Transform transform, Vector2 position)
+    {
+        return transform.position.x < position.x;
+    }
+    public static bool IsLeft(this Transform transform, Transform other)
+    {
+        return IsLeft(transform, other.position);
+    }
+
+    public static bool IsRight(this Transform transform, Vector2 position)
+    {
+        return !IsLeft(transform, position);
+    }
+
+    public static bool IsRight(this Transform transform, Transform other)
+    {
+        return !IsLeft(transform, other);
+    }
     public static bool IsPlayer(this Collider2D collision)
     {
         return collision.CompareTag("Player");

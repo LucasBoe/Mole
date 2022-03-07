@@ -11,7 +11,6 @@ public class DestroyOnHitBehaviour : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         float velocity = Math.Abs(collision.relativeVelocity.magnitude);
-        Debug.Log(name + " hit with velocity: " + velocity);
 
         if (velocity > velocityForDestruction)
             DestroyAndReplace();

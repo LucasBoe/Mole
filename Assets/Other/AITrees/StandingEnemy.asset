@@ -59,7 +59,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 5237f7b4a7b363e4cae8252218971835
-  position: {x: -12.584839, y: 572.3774}
+  position: {x: -26.26416, y: 909.2831}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -92,6 +92,31 @@ MonoBehaviour:
   children:
   - {fileID: 2312534505177209428}
   - {fileID: 6119309847267971973}
+--- !u!114 &-6023912331205504465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61431bba79d7d7843b82bf1de71703f5, type: 3}
+  m_Name: Sequencer
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: c630e37172972e5469bf496d6741e3ad
+  position: {x: -106.86804, y: 735.39624}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    variableModule: {fileID: 0}
+  description: 
+  drawGizmos: 0
+  animationOverride: {fileID: 0}
+  children:
+  - {fileID: 8758951590883576937}
+  - {fileID: -6909722623495966168}
 --- !u!114 &-5254065557192088758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,13 +154,13 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 507f59fc5ca80684995e78ac9a4b560a
-  position: {x: 178.86797, y: 572.3774}
+  position: {x: 180.6433, y: 572.37744}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
-  animationOverride: {fileID: 0}
+  animationOverride: {fileID: 7400000, guid: 9cbf0b1c70ed2a644970bcf271537718, type: 2}
 --- !u!114 &-2957796630697912729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,6 +207,31 @@ MonoBehaviour:
   drawGizmos: 0
   animationOverride: {fileID: 7400000, guid: d3d73bd6ae384ee45a7c84a7cebe4c43, type: 2}
   duration: 1
+--- !u!114 &-1609297521365264021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb5496e8cd973748a10b3e3ef436ebd, type: 3}
+  m_Name: Repeat
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 7731c69060c51294f9e076cb230a4d03
+  position: {x: -106.86804, y: 608.6039}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    variableModule: {fileID: 0}
+  description: 
+  drawGizmos: 0
+  animationOverride: {fileID: 0}
+  child: {fileID: -6023912331205504465}
+  restartOnSuccess: 1
+  restartOnFailure: 0
 --- !u!114 &-1388539613692111472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,6 +288,8 @@ MonoBehaviour:
   - {fileID: -7398591756061302975}
   - {fileID: 5360836560832985938}
   - {fileID: -5254065557192088758}
+  - {fileID: -1609297521365264021}
+  - {fileID: -6023912331205504465}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -300,13 +352,14 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 45f97c9f284b2a24aaa48a78d5084581
-  position: {x: -340.43396, y: 572.3774}
+  position: {x: -284.37744, y: 608.6039}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
-  animationOverride: {fileID: 0}
+  animationOverride: {fileID: 7400000, guid: 9cbf0b1c70ed2a644970bcf271537718, type: 2}
+  duration: 1
 --- !u!114 &4880964243389557828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -419,7 +472,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: bea625c631785384cb7fe7810663e7b2
-  position: {x: -176.5094, y: 414.79242}
+  position: {x: -190.18872, y: 402.1132}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -428,8 +481,7 @@ MonoBehaviour:
   animationOverride: {fileID: 0}
   children:
   - {fileID: 3752875956636505175}
-  - {fileID: 8758951590883576937}
-  - {fileID: -6909722623495966168}
+  - {fileID: -1609297521365264021}
 --- !u!114 &6987580830103883313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -502,7 +554,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 3a9de54375b341741bbfee3f346cdce4
-  position: {x: -176.5094, y: 572.3774}
+  position: {x: -190.18872, y: 909.2831}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}

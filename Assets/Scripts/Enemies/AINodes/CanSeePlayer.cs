@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using TheKiwiCoder;
 
-public class CanSeePlayer : ActionNode
+public class CanSeePlayer : Wait
 {
-    protected override void OnStart() { }
-
-    protected override void OnStop() { }
 
     protected override State OnUpdate()
     {
         if (context.memory.CanSeePlayer)
-            return State.Success;
+            return base.OnUpdate();
         else
             return State.Failure;
     }

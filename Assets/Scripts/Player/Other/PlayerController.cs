@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 
 //TODO: Remake this into player collision handler
-public class PlayerController : SingletonBehaviour<PlayerController>
+public class PlayerController : PlayerSingletonBehaviour<PlayerController>
 {
     public static System.Action<Transform> OnPlayerSpawned;
     public static PlayerContext Context => Instance.context;

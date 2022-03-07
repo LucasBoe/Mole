@@ -11,7 +11,7 @@ public enum InputActionStage
     WorldObject,
 }
 
-public class PlayerInputActionRegister : SingletonBehaviour<PlayerInputActionRegister>, IPlayerComponent
+public class PlayerInputActionRegister : PlayerSingletonBehaviour<PlayerInputActionRegister>, IPlayerComponent
 {
     [SerializeField] Dictionary<ControlType, List<InputAction>> register = new Dictionary<ControlType, List<InputAction>>();
     public static Dictionary<ControlType, List<InputAction>> Register => Instance.register;

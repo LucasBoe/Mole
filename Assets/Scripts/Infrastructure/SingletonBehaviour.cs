@@ -2,15 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class SingletonBehaviour<T> : MonoBehaviour where T : SingletonBehaviour<T>
+public abstract class SingletonBehaviour<T> : CustomBehaviour where T : SingletonBehaviour<T>
 {
-    public static T Instance;
+    public static T Instance => instance;
+    private static T instance;
 
     protected virtual void Awake()
     {
-        if (Instance != null)
+        if (instance != null)
             Destroy(gameObject);
         else
-            Instance = this as T;
+            instance = this as T;
     }
+#if UNITY_EDITOR
+    protected static void OverrideInstanceEditor(T i)
+    {
+        instance = i;
+    }
+#endif
 }

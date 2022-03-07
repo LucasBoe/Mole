@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TunnelUser : MonoBehaviour
+public class PlayerTunnelUser : PlayerBehaviour
 {
     [ReadOnly] public bool IsInTunnel = false;
     SpriteRenderer[] playerSpriteRenderers;

@@ -46,6 +46,7 @@ MonoBehaviour:
   rigidbody2D: {fileID: 1482603712404808881}
   damageMultiplier: 2
   treshhold: 5
+  DoKnock: 1
 --- !u!1 &1482603712404808885
 GameObject:
   m_ObjectHideFlags: 0

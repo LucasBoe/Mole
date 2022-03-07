@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace TheKiwiCoder {
-    public class BehaviourTreeRunner : MonoBehaviour {
+    public class BehaviourTreeRunner : EnemyModule<BehaviourTreeRunner> {
 
         // The main behaviour tree asset
         public BehaviourTree tree;
@@ -16,6 +16,7 @@ namespace TheKiwiCoder {
         // Start is called before the first frame update
         void Start() {
             context = CreateBehaviourTreeContext();
+            context.runner = this;
             tree = tree.Clone();
             tree.Bind(context);
         }

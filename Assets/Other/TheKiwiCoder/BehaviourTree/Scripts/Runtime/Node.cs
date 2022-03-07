@@ -34,6 +34,7 @@ namespace TheKiwiCoder
                 init = true;
             }
 
+            if (context != null) context.runner.SendWatch("node", name);
             state = OnUpdate();
 
             if (init && state == State.Running)
@@ -68,5 +69,10 @@ namespace TheKiwiCoder
         protected abstract void OnStart();
         protected abstract void OnStop();
         protected abstract State OnUpdate();
+
+        protected void Log(string message)
+        {
+            context.runner.SendLog(message);
+        }
     }
 }

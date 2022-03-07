@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerRopeSlider : SingletonBehaviour<PlayerRopeSlider>
+public class PlayerRopeSlider : PlayerSingletonBehaviour<PlayerRopeSlider>
 {
     InputAction startSlidingAction;
     ISlideable currentSlideable;

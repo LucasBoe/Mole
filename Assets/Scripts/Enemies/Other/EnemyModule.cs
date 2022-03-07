@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class EnemyModule<T> : MonoBehaviour
@@ -16,21 +15,37 @@ public class EnemyModule<T> : MonoBehaviour
         return enemyBase.GetModule<T1>();
     }
 
-    protected void Debug(string message)
+    protected void Log(string message)
     {
         switch (enemyBase.DebugMode)
         {
             case DebugModes.Info:
-                UnityEngine.Debug.Log(message);
+                Debug.Log(message);
                 break;
 
             case DebugModes.Warning:
-                UnityEngine.Debug.LogWarning(message);
+                Debug.LogWarning(message);
                 break;
 
             case DebugModes.Error:
-                UnityEngine.Debug.LogError(message);
+                Debug.LogError(message);
                 break;
         }
+    }
+
+    private void Watch(string name, string message)
+    {
+        if (enemyBase.DebugMode != DebugModes.None)
+            ConsoleProDebug.Watch(name, message);
+    }
+
+    public void SendLog(string message)
+    {
+        Log(message);
+    }
+
+    public void SendWatch(string name, string message)
+    {
+        Watch(name, message);
     }
 }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerNoiseMaker : MonoBehaviour
+public class PlayerNoiseMaker : PlayerBehaviour
 {
     private void OnEnable()
     {
@@ -24,7 +24,6 @@ public class PlayerNoiseMaker : MonoBehaviour
 
     private IEnumerator CheckForSprintRoutine()
     {
-        Debug.LogWarning("Try make noise");
         while (true)
         {
             if ((PlayerStateMachine.Instance.CurrentState as WalkState).IsSprinting)

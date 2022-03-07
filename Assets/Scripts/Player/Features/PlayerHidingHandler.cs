@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class PlayerHidingHandler : SingletonBehaviour<PlayerHidingHandler>
+public class PlayerHidingHandler : PlayerSingletonBehaviour<PlayerHidingHandler>
 {
     public float PlayerHiddenValue => GetHiddenValue();
 
@@ -77,15 +77,13 @@ public class PlayerHidingHandler : SingletonBehaviour<PlayerHidingHandler>
 
     private void UpdateHiddenValueFromTriggers(List<PlayerHidingTrigger> playerTriggers)
     {
-        Debug.Log($"playerTriggers = { playerTriggers.Count }");
-
         if (playerTriggers.Count == 0)
             playerHiddenValue = 0.5f;
         else
         {
             HiddenAmount smallest = playerTriggers.OrderBy(t => t.HiddenAmount).First().HiddenAmount;
             playerHiddenValue = ((int)smallest) / 2f;
-            Debug.Log($"playerHiddenValue = { smallest } => { playerHiddenValue }");
+            Log($"playerHiddenValue = { smallest } => { playerHiddenValue }");
         }
     }
 

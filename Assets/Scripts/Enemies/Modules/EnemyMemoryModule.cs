@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,7 +22,20 @@ public class EnemyMemoryModule : EnemyModule<EnemyMemoryModule>
             canSeePlayer = value;
         }
     }
-    public bool IsAlerted { get; internal set; }
+
+    [ReadOnly] public bool ReactedToAlert = false;
+    [SerializeField, ReadOnly] private bool isAlterted;
+    public bool IsAlerted
+    {
+        get => isAlterted;
+        set
+        {
+            bool before = isAlterted;
+            isAlterted = value;
+            if (isAlterted && !before)
+                ReactedToAlert = false;
+        }
+    }
 
     public System.Action<Direction2D> ChangedForward;
 
@@ -29,6 +43,7 @@ public class EnemyMemoryModule : EnemyModule<EnemyMemoryModule>
     public Rigidbody2D Player { set { playerBody = value; } }
 
     public System.Action<EnemyMemoryModule> CheckedForPlayerPos;
+    public System.Action Alerted;
 
     public Vector2 PlayerPos
     {
@@ -61,5 +76,18 @@ public class EnemyMemoryModule : EnemyModule<EnemyMemoryModule>
         base.Awake();
         forward = spriteRenderer.flipX ? Direction2D.Left : Direction2D.Right;
         forwardOriginal = forward;
+    }
+
+    internal void Alert(Vector2 noiseLocation)
+    {
+        Alert();
+        PlayerPos = noiseLocation;
+    }
+
+    internal void Alert()
+    {
+        Log("Alert!");
+        IsAlerted = true;
+        Alerted?.Invoke();
     }
 }

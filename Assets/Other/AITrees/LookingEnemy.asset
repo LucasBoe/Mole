@@ -333,6 +333,7 @@ MonoBehaviour:
   description: 
   drawGizmos: 0
   animationOverride: {fileID: 0}
+  duration: 1
 --- !u!114 &4880964243389557828
 MonoBehaviour:
   m_ObjectHideFlags: 0

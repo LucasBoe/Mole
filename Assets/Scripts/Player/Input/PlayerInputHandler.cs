@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInputHandler : SingletonBehaviour<PlayerInputHandler>
+public class PlayerInputHandler : PlayerSingletonBehaviour<PlayerInputHandler>
 {
     public static PlayerInput PlayerInput = new PlayerInput();
     [SerializeField] PlayerInput debug;

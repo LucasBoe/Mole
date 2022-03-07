@@ -13,9 +13,6 @@ public class NoiseListener : MonoBehaviour
         if (Vector2.Distance(transform.position, position) > radius)
             return;
 
-        if (!Util.CheckLineOfSight(transform.position, position, "Default"))
-            return;
-
         if (volume < volumeThreshold)
             return;
 

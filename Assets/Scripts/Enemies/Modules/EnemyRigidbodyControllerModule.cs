@@ -27,12 +27,12 @@ public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControll
         groundCheckModule.LeftGround += OnLeftGround;
     }
 
-    public void Kick(Vector2 vector2)
+    public void Knock(Vector2 vector2)
     {
         SetFallmodeActive(true);
         groundCheckModule.ForceGroundedValue(false);
         rigidbody2D.AddForce(vector2, ForceMode2D.Impulse);
-        Debug($"receive kick rot( { rigidbody2D.rotation})");
+        Log($"receive kick rot( { rigidbody2D.rotation})");
     }
 
     private void OnLeftGround()
@@ -43,7 +43,7 @@ public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControll
 
     internal void StartStandingUp()
     {
-        Debug("start standing up");
+        Log("start standing up");
         TriesStandingUp = true;
         StopAllCoroutines();
         StartCoroutine(StandingUpRoutine());
@@ -51,7 +51,7 @@ public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControll
 
     private void EndStandingUp()
     {
-        Debug("finish standing up");
+        Log("finish standing up");
         rigidbody2D.simulated = true;
         TriesStandingUp = false;
     }
@@ -87,7 +87,7 @@ public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControll
 
     public void SetCollisionActive(bool active)
     {
-        Debug($"SetCollisionActive = { active }");
+        Log($"SetCollisionActive = { active }");
         bodyCollider.enabled = active;
     }
 
