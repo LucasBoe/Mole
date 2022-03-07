@@ -71,7 +71,7 @@ namespace TheKiwiCoder
 
         protected void Log(string message)
         {
-            context.runner.SendDebug(message);
+            context.runner.SendLog(message);
         }
     }
 }

@@ -16,7 +16,7 @@ public class EnemyModule<T> : MonoBehaviour
         return enemyBase.GetModule<T1>();
     }
 
-    protected void Debug(string message)
+    protected void Log(string message)
     {
         switch (enemyBase.DebugMode)
         {
@@ -34,8 +34,8 @@ public class EnemyModule<T> : MonoBehaviour
         }
     }
 
-    public void SendDebug(string message)
+    public void SendLog(string message)
     {
-        Debug(message);
+        Log(message);
     }
 }

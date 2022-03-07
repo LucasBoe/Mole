@@ -24,7 +24,6 @@ public class PlayerNoiseMaker : MonoBehaviour
 
     private IEnumerator CheckForSprintRoutine()
     {
-        Debug.LogWarning("Try make noise");
         while (true)
         {
             if ((PlayerStateMachine.Instance.CurrentState as WalkState).IsSprinting)

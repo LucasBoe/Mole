@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -42,6 +43,7 @@ public class EnemyMemoryModule : EnemyModule<EnemyMemoryModule>
     public Rigidbody2D Player { set { playerBody = value; } }
 
     public System.Action<EnemyMemoryModule> CheckedForPlayerPos;
+    public System.Action Alerted;
 
     public Vector2 PlayerPos
     {
@@ -74,5 +76,18 @@ public class EnemyMemoryModule : EnemyModule<EnemyMemoryModule>
         base.Awake();
         forward = spriteRenderer.flipX ? Direction2D.Left : Direction2D.Right;
         forwardOriginal = forward;
+    }
+
+    internal void Alert(Vector2 noiseLocation)
+    {
+        Alert();
+        PlayerPos = noiseLocation;
+    }
+
+    internal void Alert()
+    {
+        Log("Alert!");
+        IsAlerted = true;
+        Alerted?.Invoke();
     }
 }

@@ -25,8 +25,8 @@ public class EnemyNoiseModule : EnemyModule<EnemyNoiseModule>
     {
         if (!memoryModule.CanSeePlayer)
         {
-            memoryModule.PlayerPos = noiseLocation;
-            memoryModule.IsAlerted = true;
+            memoryModule.Alert(noiseLocation);
         }
+
     }
 }

@@ -16,26 +16,33 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
 
     private Coroutine checkBackOnPlayerRoutine, searchForPlayerRoutine;
 
+    private void Start()
+    {
+        memoryModule = GetModule<EnemyMemoryModule>();
+        memoryModule.Alerted += OnAlert;
+
+        trigger = Instantiate(trigger, transform);
+        trigger.Init(alertRange);
+        trigger.PlayerEnter += OnPlayerEnter;
+    }
+
     internal void StartChecking()
     {
+        Log("Start checking...");
         this.StopRunningCoroutine(searchForPlayerRoutine);
         searchForPlayerRoutine = StartCoroutine(SearchForPlayerRoutine());
         IsChecking = true;
+    }
+    private void OnAlert()
+    {
+        if (IsChecking)
+            StopChecking();
     }
 
     internal void StopChecking()
     {
         this.StopRunningCoroutine(searchForPlayerRoutine);
         IsChecking = false;
-    }
-
-    private void Start()
-    {
-        memoryModule = GetModule<EnemyMemoryModule>();
-
-        trigger = Instantiate(trigger, transform);
-        trigger.Init(alertRange);
-        trigger.PlayerEnter += OnPlayerEnter;
     }
 
     private void OnDestroy()
@@ -70,14 +77,13 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
     private void FoundPlayer(Rigidbody2D player)
     {
         memoryModule.CanSeePlayer = true;
-        memoryModule.IsAlerted = true;
+        memoryModule.Alert();
         memoryModule.Player = player;
     }
 
     private void LoosePlayer(Rigidbody2D playerBody)
     {
-        memoryModule.PlayerPos = playerBody.position;
-        memoryModule.IsAlerted = true;
+        memoryModule.Alert(playerBody.position);
         memoryModule.CanSeePlayer = false;
     }
 
