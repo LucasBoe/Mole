@@ -30,11 +30,6 @@ public class EnemyMemoryModule : EnemyModule<EnemyMemoryModule>
 
     public System.Action<EnemyMemoryModule> CheckedForPlayerPos;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        forward = spriteRenderer.flipX ? Direction2D.Left : Direction2D.Right;
-    }
     public Vector2 PlayerPos
     {
         get
@@ -47,6 +42,8 @@ public class EnemyMemoryModule : EnemyModule<EnemyMemoryModule>
             playerPos = value;
         }
     }
+    [SerializeField, ReadOnly] private Direction2D forwardOriginal;
+    public Direction2D ForwardOriginal => forwardOriginal;
 
     [SerializeField, ReadOnly] private Direction2D forward;
     public Direction2D Forward
@@ -57,5 +54,12 @@ public class EnemyMemoryModule : EnemyModule<EnemyMemoryModule>
             forward = value;
             ChangedForward?.Invoke(forward);
         }
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        forward = spriteRenderer.flipX ? Direction2D.Left : Direction2D.Right;
+        forwardOriginal = forward;
     }
 }
