@@ -5,24 +5,16 @@ using UnityEngine;
 
 public class EnemyGroundCheckModule : EnemyModule<EnemyGroundCheckModule>
 {
-    [SerializeField, Layer]
-    List<int> validLayers = new List<int>();
-    [SerializeField, Layer, ReadOnly]
-    List<int> currentLayers = new List<int>();
-
-    public System.Action EnteredGround;
-    public System.Action LeftGround;
 
     [SerializeField, ReadOnly] private bool isGrounded = false;
     [SerializeField] bool debug;
-
     public bool IsGrounded => isGrounded;
 
+    public System.Action EnteredGround;
+    public System.Action LeftGround;
     private void Start()
     {
-
         StartCoroutine(RaycastForGroundRoutine());
-
     }
 
     IEnumerator RaycastForGroundRoutine()
@@ -47,6 +39,11 @@ public class EnemyGroundCheckModule : EnemyModule<EnemyGroundCheckModule>
                 else EnteredGround?.Invoke();
             }
         }
+    }
+
+    internal void ForceGroundedValue(bool newValue)
+    {
+        isGrounded = false;
     }
 
     private bool DoRaycast(Vector3 pos, int length)

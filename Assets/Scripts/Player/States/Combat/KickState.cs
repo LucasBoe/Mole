@@ -32,8 +32,7 @@ public class KickState : PlayerCombatState
         float distance = context.Rigidbody.Distance(targetBody);
         if (distance < 0.1f)
         {
-            targetBody.constraints = RigidbodyConstraints2D.None;
-            targetBody.AddForce(kickDirection.normalized * 50f, ForceMode2D.Impulse);
+            target.Kick(kickDirection.normalized * 25f);
             finished = true;
             SetStateDelayed(new IdleState(), 0.5f);
         }

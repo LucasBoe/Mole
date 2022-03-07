@@ -5,13 +5,21 @@ using UnityEngine;
 public class EnemyCombatTargetModule : EnemyModule<EnemyCombatTargetModule>, ICombatTarget
 {
     [SerializeField] Rigidbody2D rigidbody2D;
+    private EnemyRigidbodyControllerModule controller;
     public Rigidbody2D Rigidbody2D => rigidbody2D;
-
     public Vector2 StranglePosition => Vector2.zero;
-
     public ICollisionModifier CollisionModifier => GetModule<EnemyRigidbodyControllerModule>();
-
     public bool IsNull => this == null;
+
+    private void Start()
+    {
+        controller = GetModule<EnemyRigidbodyControllerModule>();
+    }
+
+    public void Kick(Vector2 vector2)
+    {
+        controller.Kick(vector2);
+    }
 
     public void Kill()
     {

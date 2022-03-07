@@ -13,18 +13,26 @@ public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControll
     [SerializeField] Rigidbody2D rigidbody2D;
     [SerializeField] Animator animator;
 
-    public System.Action<bool> FallmodeChanged;
-
     [SerializeField, ReadOnly] private bool isFallmodeActive = false;
     public bool IsFallmodeActive => isFallmodeActive;
+    EnemyGroundCheckModule groundCheckModule;
 
-    
     public bool IsStanding => rigidbody2D.rotation == 0 && !TriesStandingUp;
+
     public bool TriesStandingUp;
 
     private void Start()
     {
-        GetModule<EnemyGroundCheckModule>().LeftGround += OnLeftGround;
+        groundCheckModule = GetModule<EnemyGroundCheckModule>();
+        groundCheckModule.LeftGround += OnLeftGround;
+    }
+
+    public void Kick(Vector2 vector2)
+    {
+        SetFallmodeActive(true);
+        groundCheckModule.ForceGroundedValue(false);
+        rigidbody2D.AddForce(vector2, ForceMode2D.Impulse);
+        Debug($"receive kick rot( { rigidbody2D.rotation})");
     }
 
     private void OnLeftGround()
@@ -54,7 +62,7 @@ public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControll
         Vector2 targetPos = new Vector2(rigidbody2D.position.x, rigidbody2D.position.y);
         while (Physics2D.OverlapCapsule(targetPos, bodyCollider.size, CapsuleDirection2D.Vertical, 0, LayerMask.GetMask("Default", "Hangable")))
             targetPos += Vector2.up * 0.25f;
-        
+
 
         transform.position = targetPos;
         transform.rotation = Quaternion.identity;
@@ -67,13 +75,14 @@ public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControll
     {
         isFallmodeActive = active;
         rigidbody2D.constraints = active ? RigidbodyConstraints2D.None : RigidbodyConstraints2D.FreezeRotation;
+        rigidbody2D.drag = active ? 2 : 10;
+        rigidbody2D.gravityScale = active ? 2 : 10;
         animator.enabled = !active;
         spriteRenderer.material = active ? fallMat : defaultMat;
         if (active)
         {
             spriteRenderer.sprite = fall_spritesheet;
         }
-        FallmodeChanged?.Invoke(active);
     }
 
     public void SetCollisionActive(bool active)
