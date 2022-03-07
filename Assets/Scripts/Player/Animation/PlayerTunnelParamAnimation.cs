@@ -23,6 +23,7 @@ public class PlayerTunnelParamAnimation : ParameterBasedAnimation<TunnelState>
         if (State.MoveDir != Vector2Int.zero)
         {
             sprite = GetSpriteForDir(State.MoveDir);
+            FlipOverride = State.MoveDir.x > 0 ? FlipOverrides.Right : FlipOverrides.Left;
         }
 
         return sprite;

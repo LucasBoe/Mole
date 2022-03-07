@@ -38,6 +38,7 @@ public class PlayerValues : ScriptableObject
     //Ladders
     public float LadderClimbVelocity;
 
+    public float TunnelMoveVelocity = 25f;
 }
 
 [System.Serializable]

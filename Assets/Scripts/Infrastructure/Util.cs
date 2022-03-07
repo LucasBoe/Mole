@@ -225,6 +225,12 @@ public static class Util
             return vector3.z;
         }
     }
+
+    public static Vector2 Round (this Vector2 vector2)
+    {
+        return new Vector2(Mathf.Round(vector2.x), Mathf.Round(vector2.y));
+    }
+
     public static Vector2[] RemapLengthToPointsOfCertainDistance(List<Vector3> source, float distance)
     {
         List<Vector2> points = new List<Vector2>();

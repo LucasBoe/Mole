@@ -53,6 +53,10 @@ public class PlayerStateObject
     {
         context = PlayerController.Context;
     }
+    protected void Watch(string name, string value)
+    {
+        ConsoleProDebug.Watch(name, value);
+    }
 }
 
 //Player State Base Class with common and abstract functions 
