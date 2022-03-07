@@ -290,6 +290,7 @@ MonoBehaviour:
   - {fileID: -7398591756061302975}
   - {fileID: 5409539359078543181}
   - {fileID: 3917753524610895031}
+  - {fileID: 3058584750933191726}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -337,6 +338,29 @@ MonoBehaviour:
   description: 
   drawGizmos: 0
   animationOverride: {fileID: 7400000, guid: b79f3bcd74ad1fd499cf5ff9ccaf2d66, type: 2}
+--- !u!114 &3058584750933191726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae3ff2c6023531a4ca8079f4115a7db6, type: 3}
+  m_Name: SubTree
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 9e32f412e5997eb4c84dda6f3de0c922
+  position: {x: 774.81396, y: 403.01883}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    variableModule: {fileID: 0}
+  description: 
+  drawGizmos: 0
+  animationOverride: {fileID: 0}
+  Tree: {fileID: 11400000, guid: c9a3c0d049f142146aef458ad7dc0803, type: 2}
 --- !u!114 &3752875956636505175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -536,7 +560,7 @@ MonoBehaviour:
   - {fileID: 6780891958858532144}
   - {fileID: 6780891958858532144}
   - {fileID: 7097208365887988318}
-  - {fileID: 4880964243389557828}
+  - {fileID: 3058584750933191726}
 --- !u!114 &7097208365887988318
 MonoBehaviour:
   m_ObjectHideFlags: 0
