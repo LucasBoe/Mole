@@ -76,7 +76,13 @@ public class WalkState : MoveBaseState
 {
     public bool IsSprinting;
 
-    public WalkState() : base() { }
+    public static System.Action<bool> Walk;
+
+    public override void Enter()
+    {
+        Walk?.Invoke(true);
+    }
+
     public override void Update()
     {
         base.Update();
@@ -94,6 +100,11 @@ public class WalkState : MoveBaseState
 
         if (context.Input.Jump)
             SetState(new JumpState());
+    }
+
+    public override void Exit()
+    {
+        Walk?.Invoke(false);
     }
 }
 

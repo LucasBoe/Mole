@@ -746,7 +746,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 1
+      value: 0.5
       mode: 0
       spread: 0
       speed:
@@ -1085,7 +1085,7 @@ ParticleSystem:
           m_RotationOrder: 4
       cycleCount: 3
       repeatInterval: 0.2
-      probability: 0.5
+      probability: 0.1
   SizeModule:
     enabled: 1
     curve:
@@ -4366,7 +4366,7 @@ ParticleSystem:
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 0.70270264
+          value: 0.2076236
           inSlope: 0.30021727
           outSlope: 0.30021727
           tangentMode: 0
@@ -4374,8 +4374,8 @@ ParticleSystem:
           inWeight: 0.33333334
           outWeight: 0.090318054
         - serializedVersion: 3
-          time: 0.17644477
-          value: 0
+          time: 0.18886909
+          value: -0.61639345
           inSlope: -0.1689968
           outSlope: -0.1689968
           tangentMode: 0
@@ -4383,8 +4383,8 @@ ParticleSystem:
           inWeight: 0.19166891
           outWeight: 0.33333334
         - serializedVersion: 3
-          time: 0.5450993
-          value: -0.02702713
+          time: 0.55752367
+          value: -0.6434206
           inSlope: -0.57566947
           outSlope: -0.57566947
           tangentMode: 0
