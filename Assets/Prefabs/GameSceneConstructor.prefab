@@ -53,6 +53,7 @@ MonoBehaviour:
   - {fileID: 5765453028684833001, guid: 05b9f22bef38cfb4a97e810930a2366c, type: 3}
   - {fileID: 6400605031189681350, guid: b081b5795b327594d8adb5980e08f44b, type: 3}
   - {fileID: 1297007562822116095, guid: 76f49e98dc8cb194f835ea8e6870dd6b, type: 3}
+  - {fileID: 9164936586159975609, guid: d8b3d5b9efdebf0449dab2605253626d, type: 3}
   Player: {fileID: 7193096735565673044, guid: f1faef366b0c9bb48abe91b2b3235b6b, type: 3}
 --- !u!20 &1325253496530115874
 Camera:
