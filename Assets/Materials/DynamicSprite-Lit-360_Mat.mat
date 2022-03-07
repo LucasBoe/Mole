@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DynamicSprite360_Mat
-  m_Shader: {fileID: -6465566751694194690, guid: 81c681c242542f04ead5dbc03363d44f, type: 3}
+  m_Name: DynamicSprite-Lit-360_Mat
+  m_Shader: {fileID: -6465566751694194690, guid: 1586de7c068d75743a2690d1b635b3a6, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
