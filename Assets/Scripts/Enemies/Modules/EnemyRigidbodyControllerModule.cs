@@ -8,6 +8,7 @@ public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControll
     [SerializeField] CapsuleCollider2D bodyCollider;
 
     [SerializeField] SpriteRenderer spriteRenderer;
+
     [SerializeField] Sprite fall_spritesheet;
     [SerializeField] Material defaultMat, fallMat;
     [SerializeField] Rigidbody2D rigidbody2D;
@@ -83,6 +84,11 @@ public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControll
         {
             spriteRenderer.sprite = fall_spritesheet;
         }
+    }
+    internal void SetDeadMode(bool dead)
+    {
+        SetFallmodeActive(false);
+        rigidbody2D.rotation = 0;
     }
 
     public void SetCollisionActive(bool active)
