@@ -37,7 +37,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 119fa8ab74124204282c0b3c0511778c
-  position: {x: -757.62726, y: 580.07544}
+  position: {x: -756.67926, y: 580.52826}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -160,7 +160,7 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
-  animationOverride: {fileID: 0}
+  animationOverride: {fileID: 7400000, guid: 11a5ad9944c46ee46839cfd3e29d299a, type: 2}
 --- !u!114 &-2957796630697912729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,7 +332,7 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
-  animationOverride: {fileID: 0}
+  animationOverride: {fileID: 7400000, guid: 07096a882777533459681c866629ef77, type: 2}
   duration: 1
 --- !u!114 &4880964243389557828
 MonoBehaviour:
