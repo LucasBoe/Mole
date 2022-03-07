@@ -8,6 +8,7 @@ public interface ICombatTarget : IInterfaceable
     //Strangle
     Vector2 StranglePosition { get; }
     ICollisionModifier CollisionModifier { get; }
+    bool IsAlive { get; }
 
     bool StartStrangling();
     void StopStrangling(Vector2 playerPos);

@@ -6,14 +6,18 @@ public class EnemyCombatTargetModule : EnemyModule<EnemyCombatTargetModule>, ICo
 {
     [SerializeField] Rigidbody2D rigidbody2D;
     private EnemyRigidbodyControllerModule controller;
+    private EnemyDamageModule damageModule;
     public Rigidbody2D Rigidbody2D => rigidbody2D;
     public Vector2 StranglePosition => Vector2.zero;
-    public ICollisionModifier CollisionModifier => GetModule<EnemyRigidbodyControllerModule>();
+    public ICollisionModifier CollisionModifier => controller;
     public bool IsNull => this == null;
+
+    public bool IsAlive => !damageModule.Dead;
 
     private void Start()
     {
         controller = GetModule<EnemyRigidbodyControllerModule>();
+        damageModule = GetModule<EnemyDamageModule>();
     }
 
     public void Kick(Vector2 vector2)

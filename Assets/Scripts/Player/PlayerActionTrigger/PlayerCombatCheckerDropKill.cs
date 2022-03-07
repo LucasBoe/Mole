@@ -32,23 +32,21 @@ public class PlayerCombatCheckerDropKill : MonoBehaviour
     private void DoRaycast()
     {
         Vector2 start = transform.position + Vector3.down * 3;
-        RaycastHit2D hit = Physics2D.Raycast(start, Vector2.down, 10f, LayerMask.GetMask("Default", "Enemy"));
-        if (hit.collider != null)
-        {
-            Debug.Log($"hit.collider = { hit.collider }");
-            ICombatTarget newTarget = hit.rigidbody.GetComponent<ICombatTarget>();
-            Debug.Log($"newTarget = { newTarget }");
-            if (newTarget != null && Util.CheckLineOfSight(transform.position, hit.point, "Default"))
-            {
-                Debug.DrawLine(start, hit.point, Color.green, updateFrequency);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(start, Vector2.down, 10f, LayerMask.GetMask("Default", "Enemy"));
 
-                if (newTarget != target)
-                    UpdateTarget(newTarget);
-            }
-            else
+        if (hits.Length > 0)
+        {
+            foreach (RaycastHit2D hit in hits)
             {
-                UpdateTarget(null);
-                Debug.DrawLine(start, hit.point, Color.red, updateFrequency);
+                ICombatTarget newTarget = hit.rigidbody.GetComponent<ICombatTarget>();
+                Debug.Log($"newTarget = { newTarget }");
+                if (newTarget != null && newTarget.IsAlive && Util.CheckLineOfSight(transform.position, hit.point, "Default"))
+                {
+                    Debug.DrawLine(start, hit.point, Color.green, updateFrequency);
+
+                    if (newTarget != target)
+                        UpdateTarget(newTarget);
+                }
             }
         }
         else
