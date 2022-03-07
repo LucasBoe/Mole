@@ -7,26 +7,43 @@ using UnityEditor;
 public class EnemyVariableReferenceDrawer : PropertyDrawer
 {
     int _choiceIndex;
+    bool editMode = false;
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         SerializedProperty userIndexProperty = property.FindPropertyRelative("VarName");
 
-        EditorGUI.BeginChangeCheck();
-        string[] variables = EnemyVariableModule.GetVariables();
+        float EditButtonWidth = 50f;
+        var varRect = new Rect(position.x, position.y, position.width - EditButtonWidth, position.height);
+        var editRect = new Rect(position.width - EditButtonWidth, position.y, EditButtonWidth, position.height);
+
         string selected = userIndexProperty.stringValue;
 
-        int index = 0;
-        for (int i = 0; i < variables.Length; i++)
+        if (editMode)
         {
-            if (selected == variables[i])
-                index = i;
-        }
+            EditorGUI.BeginChangeCheck();
+            string[] variables = EnemyVariableModule.GetVariables();
 
-        _choiceIndex = EditorGUI.Popup(position, index, variables);
-        if (EditorGUI.EndChangeCheck())
+            int index = 0;
+            for (int i = 0; i < variables.Length; i++)
+            {
+                if (selected == variables[i])
+                    index = i;
+            }
+
+            _choiceIndex = EditorGUI.Popup(position, index, variables);
+            if (EditorGUI.EndChangeCheck())
+            {
+                userIndexProperty.stringValue = variables[_choiceIndex];
+                editMode = false;
+            }
+        } else
         {
-            userIndexProperty.stringValue = variables[_choiceIndex];
+            GUI.Box(varRect, "var : " + (selected == "" ? "<UNDEFINED>" : selected));
+            if (GUI.Button(editRect, "Edit"))
+            {
+                editMode = true;
+            }
         }
     }
 }
