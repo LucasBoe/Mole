@@ -22,29 +22,6 @@ MonoBehaviour:
   description: 
   drawGizmos: 0
   animationOverride: {fileID: 0}
---- !u!114 &-7872291670321148611
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a5134d9de14153468b48928d3e7359a, type: 3}
-  m_Name: Wait
-  m_EditorClassIdentifier: 
-  state: 0
-  started: 0
-  guid: f8a9b1a255a50a149a973cfd7efc7698
-  position: {x: 1362.7047, y: 572.3775}
-  blackboard:
-    moveToPosition: {x: 0, y: 0, z: 0}
-    variableModule: {fileID: 0}
-  description: 
-  drawGizmos: 0
-  animationOverride: {fileID: 7400000, guid: d3d73bd6ae384ee45a7c84a7cebe4c43, type: 2}
-  duration: 1
 --- !u!114 &-7398591756061302975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,7 +37,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 119fa8ab74124204282c0b3c0511778c
-  position: {x: -785.0604, y: 576.9057}
+  position: {x: -756.67926, y: 580.52826}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -82,7 +59,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 5237f7b4a7b363e4cae8252218971835
-  position: {x: -61.82641, y: 572.319}
+  position: {x: -64.75494, y: 873.05664}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -90,30 +67,6 @@ MonoBehaviour:
   drawGizmos: 0
   animationOverride: {fileID: 7400000, guid: 3803a1578f842d24fa3ec589c12b63b5, type: 2}
   shootingVelocity: 25
---- !u!114 &-6643416536428564573
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcfc32cf041748947b87befb3044f26c, type: 3}
-  m_Name: MoveToPosition
-  m_EditorClassIdentifier: 
-  state: 0
-  started: 0
-  guid: 848b2210c63fea9428f1f0d407044234
-  position: {x: 1175.72, y: 572.3775}
-  blackboard:
-    moveToPosition: {x: 0, y: 0, z: 0}
-    variableModule: {fileID: 0}
-  description: 
-  drawGizmos: 0
-  animationOverride: {fileID: 7400000, guid: 0e0ab2f8ddb4007459ed30799bf2084e, type: 2}
-  targetPosition:
-    VarName: End
 --- !u!114 &-6049629707236192690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,17 +82,17 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 00fb0c934d761d14baa6c8ddfad3169a
-  position: {x: -1087.6224, y: 403.01886}
+  position: {x: -1087.6985, y: 414.79257}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
-  description: 
+  description: Dead
   drawGizmos: 0
   animationOverride: {fileID: 0}
   children:
   - {fileID: 2312534505177209428}
   - {fileID: 6119309847267971973}
---- !u!114 &-4348461666887065187
+--- !u!114 &-4482993052354264686
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -148,21 +101,44 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcfc32cf041748947b87befb3044f26c, type: 3}
-  m_Name: MoveToPosition
+  m_Script: {fileID: 11500000, guid: 61431bba79d7d7843b82bf1de71703f5, type: 3}
+  m_Name: Sequencer
   m_EditorClassIdentifier: 
   state: 0
   started: 0
-  guid: 61e95cfe1bfcb6845be851b91640b1b1
-  position: {x: 757, y: 572}
+  guid: a23709d75bee3144f9903faf523209b0
+  position: {x: -681.50964, y: 414.7925}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    variableModule: {fileID: 0}
+  description: Falling
+  drawGizmos: 0
+  animationOverride: {fileID: 0}
+  children:
+  - {fileID: -7398591756061302975}
+  - {fileID: -3970566769343910874}
+--- !u!114 &-3970566769343910874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2854e5d284b50543972c0a6737b1ef2, type: 3}
+  m_Name: StandUp
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: d01e2b89effe4db41bdfbf89ba40036e
+  position: {x: -583.4579, y: 580.07544}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
-  animationOverride: {fileID: 7400000, guid: 0e0ab2f8ddb4007459ed30799bf2084e, type: 2}
-  targetPosition:
-    VarName: Start
+  animationOverride: {fileID: 0}
 --- !u!114 &-3901640935913422298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,15 +176,15 @@ MonoBehaviour:
   state: 0
   started: 1
   guid: cd33df0d28ccf004d8e85e8a91b7db71
-  position: {x: 61.58496, y: -431.20755}
+  position: {x: -432.90564, y: 78.30188}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
   animationOverride: {fileID: 0}
-  child: {fileID: 5421345740670496205}
---- !u!114 &-1897428851468558057
+  child: {fileID: 6987580830103883313}
+--- !u!114 &-2918841347443153681
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -217,20 +193,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a5134d9de14153468b48928d3e7359a, type: 3}
-  m_Name: Wait
+  m_Script: {fileID: 11500000, guid: 61431bba79d7d7843b82bf1de71703f5, type: 3}
+  m_Name: Sequencer
   m_EditorClassIdentifier: 
   state: 0
   started: 0
-  guid: ead30ab1821dd5244b3da715690d9d8d
-  position: {x: 956.5502, y: 572.3775}
+  guid: b56dcc4e04b654c44a722be247f61620
+  position: {x: -139.98969, y: 703.69824}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
-  description: 
+  description: Attack
   drawGizmos: 0
-  animationOverride: {fileID: 7400000, guid: d3d73bd6ae384ee45a7c84a7cebe4c43, type: 2}
-  duration: 1
+  animationOverride: {fileID: 0}
+  children:
+  - {fileID: 8758951590883576937}
+  - {fileID: -6909722623495966168}
 --- !u!114 &-1388539613692111472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,7 +241,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d285eb63c2cdd74180de7cfceaa96ad, type: 3}
-  m_Name: PatroulingEnemyAI
+  m_Name: BasicEnemyReactionSubTree
   m_EditorClassIdentifier: 
   rootNode: {fileID: -2957796630697912729}
   treeState: 0
@@ -277,20 +255,15 @@ MonoBehaviour:
   - {fileID: -3901640935913422298}
   - {fileID: -1388539613692111472}
   - {fileID: 2003725769853554306}
-  - {fileID: 4880964243389557828}
-  - {fileID: -4348461666887065187}
-  - {fileID: -6643416536428564573}
-  - {fileID: 5421345740670496205}
   - {fileID: 7097208365887988318}
-  - {fileID: -1897428851468558057}
-  - {fileID: -7872291670321148611}
   - {fileID: 2312534505177209428}
   - {fileID: -6049629707236192690}
   - {fileID: 6119309847267971973}
   - {fileID: -7398591756061302975}
-  - {fileID: 5409539359078543181}
-  - {fileID: 3917753524610895031}
-  - {fileID: 3058584750933191726}
+  - {fileID: -4482993052354264686}
+  - {fileID: -3970566769343910874}
+  - {fileID: 7114833549353706021}
+  - {fileID: -2918841347443153681}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -338,29 +311,6 @@ MonoBehaviour:
   description: 
   drawGizmos: 0
   animationOverride: {fileID: 7400000, guid: b79f3bcd74ad1fd499cf5ff9ccaf2d66, type: 2}
---- !u!114 &3058584750933191726
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae3ff2c6023531a4ca8079f4115a7db6, type: 3}
-  m_Name: SubTree
-  m_EditorClassIdentifier: 
-  state: 0
-  started: 0
-  guid: 9e32f412e5997eb4c84dda6f3de0c922
-  position: {x: 774.81396, y: 403.01883}
-  blackboard:
-    moveToPosition: {x: 0, y: 0, z: 0}
-    variableModule: {fileID: 0}
-  description: 
-  drawGizmos: 0
-  animationOverride: {fileID: 0}
-  Tree: {fileID: 11400000, guid: c9a3c0d049f142146aef458ad7dc0803, type: 2}
 --- !u!114 &3752875956636505175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -376,7 +326,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 45f97c9f284b2a24aaa48a78d5084581
-  position: {x: -389.43396, y: 576.90564}
+  position: {x: -310.25385, y: 572.3774}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -384,105 +334,6 @@ MonoBehaviour:
   drawGizmos: 0
   animationOverride: {fileID: 7400000, guid: 07096a882777533459681c866629ef77, type: 2}
   duration: 1
---- !u!114 &3917753524610895031
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61431bba79d7d7843b82bf1de71703f5, type: 3}
-  m_Name: Sequencer
-  m_EditorClassIdentifier: 
-  state: 0
-  started: 0
-  guid: db43324a6cdef104d8352805cf72e2fa
-  position: {x: -681.0566, y: 403.01892}
-  blackboard:
-    moveToPosition: {x: 0, y: 0, z: 0}
-    variableModule: {fileID: 0}
-  description: 
-  drawGizmos: 0
-  animationOverride: {fileID: 0}
-  children:
-  - {fileID: -7398591756061302975}
-  - {fileID: 5409539359078543181}
---- !u!114 &4880964243389557828
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61431bba79d7d7843b82bf1de71703f5, type: 3}
-  m_Name: Sequencer
-  m_EditorClassIdentifier: 
-  state: 0
-  started: 0
-  guid: 2c393a4b265cb7144bd83a55ee58ea4a
-  position: {x: 1041.419, y: 385.07837}
-  blackboard:
-    moveToPosition: {x: 0, y: 0, z: 0}
-    variableModule: {fileID: 0}
-  description: Routine
-  drawGizmos: 0
-  animationOverride: {fileID: 0}
-  children:
-  - {fileID: -4348461666887065187}
-  - {fileID: -1897428851468558057}
-  - {fileID: -6643416536428564573}
-  - {fileID: -7872291670321148611}
---- !u!114 &5409539359078543181
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2854e5d284b50543972c0a6737b1ef2, type: 3}
-  m_Name: StandUp
-  m_EditorClassIdentifier: 
-  state: 0
-  started: 0
-  guid: 759220b56b4c09d4f953e5e0a692d901
-  position: {x: -606.3756, y: 576.9057}
-  blackboard:
-    moveToPosition: {x: 0, y: 0, z: 0}
-    variableModule: {fileID: 0}
-  description: 
-  drawGizmos: 0
-  animationOverride: {fileID: 7400000, guid: 68a50ab7026a90946afe8f7c0aed400d, type: 2}
---- !u!114 &5421345740670496205
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afb5496e8cd973748a10b3e3ef436ebd, type: 3}
-  m_Name: Repeat
-  m_EditorClassIdentifier: 
-  state: 0
-  started: 0
-  guid: ae39ba3a634e8754296152ef08ed6b5f
-  position: {x: 61.58496, y: -312.56604}
-  blackboard:
-    moveToPosition: {x: 0, y: 0, z: 0}
-    variableModule: {fileID: 0}
-  description: 
-  drawGizmos: 0
-  animationOverride: {fileID: 0}
-  child: {fileID: 6987580830103883313}
-  restartOnSuccess: 1
-  restartOnFailure: 0
 --- !u!114 &6119309847267971973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -525,13 +376,12 @@ MonoBehaviour:
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
-  description: Attack
+  description: Can See Player
   drawGizmos: 0
   animationOverride: {fileID: 0}
   children:
   - {fileID: 3752875956636505175}
-  - {fileID: 8758951590883576937}
-  - {fileID: -6909722623495966168}
+  - {fileID: 7114833549353706021}
 --- !u!114 &6987580830103883313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -547,7 +397,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 0eef45b08c2fd5c439ce54472daabcd4
-  position: {x: 61.58496, y: -65.990555}
+  position: {x: -432.90564, y: 176.11319}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -556,11 +406,10 @@ MonoBehaviour:
   animationOverride: {fileID: 0}
   children:
   - {fileID: -6049629707236192690}
-  - {fileID: 3917753524610895031}
+  - {fileID: -4482993052354264686}
   - {fileID: 6780891958858532144}
   - {fileID: 6780891958858532144}
   - {fileID: 7097208365887988318}
-  - {fileID: 3058584750933191726}
 --- !u!114 &7097208365887988318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -576,19 +425,42 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: ebdcec8c2737970408523b5e0df0ee43
-  position: {x: 351.39624, y: 403.01895}
+  position: {x: 351.3963, y: 414.79257}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
-  description: 'CheckForPlayer
-
-'
+  description: Find Player
   drawGizmos: 0
   animationOverride: {fileID: 0}
   children:
   - {fileID: -3901640935913422298}
   - {fileID: -1388539613692111472}
   - {fileID: 2003725769853554306}
+--- !u!114 &7114833549353706021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb5496e8cd973748a10b3e3ef436ebd, type: 3}
+  m_Name: Repeat
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 6ddb33399d9ff724c95f5866031c4565
+  position: {x: -139.98969, y: 572.3774}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    variableModule: {fileID: 0}
+  description: 
+  drawGizmos: 0
+  animationOverride: {fileID: 0}
+  child: {fileID: -2918841347443153681}
+  restartOnSuccess: 1
+  restartOnFailure: 0
 --- !u!114 &8758951590883576937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -604,7 +476,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 3a9de54375b341741bbfee3f346cdce4
-  position: {x: -225.75098, y: 572.319}
+  position: {x: -228.67935, y: 873.05664}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}

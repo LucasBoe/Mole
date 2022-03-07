@@ -6,7 +6,7 @@ using TheKiwiCoder;
 public class SubTree : ActionNode
 {
     public BehaviourTree Tree;
-    public BehaviourTree TreeInstance;
+    [ReadOnly] public BehaviourTree TreeInstance;
     protected override void OnStart()  { }
 
     protected override void OnStop() { }
