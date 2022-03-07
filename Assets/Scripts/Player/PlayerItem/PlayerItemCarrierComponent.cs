@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerItemCarrierComponent : SingletonBehaviour<PlayerItemCarrierComponent>
+public class PlayerItemCarrierComponent : PlayerSingletonBehaviour<PlayerItemCarrierComponent>
 {
     [SerializeField] private new Rigidbody2D rigidbody2D;
     CarriablePlayerItemWorldObject potCarryable, currentlyCarried;

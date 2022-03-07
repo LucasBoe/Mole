@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerRopeUser : SingletonBehaviour<PlayerRopeUser>
+public class PlayerRopeUser : PlayerSingletonBehaviour<PlayerRopeUser>
 {
     public enum RopeUserMode
     {

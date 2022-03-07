@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerActionTriggerBase : MonoBehaviour
+public class PlayerActionTriggerBase : PlayerBehaviour
 {
     private InputAction inputAction;
     protected InputAction InputAction { get => inputAction; set { inputAction = value; } }

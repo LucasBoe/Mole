@@ -17,15 +17,20 @@ public class LayerHandler : SingletonBehaviour<LayerHandler>
     [SerializeField] LayerDataPackage[] layerEnumGameobjectPair;
     public GameObject[] LayerGameObjects => layerEnumGameobjectPair.Select(p => p.GameObject).ToArray();
     public bool HideInactiveLayers = true;
-    public static LayerHandler EditorInstance => (Instance == null) ? FindInstance() : Instance;
-    public static System.Action<Layers, LayerDataPackage, bool> OnChangeLayer;
-    public static Transform Parent => Instance.layerEnumGameobjectPair.Where(l => l.IsActive).Select(l => l.GameObject.transform).First();
 
+#if UNITY_EDITOR
+    public static LayerHandler EditorInstance => (Instance == null) ? FindInstance() : Instance;
     private static LayerHandler FindInstance()
     {
-        Instance = FindObjectOfType<LayerHandler>();
-        return Instance;
+        LayerHandler i = FindObjectOfType<LayerHandler>();
+        OverrideInstanceEditor(i);
+        return i;
     }
+
+#endif
+
+    public static System.Action<Layers, LayerDataPackage, bool> OnChangeLayer;
+    public static Transform Parent => Instance.layerEnumGameobjectPair.Where(l => l.IsActive).Select(l => l.GameObject.transform).First();
 
     private Layers currentLayer = Layers.Outdoor;
     public Layers CurrentLayer => currentLayer;

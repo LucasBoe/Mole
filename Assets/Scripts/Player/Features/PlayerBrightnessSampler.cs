@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class PlayerBrightnessSampler : MonoBehaviour
+public class PlayerBrightnessSampler : PlayerBehaviour
 {
     [SerializeField] RenderTexture gameTexture;
     [SerializeField] Vector2[] sampleLocations;

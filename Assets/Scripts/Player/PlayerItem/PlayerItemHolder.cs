@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerItemHolder : SingletonBehaviour<PlayerItemHolder>
+public class PlayerItemHolder : PlayerSingletonBehaviour<PlayerItemHolder>
 {
     [SerializeField] private PlayerStartItemStack[] startItems;
 

@@ -19,7 +19,7 @@ public class EnemyAnimator : EnemyModule<EnemyAnimator>
     {
         if (node.animationOverride != null)
         {
-            UnityEngine.Debug.Log("Try play animation: " + node.animationOverride.name);
+            Log("Try play animation: " + node.animationOverride.name);
             animator.Play(node.animationOverride.name);
         }
     }

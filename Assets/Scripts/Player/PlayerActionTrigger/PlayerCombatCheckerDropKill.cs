@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCombatCheckerDropKill : MonoBehaviour
+public class PlayerCombatCheckerDropKill : PlayerBehaviour
 {
     [SerializeField] private float updateFrequency = 0.5f;
     ICombatTarget target;
@@ -39,7 +39,6 @@ public class PlayerCombatCheckerDropKill : MonoBehaviour
             foreach (RaycastHit2D hit in hits)
             {
                 ICombatTarget newTarget = hit.rigidbody.GetComponent<ICombatTarget>();
-                Debug.Log($"newTarget = { newTarget }");
                 if (newTarget != null && newTarget.IsAlive && Util.CheckLineOfSight(transform.position, hit.point, "Default"))
                 {
                     Debug.DrawLine(start, hit.point, Color.green, updateFrequency);

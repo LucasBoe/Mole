@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerItemUser : SingletonBehaviour<PlayerItemUser>, IPlayerComponent
+public class PlayerItemUser : PlayerSingletonBehaviour<PlayerItemUser>, IPlayerComponent
 {
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Material lineRendererMat;

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSpriteDamageVisualizer : MonoBehaviour
+public class PlayerSpriteDamageVisualizer : PlayerBehaviour
 {
     [SerializeField] AnimationCurve lerpCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
     Material playerMaterial;

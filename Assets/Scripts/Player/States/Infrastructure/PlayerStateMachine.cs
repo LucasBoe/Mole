@@ -24,7 +24,7 @@ public enum PlayerState
     Hiding,
 }
 
-public class PlayerStateMachine : SingletonBehaviour<PlayerStateMachine>, IPlayerComponent
+public class PlayerStateMachine : PlayerSingletonBehaviour<PlayerStateMachine>, IPlayerComponent
 {
     public PlayerStateBase CurrentState;
 
@@ -51,7 +51,7 @@ public class PlayerStateMachine : SingletonBehaviour<PlayerStateMachine>, IPlaye
     {
         if (!newState.CheckEnter())
         {
-            Debug.Log("could not enter: " + newState);
+            LogWarning("could not enter: " + newState);
             return;
         }
 
@@ -60,7 +60,7 @@ public class PlayerStateMachine : SingletonBehaviour<PlayerStateMachine>, IPlaye
         string from = CurrentState.ToString();
         string to = newState.ToString();
 
-        Debug.Log($"Change state from: ({from}) to ({newState})");
+        Log($"Change state from: ({from}) to ({newState})");
 
         OnStateChangePrevious?.Invoke(CurrentState, newState);
         OnStateChange?.Invoke(newState);

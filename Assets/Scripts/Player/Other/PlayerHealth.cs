@@ -9,7 +9,7 @@ public interface IHealth
     void DoDamage(int amount);
 }
 
-public class PlayerHealth : SingletonBehaviour<PlayerHealth>, IHealth
+public class PlayerHealth : PlayerSingletonBehaviour<PlayerHealth>, IHealth
 {
     [SerializeField] int max;
     int current;

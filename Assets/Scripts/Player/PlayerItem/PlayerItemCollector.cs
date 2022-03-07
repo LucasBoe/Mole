@@ -9,7 +9,7 @@ public interface IPlayerComponent
 
 }
 
-public class PlayerItemCollector : MonoBehaviour
+public class PlayerItemCollector : PlayerBehaviour
 {
     CollectablePlayerItemWorldObject playerItem;
     InputAction current = null;

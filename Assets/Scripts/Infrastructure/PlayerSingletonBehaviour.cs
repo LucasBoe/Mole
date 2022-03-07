@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class SingletonBehaviour<T> : CustomBehaviour where T : SingletonBehaviour<T>
+public abstract class PlayerSingletonBehaviour<T> : PlayerBehaviour where T : PlayerSingletonBehaviour<T>
 {
     public static T Instance => instance;
     private static T instance;
@@ -14,10 +14,4 @@ public abstract class SingletonBehaviour<T> : CustomBehaviour where T : Singleto
         else
             instance = this as T;
     }
-#if UNITY_EDITOR
-    protected static void OverrideInstanceEditor(T i)
-    {
-        instance = i;
-    }
-#endif
 }

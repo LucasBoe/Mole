@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerNoiseMaker : MonoBehaviour
+public class PlayerNoiseMaker : PlayerBehaviour
 {
     private void OnEnable()
     {

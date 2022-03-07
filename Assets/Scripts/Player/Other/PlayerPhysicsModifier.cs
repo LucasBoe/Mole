@@ -8,7 +8,7 @@ public interface ICollisionModifier
     void SetCollisionActive(bool active);
 }
 
-public class PlayerPhysicsModifier : SingletonBehaviour<PlayerPhysicsModifier>, ICollisionModifier
+public class PlayerPhysicsModifier : PlayerSingletonBehaviour<PlayerPhysicsModifier>, ICollisionModifier
 {
     public enum ColliderMode
     {
