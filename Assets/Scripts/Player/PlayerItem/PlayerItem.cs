@@ -7,7 +7,7 @@ public class PlayerItem : ScriptableObject
 {
     public Sprite Sprite;
     public GameObject Prefab;
-    public bool IsUseable;
+    public bool NeedsConfirmation;
     public bool BlockCimb;
 
     public virtual void AimUpdate(PlayerItemUser playerItemUser, PlayerContext context, LineRenderer aimLine) { }

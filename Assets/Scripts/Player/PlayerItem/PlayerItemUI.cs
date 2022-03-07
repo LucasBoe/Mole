@@ -81,8 +81,10 @@ public class PlayerItemUI : UIBehaviour
 
     private void TryUseItem()
     {
-        PlayerItemUser.Instance.Use(itemSlots[selectedItemSlotIndex].Item);
-        SetUseState(ItemUseState.Use);
+        PlayerItem item = itemSlots[selectedItemSlotIndex].Item;
+        PlayerItemUser.Instance.Use(item);
+        if (item.NeedsConfirmation)
+            SetUseState(ItemUseState.Use);
     }
 
     private void StopUse()
