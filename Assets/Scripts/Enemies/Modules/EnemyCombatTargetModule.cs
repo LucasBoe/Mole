@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,11 +19,23 @@ public class EnemyCombatTargetModule : EnemyModule<EnemyCombatTargetModule>, ICo
     {
         controller = GetModule<EnemyRigidbodyControllerModule>();
         damageModule = GetModule<EnemyDamageModule>();
+        damageModule.DamageTrigger.TriggerEntered += OnTriggerEntered;
     }
 
-    public void Kick(Vector2 vector2)
+    private void OnTriggerEntered(EnemyDamager damager)
     {
-        controller.Kick(vector2);
+        if (damager.DoKnock)
+        {
+            Vector2 knockVector = damager.FetchVelocity();
+
+            if (knockVector.magnitude > 1)
+                Knock(knockVector);
+        }
+    }
+
+    public void Knock(Vector2 vector2)
+    {
+        controller.Knock(vector2);
     }
 
     public void Kill()

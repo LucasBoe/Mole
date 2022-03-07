@@ -12,5 +12,5 @@ public interface ICombatTarget : IInterfaceable
 
     bool StartStrangling();
     void StopStrangling(Vector2 playerPos);
-    void Kick(Vector2 vector2);
+    void Knock(Vector2 vector2);
 }

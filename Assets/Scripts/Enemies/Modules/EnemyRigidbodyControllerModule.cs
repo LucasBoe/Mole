@@ -27,7 +27,7 @@ public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControll
         groundCheckModule.LeftGround += OnLeftGround;
     }
 
-    public void Kick(Vector2 vector2)
+    public void Knock(Vector2 vector2)
     {
         SetFallmodeActive(true);
         groundCheckModule.ForceGroundedValue(false);

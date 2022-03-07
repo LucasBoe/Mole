@@ -7,6 +7,7 @@ public class EnemyDamageModule : EnemyModule<EnemyDamageModule>, IHealth
     [SerializeField, ReadOnly] private int currentHealth;
     [SerializeField] EnemyFallDamageModule falldamage;
     [SerializeField] EnemyDamageTrigger damageTrigger;
+    public EnemyDamageTrigger DamageTrigger => damageTrigger;
 
     public System.Action OutOfHealth;
     public System.Action<float> HealthChanged;
