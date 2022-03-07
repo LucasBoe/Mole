@@ -5,9 +5,6 @@ using TheKiwiCoder;
 
 public class CanSeePlayer : Wait
 {
-    protected override void OnStart() { }
-
-    protected override void OnStop() { }
 
     protected override State OnUpdate()
     {

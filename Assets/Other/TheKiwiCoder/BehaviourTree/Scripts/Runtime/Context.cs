@@ -14,6 +14,7 @@ namespace TheKiwiCoder
     {
         public GameObject gameObject;
         public Transform transform;
+        public BehaviourTreeRunner runner;
         public EnemyMoveModule moveModule;
         public EnemyVariableModule variable;
         public EnemyPlayerDetectionModule playerDetectionModule;

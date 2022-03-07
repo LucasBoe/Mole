@@ -22,7 +22,7 @@ public class EnemyMemoryModule : EnemyModule<EnemyMemoryModule>
         }
     }
 
-    public bool ReactedToAlert = false;
+    [ReadOnly] public bool ReactedToAlert = false;
     [SerializeField, ReadOnly] private bool isAlterted;
     public bool IsAlerted
     {

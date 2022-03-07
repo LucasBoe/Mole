@@ -33,4 +33,9 @@ public class EnemyModule<T> : MonoBehaviour
                 break;
         }
     }
+
+    public void SendDebug(string message)
+    {
+        Debug(message);
+    }
 }
