@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -73,6 +74,12 @@ namespace TheKiwiCoder
         protected void Log(string message)
         {
             context.runner.SendLog(message);
+        }
+
+        public virtual void Bind(Context context, Blackboard blackboard)
+        {
+            this.context = context;
+            this.blackboard = blackboard;
         }
     }
 }

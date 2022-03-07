@@ -30,7 +30,13 @@ public class PlayerHealth : PlayerSingletonBehaviour<PlayerHealth>, IHealth
 
     public void DoDamage(int amount)
     {
+#if UNITY_EDITOR
+        if (DeveloperTools.HasGodMode)
+            return;
+#endif
+
         current -= amount;
+
         OnHealthChange?.Invoke(relative);
 
         if (current < 0)

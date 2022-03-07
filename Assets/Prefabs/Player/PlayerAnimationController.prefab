@@ -311,10 +311,10 @@ MonoBehaviour:
       AnimationClip: {fileID: 7400000, guid: 390b6048933a94041a100a52939eb2a8, type: 2}
       showCoat: 1
     - MoveState: DropDownState
-      AnimationClip: {fileID: 7400000, guid: 4ac335baa950df04abb496bce6e9f79e, type: 2}
+      AnimationClip: {fileID: 7400000, guid: 2cc595aca30d5fa4383844d45a9a3542, type: 2}
       showCoat: 1
     - MoveState: JumpToHangingState
-      AnimationClip: {fileID: 7400000, guid: 4ac335baa950df04abb496bce6e9f79e, type: 2}
+      AnimationClip: {fileID: 7400000, guid: 2cc595aca30d5fa4383844d45a9a3542, type: 2}
       showCoat: 1
     - MoveState: IdleState
       AnimationClip: {fileID: 7400000, guid: 74989ddfd9cf47940bcb2e90fd52d01d, type: 2}

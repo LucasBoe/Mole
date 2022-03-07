@@ -36,14 +36,20 @@ public class PlayerItemUser : PlayerSingletonBehaviour<PlayerItemUser>, IPlayerC
 
     internal void Use(PlayerItem item)
     {
-        aimLine = aimLineObject.GetComponent<LineRenderer>();
-        if (aimLine == null)
-            aimLine = aimLineObject.AddComponent<LineRenderer>();
+        if (item.NeedsConfirmation)
+        {
+            aimLine = aimLineObject.GetComponent<LineRenderer>();
+            if (aimLine == null)
+                aimLine = aimLineObject.AddComponent<LineRenderer>();
 
-        aimLine.useWorldSpace = true;
-        aimLine.widthCurve = AnimationCurve.Constant(0, 1, 0.125f);
-        aimLine.material = lineRendererMat;
-        Crosshair.SetMode(Crosshair.Mode.Active);
+            aimLine.useWorldSpace = true;
+            aimLine.widthCurve = AnimationCurve.Constant(0, 1, 0.125f);
+            aimLine.material = lineRendererMat;
+            Crosshair.SetMode(Crosshair.Mode.Active);
+        } else
+        {
+            Confirm(0);
+        }
     }
 
     internal void Confirm(int selectedModeIndex)

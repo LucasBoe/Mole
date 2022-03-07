@@ -9,12 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 394da66407e7e5f4ab628222805c7824, type: 3}
+  m_Script: {fileID: 11500000, guid: a88ed266f3a0c0246b5e1e8583a43ec0, type: 3}
   m_Name: Bandage
   m_EditorClassIdentifier: 
   Sprite: {fileID: 21300000, guid: 02497a8b2a686bc49932519f21fb0410, type: 3}
   Prefab: {fileID: 5322391908145038696, guid: 53fe3e473c75b14459f72d4df06a37df, type: 3}
   IsUseable: 1
   BlockCimb: 0
-  ThrowForce: 20
-  GravityScale: 1

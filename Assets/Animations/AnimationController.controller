@@ -162,7 +162,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Player_Hanging
+  m_Name: Player_HangingIdle
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -303,10 +303,10 @@ AnimatorStateMachine:
     m_Position: {x: 530, y: -280, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -784271542613571137}
-    m_Position: {x: 520, y: -200, z: 0}
+    m_Position: {x: 560, y: -220, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8507288345770045059}
-    m_Position: {x: 480, y: -70, z: 0}
+    m_Position: {x: 460, y: -10, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2083838311280274561}
     m_Position: {x: 300, y: -150, z: 0}
