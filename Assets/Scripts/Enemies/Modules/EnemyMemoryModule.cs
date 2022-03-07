@@ -21,7 +21,20 @@ public class EnemyMemoryModule : EnemyModule<EnemyMemoryModule>
             canSeePlayer = value;
         }
     }
-    public bool IsAlerted { get; internal set; }
+
+    public bool ReactedToAlert = false;
+    [SerializeField, ReadOnly] private bool isAlterted;
+    public bool IsAlerted
+    {
+        get => isAlterted;
+        set
+        {
+            bool before = isAlterted;
+            isAlterted = value;
+            if (isAlterted && !before)
+                ReactedToAlert = false;
+        }
+    }
 
     public System.Action<Direction2D> ChangedForward;
 

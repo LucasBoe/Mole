@@ -184,7 +184,7 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
-  animationOverride: {fileID: 0}
+  animationOverride: {fileID: 7400000, guid: 9cbf0b1c70ed2a644970bcf271537718, type: 2}
 --- !u!114 &-2957796630697912729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,7 +358,8 @@ MonoBehaviour:
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
-  animationOverride: {fileID: 0}
+  animationOverride: {fileID: 7400000, guid: 9cbf0b1c70ed2a644970bcf271537718, type: 2}
+  duration: 1
 --- !u!114 &3917753524610895031
 MonoBehaviour:
   m_ObjectHideFlags: 0
