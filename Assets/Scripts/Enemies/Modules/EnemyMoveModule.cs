@@ -40,10 +40,10 @@ public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
         ground = new CollisionCheck(0f, -1.5f, 0.5f, 0.2f, mask, Color.yellow);
         collisionChecks.Add(ground);
 
-        fallDetectionLeft = new CollisionCheck(-1, -1f, 0.5f, 2.5f, mask, Color.red);
+        fallDetectionLeft = new CollisionCheck(-1, -1.5f, 0.5f, 2.5f, mask, Color.red);
         collisionChecks.Add(fallDetectionLeft);
 
-        fallDetectionRight = new CollisionCheck(1, -1f, 0.5f, 2.5f, mask, Color.red);
+        fallDetectionRight = new CollisionCheck(1, -1.5f, 0.5f, 2.5f, mask, Color.red);
         collisionChecks.Add(fallDetectionRight);
 
     }
