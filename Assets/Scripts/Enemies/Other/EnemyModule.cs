@@ -33,7 +33,7 @@ public class EnemyModule<T> : MonoBehaviour
         }
     }
 
-    private void Watch(string name, string message)
+    protected void Watch(string name, string message)
     {
         if (enemyBase.DebugMode != DebugModes.None)
             ConsoleProDebug.Watch(name, message);

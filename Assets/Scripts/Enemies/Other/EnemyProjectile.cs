@@ -9,7 +9,8 @@ public class EnemyProjectile : MonoBehaviour
         if (collision.collider.IsPlayer())
         {
             PlayerHealth.Instance.DoDamage(20);
-            Destroy(gameObject);
         }
+
+        Destroy(gameObject);
     }
 }

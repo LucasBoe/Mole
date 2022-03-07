@@ -5,10 +5,15 @@ using TheKiwiCoder;
 
 public class IsDead : ActionNode
 {
-    protected override void OnStart() {
+    protected override void OnStart()
+    {
+        if (context.damageModule.Dead)
+            context.rigigbodyController.SetDeadMode(true);
     }
 
-    protected override void OnStop() {
+    protected override void OnStop()
+    {
+
     }
 
     protected override State OnUpdate()

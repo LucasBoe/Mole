@@ -17,7 +17,10 @@ public class PlayerCombatCheckerDropKill : PlayerBehaviour
 
     private void DropKill()
     {
-        PlayerStateMachine.Instance.SetState(new DropKillState(target));
+        if (!target.IsNull)
+            PlayerStateMachine.Instance.SetState(new DropKillState(target));
+        else
+            UpdateTarget(null);
     }
 
     IEnumerator DoRaycastRoutine()
@@ -62,7 +65,7 @@ public class PlayerCombatCheckerDropKill : PlayerBehaviour
         if (target != null)
             PlayerInputActionRegister.Instance.RegisterInputAction(dropKillAction);
         else
-            PlayerInputActionRegister.Instance.UnregisterInputAction(dropKillAction);
+            PlayerInputActionRegister.Instance.UnregisterAllInputActions(transform);
 
     }
 }
