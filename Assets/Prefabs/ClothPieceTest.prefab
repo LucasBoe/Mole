@@ -161,8 +161,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody2D: {fileID: 8522751827972833363}
-  damageMultiplier: 100
+  damageMultiplier: 0
   treshhold: 3
+  DoKnock: 1
 --- !u!61 &8186296909651954769
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -202,7 +203,7 @@ GameObject:
   - component: {fileID: 8522751828288843405}
   - component: {fileID: 8522751828288843407}
   - component: {fileID: 8522751828288843400}
-  m_Layer: 11
+  m_Layer: 28
   m_Name: left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -402,7 +403,7 @@ GameObject:
   - component: {fileID: 8522751828365756656}
   - component: {fileID: 8522751828365756663}
   - component: {fileID: 8522751828365756658}
-  m_Layer: 11
+  m_Layer: 28
   m_Name: right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
