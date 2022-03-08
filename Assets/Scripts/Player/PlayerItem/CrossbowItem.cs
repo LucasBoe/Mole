@@ -7,6 +7,8 @@ public class CrossbowItem : PlayerItem
     [SerializeField] private float ProjectileForce;
     [SerializeField] private CrossbowItemMode[] itemModes;
 
+    private float lastUsedTime;
+
     public override void AimUpdate(PlayerItemUser playerItemUser, PlayerContext context, LineRenderer aimLine)
     {
         Vector2 origin = playerItemUser.transform.position;
@@ -20,13 +22,23 @@ public class CrossbowItem : PlayerItem
 
     public override PlayerItemUseResult ConfirmInteract(PlayerItemUser playerItemUser, int activeModeIndex)
     {
-        var playerPos = playerItemUser.transform.position;
-        var dir = PlayerInputHandler.PlayerInput.VirtualCursorToDir(playerPos);
-        GameObject instance = Instantiate(itemModes[activeModeIndex].ProjectilePrefab, playerPos + Vector3.up, Quaternion.identity, LayerHandler.Parent);
-        instance.transform.right = dir;
-        instance.GetComponent<Rigidbody2D>().velocity = (dir * ProjectileForce);
+        CrossbowItemMode mode = itemModes[activeModeIndex];
+        float remainingCooldown = (lastUsedTime + mode.Cooldown) - Time.time;
+        if (remainingCooldown > 0)
+        {
+            return new PlayerItemUseResult(type: PlayerItemUseResult.Type.InCooldown, remainingCooldown);
+        }
+        else
+        {
+            lastUsedTime = Time.time;
+            var playerPos = playerItemUser.transform.position;
+            var dir = PlayerInputHandler.PlayerInput.VirtualCursorToDir(playerPos);
+            GameObject instance = Instantiate(mode.ProjectilePrefab, playerPos + Vector3.up, Quaternion.identity, LayerHandler.Parent);
+            instance.transform.right = dir;
+            instance.GetComponent<Rigidbody2D>().velocity = (dir * ProjectileForce);
 
-        return new PlayerItemUseResult(PlayerItemUseResult.Type.None);
+            return new PlayerItemUseResult(PlayerItemUseResult.Type.None);
+        }
     }
 
     public override ItemMode[] GetItemModes()
@@ -39,4 +51,5 @@ public class CrossbowItem : PlayerItem
 public class CrossbowItemMode : ItemMode
 {
     public GameObject ProjectilePrefab;
+    public float Cooldown;
 }

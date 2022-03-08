@@ -37,6 +37,7 @@ public class PlayerItemUseResult
 {
     public Type ResultType;
     public Action ResultFunction;
+    public float ResultFloat;
 
     public PlayerItemUseResult()
     {
@@ -54,6 +55,12 @@ public class PlayerItemUseResult
         ResultFunction = resultFunction;
     }
 
+    public PlayerItemUseResult(Type type, float resultFloat)
+    {
+        ResultType = type;
+        ResultFloat = resultFloat;
+    }
+
     public enum Type
     {
         None,
@@ -61,5 +68,6 @@ public class PlayerItemUseResult
         Destroy,
         Function,
         StartAim,
+        InCooldown,
     }
 }
