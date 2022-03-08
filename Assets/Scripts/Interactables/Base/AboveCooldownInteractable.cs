@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AboveCooldownInteractable : MonoBehaviour
+public class AboveCooldownInteractable : CustomBehaviour
 {
     [SerializeField] protected bool playerIsAbove = false;
     [SerializeField] bool useCooldown = true;
