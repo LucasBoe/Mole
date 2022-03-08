@@ -100,7 +100,10 @@ public class PullUpState : ClimbStateBase
 
     public static void TryEnter(PlayerStateBase previous, PlayerContext context)
     {
-        if (previous.IsColliding(CheckType.Hangable) && context.Input.Axis.y > 0.5f && !context.TriesMoveLeftRight)
+        CollisionCheck hangableCheck = context.CollisionChecks[CheckType.Hangable];
+        float angle = Util.GetAngleFromHangable(hangableCheck, context);    
+
+        if (angle > 135)
             PlayerStateMachine.Instance.SetState(new PullUpState());
     }
 

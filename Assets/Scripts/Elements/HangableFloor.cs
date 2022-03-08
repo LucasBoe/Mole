@@ -33,6 +33,11 @@ public class HangableFloor : MonoBehaviour, IHangable
     {
         return Util.GetClosestPointOnLineSegment(points.a, points.b, pos + dir);
     }
+
+    public Vector2 GetNormalVector()
+    {
+        return Vector2.up;
+    }
 }
 
 [System.Serializable]

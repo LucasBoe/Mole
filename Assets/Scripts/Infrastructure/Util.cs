@@ -50,6 +50,15 @@ public static class Util
         return new Vector2(Mathf.Cos(angle / Mathf.Rad2Deg), Mathf.Sin(angle / Mathf.Rad2Deg));
     }
 
+    internal static float GetAngleFromHangable(CollisionCheck hangableCheck, PlayerContext context)
+    {
+        if (!hangableCheck.IsDetecting)
+            return 0f;
+
+        Vector2 normal = hangableCheck.Get<IHangable>()[0].GetNormalVector();
+        return Vector2.Angle(normal, context.Input.Axis);
+    }
+
     internal static Vector2[] SmoothToCurve(Vector2[] points, float distribution = 0.25f)
     {
         Vector2 start = points[0];
@@ -231,7 +240,7 @@ public static class Util
         return strings[UnityEngine.Random.Range(0, strings.Length)];
     }
 
-    public static Vector2 Round (this Vector2 vector2)
+    public static Vector2 Round(this Vector2 vector2)
     {
         return new Vector2(Mathf.Round(vector2.x), Mathf.Round(vector2.y));
     }

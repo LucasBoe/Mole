@@ -47,16 +47,16 @@ public class IdleState : MoveBaseState
 
         IsCrouching = !context.Input.Sprinting;
 
-        if (context.Input.Axis.x != 0 && !triesMovingIntoWall)
-            SetState(new WalkState());
-
         //jumping
         if (context.Input.Jump)
             SetState(new JumpState());
 
 
+        CollisionCheck dropDown = GetCheck(CheckType.DropDownable);
+        float dropAngle = Util.GetAngleFromHangable(dropDown,context);
+
         //dropping down
-        if (IsColliding(CheckType.DropDownable) && context.Input.Axis.y < -0.9f)
+        if (dropAngle <= 45f && context.Input.Axis.y < -0.1f)
         {
             dropDownTimer += Time.deltaTime;
             if (dropDownTimer > context.Values.KeyPressTimeToDropDown)
@@ -68,8 +68,12 @@ public class IdleState : MoveBaseState
         }
         else
         {
+            dropAngle = 0f;
             dropDownTimer = 0f;
         }
+
+        if (dropAngle == 0f && context.Input.Axis.x != 0 && !triesMovingIntoWall)
+            SetState(new WalkState());
     }
 }
 public class WalkState : MoveBaseState
