@@ -36,21 +36,11 @@ public class ThrowablePlayerItem : PlayerItem
     public override void AimUpdate(PlayerItemUser playerItemUser, PlayerContext context, LineRenderer aimLine)
     {
         Vector2 origin = (Vector2)aimLine.transform.position + Vector2.up;
-        Vector2 dir = context.Input.VirtualCursorToDir(playerItemUser.transform.position).normalized;
+        Vector2 inDir = context.Input.VirtualCursorToDir(playerItemUser.transform.position).normalized;
 
-        int visualizationPointCount = 100;
-        float divisor = 50f;
+        Vector2[] points = Util.CalculateTrajectory(origin, inDir, ThrowForce, GravityScale * Physics2D.gravity);
 
-        Vector2[] points = new Vector2[visualizationPointCount];
-
-        for (int i = 0; i < visualizationPointCount; i++)
-        {
-            float t = i / divisor;
-            Vector2 point = origin + (dir * ThrowForce * t) + 0.5f * GravityScale * Physics2D.gravity * (t * t);
-            points[i] = point;
-        }
-
-        aimLine.positionCount = visualizationPointCount;
+        aimLine.positionCount = points.Length;
         aimLine.SetPositions(points.ToVector3Array());
     }
 

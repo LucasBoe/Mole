@@ -59,6 +59,22 @@ public static class Util
         return Vector2.Angle(normal, context.Input.Axis);
     }
 
+    public static Vector2[] CalculateTrajectory(Vector2 origin, Vector2 inDir, float inForce, Vector2 gravity)
+    {
+        const int visualizationPointCount = 15;
+        Vector2[] points = new Vector2[visualizationPointCount];
+        const float divisor = 5f;
+
+        for (int i = 0; i < visualizationPointCount; i++)
+        {
+            float t = i / divisor;
+            Vector2 point = origin + (inDir * inForce * t) + 0.5f * gravity * (t * t);
+            points[i] = point;
+        }
+
+        return points;
+    }
+
     internal static Vector2[] SmoothToCurve(Vector2[] points, float distribution = 0.25f)
     {
         Vector2 start = points[0];

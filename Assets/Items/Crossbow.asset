@@ -16,7 +16,8 @@ MonoBehaviour:
   Prefab: {fileID: 0}
   NeedsConfirmation: 1
   IsHeavy: 0
-  ProjectileForce: 25
+  projectileForce: 15
+  projectileGravityScale: 1
   itemModes:
   - Icon: {fileID: 21300000, guid: 3c29cfa591852954eb372e17d0dd6560, type: 3}
     Name: Crossbow

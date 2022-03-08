@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class CrossbowItem : PlayerItem
 {
-    [SerializeField] private float ProjectileForce;
+    [SerializeField] private float projectileForce;
+    [SerializeField] private float projectileGravityScale;
     [SerializeField] private CrossbowItemMode[] itemModes;
 
     private float lastUsedTime = float.MinValue;
@@ -17,13 +18,13 @@ public class CrossbowItem : PlayerItem
 
     public override void AimUpdate(PlayerItemUser playerItemUser, PlayerContext context, LineRenderer aimLine)
     {
-        Vector2 origin = playerItemUser.transform.position;
+        Vector2 origin = (Vector2)aimLine.transform.position + Vector2.up;
+        Vector2 inDir = context.Input.VirtualCursorToDir(playerItemUser.transform.position).normalized;
 
-        Vector2 dir = context.Input.VirtualCursorToDir(origin);
-        playerItemUser.transform.rotation = dir.ToRotation();
+        Vector2[] points = Util.CalculateTrajectory(origin, inDir, projectileForce, projectileGravityScale * Physics2D.gravity);
 
-        aimLine.positionCount = 2;
-        aimLine.SetPositions(new Vector3[] { origin, origin + (dir * 100) });
+        aimLine.positionCount = points.Length;
+        aimLine.SetPositions(points.ToVector3Array());
     }
 
     public override PlayerItemUseResult ConfirmInteract(PlayerItemUser playerItemUser, int activeModeIndex)
@@ -49,7 +50,7 @@ public class CrossbowItem : PlayerItem
             var dir = PlayerInputHandler.PlayerInput.VirtualCursorToDir(playerPos);
             GameObject instance = Instantiate(mode.ProjectilePrefab, playerPos + Vector3.up, Quaternion.identity, LayerHandler.Parent);
             instance.transform.right = dir;
-            instance.GetComponent<Rigidbody2D>().velocity = (dir * ProjectileForce);
+            instance.GetComponent<Rigidbody2D>().velocity = (dir * projectileForce);
 
             return new PlayerItemUseResult(PlayerItemUseResult.Type.None);
         }
