@@ -190,6 +190,9 @@ public class FallState : MoveBaseState
         //gravity
         ApplyGravity(Time.time - startFallTime);
 
+        //fall death
+        if ((Time.time - startFallTime) > 5f)
+            PlayerHealth.Instance.DoDamage(1);
 
         //autograp to hangable
         if (IsColliding(CheckType.Hangable) && context.Input.Axis.y > 0.25f)
