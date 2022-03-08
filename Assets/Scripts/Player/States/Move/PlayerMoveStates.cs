@@ -111,6 +111,7 @@ public class WalkState : MoveBaseState
 public class JumpState : MoveBaseState
 {
     public JumpState() : base() { }
+    public override bool StateAllowsCarryingHeavyObjects => false;
 
     public override void Enter()
     {
