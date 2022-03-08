@@ -16,6 +16,5 @@ MonoBehaviour:
   Prefab: {fileID: 5322391908145038696, guid: 9188a09b2f626c547b0d810c54fd390f, type: 3}
   NeedsConfirmation: 1
   IsHeavy: 0
-  IsUseable: 1
-  ThrowForce: 20
+  ThrowForce: 12
   GravityScale: 1

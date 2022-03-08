@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1917538221}
   - component: {fileID: 5322391908145038708}
   - component: {fileID: 3823435847255692523}
-  m_Layer: 11
+  m_Layer: 17
   m_Name: Bottle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Item: {fileID: 11400000, guid: 3cb62538e9de26c4992983ea75172c86, type: 2}
-  SpriteRenderer: {fileID: 0}
+  customGameObject: {fileID: 0}
 --- !u!114 &4715816879690958755
 MonoBehaviour:
   m_ObjectHideFlags: 0
