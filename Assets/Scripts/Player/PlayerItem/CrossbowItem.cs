@@ -7,7 +7,13 @@ public class CrossbowItem : PlayerItem
     [SerializeField] private float ProjectileForce;
     [SerializeField] private CrossbowItemMode[] itemModes;
 
-    private float lastUsedTime;
+    private float lastUsedTime = float.MinValue;
+
+    public override PlayerItemUseResult UseInteract()
+    {
+        lastUsedTime = float.MinValue;
+        return new PlayerItemUseResult(type: PlayerItemUseResult.Type.StartAim);
+    }
 
     public override void AimUpdate(PlayerItemUser playerItemUser, PlayerContext context, LineRenderer aimLine)
     {
@@ -23,7 +29,7 @@ public class CrossbowItem : PlayerItem
     public override PlayerItemUseResult ConfirmInteract(PlayerItemUser playerItemUser, int activeModeIndex)
     {
         CrossbowItemMode mode = itemModes[activeModeIndex];
-        float remainingCooldown = (lastUsedTime + mode.Cooldown) - Time.time;
+        float remainingCooldown = (lastUsedTime) - Time.time + mode.Cooldown;
         if (remainingCooldown > 0)
         {
             return new PlayerItemUseResult(type: PlayerItemUseResult.Type.InCooldown, remainingCooldown);

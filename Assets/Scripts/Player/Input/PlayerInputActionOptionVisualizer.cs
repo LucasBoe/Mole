@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class PlayerInputActionOptionVisualizer : MonoBehaviour
 {
-    [SerializeField] RectTransform worldSpaceParent, uiSpaceParent;
     [SerializeField] Vector3 uiSpaceOffset, worldSpaceOffset;
     [SerializeField] RectTransform inputUIParentPrefab;
     [SerializeField] PlayerControlPromptUI inputUIPrefab;
@@ -83,7 +82,7 @@ public class PlayerInputActionOptionVisualizer : MonoBehaviour
         }
         else
         {
-            parent = Instantiate(inputUIParentPrefab, targetType == InputAction.TargetTypes.RectTransform ? uiSpaceParent : worldSpaceParent);
+            parent = Instantiate(inputUIParentPrefab, targetType == InputAction.TargetTypes.RectTransform ? UISpace.UI : UISpace.World);
             uiParents.Add(targetTransform, parent);
         }
 

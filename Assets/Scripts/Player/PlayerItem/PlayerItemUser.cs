@@ -66,6 +66,11 @@ public class PlayerItemUser : PlayerSingletonBehaviour<PlayerItemUser>, IPlayerC
                 Crosshair.SetMode(Crosshair.Mode.Active);
                 break;
 
+            case PlayerItemUseResult.Type.InCooldown:
+                string str = confirmResult.ResultFloat.ToString("0.0");
+                WorldTextSpawner.Spawn($"still in cooldown. remaining {str} s", transform.position);
+                break;
+
             case PlayerItemUseResult.Type.Function:
                 confirmResult.ResultFunction?.Invoke();
                 break;

@@ -55,7 +55,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 1591423121
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -196,7 +196,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9057710944172122447}
+  - component: {fileID: 2719898087075894607}
   - component: {fileID: 3610413020221774622}
+  - component: {fileID: 6616867088160583822}
   m_Layer: 5
   m_Name: CanvasInstance
   m_TagString: Untagged
@@ -220,6 +222,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2719898087075894607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1297007562822116095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35688e70fd797704590c5fd84508f559, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  world: {fileID: 1906827962633565304}
+  ui: {fileID: 7827159488523802549}
 --- !u!114 &3610413020221774622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -232,12 +248,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25b7975d6fe690b4d999712a0618af7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldSpaceParent: {fileID: 1906827962633565304}
-  uiSpaceParent: {fileID: 7827159488523802549}
   uiSpaceOffset: {x: 0, y: -100, z: 0}
   worldSpaceOffset: {x: 6, y: 1, z: 0}
   inputUIParentPrefab: {fileID: 2894191411437368956, guid: b472b20202ec5ea4e8f351b7423c7969, type: 3}
   inputUIPrefab: {fileID: 857312041124753315, guid: b41d44e0c3bde634fa8526daa9f31925, type: 3}
+--- !u!114 &6616867088160583822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1297007562822116095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b73407c1dc0a3cd418afaab6508812f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1405024705742051843
 GameObject:
   m_ObjectHideFlags: 0
@@ -1265,6 +1291,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   temporaryUIElements:
   - {fileID: 5316349196055213934, guid: 7b0b2a4994ba2f848a2d1cce757ab61b, type: 3}
+  - {fileID: 5672751779849075823, guid: 0ea24c757f6aad74db7fa2b6a05e875b, type: 3}
 --- !u!1 &6135942087833603616
 GameObject:
   m_ObjectHideFlags: 0
