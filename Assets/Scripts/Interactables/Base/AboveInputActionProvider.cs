@@ -4,9 +4,8 @@ public class AboveInputActionProvider : AboveCooldownInteractable
 {
     protected InputAction[] inputActions;
 
-    protected override void OnEnable()
+    protected virtual void Start()
     {
-        base.OnEnable();
         UpdateInputActions();
     }
 
