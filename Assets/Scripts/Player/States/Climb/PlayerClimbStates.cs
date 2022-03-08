@@ -7,12 +7,8 @@ using UnityEngine;
 
 public class ClimbStateBase : PlayerStateBase
 {
-    public override bool CheckEnter()
-    {
-        return (!PlayerItemUser.Instance.BlocksClimb());
-    }
-
     public ClimbStateBase() : base() { }
+    public override bool StateAllowsCarryingHeavyObjects => false;
 
     public override void Enter()
     {

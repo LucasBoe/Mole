@@ -8,7 +8,7 @@ public class PlayerItem : ScriptableObject
     public Sprite Sprite;
     public GameObject Prefab;
     public bool NeedsConfirmation;
-    public bool BlockCimb;
+    public bool IsHeavy;
 
     public virtual void AimUpdate(PlayerItemUser playerItemUser, PlayerContext context, LineRenderer aimLine) { }
 

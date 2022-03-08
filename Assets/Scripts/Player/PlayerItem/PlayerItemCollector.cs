@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public interface IPlayerComponent
@@ -11,17 +13,30 @@ public interface IPlayerComponent
 
 public class PlayerItemCollector : PlayerBehaviour
 {
-    CollectablePlayerItemWorldObject playerItem;
+
+    [SerializeField] private Collider2D trigger;
+    [SerializeField, ReadOnly] private CollectablePlayerItemWorldObject playerItem;
     InputAction current = null;
 
-    public void Init(PlayerContext context) { }
+    public void Start()
+    {
+        PlayerItemHolder.AddedItem += OnItemChanged;
+        PlayerItemHolder.RemovedItem += OnItemChanged;
+        PlayerItemHolder.Changedtem += OnItemChanged;
+    }
+
+    private void OnItemChanged(PlayerItem item)
+    {
+        UpdateTrigger();
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         CollectablePlayerItemWorldObject c = collision.GetComponent<CollectablePlayerItemWorldObject>();
         if (c != null)
         {
             //TODO: Move this to input action register look at PlayerAboveInputActionProvider
-            current = new InputAction() { Text = "Take " + c.Item.name, Target = transform, Stage= InputActionStage.WorldObject, ActionCallback = TryCollect };
+            current = new InputAction() { Text = "Take " + c.Item.name, Target = transform, Stage = InputActionStage.WorldObject, ActionCallback = TryCollect };
             PlayerInputActionRegister.Instance.RegisterInputAction(current);
             playerItem = c;
         }
@@ -33,14 +48,29 @@ public class PlayerItemCollector : PlayerBehaviour
         if (c != null && PlayerInputActionRegister.Instance.UnregisterAllInputActions(transform)) playerItem = null;
     }
 
+    private void UpdateTrigger()
+    {
+        trigger.enabled = false;
+        trigger.offset = Vector2.down;
+        trigger.enabled = true;
+        trigger.offset = Vector2.zero;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F5))
+            UpdateTrigger();
+    }
+
     private void TryCollect()
     {
-        if (playerItem != null && PlayerItemHolder.Instance.AddItem(playerItem.Item))
+        CollectablePlayerItemWorldObject itemObject = playerItem;
+        if (itemObject != null && PlayerItemHolder.Instance.AddItem(itemObject.Item))
         {
             if (current != null)
                 PlayerInputActionRegister.Instance.UnregisterInputAction(current);
 
-            playerItem.Collect();
+            itemObject.Collect();
         }
     }
 }

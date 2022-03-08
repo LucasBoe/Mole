@@ -481,6 +481,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59923f6eef503ae44b6431ee061be437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trigger: {fileID: 7193096734569155895}
+  playerItem: {fileID: 0}
 --- !u!58 &7193096734569155895
 CircleCollider2D:
   m_ObjectHideFlags: 0

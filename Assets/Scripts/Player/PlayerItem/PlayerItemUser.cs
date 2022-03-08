@@ -98,8 +98,8 @@ public class PlayerItemUser : PlayerSingletonBehaviour<PlayerItemUser>, IPlayerC
         selectedItem = item;
     }
 
-    public bool BlocksClimb()
+    public bool IsHoldingHeavyItem()
     {
-        return selectedItem != null && selectedItem.BlockCimb;
+        return selectedItem != null && selectedItem.IsHeavy;
     }
 }

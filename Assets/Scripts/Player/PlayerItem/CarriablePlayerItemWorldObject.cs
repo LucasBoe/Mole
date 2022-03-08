@@ -10,6 +10,7 @@ public class CarriablePlayerItemWorldObject : InteractablePlayerItemWorldObject
     [SerializeField] DistanceJoint2D distanceJoint2D;
 
     private InputAction carryAction;
+    
 
     private void Start()
     {

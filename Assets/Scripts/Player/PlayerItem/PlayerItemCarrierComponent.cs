@@ -6,8 +6,8 @@ using UnityEngine;
 public class PlayerItemCarrierComponent : PlayerSingletonBehaviour<PlayerItemCarrierComponent>
 {
     [SerializeField] private new Rigidbody2D rigidbody2D;
-    CarriablePlayerItemWorldObject potCarryable, currentlyCarried;
-    InputAction carryAction = null;
+    private CarriablePlayerItemWorldObject potCarryable, currentlyCarried;
+    private InputAction carryAction = null;
 
     private void OnEnable()
     {
@@ -36,12 +36,23 @@ public class PlayerItemCarrierComponent : PlayerSingletonBehaviour<PlayerItemCar
     {
         CarriablePlayerItemWorldObject c = collision.GetComponent<CarriablePlayerItemWorldObject>();
 
-        if (c != null && c != currentlyCarried)
+        if (CouldCarry(c))
         {
             potCarryable = c;
             carryAction = potCarryable.GetCarryAction();
             PlayerInputActionRegister.Instance.RegisterInputAction(carryAction);
         }
+    }
+
+    private bool CouldCarry(CarriablePlayerItemWorldObject c)
+    {
+        if (c == null || c == currentlyCarried)
+            return false;
+
+        if (c.Item.IsHeavy && !PlayerStateMachine.Instance.CurrentState.StateAllowsCarryingHeavyObjects)
+            return false;
+
+        return PlayerItemHolder.Instance.CanCollect(c.Item);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -54,7 +65,7 @@ public class PlayerItemCarrierComponent : PlayerSingletonBehaviour<PlayerItemCar
 
     public void TryCarry(CarriablePlayerItemWorldObject carriablePlayerItemWorldObject)
     {
-        if (potCarryable != null && currentlyCarried != potCarryable && PlayerItemHolder.Instance.CanCollect(potCarryable.Item))
+        if (CouldCarry(carriablePlayerItemWorldObject))
         {
             if (carryAction != null)
                 PlayerInputActionRegister.Instance.UnregisterInputAction(carryAction);
@@ -63,6 +74,11 @@ public class PlayerItemCarrierComponent : PlayerSingletonBehaviour<PlayerItemCar
                 PlayerItemHolder.Instance.RemoveItem(currentlyCarried.Item);
 
             potCarryable.StartCarry(rigidbody2D);
+        }
+        else if (potCarryable != null)
+        {
+            PlayerInputActionRegister.Instance.UnregisterAllInputActions(potCarryable.transform);
+            potCarryable = null;
         }
     }
 }

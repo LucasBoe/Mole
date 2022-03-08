@@ -62,11 +62,17 @@ public class PlayerStateObject
 //Player State Base Class with common and abstract functions 
 public abstract class PlayerStateBase : PlayerStateObject
 {
-
-    public virtual bool CheckEnter() { return true; }
+    public virtual bool CheckEnter()
+    {
+        bool canEnter = !(PlayerItemUser.Instance.IsHoldingHeavyItem() && !StateAllowsCarryingHeavyObjects);
+        ConsoleProDebug.Watch("TryEnter: ", $"{this.GetType()} check enter: {canEnter} (holding heavy: {PlayerItemUser.Instance.IsHoldingHeavyItem()} && heavy allowed: {StateAllowsCarryingHeavyObjects}) ");
+        return canEnter;
+    }
     public virtual void Enter() { }
     public virtual void Exit() { }
     public virtual void Update() { }
+
+    public virtual bool StateAllowsCarryingHeavyObjects => true;
 
     protected void SetCollisionActive(bool active)
     {
