@@ -9,8 +9,7 @@ public class PlayerItem : ScriptableObject
     public GameObject Prefab;
     public bool NeedsConfirmation;
     public bool IsHeavy;
-
-
+    public bool IsUseable;
 
     public virtual PlayerItemUseResult UseInteract() { return new PlayerItemUseResult(); }
     public virtual PlayerItemUseResult ConfirmInteract(PlayerItemUser playerItemUser, int selectedModeIndex) { return new PlayerItemUseResult(); }
