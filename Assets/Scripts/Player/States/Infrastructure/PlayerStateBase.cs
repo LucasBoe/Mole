@@ -24,6 +24,12 @@ public class PlayerStateObject
 
         return false;
     }
+
+    public bool IsHoldingHeavyItem()
+    {
+        return PlayerItemUser.Instance.IsHoldingHeavyItem();
+    }
+
     protected CollisionCheck GetCheck(CheckType type)
     {
         return context.CollisionChecks[type];

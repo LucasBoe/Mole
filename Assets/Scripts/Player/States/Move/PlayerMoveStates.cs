@@ -87,12 +87,11 @@ public class WalkState : MoveBaseState
     {
         base.Update();
 
-        IsSprinting = context.Input.Sprinting;
-        float xInput = context.Input.Axis.x;
+        IsSprinting = context.Input.Sprinting && !IsHoldingHeavyItem();
+        float x = context.Input.Axis.x * context.Values.XVelocity.GetValue(IsSprinting);
+        context.Rigidbody.velocity = new Vector2(x, context.Rigidbody.velocity.y);
 
-        context.Rigidbody.velocity = new Vector2(xInput * context.Values.XVelocity.GetValue(context.Input), context.Rigidbody.velocity.y);
-
-        if (xInput == 0 || triesMovingIntoWall)
+        if (!context.TriesMoveLeftRight || triesMovingIntoWall)
             SetState(new IdleState());
 
         if (!IsColliding(CheckType.Ground))

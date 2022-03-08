@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -50,5 +51,10 @@ public struct SprintEffectedFloat
     public float GetValue(PlayerInput input)
     {
         return input.Sprinting ? SprintValue : NotSprintValue;
+    }
+
+    internal float GetValue(bool isSprinting)
+    {
+        return isSprinting ? SprintValue : NotSprintValue;
     }
 }
