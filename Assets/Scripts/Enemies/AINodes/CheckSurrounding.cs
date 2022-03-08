@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TheKiwiCoder;
 
-public class CheckSurrounding : ActionNode
+public class CheckSurrounding : Say
 {
     protected override void OnStart()
     {
@@ -12,6 +12,7 @@ public class CheckSurrounding : ActionNode
 
     protected override void OnStop()
     {
+        base.OnStart();
         context.playerDetectionModule.StopChecking();
     }
 
