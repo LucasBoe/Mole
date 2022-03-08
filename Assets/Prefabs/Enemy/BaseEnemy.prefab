@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 5086609206467038248}
   - component: {fileID: 5086609206467038255}
   - component: {fileID: 5086609206467038252}
-  - component: {fileID: 9061843052702163448}
   - component: {fileID: 304036658113223678}
   - component: {fileID: 3810135767740900596}
   - component: {fileID: 5086609206467038263}
@@ -47,6 +46,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1822240135030900123}
+  - {fileID: 903350702476544743}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -74,7 +74,6 @@ MonoBehaviour:
   - {fileID: 5086609206467038248}
   - {fileID: 5086609206467038255}
   - {fileID: 5086609206467038252}
-  - {fileID: 9061843052702163448}
   - {fileID: 5086609206467038254}
 --- !u!114 &5086609206467038260
 MonoBehaviour:
@@ -242,21 +241,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody2D: {fileID: 5086609206467038257}
---- !u!114 &9061843052702163448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5086609206467038268}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82ea6085d7f5b114aa8cb1a80d0fe1c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthbarRenderer: {fileID: 5878509442551127774, guid: 22e6306b8af850647942acfb9b9b2ef5, type: 3}
-  damageModule: {fileID: 5086609206467038249}
-  materialInstance: {fileID: 0}
 --- !u!114 &304036658113223678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -462,3 +446,61 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!1 &6603369976691588559
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 903350702476544743}
+  - component: {fileID: 7754886841339291583}
+  - component: {fileID: 8569195567888467619}
+  m_Layer: 10
+  m_Name: EnemyHealthVisualizer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &903350702476544743
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6603369976691588559}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5086609206467038258}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7754886841339291583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6603369976691588559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82ea6085d7f5b114aa8cb1a80d0fe1c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthbarRenderer: {fileID: 5878509442551127774, guid: 22e6306b8af850647942acfb9b9b2ef5, type: 3}
+  damageModule: {fileID: 5086609206467038249}
+--- !u!114 &8569195567888467619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6603369976691588559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a51ba6182913b2a46a7732c8b0c031cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

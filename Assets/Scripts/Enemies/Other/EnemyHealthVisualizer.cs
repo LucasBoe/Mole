@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class EnemyHealthVisualizer : MonoBehaviour
 {
-    [SerializeField] SpriteRenderer healthbarRenderer;
-    [SerializeField] EnemyDamageModule damageModule;
-    [SerializeField, ReadOnly] Material materialInstance;
+    [SerializeField] private SpriteRenderer healthbarRenderer;
+    [SerializeField] private EnemyDamageModule damageModule;
+    private Material materialInstance;
 
     private void Start()
     {
