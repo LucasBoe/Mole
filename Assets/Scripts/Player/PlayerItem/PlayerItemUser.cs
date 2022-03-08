@@ -36,34 +36,38 @@ public class PlayerItemUser : PlayerSingletonBehaviour<PlayerItemUser>, IPlayerC
 
     internal void Use(PlayerItem item)
     {
-        if (item.NeedsConfirmation)
-        {
-            aimLine = aimLineObject.GetComponent<LineRenderer>();
-            if (aimLine == null)
-                aimLine = aimLineObject.AddComponent<LineRenderer>();
-
-            aimLine.useWorldSpace = true;
-            aimLine.widthCurve = AnimationCurve.Constant(0, 1, 0.125f);
-            aimLine.material = lineRendererMat;
-            Crosshair.SetMode(Crosshair.Mode.Active);
-        } else
-        {
-            Confirm(0);
-        }
+        PlayerItemUseResult useResult = selectedItem.UseInteract();
+        ExecuteInteractionResult(useResult);
     }
 
     internal void Confirm(int selectedModeIndex)
     {
-        PlayerItemUseResult useResult = selectedItem.AimInteract(this, selectedModeIndex);
+        PlayerItemUseResult confirmResult = selectedItem.ConfirmInteract(this, selectedModeIndex);
+        ExecuteInteractionResult(confirmResult);
+    }
 
-        switch (useResult.ResultType)
+    private void ExecuteInteractionResult(PlayerItemUseResult confirmResult)
+    {
+        switch (confirmResult.ResultType)
         {
             case PlayerItemUseResult.Type.Destroy:
                 PlayerItemHolder.Instance.RemoveItem(selectedItem);
                 break;
 
+            case PlayerItemUseResult.Type.StartAim:
+
+                aimLine = aimLineObject.GetComponent<LineRenderer>();
+                if (aimLine == null)
+                    aimLine = aimLineObject.AddComponent<LineRenderer>();
+
+                aimLine.useWorldSpace = true;
+                aimLine.widthCurve = AnimationCurve.Constant(0, 1, 0.125f);
+                aimLine.material = lineRendererMat;
+                Crosshair.SetMode(Crosshair.Mode.Active);
+                break;
+
             case PlayerItemUseResult.Type.Function:
-                useResult.ResultFunction?.Invoke();
+                confirmResult.ResultFunction?.Invoke();
                 break;
         }
     }

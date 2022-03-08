@@ -18,7 +18,7 @@ public class CrossbowItem : PlayerItem
         aimLine.SetPositions(new Vector3[] { origin, origin + (dir * 100) });
     }
 
-    public override PlayerItemUseResult AimInteract(PlayerItemUser playerItemUser, int activeModeIndex)
+    public override PlayerItemUseResult ConfirmInteract(PlayerItemUser playerItemUser, int activeModeIndex)
     {
         var playerPos = playerItemUser.transform.position;
         var dir = PlayerInputHandler.PlayerInput.VirtualCursorToDir(playerPos);

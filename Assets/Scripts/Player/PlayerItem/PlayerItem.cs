@@ -10,12 +10,12 @@ public class PlayerItem : ScriptableObject
     public bool NeedsConfirmation;
     public bool IsHeavy;
 
-    public virtual void AimUpdate(PlayerItemUser playerItemUser, PlayerContext context, LineRenderer aimLine) { }
 
-    public virtual PlayerItemUseResult AimInteract(PlayerItemUser playerItemUser, int selectedModeIndex)
-    {
-        return new PlayerItemUseResult();
-    }
+
+    public virtual PlayerItemUseResult UseInteract() { return new PlayerItemUseResult(); }
+    public virtual PlayerItemUseResult ConfirmInteract(PlayerItemUser playerItemUser, int selectedModeIndex) { return new PlayerItemUseResult(); }
+
+    public virtual void AimUpdate(PlayerItemUser playerItemUser, PlayerContext context, LineRenderer aimLine) { }
 
     public virtual ItemMode[] GetItemModes()
     {
@@ -60,5 +60,6 @@ public class PlayerItemUseResult
         Fail,
         Destroy,
         Function,
+        StartAim,
     }
 }
