@@ -16,11 +16,6 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
 
     private Coroutine checkBackOnPlayerRoutine, searchForPlayerRoutine;
 
-    private void OnEnable()
-    {
-        OnPlayerEnter(PlayerController.Context.Rigidbody);
-    }
-
     private void Start()
     {
         memoryModule = GetModule<EnemyMemoryModule>();
