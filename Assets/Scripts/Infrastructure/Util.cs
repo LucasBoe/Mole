@@ -226,6 +226,11 @@ public static class Util
         }
     }
 
+    public static string GetRandom(this string[] strings)
+    {
+        return strings[UnityEngine.Random.Range(0, strings.Length)];
+    }
+
     public static Vector2 Round (this Vector2 vector2)
     {
         return new Vector2(Mathf.Round(vector2.x), Mathf.Round(vector2.y));

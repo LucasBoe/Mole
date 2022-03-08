@@ -15,6 +15,7 @@ MonoBehaviour:
   Sprite: {fileID: -2692897874812119320, guid: 4242c85d0e64e784ca94b6ab5b5b9e45, type: 3}
   Prefab: {fileID: 8522751827972833360, guid: bbfdf188fb54a954ba452a66568f4058, type: 3}
   NeedsConfirmation: 1
-  BlockCimb: 0
+  IsHeavy: 0
+  IsUseable: 1
   ThrowForce: 10
   GravityScale: 0.5

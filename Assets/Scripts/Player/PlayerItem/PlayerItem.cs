@@ -9,8 +9,7 @@ public class PlayerItem : ScriptableObject
     public GameObject Prefab;
     public bool NeedsConfirmation;
     public bool IsHeavy;
-
-
+    public virtual bool IsUseable => true;
 
     public virtual PlayerItemUseResult UseInteract() { return new PlayerItemUseResult(); }
     public virtual PlayerItemUseResult ConfirmInteract(PlayerItemUser playerItemUser, int selectedModeIndex) { return new PlayerItemUseResult(); }
@@ -37,6 +36,8 @@ public class PlayerItemUseResult
 {
     public Type ResultType;
     public Action ResultFunction;
+    public float ResultFloat;
+    public string ResultString;
 
     public PlayerItemUseResult()
     {
@@ -54,6 +55,18 @@ public class PlayerItemUseResult
         ResultFunction = resultFunction;
     }
 
+    public PlayerItemUseResult(Type type, float resultFloat)
+    {
+        ResultType = type;
+        ResultFloat = resultFloat;
+    }
+
+    public PlayerItemUseResult(Type type, string resultString)
+    {
+        ResultType = type;
+        ResultString = resultString;
+    }
+
     public enum Type
     {
         None,
@@ -61,5 +74,6 @@ public class PlayerItemUseResult
         Destroy,
         Function,
         StartAim,
+        InCooldown,
     }
 }

@@ -132,7 +132,7 @@ public class InputAction
     public System.Action ActionCallback;
     public InputActionStage Stage;
 
-    public TargetTypes TargetType;
+    public TargetTypes TargetType { get; private set; }
     public Transform TargetTransform { get; private set; }
     public RectTransform TargetRectTransform { get; private set; }
     public UnityEngine.Object TargetObject { get; private set; }

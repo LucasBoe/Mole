@@ -7,6 +7,14 @@ public class CrossbowItem : PlayerItem
     [SerializeField] private float ProjectileForce;
     [SerializeField] private CrossbowItemMode[] itemModes;
 
+    private float lastUsedTime = float.MinValue;
+
+    public override PlayerItemUseResult UseInteract()
+    {
+        lastUsedTime = float.MinValue;
+        return new PlayerItemUseResult(type: PlayerItemUseResult.Type.StartAim);
+    }
+
     public override void AimUpdate(PlayerItemUser playerItemUser, PlayerContext context, LineRenderer aimLine)
     {
         Vector2 origin = playerItemUser.transform.position;
@@ -20,13 +28,31 @@ public class CrossbowItem : PlayerItem
 
     public override PlayerItemUseResult ConfirmInteract(PlayerItemUser playerItemUser, int activeModeIndex)
     {
-        var playerPos = playerItemUser.transform.position;
-        var dir = PlayerInputHandler.PlayerInput.VirtualCursorToDir(playerPos);
-        GameObject instance = Instantiate(itemModes[activeModeIndex].ProjectilePrefab, playerPos + Vector3.up, Quaternion.identity, LayerHandler.Parent);
-        instance.transform.right = dir;
-        instance.GetComponent<Rigidbody2D>().velocity = (dir * ProjectileForce);
+        CrossbowItemMode mode = itemModes[activeModeIndex];
+        float remainingCooldown = (lastUsedTime) - Time.time + mode.Cooldown;
+        if (remainingCooldown > 0)
+        {
+            return new PlayerItemUseResult(type: PlayerItemUseResult.Type.InCooldown, remainingCooldown);
+        }
+        else
+        {
+            if (mode.ProjectileItem != null)
+            {
+                if (PlayerItemHolder.Instance.GetAmount(mode.ProjectileItem) == 0)
+                    return new PlayerItemUseResult(type: PlayerItemUseResult.Type.Fail, "not enough bolts");
+                else
+                    PlayerItemHolder.Instance.RemoveItem(mode.ProjectileItem);
+            }
 
-        return new PlayerItemUseResult(PlayerItemUseResult.Type.None);
+            lastUsedTime = Time.time;
+            var playerPos = playerItemUser.transform.position;
+            var dir = PlayerInputHandler.PlayerInput.VirtualCursorToDir(playerPos);
+            GameObject instance = Instantiate(mode.ProjectilePrefab, playerPos + Vector3.up, Quaternion.identity, LayerHandler.Parent);
+            instance.transform.right = dir;
+            instance.GetComponent<Rigidbody2D>().velocity = (dir * ProjectileForce);
+
+            return new PlayerItemUseResult(PlayerItemUseResult.Type.None);
+        }
     }
 
     public override ItemMode[] GetItemModes()
@@ -38,5 +64,7 @@ public class CrossbowItem : PlayerItem
 [System.Serializable]
 public class CrossbowItemMode : ItemMode
 {
+    public PlayerItem ProjectileItem;
     public GameObject ProjectilePrefab;
+    public float Cooldown;
 }

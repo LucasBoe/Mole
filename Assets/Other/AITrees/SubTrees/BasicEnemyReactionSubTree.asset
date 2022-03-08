@@ -22,6 +22,32 @@ MonoBehaviour:
   description: 
   drawGizmos: 0
   animationOverride: {fileID: 0}
+--- !u!114 &-8556977050979480063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6380f505e0008004fa9e298fa5384098, type: 3}
+  m_Name: Say
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 6d8bad071f78b104a9df778fc390978a
+  position: {x: -225.5094, y: 580.5283}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    variableModule: {fileID: 0}
+  description: 
+  drawGizmos: 0
+  animationOverride: {fileID: 0}
+  toSay:
+  - There you are!
+  - Found you!
+  - You are going to die!
 --- !u!114 &-7398591756061302975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37,7 +63,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 119fa8ab74124204282c0b3c0511778c
-  position: {x: -756.67926, y: 580.52826}
+  position: {x: -756.22644, y: 580.5283}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -59,7 +85,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 5237f7b4a7b363e4cae8252218971835
-  position: {x: -64.75494, y: 873.05664}
+  position: {x: 15.69812, y: 881.2076}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -199,7 +225,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: b56dcc4e04b654c44a722be247f61620
-  position: {x: -139.98969, y: 703.69824}
+  position: {x: -59.47168, y: 711.8491}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -209,6 +235,33 @@ MonoBehaviour:
   children:
   - {fileID: 8758951590883576937}
   - {fileID: -6909722623495966168}
+--- !u!114 &-2775349470930408895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6380f505e0008004fa9e298fa5384098, type: 3}
+  m_Name: Say
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 227eb440587da3e46b6e206354629436
+  position: {x: 351.39624, y: 572.3774}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    variableModule: {fileID: 0}
+  description: 
+  drawGizmos: 0
+  animationOverride: {fileID: 0}
+  toSay:
+  - What was that?
+  - I think I heard something...
+  - Let me chack this out.
+  - brb
 --- !u!114 &-1388539613692111472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,7 +277,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 78be89a08fbfe574fb66a83d8bce82db
-  position: {x: 351.42633, y: 572.3774}
+  position: {x: 521.6793, y: 572.3774}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -264,6 +317,8 @@ MonoBehaviour:
   - {fileID: -3970566769343910874}
   - {fileID: 7114833549353706021}
   - {fileID: -2918841347443153681}
+  - {fileID: -8556977050979480063}
+  - {fileID: -2775349470930408895}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -282,13 +337,17 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 2bc4f24fe9e81db4dbc4d669e242b8be
-  position: {x: 534.2259, y: 572.3774}
+  position: {x: 694.6604, y: 572.3774}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
   animationOverride: {fileID: 7400000, guid: 52e57727acc016145a2fd04dc00df008, type: 2}
+  toSay:
+  - Must have been the wind.
+  - Hmm, nothing.
+  - That looks like nothing to me.
 --- !u!114 &2312534505177209428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -326,7 +385,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 45f97c9f284b2a24aaa48a78d5084581
-  position: {x: -310.25385, y: 572.3774}
+  position: {x: -400.75476, y: 580.5283}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -381,6 +440,7 @@ MonoBehaviour:
   animationOverride: {fileID: 0}
   children:
   - {fileID: 3752875956636505175}
+  - {fileID: -8556977050979480063}
   - {fileID: 7114833549353706021}
 --- !u!114 &6987580830103883313
 MonoBehaviour:
@@ -434,6 +494,7 @@ MonoBehaviour:
   animationOverride: {fileID: 0}
   children:
   - {fileID: -3901640935913422298}
+  - {fileID: -2775349470930408895}
   - {fileID: -1388539613692111472}
   - {fileID: 2003725769853554306}
 --- !u!114 &7114833549353706021
@@ -451,7 +512,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 6ddb33399d9ff724c95f5866031c4565
-  position: {x: -139.98969, y: 572.3774}
+  position: {x: -59.47168, y: 580.5283}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -476,7 +537,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 3a9de54375b341741bbfee3f346cdce4
-  position: {x: -228.67935, y: 873.05664}
+  position: {x: -148.22644, y: 881.2076}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}

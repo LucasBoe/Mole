@@ -22,6 +22,8 @@ public class PlayerItemUI : UIBehaviour
     [SerializeField] RectTransform itemSlotPrefab;
     [SerializeField] Image itemSlotModePrefab;
 
+    [SerializeField] RectTransform itemResourceUIElement;
+
     InputAction ac_useItem, ac_deselectItem, ac_stopUsing, ac_confirmUsage;
     private void Start()
     {
@@ -102,6 +104,9 @@ public class PlayerItemUI : UIBehaviour
 
     private void OnAddItem(PlayerItem item)
     {
+        if (!item.IsUseable)
+            return;
+
         ItemSlot newSlot = new ItemSlot() { Item = item, Modes = item.GetItemModes() };
         itemSlots.Add(newSlot);
         CreateInstancesForSlot(newSlot);
@@ -111,6 +116,9 @@ public class PlayerItemUI : UIBehaviour
     }
     private void OnRemoveItem(PlayerItem item)
     {
+        if (!item.IsUseable)
+            return;
+
         for (int i = itemSlots.Count - 1; i >= 0; i--)
         {
             ItemSlot slot = itemSlots[i];
@@ -179,6 +187,9 @@ public class PlayerItemUI : UIBehaviour
 
     private void UpdateSelectedItemDisplay(PlayerItem selected)
     {
+        if (!selected.IsUseable)
+            return;
+
         for (int i = 0; i < itemSlots.Count; i++)
         {
             ItemSlot slot = itemSlots[i];

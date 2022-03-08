@@ -685,6 +685,8 @@ MonoBehaviour:
   startItems:
   - Item: {fileID: 11400000, guid: 423842dede65dce499a13036082fefa1, type: 2}
     Amount: 1
+  - Item: {fileID: 11400000, guid: 57414c759f3bdaa48a15320a41112e98, type: 2}
+    Amount: 3
 --- !u!1 &7193096735473354739
 GameObject:
   m_ObjectHideFlags: 0

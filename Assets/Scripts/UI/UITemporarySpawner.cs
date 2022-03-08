@@ -19,4 +19,8 @@ public class UITemporarySpawner : MonoBehaviour
     {
         return Instantiate(prefabDictionary[typeof(T)], transform);
     }
+    public TemporaryUIElement Spawn<T>(Transform parent)
+    {
+        return Instantiate(prefabDictionary[typeof(T)], parent);
+    }
 }

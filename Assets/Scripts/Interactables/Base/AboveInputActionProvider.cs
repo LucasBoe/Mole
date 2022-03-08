@@ -2,7 +2,7 @@ using System;
 
 public class AboveInputActionProvider : AboveCooldownInteractable
 {
-    private InputAction[] inputActions;
+    protected InputAction[] inputActions;
 
     protected override void OnEnable()
     {
