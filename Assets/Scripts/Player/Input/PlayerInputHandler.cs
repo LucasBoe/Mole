@@ -53,7 +53,7 @@ public class PlayerInputHandler : PlayerSingletonBehaviour<PlayerInputHandler>
         PlayerInput.HoldingJump = Input.GetButton("Jump");
         PlayerInput.HoldingInteract = Input.GetButton("Interact");
         PlayerInput.HoldingUse = Input.GetButton("Use");
-        PlayerInput.Sprinting = Input.GetAxis("Sprint") > 0.5f;
+        PlayerInput.Sprinting = Input.GetAxis("Sprint") > 0.5f || Input.GetButton("Sprint");
 
         debug = PlayerInput;
     }
