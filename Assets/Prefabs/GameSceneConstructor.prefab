@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7246185404306764977}
   - component: {fileID: 7246185404306764978}
+  - component: {fileID: 2030969546147730455}
   - component: {fileID: 1325253496530115874}
   - component: {fileID: 4382031408990235205}
   m_Layer: 0
@@ -54,6 +55,20 @@ MonoBehaviour:
   - {fileID: 6400605031189681350, guid: b081b5795b327594d8adb5980e08f44b, type: 3}
   - {fileID: 1297007562822116095, guid: 76f49e98dc8cb194f835ea8e6870dd6b, type: 3}
   - {fileID: 9164936586159975609, guid: d8b3d5b9efdebf0449dab2605253626d, type: 3}
+  Player: {fileID: 7193096735565673044, guid: f1faef366b0c9bb48abe91b2b3235b6b, type: 3}
+  playerSpawnHandler: {fileID: 2030969546147730455}
+--- !u!114 &2030969546147730455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7246185404306764979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e6d8376dd5656d4e9ecb625a6392e33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   Player: {fileID: 7193096735565673044, guid: f1faef366b0c9bb48abe91b2b3235b6b, type: 3}
 --- !u!20 &1325253496530115874
 Camera:

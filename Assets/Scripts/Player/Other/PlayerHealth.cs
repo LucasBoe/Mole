@@ -40,6 +40,8 @@ public class PlayerHealth : PlayerSingletonBehaviour<PlayerHealth>, IHealth
         OnHealthChange?.Invoke(relative);
 
         if (current < 0)
-            Destroy(gameObject);
+        {
+            PlayerSpawnHandler.Respawn();
+        }
     }
 }

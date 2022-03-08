@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameSceneConstructor : MonoBehaviour
 {
     public GameObject[] ToInstatiate;
-    public GameObject Player;
+    [SerializeField] PlayerSpawnHandler playerSpawnHandler;
     private void Awake()
     {
         //Spawn instances
@@ -17,9 +17,7 @@ public class GameSceneConstructor : MonoBehaviour
         marker.SetAsFirstSibling();
 
         //Spawn player
-        Transform spawnPoint = GameObject.Find("SpawnPoint").transform;
-        Vector2 spawnPos = spawnPoint == null ? Vector3.zero : spawnPoint.position;
-        Instantiate(Player, spawnPos, Quaternion.identity);
+        playerSpawnHandler.Spawn();
 
         Destroy(gameObject);
     }
