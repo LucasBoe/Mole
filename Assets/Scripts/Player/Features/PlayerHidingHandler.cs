@@ -23,7 +23,7 @@ public class PlayerHidingHandler : PlayerSingletonBehaviour<PlayerHidingHandler>
     }
 
     [SerializeField, ReadOnly] private float playerHiddenValue;
-    [SerializeField, ReadOnly] private HidingMode hidingMode;
+    [SerializeField, ReadOnly] private HidingMode hidingMode = HidingMode.Auto;
     [SerializeField] private HidingState hidingState;
 
     private bool hiddenByState = false;
@@ -35,6 +35,7 @@ public class PlayerHidingHandler : PlayerSingletonBehaviour<PlayerHidingHandler>
         PlayerStateMachine.Instance.OnStateChange += OnPlayerEnterState;
         PlayerHidingTrigger.TriggerEntered += OnTriggerEntered;
         PlayerHidingTrigger.TriggerExited += OnTriggerExited;
+        UpdateHiddenValueFromTriggers(new List<PlayerHidingTrigger>());
     }
 
     private void OnTriggerExited(PlayerHidingTrigger trigger)

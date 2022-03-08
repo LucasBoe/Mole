@@ -16,6 +16,11 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
 
     private Coroutine checkBackOnPlayerRoutine, searchForPlayerRoutine;
 
+    private void OnEnable()
+    {
+        OnPlayerEnter(PlayerController.Context.Rigidbody);
+    }
+
     private void Start()
     {
         memoryModule = GetModule<EnemyMemoryModule>();
@@ -50,11 +55,8 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
         trigger.PlayerEnter -= OnPlayerEnter;
     }
 
-    private void OnPlayerEnter(Collider2D playerCollider)
+    private void OnPlayerEnter(Rigidbody2D player)
     {
-
-        Rigidbody2D player = playerCollider.attachedRigidbody;
-
         if (CouldSee(player))
             FoundPlayer(player);
 
