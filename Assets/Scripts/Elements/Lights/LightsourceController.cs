@@ -7,6 +7,7 @@ using UnityEngine;
 public class LightsourceController : AboveInputActionProvider
 {
     [SerializeField] private ControllableLightsource lightsource;
+    [SerializeField] private PlayerItem requiredItem;
     protected override void OnPlayerEnter()
     {
         inputActions[0].Text = lightsource.IsOn ? "Turn Off Light" : "Turn on Light";
@@ -20,7 +21,21 @@ public class LightsourceController : AboveInputActionProvider
 
     public void TryInteract()
     {
-        Log("TryInteract (on: " + lightsource.IsOn+ ")");
+        Log("TryInteract (on: " + lightsource.IsOn + ")");
+
+        if (requiredItem != null)
+        {
+            if (PlayerItemHolder.Instance.GetAmount(requiredItem) == 0)
+            {
+                WorldTextSpawner.Spawn("0/1 " + requiredItem.name, transform.position);
+                return;
+            }
+            else
+            {
+                PlayerItemHolder.Instance.RemoveItem(requiredItem);
+            }
+        }
+
         lightsource.Switch();
     }
 

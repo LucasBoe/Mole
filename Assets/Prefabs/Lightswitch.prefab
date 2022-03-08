@@ -115,3 +115,4 @@ MonoBehaviour:
   playerIsAbove: 0
   useCooldown: 0
   lightsource: {fileID: 0}
+  requiredItem: {fileID: 11400000, guid: 7a40643c9d779d549a5b0a677324da70, type: 2}
