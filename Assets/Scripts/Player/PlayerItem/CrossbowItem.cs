@@ -36,6 +36,14 @@ public class CrossbowItem : PlayerItem
         }
         else
         {
+            if (mode.ProjectileItem != null)
+            {
+                if (PlayerItemHolder.Instance.GetAmount(mode.ProjectileItem) == 0)
+                    return new PlayerItemUseResult(type: PlayerItemUseResult.Type.Fail, "not enough bolts");
+                else
+                    PlayerItemHolder.Instance.RemoveItem(mode.ProjectileItem);
+            }
+
             lastUsedTime = Time.time;
             var playerPos = playerItemUser.transform.position;
             var dir = PlayerInputHandler.PlayerInput.VirtualCursorToDir(playerPos);
@@ -56,6 +64,7 @@ public class CrossbowItem : PlayerItem
 [System.Serializable]
 public class CrossbowItemMode : ItemMode
 {
+    public PlayerItem ProjectileItem;
     public GameObject ProjectilePrefab;
     public float Cooldown;
 }

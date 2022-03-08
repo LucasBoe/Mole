@@ -71,6 +71,11 @@ public class PlayerItemUser : PlayerSingletonBehaviour<PlayerItemUser>, IPlayerC
                 WorldTextSpawner.Spawn($"still in cooldown. remaining {str} s", transform.position);
                 break;
 
+            case PlayerItemUseResult.Type.Fail:
+                if (!string.IsNullOrEmpty(confirmResult.ResultString))
+                    WorldTextSpawner.Spawn(confirmResult.ResultString, transform.position);
+                break;
+
             case PlayerItemUseResult.Type.Function:
                 confirmResult.ResultFunction?.Invoke();
                 break;

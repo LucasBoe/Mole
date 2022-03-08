@@ -37,6 +37,7 @@ public class PlayerItemUseResult
     public Type ResultType;
     public Action ResultFunction;
     public float ResultFloat;
+    public string ResultString;
 
     public PlayerItemUseResult()
     {
@@ -58,6 +59,12 @@ public class PlayerItemUseResult
     {
         ResultType = type;
         ResultFloat = resultFloat;
+    }
+
+    public PlayerItemUseResult(Type type, string resultString)
+    {
+        ResultType = type;
+        ResultString = resultString;
     }
 
     public enum Type
