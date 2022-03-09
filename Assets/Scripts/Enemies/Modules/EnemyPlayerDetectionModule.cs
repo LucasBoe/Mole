@@ -19,7 +19,7 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
     private void Start()
     {
         memoryModule = GetModule<EnemyMemoryModule>();
-        memoryModule.Alerted += OnAlert;
+        memoryModule.AlertedEnter += OnAlert;
 
         trigger = Instantiate(trigger, transform);
         trigger.Init(alertRange);
@@ -95,7 +95,7 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
         }
 
         float playerHiddenValue = PlayerHidingHandler.Instance.PlayerHiddenValue;
-        bool playerIsInFrontOfEnemy = player.position.x < transform.position.x == (memoryModule.Forward == Direction2D.Left);
+        bool playerIsInFrontOfEnemy = Direction2DUtil.FromPositions(transform.position, player.position) == memoryModule.Forward;
         bool VisibleInPlainSight = playerHiddenValue > 0.6f && Util.CheckLineOfSight(transform.position, player.position, "Default", drawLineOfSightWith);
         bool VisibleInTwighlight = playerHiddenValue > 0.1f && Util.CheckLineOfSight(transform.position, player.position, new string[] { "Hangable", "Default" }, drawLineOfSightWith);
 

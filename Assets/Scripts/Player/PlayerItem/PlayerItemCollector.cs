@@ -50,10 +50,11 @@ public class PlayerItemCollector : PlayerBehaviour
 
     private void UpdateTrigger()
     {
+        Vector2 offset = trigger.offset;
         trigger.enabled = false;
         trigger.offset = Vector2.down;
         trigger.enabled = true;
-        trigger.offset = Vector2.zero;
+        trigger.offset = offset;
     }
 
     private void Update()

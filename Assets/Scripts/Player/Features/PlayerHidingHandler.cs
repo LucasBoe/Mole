@@ -29,6 +29,8 @@ public class PlayerHidingHandler : PlayerSingletonBehaviour<PlayerHidingHandler>
     private bool hiddenByState = false;
     [SerializeField, ReadOnly] private List<PlayerHidingTrigger> playerTriggers = new List<PlayerHidingTrigger>();
 
+    public static System.Action<float> ChangedHiddenValue; 
+
     private void Start()
     {
         PlayerBrightnessSampler.OnSampleNewPlayerBrightness += UpdateHiddenValueFromPlayerSample;
@@ -84,8 +86,9 @@ public class PlayerHidingHandler : PlayerSingletonBehaviour<PlayerHidingHandler>
         {
             HiddenAmount smallest = playerTriggers.OrderBy(t => t.HiddenAmount).First().HiddenAmount;
             playerHiddenValue = ((int)smallest) / 2f;
-            Log($"playerHiddenValue = { smallest } => { playerHiddenValue }");
         }
+
+        ChangedHiddenValue?.Invoke(playerHiddenValue);
     }
 
     private void UpdateHiddenValueFromPlayerSample(float sample)

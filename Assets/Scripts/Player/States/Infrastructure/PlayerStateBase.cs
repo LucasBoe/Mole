@@ -59,9 +59,13 @@ public class PlayerStateObject
     {
         context = PlayerController.Context;
     }
+    protected void Log(string message)
+    {
+        PlayerStateMachine.Instance.SendLog(message);
+    }
     protected void Watch(string name, string value)
     {
-        ConsoleProDebug.Watch(name, value);
+        PlayerStateMachine.Instance.SendWatch(name, value);
     }
 }
 

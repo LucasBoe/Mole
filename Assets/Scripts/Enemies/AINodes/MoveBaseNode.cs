@@ -22,7 +22,7 @@ namespace TheKiwiCoder
         protected void MoveTo(Vector2 target)
         {
             this.target = target;
-            context.memory.Forward = target.x < context.transform.position.x ? Direction2D.Left : Direction2D.Right;
+            context.memory.Forward = Direction2DUtil.FromPositions(context.transform.position, target);
             context.moveModule.MoveTo(target);
         }
     }

@@ -12,7 +12,7 @@ public class Turn : ActionNode
 
     protected override State OnUpdate()
     {
-        context.memory.Forward = context.memory.Forward == Direction2D.Left ? Direction2D.Right : Direction2D.Left;
+        context.memory.Forward = context.memory.Forward.Inverted();
         return State.Success;
     }
 }

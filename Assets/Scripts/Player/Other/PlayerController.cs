@@ -51,10 +51,6 @@ public class PlayerController : PlayerSingletonBehaviour<PlayerController>
         context.CollisionChecks.Add(CheckType.EdgeHelperRight, new CollisionCheck(0.4f, -0.75f, 0.4f, 0.75f, LayerMask.GetMask("Default", "Hangable", "Climbable"), Color.cyan));
         context.CollisionChecks.Add(CheckType.AdditionalWallCheck, new CollisionCheck(0, 0, 1.2f, 0.5f, LayerMask.GetMask("Default", "Hangable", "Climbable"), Color.blue));
 
-        //Enemy
-        context.CollisionChecks.Add(CheckType.EnemyBelow, new CollisionCheck(0f, -1.5f, 1f, 1.5f, LayerMask.GetMask("Enemy"), Color.red));
-        context.CollisionChecks.Add(CheckType.EnemySideways, new CollisionCheck(0f, 0f, 2f, 0.5f, LayerMask.GetMask("Enemy"), Color.red));
-
         //rope
         context.CollisionChecks.Add(CheckType.Rope, new CollisionCheck(0f, 0f, 1.5f, 1.5f, LayerMask.GetMask("Rope"), Color.blue));
 
@@ -135,8 +131,6 @@ namespace PlayerCollisionCheckType
         EdgeHelperRight,
         AdditionalWallCheck,
         WallAbove,
-        EnemyBelow,
-        EnemySideways,
         Rope,
         Interactable,
         Tunnel,

@@ -418,3 +418,16 @@ public enum Direction2D
     Left,
     Right,
 }
+
+public static class Direction2DUtil
+{
+    public static Direction2D FromPositions(Vector2 from, Vector2 to)
+    {
+        return to.x < from.x ? Direction2D.Left : Direction2D.Right;
+    }
+
+    public static Direction2D Inverted(this Direction2D orignal)
+    {
+        return orignal == Direction2D.Left ? Direction2D.Right : Direction2D.Left;
+    }
+}

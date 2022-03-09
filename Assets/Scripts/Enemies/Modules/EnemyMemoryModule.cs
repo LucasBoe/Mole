@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class EnemyMemoryModule : EnemyModule<EnemyMemoryModule>
 {
-    [SerializeField]
-    SpriteRenderer spriteRenderer;
+    [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField, ReadOnly] private Vector2 playerPos;
 
     [SerializeField, ReadOnly] private bool canSeePlayer = false;
@@ -33,7 +32,13 @@ public class EnemyMemoryModule : EnemyModule<EnemyMemoryModule>
             bool before = isAlterted;
             isAlterted = value;
             if (isAlterted && !before)
+            {
                 ReactedToAlert = false;
+                AlertedEnter?.Invoke();
+            }
+            else if (!isAlterted && before)
+                AlertedExit?.Invoke();
+
         }
     }
 
@@ -43,7 +48,8 @@ public class EnemyMemoryModule : EnemyModule<EnemyMemoryModule>
     public Rigidbody2D Player { set { playerBody = value; } }
 
     public System.Action<EnemyMemoryModule> CheckedForPlayerPos;
-    public System.Action Alerted;
+    public System.Action AlertedEnter;
+    public System.Action AlertedExit;
 
     public Vector2 PlayerPos
     {
@@ -88,6 +94,5 @@ public class EnemyMemoryModule : EnemyModule<EnemyMemoryModule>
     {
         Log("Alert!");
         IsAlerted = true;
-        Alerted?.Invoke();
     }
 }

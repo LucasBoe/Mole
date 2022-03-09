@@ -19,8 +19,19 @@ public class PlayerBehaviour : MonoBehaviour
         Debug.LogError("P:" + message);
     }
 
-    protected void Watch(string name, string value )
+    protected void Watch(string name, string value)
     {
         ConsoleProDebug.Watch(name, value);
+    }
+
+    public void SendLog(string message)
+    {
+        Log(message);
+    }
+
+    public void SendWatch(string name, string value)
+    {
+        Watch(name, value);
+
     }
 }

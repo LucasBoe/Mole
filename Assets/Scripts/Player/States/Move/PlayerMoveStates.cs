@@ -151,38 +151,11 @@ public class FallState : MoveBaseState
     public override void Enter()
     {
         startFallTime = Time.time;
-        attackEnemyBelowAction = new InputAction()
-        {
-            Target = context.PlayerController.transform,
-            Input = ControlType.Use,
-            Stage = InputActionStage.WorldObject,
-            Text = "Strangle",
-            ActionCallback = () =>
-            {
-                ICombatTarget[] targets = GetCheck(CheckType.EnemyBelow).Get<ICombatTarget>();
-                if (targets != null && targets.Length > 0)
-                {
-                    context.CombatTarget = targets[0];
-                    SetState(new CombatStrangleState(targets[0]));
-                }
-            }
-        };
     }
 
     public override void Update()
     {
         base.Update();
-
-        //combat
-        if (UpdateAttackEnemyBelow())
-        {
-            ICombatTarget[] targets = GetCheck(CheckType.EnemyBelow).Get<ICombatTarget>();
-            if (targets != null && targets.Length > 0)
-            {
-                context.CombatTarget = targets[0];
-                SetState(new CombatStrangleState(targets[0]));
-            }
-        }
 
         if (RopeClimbState.TryEnter())
             return;
@@ -235,34 +208,5 @@ public class FallState : MoveBaseState
 
         if (IsColliding(CheckType.Ground))
             SetState(new IdleState());
-    }
-
-    //TODO: Move this into transition logic
-    private bool UpdateAttackEnemyBelow()
-    {
-        //show / hide prompt
-        bool enemyWasBelowBefore = enemyIsBelow;
-        enemyIsBelow = IsColliding(CheckType.EnemyBelow);
-
-        //handle time warp and attack indicator
-        if (enemyIsBelow && !enemyWasBelowBefore)
-        {
-            Time.timeScale = 0.5f;
-            PlayerInputActionRegister.Instance.RegisterInputAction(attackEnemyBelowAction);
-        }
-        else if (!enemyIsBelow && enemyWasBelowBefore && attackPrompt != null)
-        {
-            Time.timeScale = 1f;
-            PlayerInputActionRegister.Instance.UnregisterInputAction(attackEnemyBelowAction);
-        }
-
-        return false;
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-        PlayerInputActionRegister.Instance.UnregisterInputAction(attackEnemyBelowAction);
-        Time.timeScale = 1f;
     }
 }

@@ -6,8 +6,10 @@ using UnityEngine;
 public class EnemyCombatTargetModule : EnemyModule<EnemyCombatTargetModule>, ICombatTarget
 {
     [SerializeField] Rigidbody2D rigidbody2D;
+
     private EnemyRigidbodyControllerModule controller;
     private EnemyDamageModule damageModule;
+    private EnemyMemoryModule memoryModule;
     public Rigidbody2D Rigidbody2D => rigidbody2D;
     public Vector2 StranglePosition => Vector2.zero;
     public ICollisionModifier CollisionModifier => controller;
@@ -15,10 +17,15 @@ public class EnemyCombatTargetModule : EnemyModule<EnemyCombatTargetModule>, ICo
 
     public bool IsAlive => !damageModule.Dead;
 
+    public Vector2 Position => transform.position;
+
+    public EnemyMemoryModule Memory => memoryModule;
+
     private void Start()
     {
         controller = GetModule<EnemyRigidbodyControllerModule>();
         damageModule = GetModule<EnemyDamageModule>();
+        memoryModule = GetModule<EnemyMemoryModule>();
         damageModule.DamageTrigger.TriggerEntered += OnTriggerEntered;
     }
 

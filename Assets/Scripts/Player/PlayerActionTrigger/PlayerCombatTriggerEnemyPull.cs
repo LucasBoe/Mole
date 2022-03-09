@@ -15,7 +15,7 @@ public class PlayerCombatTriggerEnemyPull : PlayerCombatStateTrigger<EnemyPullSt
         return new EnemyPullState(combatTarget, PlayerStateMachine.Instance.CurrentState);
     }
 
-    protected override bool ConditionsMet(Collider2D collider2D)
+    protected override bool ConditionsMet(ICombatTarget combatTarget)
     {
         return true;
     }

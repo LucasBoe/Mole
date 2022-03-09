@@ -9,6 +9,7 @@ public class AboveCooldownInteractable : CustomBehaviour
     [SerializeField] protected bool playerIsAbove = false;
     [SerializeField] bool useCooldown = true;
     protected float enableTime = 0f;
+    private Collider2D trigger;
 
     protected virtual void OnEnable()
     {
@@ -43,6 +44,14 @@ public class AboveCooldownInteractable : CustomBehaviour
 
         if (CooldownFinished())
             OnPlayerExit();
+    }
+    protected void UpdateTrigger()
+    {
+        Vector2 offset = trigger.offset;
+        trigger.enabled = false;
+        trigger.offset = Vector2.down;
+        trigger.enabled = true;
+        trigger.offset = offset;
     }
 
     protected virtual void OnPlayerEnter() { }

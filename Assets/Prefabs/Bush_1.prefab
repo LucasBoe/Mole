@@ -10,7 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7133193882489278484}
   - component: {fileID: 7133193882489278483}
-  m_Layer: 29
+  - component: {fileID: 8342524499041518141}
+  - component: {fileID: 4459441952473055404}
+  m_Layer: 9
   m_Name: Bush_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82,3 +84,50 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &8342524499041518141
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7133193882489278482}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.8125}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.27586207}
+    oldSize: {x: 6.75, y: 3.625}
+    newSize: {x: 6.75, y: 3.625}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.22142804, y: 1.421157}
+      - {x: -0.09424853, y: 0.6262287}
+      - {x: -1.2948048, y: 0.58825696}
+      - {x: -3.15487, y: -0.5299246}
+      - {x: -3.0814931, y: -1.4891233}
+      - {x: -2.9442635, y: -1.824729}
+      - {x: 3.375, y: -1.8125}
+      - {x: 2.7146096, y: 0.080140516}
+      - {x: 1.0352808, y: 1.7024354}
+--- !u!114 &4459441952473055404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7133193882489278482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ca7b6c6ba36e0741a819fa2f3c27368, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HiddenAmount: 0
