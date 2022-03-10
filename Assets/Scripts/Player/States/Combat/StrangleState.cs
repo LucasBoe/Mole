@@ -29,8 +29,6 @@ public class StrangleState : PlayerCombatState
     {
         base.Update();
 
-        Log("StrangleState.Update" + context.Input.HoldingUse);
-
         if (!playerMove.Done) context.Rigidbody.MovePosition(playerMove.Evaluate());
 
         if (context.Input.HoldingUse)
@@ -42,7 +40,7 @@ public class StrangleState : PlayerCombatState
 
         if (strangleProgression >= strangleDuration)
         {
-            target.Kill();
+            target.FinishStrangling();
             ExitCombat();
         }
     }
@@ -51,6 +49,6 @@ public class StrangleState : PlayerCombatState
     {
         base.Exit();
         if (uiElement != null) uiElement.Hide();
-        if (!target.IsNull) target.StopStrangling(context.PlayerPos);
+        if (!target.IsNull) target.StopStrangling();
     }
 }

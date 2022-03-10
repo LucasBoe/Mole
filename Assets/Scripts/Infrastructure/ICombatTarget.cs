@@ -9,11 +9,12 @@ public interface ICombatTarget : IInterfaceable
     ICollisionModifier CollisionModifier { get; }
     bool IsAlive { get; }
     Vector2 Position { get; }
-    Direction2D Forward { get; }
 
     bool StartStrangling();
-    void StopStrangling(Vector2 playerPos);
+    void StopStrangling();
+    void FinishStrangling();
     void Knock(Vector2 vector2);
 
     EnemyMemoryModule Memory { get; }
+
 }

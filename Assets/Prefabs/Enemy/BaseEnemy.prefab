@@ -121,6 +121,8 @@ MonoBehaviour:
   playerBody: {fileID: 0}
   forwardOriginal: 0
   forward: 0
+  isBeingStrangled: 0
+  IsUnconcious: 0
 --- !u!114 &5086609206467038256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,6 +243,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody2D: {fileID: 5086609206467038257}
+  unconciousEffect: {fileID: 7185723124908390233, guid: d3d105a8c5e10954897a5a5cabc18172, type: 3}
 --- !u!114 &304036658113223678
 MonoBehaviour:
   m_ObjectHideFlags: 0

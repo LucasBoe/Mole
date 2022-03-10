@@ -84,6 +84,8 @@ public class EnemyMemoryModule : EnemyModule<EnemyMemoryModule>
         isBeingStrangled = strangled;
     }
 
+    public bool IsUnconcious;
+
     protected override void Awake()
     {
         base.Awake();

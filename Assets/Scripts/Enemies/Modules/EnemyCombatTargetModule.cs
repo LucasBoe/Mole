@@ -6,22 +6,17 @@ using UnityEngine;
 public class EnemyCombatTargetModule : EnemyModule<EnemyCombatTargetModule>, ICombatTarget
 {
     [SerializeField] Rigidbody2D rigidbody2D;
+    [SerializeField] ParticleSystem unconciousEffect;
 
     private EnemyRigidbodyControllerModule controller;
     private EnemyDamageModule damageModule;
     private EnemyMemoryModule memoryModule;
     public Rigidbody2D Rigidbody2D => rigidbody2D;
-    public Vector2 StranglePosition => Vector2.zero;
     public ICollisionModifier CollisionModifier => controller;
     public bool IsNull => this == null;
-
     public bool IsAlive => !damageModule.Dead;
-
     public Vector2 Position => transform.position;
-
     public EnemyMemoryModule Memory => memoryModule;
-
-    public Direction2D Forward => memoryModule.Forward;
 
     private void Start()
     {
@@ -58,8 +53,23 @@ public class EnemyCombatTargetModule : EnemyModule<EnemyCombatTargetModule>, ICo
         return true;
     }
 
-    public void StopStrangling(Vector2 playerPos)
+    public void StopStrangling()
     {
         memoryModule.SetStrangled(false);
+    }
+
+    private IEnumerator UnconsciousRoutine()
+    {
+        const int unconciousDuration = 10;
+        memoryModule.IsUnconcious = true;
+        EffectHandler.Spawn(new CustomEffect(unconciousEffect, unconciousDuration), transform.position);
+        yield return new WaitForSeconds(unconciousDuration);
+        memoryModule.IsUnconcious = false;
+    }
+
+    public void FinishStrangling()
+    {
+        StopAllCoroutines();
+        StartCoroutine(UnconsciousRoutine());
     }
 }

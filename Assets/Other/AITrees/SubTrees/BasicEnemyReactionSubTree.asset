@@ -184,6 +184,28 @@ MonoBehaviour:
   description: 
   drawGizmos: 0
   animationOverride: {fileID: 7400000, guid: 11a5ad9944c46ee46839cfd3e29d299a, type: 2}
+--- !u!114 &-3279813051846553053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2854e5d284b50543972c0a6737b1ef2, type: 3}
+  m_Name: StandUp
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: a412fd72b8e079e4584d87dbbba80b1d
+  position: {x: -1137.5094, y: 769.3585}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    variableModule: {fileID: 0}
+  description: 
+  drawGizmos: 0
+  animationOverride: {fileID: 7400000, guid: 68a50ab7026a90946afe8f7c0aed400d, type: 2}
 --- !u!114 &-2957796630697912729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -296,13 +318,13 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: a267b63893dcbcd4a90c079341581d27
-  position: {x: -1212.566, y: 580.5283}
+  position: {x: -1286.9434, y: 769.3585}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
-  animationOverride: {fileID: 0}
+  animationOverride: {fileID: 7400000, guid: b79f3bcd74ad1fd499cf5ff9ccaf2d66, type: 2}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -339,6 +361,8 @@ MonoBehaviour:
   - {fileID: 6998448773014545949}
   - {fileID: -5740803782921694420}
   - {fileID: -682374060008362103}
+  - {fileID: 2422584104739597853}
+  - {fileID: -3279813051846553053}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -390,6 +414,31 @@ MonoBehaviour:
   description: 
   drawGizmos: 0
   animationOverride: {fileID: 7400000, guid: b79f3bcd74ad1fd499cf5ff9ccaf2d66, type: 2}
+--- !u!114 &2422584104739597853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61431bba79d7d7843b82bf1de71703f5, type: 3}
+  m_Name: Sequencer
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: d71642f254f563d4f8ba9dc008b61dbe
+  position: {x: -1212.6792, y: 581.434}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    variableModule: {fileID: 0}
+  description: 
+  drawGizmos: 0
+  animationOverride: {fileID: 0}
+  children:
+  - {fileID: -682374060008362103}
+  - {fileID: -3279813051846553053}
 --- !u!114 &3752875956636505175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,7 +539,7 @@ MonoBehaviour:
   drawGizmos: 0
   animationOverride: {fileID: 0}
   children:
-  - {fileID: -682374060008362103}
+  - {fileID: 2422584104739597853}
   - {fileID: 2312534505177209428}
   - {fileID: -5740803782921694420}
 --- !u!114 &7097208365887988318
