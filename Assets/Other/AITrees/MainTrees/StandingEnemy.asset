@@ -37,7 +37,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 38c46dce4e16b34498040f076f1d3b5d
-  position: {x: -151, y: 339.62265}
+  position: {x: 94.18866, y: 350.67926}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -106,7 +106,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: ead30ab1821dd5244b3da715690d9d8d
-  position: {x: 113.45288, y: 340.5283}
+  position: {x: 259.47174, y: 351.39624}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -136,9 +136,35 @@ MonoBehaviour:
   - {fileID: -1897428851468558057}
   - {fileID: -3392990131388929019}
   - {fileID: -3194326834731922102}
+  - {fileID: 8550464930139864200}
+  - {fileID: 1003864112448624233}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
+--- !u!114 &1003864112448624233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae3ff2c6023531a4ca8079f4115a7db6, type: 3}
+  m_Name: SubTree
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 4e67cc93e03600245856ab26b5546d97
+  position: {x: 94.18872, y: 184.75473}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    variableModule: {fileID: 0}
+  description: NoLights
+  drawGizmos: 0
+  animationOverride: {fileID: 0}
+  Tree: {fileID: 11400000, guid: d4de84ab00d26a442aa4cb0a6a5ae852, type: 2}
+  TreeInstance: {fileID: 0}
 --- !u!114 &4880964243389557828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,6 +188,7 @@ MonoBehaviour:
   drawGizmos: 0
   animationOverride: {fileID: 0}
   children:
+  - {fileID: 8550464930139864200}
   - {fileID: -3392990131388929019}
   - {fileID: -1897428851468558057}
 --- !u!114 &5421345740670496205
@@ -214,3 +241,26 @@ MonoBehaviour:
   children:
   - {fileID: -3194326834731922102}
   - {fileID: 4880964243389557828}
+  - {fileID: 1003864112448624233}
+--- !u!114 &8550464930139864200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 807989497b107bc448461e9100b790ce, type: 3}
+  m_Name: CanSee
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 7100d5ac80fdd1e4c948f255ec7d8dda
+  position: {x: -75.1698, y: 350.67926}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    variableModule: {fileID: 0}
+  description: 
+  drawGizmos: 0
+  animationOverride: {fileID: 0}

@@ -177,7 +177,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 507f59fc5ca80684995e78ac9a4b560a
-  position: {x: 121.05664, y: 581.43396}
+  position: {x: 155.77365, y: 580.5285}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -269,7 +269,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 227eb440587da3e46b6e206354629436
-  position: {x: 271.39624, y: 581.43396}
+  position: {x: 306.11328, y: 580.5285}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -296,7 +296,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 78be89a08fbfe574fb66a83d8bce82db
-  position: {x: 421.73584, y: 581.43396}
+  position: {x: 456.45297, y: 580.5285}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -381,7 +381,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 2bc4f24fe9e81db4dbc4d669e242b8be
-  position: {x: 572.07556, y: 581.43396}
+  position: {x: 606.7925, y: 580.5285}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -557,7 +557,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: ebdcec8c2737970408523b5e0df0ee43
-  position: {x: 271.39624, y: 415.6981}
+  position: {x: 305.55643, y: 414.79245}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}

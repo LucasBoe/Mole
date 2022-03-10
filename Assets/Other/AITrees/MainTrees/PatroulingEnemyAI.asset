@@ -37,7 +37,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: f8a9b1a255a50a149a973cfd7efc7698
-  position: {x: 484.25873, y: 515.324}
+  position: {x: 522.6604, y: 522.3208}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -45,6 +45,32 @@ MonoBehaviour:
   drawGizmos: 0
   animationOverride: {fileID: 7400000, guid: d3d73bd6ae384ee45a7c84a7cebe4c43, type: 2}
   duration: 1
+--- !u!114 &-7627391693455581689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae3ff2c6023531a4ca8079f4115a7db6, type: 3}
+  m_Name: SubTree
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: afed69eb44897f945b6858279d79147a
+  position: {x: 326.28308, y: 328.75473}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    variableModule: {fileID: 0}
+  description: 'NoLight
+
+'
+  drawGizmos: 0
+  animationOverride: {fileID: 0}
+  Tree: {fileID: 11400000, guid: d4de84ab00d26a442aa4cb0a6a5ae852, type: 2}
+  TreeInstance: {fileID: 0}
 --- !u!114 &-6643416536428564573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,7 +86,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 848b2210c63fea9428f1f0d407044234
-  position: {x: 296.78693, y: 515.324}
+  position: {x: 372.3208, y: 522.3208}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -84,7 +110,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 61e95cfe1bfcb6845be851b91640b1b1
-  position: {x: -121.62822, y: 515.324}
+  position: {x: 71.64148, y: 522.3208}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -108,7 +134,7 @@ MonoBehaviour:
   state: 0
   started: 1
   guid: cd33df0d28ccf004d8e85e8a91b7db71
-  position: {x: -28.34515, y: -163.9213}
+  position: {x: 163.01892, y: -159.92453}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -131,7 +157,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: ead30ab1821dd5244b3da715690d9d8d
-  position: {x: 77.617096, y: 515.324}
+  position: {x: 221.98114, y: 522.3208}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -139,6 +165,28 @@ MonoBehaviour:
   drawGizmos: 0
   animationOverride: {fileID: 7400000, guid: d3d73bd6ae384ee45a7c84a7cebe4c43, type: 2}
   duration: 1
+--- !u!114 &-1155215919911643236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 807989497b107bc448461e9100b790ce, type: 3}
+  m_Name: CanSee
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 46e329595a8521c4da7b69f495b4a7b4
+  position: {x: -78.69812, y: 522.3208}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    variableModule: {fileID: 0}
+  description: 
+  drawGizmos: 0
+  animationOverride: {fileID: 0}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,6 +211,8 @@ MonoBehaviour:
   - {fileID: -1897428851468558057}
   - {fileID: -7872291670321148611}
   - {fileID: 3058584750933191726}
+  - {fileID: -1155215919911643236}
+  - {fileID: -7627391693455581689}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -213,6 +263,7 @@ MonoBehaviour:
   drawGizmos: 0
   animationOverride: {fileID: 0}
   children:
+  - {fileID: -1155215919911643236}
   - {fileID: -4348461666887065187}
   - {fileID: -1897428851468558057}
   - {fileID: -6643416536428564573}
@@ -232,7 +283,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: ae39ba3a634e8754296152ef08ed6b5f
-  position: {x: -28.34515, y: -45.279793}
+  position: {x: 163.01892, y: -41.28302}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -257,7 +308,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 0eef45b08c2fd5c439ce54472daabcd4
-  position: {x: -28.34515, y: 98.720184}
+  position: {x: 163.01892, y: 102.71695}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -267,3 +318,4 @@ MonoBehaviour:
   children:
   - {fileID: 3058584750933191726}
   - {fileID: 4880964243389557828}
+  - {fileID: -7627391693455581689}
