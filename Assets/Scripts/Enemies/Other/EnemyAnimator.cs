@@ -8,6 +8,7 @@ public class EnemyAnimator : EnemyModule<EnemyAnimator>
 {
     [SerializeField] Animator animator;
     [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] Transform flipParent;
 
     private void Start()
     {
@@ -26,7 +27,9 @@ public class EnemyAnimator : EnemyModule<EnemyAnimator>
 
     private void OnChangedForward(Direction2D forward)
     {
-        spriteRenderer.flipX = forward == Direction2D.Left;
+        bool flip = forward == Direction2D.Left;
+        spriteRenderer.flipX = flip;
+        flipParent.transform.localScale = new Vector3(flip ? -1 : 1, 1, 1);
     }
 
     private void OnDestroy()
