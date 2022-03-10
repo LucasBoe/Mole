@@ -55,6 +55,12 @@ public class PlayerStateMachine : PlayerSingletonBehaviour<PlayerStateMachine>, 
             return;
         }
 
+        if (!CurrentState.CheckExit())
+        {
+            LogWarning("could not exit: " + CurrentState);
+            return;
+        }
+
         CurrentState.Exit();
 
         string from = CurrentState.ToString();

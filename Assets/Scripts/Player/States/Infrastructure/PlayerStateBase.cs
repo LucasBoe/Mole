@@ -78,6 +78,8 @@ public abstract class PlayerStateBase : PlayerStateObject
         ConsoleProDebug.Watch("TryEnter: ", $"{this.GetType()} check enter: {canEnter} (holding heavy: {PlayerItemUser.Instance.IsHoldingHeavyItem()} && heavy allowed: {StateAllowsCarryingHeavyObjects}) ");
         return canEnter;
     }
+    public virtual bool CheckExit() { return true; }
+
     public virtual void Enter() { }
     public virtual void Exit() { }
     public virtual void Update() { }

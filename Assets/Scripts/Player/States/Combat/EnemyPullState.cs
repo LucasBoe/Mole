@@ -7,6 +7,12 @@ public class EnemyPullState : PlayerCombatState
 {
     PlayerStateBase stateBefore;
     Rigidbody2D targetBody;
+    bool pulled = false;
+
+    public override bool CheckExit()
+    {
+        return pulled;
+    }
     public EnemyPullState(ICombatTarget target, PlayerStateBase stateBefore) : base(target)
     {
         targetBody = target.Rigidbody2D;
@@ -15,6 +21,7 @@ public class EnemyPullState : PlayerCombatState
 
     public override void Enter()
     {
+        pulled = false;
         target.CollisionModifier.SetCollisionActive(false);
         SetPlayerConstrained(true);
     }
@@ -23,8 +30,8 @@ public class EnemyPullState : PlayerCombatState
     {
         float distance = Vector2.Distance(targetBody.position, context.PlayerPos);
         targetBody.MovePosition(Vector2.MoveTowards(targetBody.position, context.PlayerPos, Time.deltaTime * 40f));
-
-        if (distance < 0.25f)
+        pulled = distance < 0.25f;
+        if (pulled)
             SetState(stateBefore);
     }
 
