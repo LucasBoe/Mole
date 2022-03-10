@@ -15,7 +15,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 2083ad67a2074f342a53fc62c58f5048
-  position: {x: -576.9058, y: 452.8302}
+  position: {x: -576.90564, y: 643.8302}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -44,6 +44,31 @@ MonoBehaviour:
   description: 
   drawGizmos: 0
   animationOverride: {fileID: 0}
+--- !u!114 &-6079640007680581808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7bf77e26564daa41815cba042a730aa, type: 3}
+  m_Name: InterruptSelector
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: a5f70b2635ce29d4f9356891b291639f
+  position: {x: -651.6227, y: 280.86792}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    variableModule: {fileID: 0}
+  description: 
+  drawGizmos: 0
+  animationOverride: {fileID: 0}
+  children:
+  - {fileID: 5492717994336192305}
+  - {fileID: -2864638768626584367}
 --- !u!114 &-2957796630697912729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57,16 +82,16 @@ MonoBehaviour:
   m_Name: RootNode
   m_EditorClassIdentifier: 
   state: 0
-  started: 1
+  started: 0
   guid: cd33df0d28ccf004d8e85e8a91b7db71
-  position: {x: -396.67932, y: 171.16982}
+  position: {x: -651.1698, y: 125.283035}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
   animationOverride: {fileID: 0}
-  child: {fileID: -2864638768626584367}
+  child: {fileID: -6079640007680581808}
 --- !u!114 &-2864638768626584367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,7 +107,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 64bcd9f3afde0b2458121ffa64635f72
-  position: {x: -396.67932, y: 279.84915}
+  position: {x: -396.6792, y: 470.84906}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -113,9 +138,61 @@ MonoBehaviour:
   - {fileID: -9138131047489888114}
   - {fileID: 2687288004442317685}
   - {fileID: -2864638768626584367}
+  - {fileID: 5492717994336192305}
+  - {fileID: 9117970187119532095}
+  - {fileID: 150146000151093567}
+  - {fileID: 6850421235910342881}
+  - {fileID: 205997562842718902}
+  - {fileID: -6079640007680581808}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
+--- !u!114 &150146000151093567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6380f505e0008004fa9e298fa5384098, type: 3}
+  m_Name: Say
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 952c958c84113974b8b0e5e295503b7a
+  position: {x: -1248.6416, y: 662.9434}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    variableModule: {fileID: 0}
+  description: 
+  drawGizmos: 0
+  animationOverride: {fileID: 0}
+  toSay:
+  - A lamp, there!
+--- !u!114 &205997562842718902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: add2277c9a45fdf40a6add1c4a33935b, type: 3}
+  m_Name: TakeAndEquipClosestLamp
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: cc1fcf50f85cfe846bcc05c2a836b3ff
+  position: {x: -939.8114, y: 662.9434}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    variableModule: {fileID: 0}
+  description: 
+  drawGizmos: 0
+  animationOverride: {fileID: 0}
 --- !u!114 &385901356734437412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,7 +208,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 44456e3eb213b4148976278c845a56eb
-  position: {x: -396.9928, y: 452.8302}
+  position: {x: -396.6792, y: 643.8302}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -157,11 +234,82 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: f6e0c58f58607d3419713f4833ae289e
-  position: {x: -226.31438, y: 452.8302}
+  position: {x: -226.41504, y: 643.8302}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
   description: 
   drawGizmos: 0
   animationOverride: {fileID: 0}
-  duration: 1
+  duration: 5
+--- !u!114 &5492717994336192305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61431bba79d7d7843b82bf1de71703f5, type: 3}
+  m_Name: Sequencer
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 80768de2b015d4b4681f0fc70890098a
+  position: {x: -911.09436, y: 485.43396}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    variableModule: {fileID: 0}
+  description: 
+  drawGizmos: 0
+  animationOverride: {fileID: 0}
+  children:
+  - {fileID: 9117970187119532095}
+  - {fileID: 150146000151093567}
+  - {fileID: 6850421235910342881}
+  - {fileID: 205997562842718902}
+--- !u!114 &6850421235910342881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bea59a6e23032e46b96effd9cfdfdd8, type: 3}
+  m_Name: MoveToClosestLamp
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 7e02b7120aef1b543b06c219c439c7f3
+  position: {x: -1098.3019, y: 662.9434}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    variableModule: {fileID: 0}
+  description: 
+  drawGizmos: 0
+  animationOverride: {fileID: 7400000, guid: 0e0ab2f8ddb4007459ed30799bf2084e, type: 2}
+--- !u!114 &9117970187119532095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8ccfdb5a7e62f74ba810a9efb52ef03, type: 3}
+  m_Name: CanFetchLamp
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 4fcca83a280a01f45bb8144bb5077a32
+  position: {x: -1398.9812, y: 662.9434}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    variableModule: {fileID: 0}
+  description: 
+  drawGizmos: 0
+  animationOverride: {fileID: 0}

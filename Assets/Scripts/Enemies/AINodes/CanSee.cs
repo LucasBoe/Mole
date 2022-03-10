@@ -11,6 +11,6 @@ public class CanSee : ActionNode
 
     protected override State OnUpdate()
     {
-        return context.lightModule.CanSee ? State.Success : State.Failure;
+        return context.lightModule.CanSee || Time.time < 1 ? State.Success : State.Failure;
     }
 }

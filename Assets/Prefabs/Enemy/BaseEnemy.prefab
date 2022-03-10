@@ -81,6 +81,7 @@ GameObject:
   - component: {fileID: 5086609206467038254}
   - component: {fileID: 5086609206467038262}
   - component: {fileID: 5086609206467038257}
+  - component: {fileID: 3972867297785735044}
   m_Layer: 10
   m_Name: BaseEnemy
   m_TagString: Untagged
@@ -445,6 +446,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &3972867297785735044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5086609206467038268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ccc075c0feb3d94ebea632f96f3e388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hand: {fileID: 4031976414579216139}
+  lampPrefab: {fileID: 5298268623745549305, guid: 13f07f771e681624f841092bc6852d4e, type: 3}
 --- !u!1 &6603369976691588559
 GameObject:
   m_ObjectHideFlags: 0
