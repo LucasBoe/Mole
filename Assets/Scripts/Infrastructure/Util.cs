@@ -430,4 +430,9 @@ public static class Direction2DUtil
     {
         return orignal == Direction2D.Left ? Direction2D.Right : Direction2D.Left;
     }
+
+    public static Vector2 ToVector2(this Direction2D dir)
+    {
+        return dir == Direction2D.Left ? Vector2.left : Vector2.right;
+    }
 }

@@ -20,10 +20,14 @@ public abstract class PlayerActionTriggerBase : PlayerBehaviour
     }
     private Collider2D trigger;
 
+    private void Awake()
+    {
+        trigger = GetComponent<Collider2D>();
+    }
+
     protected virtual void Start()
     {
         InputAction = CreateInputAction();
-        trigger = GetComponent<Collider2D>();
     }
     private void OnTriggerEnter2D(Collider2D collider)
     {

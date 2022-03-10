@@ -5,8 +5,9 @@ using UnityEngine;
 public class StrangleState : PlayerCombatState
 {
     float strangleProgression = 0;
-    public const float strangleDuration = 1;
+    public const float strangleDuration = 3;
     PlayerActionProgressionVisualizerUI uiElement;
+    PositionInterpolation playerMove;
 
     public StrangleState(ICombatTarget target) : base(target) { }
 
@@ -18,7 +19,10 @@ public class StrangleState : PlayerCombatState
         if (!target.StartStrangling())
             ExitCombat();
         else
+        {
             uiElement = UIHandler.Temporary.Spawn<PlayerActionProgressionVisualizerUI>() as PlayerActionProgressionVisualizerUI;
+            playerMove = new PositionInterpolation(context.PlayerPos, target.Position, AnimationCurveHolder.Ease, speed: 10f);
+        }
     }
 
     public override void Update()
@@ -27,8 +31,7 @@ public class StrangleState : PlayerCombatState
 
         Log("StrangleState.Update" + context.Input.HoldingUse);
 
-        if (Vector2.Distance(context.PlayerPos, target.StranglePosition) > 0.1f)
-            context.Rigidbody.MovePosition(Vector2.MoveTowards(context.PlayerPos, target.StranglePosition, Time.deltaTime * 100f));
+        if (!playerMove.Done) context.Rigidbody.MovePosition(playerMove.Evaluate());
 
         if (context.Input.HoldingUse)
             strangleProgression += Time.deltaTime;

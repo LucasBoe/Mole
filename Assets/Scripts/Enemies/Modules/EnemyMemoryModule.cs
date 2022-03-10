@@ -77,6 +77,13 @@ public class EnemyMemoryModule : EnemyModule<EnemyMemoryModule>
         }
     }
 
+    [SerializeField] private bool isBeingStrangled = false;
+    public bool IsBeingStrangled => isBeingStrangled;
+    public void SetStrangled(bool strangled)
+    {
+        isBeingStrangled = strangled;
+    }
+
     protected override void Awake()
     {
         base.Awake();

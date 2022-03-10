@@ -6,10 +6,10 @@ public interface ICombatTarget : IInterfaceable
     Rigidbody2D Rigidbody2D { get; }
 
     //Strangle
-    Vector2 StranglePosition { get; }
     ICollisionModifier CollisionModifier { get; }
     bool IsAlive { get; }
     Vector2 Position { get; }
+    Direction2D Forward { get; }
 
     bool StartStrangling();
     void StopStrangling(Vector2 playerPos);

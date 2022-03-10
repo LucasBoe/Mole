@@ -21,6 +21,8 @@ public class EnemyCombatTargetModule : EnemyModule<EnemyCombatTargetModule>, ICo
 
     public EnemyMemoryModule Memory => memoryModule;
 
+    public Direction2D Forward => memoryModule.Forward;
+
     private void Start()
     {
         controller = GetModule<EnemyRigidbodyControllerModule>();
@@ -52,11 +54,12 @@ public class EnemyCombatTargetModule : EnemyModule<EnemyCombatTargetModule>, ICo
 
     public bool StartStrangling()
     {
-        return false;
+        memoryModule.SetStrangled(true);
+        return true;
     }
 
     public void StopStrangling(Vector2 playerPos)
     {
-        //
+        memoryModule.SetStrangled(false);
     }
 }
