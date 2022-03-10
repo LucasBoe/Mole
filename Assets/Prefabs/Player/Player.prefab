@@ -518,7 +518,7 @@ GameObject:
   - component: {fileID: 7193096734569155895}
   - component: {fileID: 6965597751728730814}
   - component: {fileID: 1544684135525403972}
-  m_Layer: 12
+  m_Layer: 9
   m_Name: PlayerItemCollector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
