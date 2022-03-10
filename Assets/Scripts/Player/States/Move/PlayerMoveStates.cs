@@ -53,10 +53,10 @@ public class IdleState : MoveBaseState
 
 
         CollisionCheck dropDown = GetCheck(CheckType.DropDownable);
-        float dropAngle = Util.GetAngleFromHangable(dropDown,context);
+        float dropAngle = Util.GetAngleFromHangable(dropDown, context);
 
         //dropping down
-        if (dropAngle <= 45f && context.Input.Axis.y < -0.1f)
+        if (dropDown.IsDetecting && dropAngle <= 45f && context.Input.Axis.y < -0.1f)
         {
             dropDownTimer += Time.deltaTime;
             if (dropDownTimer > context.Values.KeyPressTimeToDropDown)

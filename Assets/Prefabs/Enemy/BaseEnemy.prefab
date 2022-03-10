@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 4603694226362444763}
   - component: {fileID: 5086609206467038260}
   - component: {fileID: 5086609206467038269}
-  - component: {fileID: 5086609206467038250}
+  - component: {fileID: 8919387375624062982}
   - component: {fileID: 5086609206467038256}
   - component: {fileID: 5086609206467038259}
   - component: {fileID: 5086609206467038261}
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tree: {fileID: 11400000, guid: 7d38efe9e582c5b4f8ba7614846d0902, type: 2}
---- !u!114 &5086609206467038250
+--- !u!114 &8919387375624062982
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -142,7 +142,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5086609206467038268}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38902eab132c574439b17198a795c9bd, type: 3}
+  m_Script: {fileID: 11500000, guid: 61caf83535f47584da445ba02542e168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 5086609206467038263}
