@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 862596019529365029}
   - component: {fileID: 1538077881}
   - component: {fileID: 6935955795141647238}
+  - component: {fileID: 1298341698442880720}
   m_Layer: 29
   m_Name: LightsourceTest
   m_TagString: Untagged
@@ -71,10 +72,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2187570304094665237}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ca7b6c6ba36e0741a819fa2f3c27368, type: 3}
+  m_Script: {fileID: 11500000, guid: 75ee5dc46807a2b4ead99d908bae9e02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HiddenAmount: 2
+  HiddenAmount: 0
 --- !u!114 &1538077881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,3 +131,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lightTrigger: {fileID: 2187570304094665236}
   IsOn: 1
+--- !u!114 &1298341698442880720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2187570304094665237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75ee5dc46807a2b4ead99d908bae9e02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HiddenAmount: 0

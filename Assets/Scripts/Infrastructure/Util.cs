@@ -44,6 +44,22 @@ public static class Util
 
         return vectorList;
     }
+    public static void AddUnique<T>(this IList<T> self, T item)
+    {
+        if (!self.Contains(item))
+            self.Add(item);
+    }
+
+    public static bool TryRemove<T>(this IList<T> self, T item)
+    {
+        if (self.Contains(item))
+        {
+            self.Remove(item);
+            return true;
+        }
+
+        return false;
+    }
 
     public static Vector2 Vector2FromAngle(float angle)
     {

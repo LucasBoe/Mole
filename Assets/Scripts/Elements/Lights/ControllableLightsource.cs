@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 
-[RequireComponent(typeof(PlayerHidingTrigger), typeof(Light2D))]
+[RequireComponent(typeof(LightTrigger), typeof(Light2D))]
 public class ControllableLightsource : MonoBehaviour
 {
     [SerializeField] private Collider2D lightTrigger;
