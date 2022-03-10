@@ -27,7 +27,7 @@ public class PlayerHidingHandler : PlayerSingletonBehaviour<PlayerHidingHandler>
     [SerializeField] private HidingState hidingState;
 
     private bool hiddenByState = false;
-    [SerializeField, ReadOnly] private List<PlayerHidingTrigger> playerTriggers = new List<PlayerHidingTrigger>();
+    [SerializeField, ReadOnly] private List<LightTrigger> playerTriggers = new List<LightTrigger>();
 
     public static System.Action<float> ChangedHiddenValue; 
 
@@ -35,12 +35,12 @@ public class PlayerHidingHandler : PlayerSingletonBehaviour<PlayerHidingHandler>
     {
         PlayerBrightnessSampler.OnSampleNewPlayerBrightness += UpdateHiddenValueFromPlayerSample;
         PlayerStateMachine.Instance.OnStateChange += OnPlayerEnterState;
-        PlayerHidingTrigger.TriggerEntered += OnTriggerEntered;
-        PlayerHidingTrigger.TriggerExited += OnTriggerExited;
-        UpdateHiddenValueFromTriggers(new List<PlayerHidingTrigger>());
+        LightTrigger.PlayerEnteredTrigger += OnTriggerEntered;
+        LightTrigger.PlayerExitedTrigger += OnTriggerExited;
+        UpdateHiddenValueFromTriggers(new List<LightTrigger>());
     }
 
-    private void OnTriggerExited(PlayerHidingTrigger trigger)
+    private void OnTriggerExited(LightTrigger trigger)
     {
         if (playerTriggers.Contains(trigger))
             playerTriggers.Remove(trigger);
@@ -48,7 +48,7 @@ public class PlayerHidingHandler : PlayerSingletonBehaviour<PlayerHidingHandler>
         UpdateHiddenValueFromTriggers(playerTriggers);
     }
 
-    private void OnTriggerEntered(PlayerHidingTrigger trigger)
+    private void OnTriggerEntered(LightTrigger trigger)
     {
         if (!playerTriggers.Contains(trigger))
             playerTriggers.Add(trigger);
@@ -78,7 +78,7 @@ public class PlayerHidingHandler : PlayerSingletonBehaviour<PlayerHidingHandler>
         }
     }
 
-    private void UpdateHiddenValueFromTriggers(List<PlayerHidingTrigger> playerTriggers)
+    private void UpdateHiddenValueFromTriggers(List<LightTrigger> playerTriggers)
     {
         if (playerTriggers.Count == 0)
             playerHiddenValue = 0.5f;
