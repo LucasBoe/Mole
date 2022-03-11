@@ -31,25 +31,25 @@ public class PlayerController : PlayerSingletonBehaviour<PlayerController>
         context.Values = playerValues;
 
         //base
-        context.CollisionChecks.Add(CheckType.Ground, new CollisionCheck(0f, -1.25f, 0.5f, 0.25f, LayerMask.GetMask("Default", "Hangable", "OneDirectionalFloor", "Climbable"), Color.green));
-        context.CollisionChecks.Add(CheckType.Hangable, new CollisionCheck(0f, 1.250f, 1.5f, 1.25f, LayerMask.GetMask("Hangable"), Color.yellow));
-        context.CollisionChecks.Add(CheckType.HangableJumpInLeft, new CollisionCheck(-0.7f, 0.2f, 0.3f, 1.5f, LayerMask.GetMask("Hangable"), Color.yellow));
-        context.CollisionChecks.Add(CheckType.HangableJumpInRight, new CollisionCheck(0.7f, 0.2f, 0.3f, 1.5f, LayerMask.GetMask("Hangable"), Color.yellow));
+        context.CollisionChecks.Add(CheckType.Ground, new CollisionCheck(0f, -1.25f, 0.5f, 0.25f, LayerMask.GetMask("Default", "Hangable", "HangableCollidable", "Climbable"), Color.green));
+        context.CollisionChecks.Add(CheckType.Hangable, new CollisionCheck(0f, 1.250f, 1.5f, 1.25f, LayerMask.GetMask("Hangable", "HangableCollidable"), Color.yellow));
+        context.CollisionChecks.Add(CheckType.HangableJumpInLeft, new CollisionCheck(-0.7f, 0.2f, 0.3f, 1.5f, LayerMask.GetMask("Hangable", "HangableCollidable"), Color.yellow));
+        context.CollisionChecks.Add(CheckType.HangableJumpInRight, new CollisionCheck(0.7f, 0.2f, 0.3f, 1.5f, LayerMask.GetMask("Hangable", "HangableCollidable"), Color.yellow));
         context.CollisionChecks.Add(CheckType.ClimbableLeft, new CollisionCheck(-0.55f, 0, 0.45f, 1f, LayerMask.GetMask("Climbable"), Color.green));
         context.CollisionChecks.Add(CheckType.ClimbableRight, new CollisionCheck(0.55f, 0, 0.45f, 1f, LayerMask.GetMask("Climbable"), Color.green));
         context.CollisionChecks.Add(CheckType.WallAbove, new CollisionCheck(0, 1.1f, 1.5f, 0.2f, LayerMask.GetMask("Default"), Color.green));
-        context.CollisionChecks.Add(CheckType.Ceiling, new CollisionCheck(0f, 0.875f, 0.75f, 0.25f, LayerMask.GetMask("Default", "OneDirectionalFloor"), Color.gray));
-        context.CollisionChecks.Add(CheckType.Body, new CollisionCheck(0f, 0f, 0.875f, 1.5f, LayerMask.GetMask("Default", "Hangable"), Color.gray));
+        context.CollisionChecks.Add(CheckType.Ceiling, new CollisionCheck(0f, 0.875f, 0.75f, 0.25f, LayerMask.GetMask("Default", "HangableCollidable"), Color.gray));
+        context.CollisionChecks.Add(CheckType.Body, new CollisionCheck(0f, 0f, 0.875f, 1.5f, LayerMask.GetMask("Default", "Hangable", "HangableCollidable"), Color.gray));
 
         //details
-        context.CollisionChecks.Add(CheckType.HangableLeft, new CollisionCheck(-0.75f, 1.5f, .5f, 1.25f, LayerMask.GetMask("Hangable"), Color.yellow));
-        context.CollisionChecks.Add(CheckType.HangableRight, new CollisionCheck(0.75f, 1.5f, .5f, 1.25f, LayerMask.GetMask("Hangable"), Color.yellow));
-        context.CollisionChecks.Add(CheckType.HangableAboveAir, new CollisionCheck(0f, 2.875f, 1f, 2f, LayerMask.GetMask("Default", "Hangable"), Color.yellow));
-        context.CollisionChecks.Add(CheckType.DropDownable, new CollisionCheck(0, -1.5f, 0.5f, 1f, LayerMask.GetMask("Hangable"), Color.cyan));
+        context.CollisionChecks.Add(CheckType.HangableLeft, new CollisionCheck(-0.75f, 1.5f, .5f, 1.25f, LayerMask.GetMask("Hangable", "HangableCollidable"), Color.yellow));
+        context.CollisionChecks.Add(CheckType.HangableRight, new CollisionCheck(0.75f, 1.5f, .5f, 1.25f, LayerMask.GetMask("Hangable", "HangableCollidable"), Color.yellow));
+        context.CollisionChecks.Add(CheckType.HangableAboveAir, new CollisionCheck(0f, 2.875f, 1f, 2f, LayerMask.GetMask("Default", "Hangable", "HangableCollidable"), Color.yellow));
+        context.CollisionChecks.Add(CheckType.DropDownable, new CollisionCheck(0, -1.5f, 0.5f, 1f, LayerMask.GetMask("Hangable", "HangableCollidable"), Color.cyan));
 
-        context.CollisionChecks.Add(CheckType.EdgeHelperLeft, new CollisionCheck(-0.4f, -0.75f, 0.4f, 0.75f, LayerMask.GetMask("Default", "Hangable", "Climbable"), Color.cyan));
-        context.CollisionChecks.Add(CheckType.EdgeHelperRight, new CollisionCheck(0.4f, -0.75f, 0.4f, 0.75f, LayerMask.GetMask("Default", "Hangable", "Climbable"), Color.cyan));
-        context.CollisionChecks.Add(CheckType.AdditionalWallCheck, new CollisionCheck(0, 0, 1.2f, 0.5f, LayerMask.GetMask("Default", "Hangable", "Climbable"), Color.blue));
+        context.CollisionChecks.Add(CheckType.EdgeHelperLeft, new CollisionCheck(-0.4f, -0.75f, 0.4f, 0.75f, LayerMask.GetMask("Default", "Hangable", "HangableCollidable", "Climbable"), Color.cyan));
+        context.CollisionChecks.Add(CheckType.EdgeHelperRight, new CollisionCheck(0.4f, -0.75f, 0.4f, 0.75f, LayerMask.GetMask("Default", "Hangable", "HangableCollidable", "Climbable"), Color.cyan));
+        context.CollisionChecks.Add(CheckType.AdditionalWallCheck, new CollisionCheck(0, 0, 1.2f, 0.5f, LayerMask.GetMask("Default", "Hangable", "HangableCollidable", "Climbable"), Color.blue));
 
         //rope
         context.CollisionChecks.Add(CheckType.Rope, new CollisionCheck(0f, 0f, 1.5f, 1.5f, LayerMask.GetMask("Rope"), Color.blue));

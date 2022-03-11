@@ -112,7 +112,7 @@ public class PullUpState : ClimbStateBase
         base.Enter();
 
         curve = context.Values.PullUpCurve;
-        mask = LayerMask.GetMask("Hangable", "OneDirectionalFloor", "Climbable");
+        mask = LayerMask.GetMask("Hangable", "HangableCollidable", "Climbable");
         SetCollisionActive(false);
 
         t = 0;

@@ -16,7 +16,7 @@ public class Ladder : AboveCooldownInteractable
     private void SetUpEdgCollider()
     {
         GameObject child = new GameObject("LadderTop");
-        child.layer = LayerMask.NameToLayer("OneDirectionalFloor");
+        child.layer = LayerMask.NameToLayer("HangableCollidable");
         child.transform.parent = transform;
         child.transform.localPosition = new Vector2(0, triggerArea.bounds.size.y / 2 - 0.125f);
         topEdge = child.AddComponent<EdgeCollider2D>();

@@ -12,7 +12,7 @@ TagManager:
   - Water
   - UI
   - Hangable
-  - OneDirectionalFloor
+  - HangableCollidable
   - BlockViewButNotCollision
   - Trigger
   - Enemy
