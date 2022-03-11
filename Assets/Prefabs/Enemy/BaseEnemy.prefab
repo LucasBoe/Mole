@@ -155,7 +155,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58c6f9b140a52a14881ec09eaebb66eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tree: {fileID: 11400000, guid: 7d38efe9e582c5b4f8ba7614846d0902, type: 2}
+  Tree: {fileID: 0}
+  Run: 0
 --- !u!114 &8919387375624062982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,7 +175,8 @@ MonoBehaviour:
   ReactedToAlert: 0
   isAlterted: 0
   playerBody: {fileID: 0}
-  forwardOriginal: 0
+  positionStart: {x: 0, y: 0}
+  forwardStart: 0
   forward: 0
   isBeingStrangled: 0
   IsUnconcious: 0
@@ -459,7 +461,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hand: {fileID: 4031976414579216139}
-  lampPrefab: {fileID: 5298268623745549305, guid: 13f07f771e681624f841092bc6852d4e, type: 3}
+  lampPrefab_inHand: {fileID: 5298268623745549305, guid: 13f07f771e681624f841092bc6852d4e, type: 3}
+  lampPrefab_drop: {fileID: 773033659424700579, guid: 7a8fac4a2f806404fb95f98f426fe4c4, type: 3}
+  inHand: 0
 --- !u!1 &6603369976691588559
 GameObject:
   m_ObjectHideFlags: 0

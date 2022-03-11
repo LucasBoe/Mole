@@ -370,6 +370,12 @@ public static class Util
         return Quaternion.Euler(0, 0, angle);
     }
 
+    public static void DestroyAllChildren(this Transform transform)
+    {
+        for (int i = transform.childCount - 1; i >= 0; i--)
+            UnityEngine.Object.Destroy(transform.GetChild(i).gameObject);
+    }
+
     public static Gradient ToGradient(this Color color)
     {
         Gradient gradient = new Gradient();

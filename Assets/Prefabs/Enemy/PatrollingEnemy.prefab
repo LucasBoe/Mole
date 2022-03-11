@@ -72,6 +72,10 @@ PrefabInstance:
       value: PatrollingEnemy
       objectReference: {fileID: 0}
     - target: {fileID: 5086609206467038269, guid: a90a424dd6c1b104dbdfff8b33fc561b, type: 3}
+      propertyPath: Tree
+      value: 
+      objectReference: {fileID: 11400000, guid: f9c1644513df7124db91af1c3c3a63a4, type: 2}
+    - target: {fileID: 5086609206467038269, guid: a90a424dd6c1b104dbdfff8b33fc561b, type: 3}
       propertyPath: tree
       value: 
       objectReference: {fileID: 11400000, guid: f9c1644513df7124db91af1c3c3a63a4, type: 2}

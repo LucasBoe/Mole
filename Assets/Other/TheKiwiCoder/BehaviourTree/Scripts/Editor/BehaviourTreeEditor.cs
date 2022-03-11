@@ -141,7 +141,7 @@ namespace TheKiwiCoder {
                     if (Selection.activeGameObject) {
                         BehaviourTreeRunner runner = Selection.activeGameObject.GetComponent<BehaviourTreeRunner>();
                         if (runner) {
-                            tree = runner.tree;
+                            tree = runner.Tree;
                         }
                     }
                 }

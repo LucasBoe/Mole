@@ -6,7 +6,8 @@ namespace TheKiwiCoder {
     public class BehaviourTreeRunner : EnemyModule<BehaviourTreeRunner> {
 
         // The main behaviour tree asset
-        public BehaviourTree tree;
+        public BehaviourTree Tree;
+        public bool Run = false;
 
         // Storage container object to hold game object subsystems
         Context context;
@@ -17,14 +18,18 @@ namespace TheKiwiCoder {
         void Start() {
             context = CreateBehaviourTreeContext();
             context.runner = this;
-            tree = tree.Clone();
-            tree.Bind(context);
+            Tree = Tree.Clone();
+            Tree.Bind(context);
         }
 
         // Update is called once per frame
         void Update() {
-            if (tree) {
-                tree.Update();
+            if (Tree && Run) {
+                Tree.Update();
+            } else
+            {
+                if (Time.time > 0.5f)
+                    Run = true;
             }
         }
 
@@ -33,11 +38,11 @@ namespace TheKiwiCoder {
         }
 
         private void OnDrawGizmosSelected() {
-            if (!tree) {
+            if (!Tree) {
                 return;
             }
 
-            BehaviourTree.Traverse(tree.rootNode, (n) => {
+            BehaviourTree.Traverse(Tree.rootNode, (n) => {
                 if (n.drawGizmos) {
                     n.OnDrawGizmos();
                 }

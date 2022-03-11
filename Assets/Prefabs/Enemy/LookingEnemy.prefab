@@ -56,6 +56,10 @@ PrefabInstance:
       value: LookingEnemy
       objectReference: {fileID: 0}
     - target: {fileID: 5086609206467038269, guid: a90a424dd6c1b104dbdfff8b33fc561b, type: 3}
+      propertyPath: Tree
+      value: 
+      objectReference: {fileID: 11400000, guid: b16f3e62802ed4a4f8fd413259ce9d1b, type: 2}
+    - target: {fileID: 5086609206467038269, guid: a90a424dd6c1b104dbdfff8b33fc561b, type: 3}
       propertyPath: tree
       value: 
       objectReference: {fileID: 11400000, guid: b16f3e62802ed4a4f8fd413259ce9d1b, type: 2}

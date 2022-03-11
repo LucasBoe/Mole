@@ -55,5 +55,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: StandingEnemy
       objectReference: {fileID: 0}
+    - target: {fileID: 5086609206467038269, guid: a90a424dd6c1b104dbdfff8b33fc561b, type: 3}
+      propertyPath: Tree
+      value: 
+      objectReference: {fileID: 11400000, guid: 7d38efe9e582c5b4f8ba7614846d0902, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a90a424dd6c1b104dbdfff8b33fc561b, type: 3}

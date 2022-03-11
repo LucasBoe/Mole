@@ -63,11 +63,11 @@ public class EnemyMemoryModule : EnemyModule<EnemyMemoryModule>
             playerPos = value;
         }
     }
-    [SerializeField, ReadOnly] private Vector2 positionOriginal;
-    public Vector2 PositionOriginal => positionOriginal;
+    [SerializeField, ReadOnly] private Vector2 positionStart;
+    public Vector2 PositionOriginal => positionStart;
 
-    [SerializeField, ReadOnly] private Direction2D forwardOriginal;
-    public Direction2D ForwardOriginal => forwardOriginal;
+    [SerializeField, ReadOnly] private Direction2D forwardStart;
+    public Direction2D ForwardOriginal => forwardStart;
 
     [SerializeField, ReadOnly] private Direction2D forward;
     public Direction2D Forward
@@ -93,8 +93,8 @@ public class EnemyMemoryModule : EnemyModule<EnemyMemoryModule>
     {
         base.Awake();
         forward = spriteRenderer.flipX ? Direction2D.Left : Direction2D.Right;
-        forwardOriginal = forward;
-        positionOriginal = transform.position;
+        forwardStart = forward;
+        positionStart = transform.position;
     }
 
     internal void Alert(Vector2 noiseLocation)

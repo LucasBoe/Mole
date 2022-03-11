@@ -6,7 +6,7 @@ using UnityEngine;
 public class EnemyGroundCheckModule : EnemyModule<EnemyGroundCheckModule>
 {
 
-    [SerializeField, ReadOnly] private bool isGrounded = false;
+    [SerializeField, ReadOnly] private bool isGrounded = true;
     [SerializeField] bool debug;
     public bool IsGrounded => isGrounded;
 

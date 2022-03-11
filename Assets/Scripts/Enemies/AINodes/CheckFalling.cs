@@ -10,7 +10,10 @@ public class CheckFalling : ActionNode
     {
 
         if (!context.groundCheck.IsGrounded && !context.rigigbodyController.IsFallmodeActive)
+        {
+            context.itemEquipment.DropItem();
             context.rigigbodyController.SetFallmodeActive(true);
+        }
     }
 
 

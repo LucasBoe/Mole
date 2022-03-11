@@ -5,7 +5,11 @@ using TheKiwiCoder;
 
 public class IsBeingStrangled : ActionNode
 {
-    protected override void OnStart() { }
+    protected override void OnStart()
+    {
+        if (context.memory.IsBeingStrangled)
+            context.itemEquipment.DropItem();
+    }
 
     protected override void OnStop() { }
 
