@@ -30,7 +30,7 @@ public class EnemyItemEquipmentModule : EnemyModule<EnemyItemEquipmentModule>
     public bool TryEquip(LampSource closestPotentialLamp)
     {
         Log("Try Equip!");
-        if (closestPotentialLamp.Collect())
+        if (closestPotentialLamp != null && closestPotentialLamp.Collect())
         {
             Instantiate(lampPrefab_inHand, hand);
             inHand = EnemyHandItem.Lamp;

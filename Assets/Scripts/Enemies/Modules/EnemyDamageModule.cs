@@ -4,7 +4,7 @@ using UnityEngine;
 public class EnemyDamageModule : EnemyModule<EnemyDamageModule>, IHealth
 {
     [SerializeField] private int maxHealth;
-    [SerializeField, ReadOnly] private int currentHealth;
+    [SerializeField] private int currentHealth;
     [SerializeField] EnemyFallDamageModule falldamage;
     [SerializeField] EnemyDamageTrigger damageTrigger;
     public EnemyDamageTrigger DamageTrigger => damageTrigger;
