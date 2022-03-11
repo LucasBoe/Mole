@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 5886552216652096265}
   - component: {fileID: 3125160580448235569}
   - component: {fileID: 1027026234630040398}
+  - component: {fileID: 2386916993568655531}
+  - component: {fileID: 6253566712290859326}
   m_Layer: 9
   m_Name: Lamp
   m_TagString: Untagged
@@ -4929,3 +4931,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HiddenAmount: 2
+--- !u!114 &2386916993568655531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5886552216652096267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dccf68808f1a71242b062d9a63c31d69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  treshhold: 10
+  prefab: {fileID: 0}
+--- !u!114 &6253566712290859326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5886552216652096267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0494255c077d944092f090dfe9db667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  treshhold: 10
+  targetMode: 1
+  damage: 50
