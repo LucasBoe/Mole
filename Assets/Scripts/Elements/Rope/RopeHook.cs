@@ -88,9 +88,14 @@ public class RopeHook : CollectablePlayerItemWorldObject
         CableHandler.Instance.CreateRope(PlayerController.Context.Rigidbody, rigidbody2D, pathPoints: InterpolatePathWihPlayer(travelPositions.ToArray()));
     }
 
-    public override void Collect()
+    public override bool Collect()
     {
-        CableHandler.Instance.DestroyCable(rigidbody2D);
-        base.Collect();
+        if (base.Collect())
+        {
+            CableHandler.Instance.DestroyCable(rigidbody2D);
+            return true;
+        }
+
+        return false;
     }
 }

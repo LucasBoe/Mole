@@ -7,11 +7,14 @@ public class CollectablePlayerItemWorldObject : InteractablePlayerItemWorldObjec
 {
     [SerializeField] GameObject customGameObject;
 
-    public virtual void Collect()
+    public virtual bool Collect()
     {
-        if (customGameObject != null)
-            Destroy(customGameObject);
-        else
-            Destroy(gameObject);
+        GameObject go = customGameObject != null ? customGameObject : gameObject;
+        if (go != null)
+        {
+            Destroy(go);
+            return true;
+        }
+        return false;
     }
 }

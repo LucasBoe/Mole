@@ -30,6 +30,7 @@ public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControll
 
     public void Knock(Vector2 vector2)
     {
+        GetModule<EnemyItemEquipmentModule>().DropItem();
         SetFallmodeActive(true);
         groundCheckModule.ForceGroundedValue(false);
         rigidbody2D.AddForce(vector2, ForceMode2D.Impulse);

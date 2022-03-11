@@ -11,16 +11,33 @@ public class EnemyItemEquipmentModule : EnemyModule<EnemyItemEquipmentModule>
 
     private void Start()
     {
-        inHand = hand.childCount > 0 ? EnemyHandItem.Lamp : EnemyHandItem.None;
+        inHand = CheckItemInHand();
+    }
+
+    private EnemyHandItem CheckItemInHand()
+    {
+        if (hand.childCount > 0)
+        {
+            if (hand.GetChild(0).gameObject.activeSelf)
+                return EnemyHandItem.Lamp;
+            else
+                hand.DestroyAllChildren();
+        }
+
+        return EnemyHandItem.None;
     }
 
     public bool TryEquip(LampSource closestPotentialLamp)
     {
         Log("Try Equip!");
-        Instantiate(lampPrefab_inHand, hand);
-        closestPotentialLamp.Collect();
-        inHand = EnemyHandItem.Lamp;
-        return true;
+        if (closestPotentialLamp.Collect())
+        {
+            Instantiate(lampPrefab_inHand, hand);
+            inHand = EnemyHandItem.Lamp;
+            return true;
+        }
+        else
+            return false;
     }
 
     public void DropItem()
