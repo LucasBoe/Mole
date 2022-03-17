@@ -13,6 +13,8 @@ public class CameraController : SingletonBehaviour<CameraController>
     [SerializeField] private TMP_Text renderModeDisplayText;
     [SerializeField] private bool smooth;
 
+    [SerializeField] public CameraSmartTarget SmartTarget;
+
     CinemachineVirtualCamera virtualCamera;
     CinemachineFramingTransposer transposer;
 
@@ -23,19 +25,11 @@ public class CameraController : SingletonBehaviour<CameraController>
     {
         virtualCamera = GetComponent<CinemachineVirtualCamera>();
         transposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
-        PlayerController.OnPlayerSpawned += ConnectPlayerTransformToVirtualCamera;
 
         foreach (RenderModes mode in Enum.GetValues(typeof(RenderModes)))
             allRenderModes.Add(mode);
 
         UpdateRenderMode(allRenderModes[renderModeIndex]);
-    }
-
-
-
-    private void ConnectPlayerTransformToVirtualCamera(Transform player)
-    {
-        virtualCamera.Follow = player;
     }
 
     public static Vector2 ScreenToWorldPoint(Vector2 vector2)
@@ -60,7 +54,7 @@ public class CameraController : SingletonBehaviour<CameraController>
             UpdateRenderMode(allRenderModes[renderModeIndex]);
         }
 
-        transposer.m_TrackedObjectOffset = PlayerInputHandler.PlayerInput.VirtualCursorToScreenCenter * new Vector2(4, 3);
+        //transposer.m_TrackedObjectOffset = 
     }
 
     public Camera ActiveCamera()

@@ -7,6 +7,7 @@ public class Crosshair : SingletonBehaviour<Crosshair>
 {
     Image crosshairUIImage;
     static Dictionary<Mode, float> modeOpacity;
+    public static System.Action<Mode> ChangedCrosshairMode;
     private void OnEnable()
     {
         crosshairUIImage = GetComponent<Image>();
@@ -30,6 +31,7 @@ public class Crosshair : SingletonBehaviour<Crosshair>
 
     public static void SetMode(Mode mode)
     {
+        ChangedCrosshairMode?.Invoke(mode);
         Instance.crosshairUIImage.color = new Color(1, 1, 1, modeOpacity[mode]);
     }
 }
