@@ -6,20 +6,26 @@ using UnityEngine;
 public class PlayerItemHolder : PlayerSingletonBehaviour<PlayerItemHolder>
 {
     [SerializeField] private PlayerStartItemStack[] startItems;
-
-    private ItemSlotContainer items = new ItemSlotContainer();
+    [SerializeField] private ItemSlotContainer items = new ItemSlotContainer();
 
     public static System.Action<PlayerItem> AddedItem;
     public static System.Action<PlayerItem> Changedtem;
     public static System.Action<PlayerItem> RemovedItem;
+    public static System.Action<Dictionary<PlayerItem, int>.KeyCollection> OnInitItems;
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        foreach (PlayerStartItemStack pair in startItems)
+            AddItem(pair.Item, pair.Amount);
+    }
 
     private void Start()
     {
-        foreach (PlayerStartItemStack pair in startItems)
-        {
-            AddItem(pair.Item, pair.Amount);
-        }
+        OnInitItems?.Invoke(items.Pairs.Keys);
     }
+
     public bool CanCollect(PlayerItem toCollect)
     {
         return true;
@@ -79,10 +85,11 @@ public class PlayerItemHolder : PlayerSingletonBehaviour<PlayerItemHolder>
         return 0;
     }
 
+    [System.Serializable]
     private class ItemSlotContainer
     {
         private PlayerItem handItem = null;
-        private Dictionary<PlayerItem, int> playerItemAmountPairs = new Dictionary<PlayerItem, int>();
+        [SerializeField] private SerializableDictionary<PlayerItem, int> playerItemAmountPairs = new SerializableDictionary<PlayerItem, int>();
         public Dictionary<PlayerItem, int> Pairs => playerItemAmountPairs;
 
         public int this[PlayerItem item]

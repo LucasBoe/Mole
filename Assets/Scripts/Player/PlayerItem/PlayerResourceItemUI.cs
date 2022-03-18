@@ -36,6 +36,15 @@ public class PlayerResourceItemUI : MonoBehaviour
         resourceItemUIInstances.Remove(item);
     }
 
+    private void OnInitItems(Dictionary<PlayerItem, int>.KeyCollection keys)
+    {
+        foreach (var item in keys)
+        {
+            if (!item.IsUseable)
+                OnAddedItem(item);
+        }
+    }
+
     private void OnAddedItem(PlayerItem item)
     {
         if (item.IsUseable)

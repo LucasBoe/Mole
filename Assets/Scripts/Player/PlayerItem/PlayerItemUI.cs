@@ -27,15 +27,16 @@ public class PlayerItemUI : UIBehaviour
     InputAction ac_useItem, ac_deselectItem, ac_stopUsing, ac_confirmUsage;
     private void Start()
     {
-        UIHandler.Instance.Show(this);
         PlayerItemHolder.AddedItem += OnAddItem;
         PlayerItemHolder.RemovedItem += OnRemoveItem;
         PlayerItemHolder.Changedtem += UpdateSelectedItemDisplay;
+        PlayerItemHolder.OnInitItems += OnInitItems;
 
         ac_useItem = new InputAction() { Stage = InputActionStage.ModeSpecific, Target = transform, Input = ControlType.Use, Text = "Use Item", ActionCallback = TryUseItem };
         ac_deselectItem = new InputAction() { Stage = InputActionStage.ModeSpecific, Target = transform, Input = ControlType.Back, Text = "Hide Item", ActionCallback = DeselectItem };
         ac_stopUsing = new InputAction() { Stage = InputActionStage.ModeSpecific, Target = transform, Input = ControlType.Back, Text = "Stop", ActionCallback = StopUse };
         ac_confirmUsage = new InputAction() { Stage = InputActionStage.ModeSpecific, Target = transform, Input = ControlType.Interact, Text = "Confirm", ActionCallback = ConfirmUse };
+        UIHandler.Instance.Show(this);
     }
 
     public void SetUseState(ItemUseState newUseState)
@@ -100,7 +101,21 @@ public class PlayerItemUI : UIBehaviour
     {
         PlayerItemUser.Instance.Confirm(itemSlots[selectedItemSlotIndex].SelectedModeIndex);
     }
+    private void OnInitItems(Dictionary<PlayerItem, int>.KeyCollection keys)
+    {
+        foreach (var item in keys)
+        {
+            if (item.IsUseable)
+            {
+                ItemSlot newSlot = new ItemSlot() { Item = item, Modes = item.GetItemModes() };
+                itemSlots.Add(newSlot);
+                CreateInstancesForSlot(newSlot);
+            }
+        }
 
+        selectedItemSlotIndex = 0;
+        UpdateSelectedItem();
+    }
 
     private void OnAddItem(PlayerItem item)
     {
@@ -141,6 +156,8 @@ public class PlayerItemUI : UIBehaviour
 
     private void CreateUIElementsForAllItems()
     {
+
+        Debug.Log("CreateUIElementsForAllItems: " + itemSlots.Count + "x");
         foreach (ItemSlot slot in itemSlots)
         {
             CreateInstancesForSlot(slot);
@@ -219,6 +236,7 @@ public class PlayerItemUI : UIBehaviour
     public override void Show()
     {
         base.Show();
+
 
         CreateUIElementsForAllItems();
         UpdateSelectedItem();
