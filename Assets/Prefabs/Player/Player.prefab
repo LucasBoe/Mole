@@ -759,6 +759,10 @@ MonoBehaviour:
     Amount: 100
   - Item: {fileID: 11400000, guid: d6f6298f03258bf48af39789468bf75b, type: 2}
     Amount: 1
+  items:
+    playerItemAmountPairs:
+      keys: []
+      values: 
 --- !u!1 &7193096735473354739
 GameObject:
   m_ObjectHideFlags: 0
@@ -1232,7 +1236,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 0.25
   m_LightVolumeOpacity: 0
-  m_ApplyToSortingLayers: 490ad3b0e16f92becbff35e71775bccfad5246f90db619e37d8ffc3d00000000c1500601cf4b6ccb
+  m_ApplyToSortingLayers: 490ad3b0e16f92becbff35e71775bccfad5246f90db619e37d8ffc3d00000000c1500601cf4b6ccb43e45afa9130db5e
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 0
   m_LightOrder: 0
