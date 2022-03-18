@@ -36,7 +36,7 @@ public class HangableFloor : MonoBehaviour, IHangable
 
     public Vector2 GetNormalVector()
     {
-        return Vector2.up;
+        return Vector2.down;
     }
 }
 
