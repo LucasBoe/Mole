@@ -12,6 +12,10 @@ public class DeveloperTools : MonoBehaviour
     private float lastMessageTime = 0;
     private string lastMessage = "";
 
+    [SerializeField]
+    private int[] targetFrameRates = new int[] { -1 };
+    private int targetFrameRateIndex = 0;
+
     // Update is called once per frame
     void Update()
     {
@@ -19,6 +23,17 @@ public class DeveloperTools : MonoBehaviour
         {
             HasGodMode = !HasGodMode;
             DisplayMessage("God Mode: " + HasGodMode);
+        }
+
+        if (Input.GetKeyUp(KeyCode.F5))
+        {
+            targetFrameRateIndex++;
+
+            if (targetFrameRateIndex > targetFrameRates.Length - 1)
+                targetFrameRateIndex = 0;
+
+            Application.targetFrameRate = targetFrameRates[targetFrameRateIndex];
+            DisplayMessage("Cap Framerate: " + Application.targetFrameRate);
         }
     }
 

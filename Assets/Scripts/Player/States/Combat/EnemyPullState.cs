@@ -29,7 +29,7 @@ public class EnemyPullState : PlayerCombatState
     public override void Update()
     {
         float distance = Vector2.Distance(targetBody.position, context.PlayerPos);
-        targetBody.MovePosition(Vector2.MoveTowards(targetBody.position, context.PlayerPos, Time.deltaTime * 40f));
+        targetBody.MovePosition(Vector2.MoveTowards(targetBody.position, context.PlayerPos, 0.5f));
         pulled = distance < 0.25f;
         if (pulled)
             SetState(stateBefore);

@@ -60,8 +60,8 @@ public class LadderClimbState : PlayerStateBase
     {
         base.Update();
 
-        Vector2 pos = Util.GetClosestPointOnLineSegment(top, bottom, context.PlayerPos + context.Input.Axis);
-        context.Rigidbody.MovePosition(Vector2.MoveTowards(context.PlayerPos, pos, context.Values.LadderClimbVelocity * Time.deltaTime));
+        Vector2 directional = Util.GetClosestPointOnLineSegment(top, bottom, context.PlayerPos + context.Input.Axis) - context.PlayerPos;
+        context.Rigidbody.velocity = context.Values.LadderClimbVelocity * directional.normalized;
 
         bool closeToTopOrBottom = Vector2.Distance(context.PlayerPos, top) < 0.2f || Vector2.Distance(context.PlayerPos, bottom) < 0.2f;
 
@@ -203,7 +203,7 @@ public class DropDownState : ClimbStateBase
     }
     public override void Update()
     {
-        context.Rigidbody.MovePosition(context.PlayerPos + Vector2.down * Time.deltaTime * context.Values.DropDownSpeed);
+        context.Rigidbody.MovePosition(context.PlayerPos + context.Values.DropDownSpeed * Vector2.down);
 
         if (IsColliding(CheckType.Hangable))
             SetState(new HangingState());
@@ -400,7 +400,7 @@ public class HangingState : HangingBaseState
 
 
         Debug.DrawLine(context.PlayerPos, toMoveTo, Color.cyan);
-        context.Rigidbody.MovePosition(Vector2.MoveTowards(context.PlayerPos, toMoveTo, Time.deltaTime * 10f));
+        context.Rigidbody.MovePosition(Vector2.MoveTowards(context.PlayerPos, toMoveTo, 0.1f));
 
         PullUpState.TryEnter(this, context);
     }
@@ -431,7 +431,7 @@ public class JumpToHangingState : HangingBaseState
     {
         base.Update();
 
-        Vector2 pos = Vector2.MoveTowards(context.PlayerPos, target, Time.deltaTime * 30f);
+        Vector2 pos = Vector2.MoveTowards(context.PlayerPos, target, 1f);
         context.Rigidbody.MovePosition(pos);
 
         if (IsColliding(CheckType.Hangable))

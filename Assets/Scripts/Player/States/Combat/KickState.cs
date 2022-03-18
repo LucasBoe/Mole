@@ -24,7 +24,7 @@ public class KickState : PlayerCombatState
     {
         if (!finished) targetPos = targetBody.position;
 
-        context.Rigidbody.MovePosition(Vector2.MoveTowards(context.PlayerPos, targetPos, Time.deltaTime * 25));
+        context.Rigidbody.MovePosition(Vector2.MoveTowards(context.PlayerPos, targetPos, 1f));
 
         if (finished)
             return;

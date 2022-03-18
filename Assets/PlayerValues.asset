@@ -82,7 +82,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  DropDownSpeed: 50
+  DropDownSpeed: 0.3
   HangableOffset: {x: 0, y: 1.33}
   WallPushVelocity: 0.1
   WallSnapXVelocity: 10
@@ -114,5 +114,5 @@ MonoBehaviour:
     m_PostInfinity: 0
     m_RotationOrder: 4
   SnapToHideablePositionDuration: 0.05
-  LadderClimbVelocity: 20
-  TunnelMoveVelocity: 25
+  LadderClimbVelocity: 5
+  TunnelMoveVelocity: 0.1

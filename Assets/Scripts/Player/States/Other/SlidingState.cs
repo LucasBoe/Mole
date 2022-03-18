@@ -31,7 +31,7 @@ public class SlidingState : PlayerStateBase
         if (transition)
         {
             Vector2 currentPositon = context.PlayerPos;
-            context.Rigidbody.MovePosition(Vector2.MoveTowards(currentPositon, startPosition, Time.deltaTime * 25));
+            context.Rigidbody.MovePosition(Vector2.MoveTowards(currentPositon, startPosition, 1f));
 
             if (Vector2.Distance(currentPositon, startPosition) < 0.1f)
             {

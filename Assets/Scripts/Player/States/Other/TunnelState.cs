@@ -33,7 +33,7 @@ public class TunnelState : PlayerStateBase
             MoveDir = axis.y >= 0 ? Vector2Int.up : Vector2Int.down;
 
         Vector2 target = AdaptToTunnelCoordinates(context.PlayerPos + (axis * 3));
-        Vector2 withTime = Vector2.MoveTowards(context.PlayerPos, target, Time.deltaTime * context.Values.TunnelMoveVelocity);
+        Vector2 withTime = Vector2.MoveTowards(context.PlayerPos, target, context.Values.TunnelMoveVelocity);
         context.Rigidbody.MovePosition(withTime);
     }
 
