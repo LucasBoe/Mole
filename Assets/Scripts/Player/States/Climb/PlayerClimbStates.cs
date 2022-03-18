@@ -34,8 +34,8 @@ public class ClimbStateBase : PlayerStateBase
 
 public class LadderClimbState : PlayerStateBase
 {
-    Ladder climbingLadder;
     Vector2 top, bottom;
+    public override bool StateAllowsCarryingHeavyObjects => false;
 
     public static bool CheckEnter(Ladder ladder)
     {
@@ -67,7 +67,6 @@ public class LadderClimbState : PlayerStateBase
 
     public LadderClimbState(Ladder ladder)
     {
-        climbingLadder = ladder;
         top = ladder.ExitPointTop;
         bottom = ladder.ExitPointBottom;
     }
