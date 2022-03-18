@@ -49,7 +49,7 @@ public class EnemyGroundCheckModule : EnemyModule<EnemyGroundCheckModule>
     private bool DoRaycast(Vector3 pos, int length)
     {
 
-        RaycastHit2D hit = Physics2D.Raycast(pos, Vector2.down, length, LayerMask.GetMask("Default", "Hangable"));
+        RaycastHit2D hit = Physics2D.Raycast(pos, Vector2.down, length, LayerMask.GetMask("Default", "Hangable", "HangableCollidable"));
         return hit.collider != null;
     }
 }
