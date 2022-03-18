@@ -72,7 +72,8 @@ public class PlayerController : PlayerSingletonBehaviour<PlayerController>
         context.PlayerPos = transform.position;
         context.IsCollidingToAnyWall = IsColliding(CheckType.ClimbableLeft) || IsColliding(CheckType.ClimbableRight);
         context.TriesMoveLeftRight = context.Input.Axis.x != 0;
-        context.TriesMoveUpDown = context.Input.Axis.y != 0f;
+        context.TriesMoveUp = context.Input.Axis.y > 0f;
+        context.TriesMoveDown = context.Input.Axis.y < 0f;
 
         foreach (IPlayerComponent component in playerComponents)
             component.UpdatePlayerComponent(context);

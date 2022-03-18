@@ -37,23 +37,39 @@ public class LadderClimbState : PlayerStateBase
     Ladder climbingLadder;
     Vector2 top, bottom;
 
-    public new static bool CheckEnter()
+    public static bool CheckEnter(Ladder ladder)
     {
+        PlayerContext context = PlayerController.Context;
         PlayerStateMachine stateMachine = PlayerStateMachine.Instance;
+
         if (stateMachine.CurrentState.StateIs(typeof(LadderClimbState)))
             return false;
+
+        if (!context.TriesMoveUpDown)
+            return false;
+
 
         if (Mathf.Abs(PlayerInputHandler.PlayerInput.Axis.y) < Mathf.Abs(PlayerInputHandler.PlayerInput.Axis.x))
             return false;
 
+        bool playerAbove = context.PlayerPos.y > ladder.ExitPointTop.y;
+        bool playerBelow = context.PlayerPos.y < ladder.ExitPointBottom.y;
+
+        if ((playerAbove && context.TriesMoveUp) || (playerBelow && context.TriesMoveDown))
+            return false;
+
         return true;
+    }
+    private static bool PlayerCloseTo(PlayerContext context, Vector2 pos)
+    {
+        return Vector2.Distance(context.PlayerPos, pos) < 0.125;
     }
 
     public LadderClimbState(Ladder ladder)
     {
         climbingLadder = ladder;
-        top = ladder.GetExitPointTop();
-        bottom = ladder.GetExitPointBottom();
+        top = ladder.ExitPointTop;
+        bottom = ladder.ExitPointBottom;
     }
 
     public override void Update()
@@ -63,9 +79,12 @@ public class LadderClimbState : PlayerStateBase
         Vector2 directional = Util.GetClosestPointOnLineSegment(top, bottom, context.PlayerPos + context.Input.Axis) - context.PlayerPos;
         context.Rigidbody.velocity = context.Values.LadderClimbVelocity * directional.normalized;
 
-        bool closeToTopOrBottom = Vector2.Distance(context.PlayerPos, top) < 0.2f || Vector2.Distance(context.PlayerPos, bottom) < 0.2f;
+        Vector2 t = top;
+        bool closeToTop = PlayerCloseTo(context, top);
+        bool closeToBottom = PlayerCloseTo(context, bottom);
 
-        if (closeToTopOrBottom && context.TriesMoveLeftRight)
+
+        if (closeToTop && ((context.TriesMoveLeftRight && closeToBottom) || context.TriesMoveUp))
             SetState(new WalkState());
 
         if (context.Input.Jump)
@@ -101,7 +120,7 @@ public class PullUpState : ClimbStateBase
     public static void TryEnter(PlayerStateBase previous, PlayerContext context)
     {
         CollisionCheck hangableCheck = context.CollisionChecks[CheckType.Hangable];
-        float angle = Util.GetAngleFromHangable(hangableCheck, context);    
+        float angle = Util.GetAngleFromHangable(hangableCheck, context);
 
         if (angle > 135)
             PlayerStateMachine.Instance.SetState(new PullUpState());

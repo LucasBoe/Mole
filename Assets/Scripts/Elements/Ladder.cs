@@ -7,10 +7,13 @@ public class Ladder : AboveCooldownInteractable
     [SerializeField] BoxCollider2D triggerArea;
     EdgeCollider2D topEdge;
     public bool PlayerIsAbove => playerIsAbove;
+    public Vector2 ExitPointTop, ExitPointBottom;
 
     private void Start()
     {
         SetUpEdgCollider();
+        ExitPointTop = GetExitPointTop();
+        ExitPointBottom = GetExitPointBottom();
     }
 
     private void SetUpEdgCollider()
@@ -27,11 +30,11 @@ public class Ladder : AboveCooldownInteractable
 
     private void Update()
     {
-        if (playerIsAbove && LadderClimbState.CheckEnter())
+        if (playerIsAbove && LadderClimbState.CheckEnter(this))
             PlayerStateMachine.Instance.SetState(new LadderClimbState(this));
     }
 
-    public Vector2 GetExitPointTop()
+    private Vector2 GetExitPointTop()
     {
         Vector2 pos = new Vector2(transform.position.x, transform.position.y + triggerArea.size.y / 2f + 1f);
         while (Physics2D.OverlapBox(pos, new Vector2(0.9f, 2f), 0, LayerMask.GetMask("Default")) != null)
@@ -40,7 +43,7 @@ public class Ladder : AboveCooldownInteractable
         return pos;
     }
 
-    public Vector2 GetExitPointBottom()
+    private Vector2 GetExitPointBottom()
     {
         Vector2 pos = new Vector2(transform.position.x, transform.position.y - triggerArea.size.y / 2f - 1f);
         while (Physics2D.OverlapBox(pos + new Vector2(0, 0.25f), new Vector2(0.9f, 2f), 0, LayerMask.GetMask("Default")) != null)

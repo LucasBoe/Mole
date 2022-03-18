@@ -13,7 +13,9 @@ public class PlayerContext
     public Vector2 PlayerPos;
     public bool IsCollidingToAnyWall;
     internal bool TriesMoveLeftRight;
-    internal bool TriesMoveUpDown;
+    internal bool TriesMoveUp;
+    internal bool TriesMoveDown;
+    internal bool TriesMoveUpDown => TriesMoveUp || TriesMoveDown;
     public PlayerInput Input;
 
     public ICombatTarget CombatTarget;
