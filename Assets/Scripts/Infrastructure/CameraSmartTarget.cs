@@ -44,7 +44,8 @@ public class CameraSmartTarget : MonoBehaviour
         switch (mode)
         {
             case SmartTargetMode.Aim:
-                return Vector2.MoveTowards(player.position, new Vector2(Mathf.Lerp(PlayerInputHandler.PlayerInput.VirtualCursorToWorldPos.x, player.position.x, 0.25f), player.position.y), 8f);
+                float cursorX = Mathf.Round(PlayerInputHandler.PlayerInput.VirtualCursorToWorldPos.x * 2) / 2f;
+                return Vector2.MoveTowards(player.position, new Vector2(Mathf.Lerp(cursorX, player.position.x, 0.25f), player.position.y), 8f);
 
         }
 

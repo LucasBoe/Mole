@@ -88,7 +88,7 @@ MonoBehaviour:
   WallSnapXVelocity: 10
   JumpOffVelocity: 1.5
   KeyPressTimeToDropDown: 0.05
-  RopeClimbVelocity: 50
+  RopeClimbVelocity: 75
   RopeSwingForceCurve:
     serializedVersion: 2
     m_Curve:

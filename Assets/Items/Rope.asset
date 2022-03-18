@@ -16,7 +16,6 @@ MonoBehaviour:
   Prefab: {fileID: 0}
   NeedsConfirmation: 1
   IsHeavy: 0
-  IsUseable: 1
   ThrowForce: 25
   GravityScale: 3
   ropeThrow:
