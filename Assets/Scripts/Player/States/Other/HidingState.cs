@@ -34,5 +34,7 @@ public class HidingState : PlayerStaticState
             SetHidingMode(PlayerHidingHandler.HidingMode.StateStatic);
         else
             SetHidingMode(PlayerHidingHandler.HidingMode.Auto);
+
+        PlayerPhysicsModifier.Instance.SetColliderMode(isHiding ? PlayerPhysicsModifier.ColliderMode.Tunnel : PlayerPhysicsModifier.ColliderMode.Default);
     }
 }

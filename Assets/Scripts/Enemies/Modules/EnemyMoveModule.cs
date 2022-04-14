@@ -29,21 +29,21 @@ public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
 
-        int mask = LayerMask.GetMask("Default", "Hangable", "HangableCollidable");
+        int collideableLayersMask = LayerMask.GetMask("Default", "Hangable", "HangableCollidable");
 
-        jumpHelperLeft = new CollisionCheck(-0.5f, -1.23f, 0.5f, 0.4f, mask, Color.yellow);
+        jumpHelperLeft = new CollisionCheck(-0.5f, -1.23f, 0.5f, 0.4f, collideableLayersMask, Color.yellow);
         collisionChecks.Add(jumpHelperLeft);
 
-        jumpHelperRight = new CollisionCheck(0.5f, -1.23f, 0.5f, 0.4f, mask, Color.yellow);
+        jumpHelperRight = new CollisionCheck(0.5f, -1.23f, 0.5f, 0.4f, collideableLayersMask, Color.yellow);
         collisionChecks.Add(jumpHelperRight);
 
-        ground = new CollisionCheck(0f, -1.5f, 0.5f, 0.2f, mask, Color.yellow);
+        ground = new CollisionCheck(0f, -1.5f, 0.5f, 0.2f, collideableLayersMask, Color.yellow);
         collisionChecks.Add(ground);
 
-        fallDetectionLeft = new CollisionCheck(-1, -1.5f, 0.5f, 2.5f, mask, Color.red);
+        fallDetectionLeft = new CollisionCheck(-1, -1.5f, 0.5f, 2.5f, collideableLayersMask, Color.red);
         collisionChecks.Add(fallDetectionLeft);
 
-        fallDetectionRight = new CollisionCheck(1, -1.5f, 0.5f, 2.5f, mask, Color.red);
+        fallDetectionRight = new CollisionCheck(1, -1.5f, 0.5f, 2.5f, collideableLayersMask, Color.red);
         collisionChecks.Add(fallDetectionRight);
 
     }
