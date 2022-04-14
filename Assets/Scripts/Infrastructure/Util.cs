@@ -29,6 +29,19 @@ public static class Util
             return lineStart + AB * distance;
         }
     }
+    public static Vector2 FindIntersectionOfLines(Vector2 line1Start, Vector2 line1End, Vector2 line2Start, Vector2 line2End)
+    {
+        float a1 = line1End.y - line1Start.y;
+        float b1 = line1Start.x - line1End.x;
+        float c1 = a1 * line1Start.x + b1 * line1Start.y;
+
+        float a2 = line2End.y - line2Start.y;
+        float b2 = line2Start.x - line2End.x;
+        float c2 = a2 * line2Start.x + b2 * line2Start.y;
+
+        float delta = a1 * b2 - a2 * b1;
+        return delta == 0 ? Vector2.zero : new Vector2((b2 * c1 - b1 * c2) / delta, (a1 * c2 - a2 * c1) / delta);
+    }
 
     internal static List<T> Merge<T>(params T[][] vector2s)
     {
@@ -374,6 +387,12 @@ public static class Util
     {
         for (int i = transform.childCount - 1; i >= 0; i--)
             UnityEngine.Object.Destroy(transform.GetChild(i).gameObject);
+    }
+
+    public static void DestroyAllChildrenImmediate(this Transform transform)
+    {
+        for (int i = transform.childCount - 1; i >= 0; i--)
+            UnityEngine.Object.DestroyImmediate(transform.GetChild(i).gameObject);
     }
 
     public static Gradient ToGradient(this Color color)
