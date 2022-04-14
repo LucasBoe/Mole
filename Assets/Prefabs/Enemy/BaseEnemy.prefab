@@ -65,8 +65,8 @@ GameObject:
   - component: {fileID: 4603694226362444763}
   - component: {fileID: 5086609206467038260}
   - component: {fileID: 5086609206467038269}
-  - component: {fileID: 8919387375624062982}
   - component: {fileID: 5086609206467038256}
+  - component: {fileID: 1994070464039761075}
   - component: {fileID: 5086609206467038259}
   - component: {fileID: 5086609206467038261}
   - component: {fileID: 5086609206467038251}
@@ -157,29 +157,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Tree: {fileID: 0}
   Run: 0
---- !u!114 &8919387375624062982
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5086609206467038268}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61caf83535f47584da445ba02542e168, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 5086609206467038263}
-  playerPos: {x: 0, y: 0}
-  canSeePlayer: 0
-  ReactedToAlert: 0
-  isAlterted: 0
-  playerBody: {fileID: 0}
-  positionStart: {x: 0, y: 0}
-  forwardStart: 0
-  forward: 0
-  isBeingStrangled: 0
-  IsUnconcious: 0
 --- !u!114 &5086609206467038256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,6 +170,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Variables: []
+--- !u!114 &1994070464039761075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5086609206467038268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38902eab132c574439b17198a795c9bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 5086609206467038263}
+  playerPos: {x: 0, y: 0}
+  canSeePlayer: 0
+  ReactedToAlert: 0
+  isAlterted: 0
+  playerBody: {fileID: 0}
+  positionStart: {x: 0, y: 0}
+  forwardStart: 0
+  forward: 0
+  isBeingStrangled: 0
+  IsUnconcious: 0
 --- !u!114 &5086609206467038259
 MonoBehaviour:
   m_ObjectHideFlags: 0

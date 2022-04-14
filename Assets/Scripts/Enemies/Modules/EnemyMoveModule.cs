@@ -29,7 +29,7 @@ public class EnemyMoveModule : EnemyModule<EnemyMoveModule>
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
 
-        int mask = LayerMask.GetMask("Default", "Hangable");
+        int mask = LayerMask.GetMask("Default", "Hangable", "HangableCollidable");
 
         jumpHelperLeft = new CollisionCheck(-0.5f, -1.23f, 0.5f, 0.4f, mask, Color.yellow);
         collisionChecks.Add(jumpHelperLeft);

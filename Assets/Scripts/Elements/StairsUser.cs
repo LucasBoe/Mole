@@ -54,8 +54,6 @@ public class StairsUser : MonoBehaviour
         {
             Gizmos.color = stairs == inactive ? Color.green : Color.red;
             Gizmos.DrawLine(stairs.transform.position, stairs.otherTarget.position);
-
-            Handles.Label(Vector3.Lerp(stairs.transform.position, stairs.otherTarget.position, 0.5f), i.ToString());
             i++;
         }
     }
@@ -73,7 +71,6 @@ public class StairsUser : MonoBehaviour
             Vector2 closest = stairs.GetClosestPoint(origin);
 
             Util.DebugDrawCircle(origin, Color.cyan, 0.25f);
-
             Util.DebugDrawCircle(closest, Color.yellow, 0.25f);
 
             if (closest.y < origin.y)

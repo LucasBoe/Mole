@@ -96,10 +96,11 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
 
         float playerHiddenValue = PlayerHidingHandler.Instance.PlayerHiddenValue;
         bool playerIsInFrontOfEnemy = Direction2DUtil.FromPositions(transform.position, player.position) == memoryModule.Forward;
-        bool VisibleInPlainSight = playerHiddenValue > 0.6f && Util.CheckLineOfSight(transform.position, player.position, "Default", drawLineOfSightWith);
-        bool VisibleInTwighlight = playerHiddenValue > 0.1f && Util.CheckLineOfSight(transform.position, player.position, new string[] { "Hangable", "Default" }, drawLineOfSightWith);
+        bool playerIsInLineOfSight = Util.CheckLineOfSight(transform.position, player.position, new string[] { "Hangable", "HangableCollidable", "Default" }, drawLineOfSightWith);
+        bool visibleInPlainSight = playerHiddenValue > 0.6f && playerIsInLineOfSight;
+        bool visibleInTwighlight = playerHiddenValue > 0.1f && playerIsInLineOfSight;
 
-        return (playerIsInRange && playerIsInFrontOfEnemy && (VisibleInPlainSight || VisibleInTwighlight));
+        return (playerIsInRange && playerIsInFrontOfEnemy && (visibleInPlainSight || visibleInTwighlight));
     }
 
     IEnumerator SearchForPlayerRoutine()
