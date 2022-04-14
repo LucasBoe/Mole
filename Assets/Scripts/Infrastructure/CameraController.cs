@@ -4,6 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class CameraController : SingletonBehaviour<CameraController>
 {
@@ -30,6 +33,10 @@ public class CameraController : SingletonBehaviour<CameraController>
             allRenderModes.Add(mode);
 
         UpdateRenderMode(allRenderModes[renderModeIndex]);
+
+#if UNITY_EDITOR
+        SceneVisibilityManager.instance.Hide(cameraHybrid.gameObject, true);
+#endif
     }
 
     public static Vector2 ScreenToWorldPoint(Vector2 vector2)
