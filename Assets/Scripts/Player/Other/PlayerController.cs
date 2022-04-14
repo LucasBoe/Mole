@@ -8,6 +8,12 @@ using UnityEngine;
 public class PlayerController : PlayerSingletonBehaviour<PlayerController>
 {
     public static System.Action<Transform> OnPlayerSpawned;
+
+    internal void Teleport(Vector3 teleportPosition)
+    {
+        transform.position = teleportPosition;
+    }
+
     public static PlayerContext Context => Instance.context;
 
     [SerializeField] private PlayerContext context;

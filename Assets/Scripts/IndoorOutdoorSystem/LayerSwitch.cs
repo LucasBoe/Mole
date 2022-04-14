@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//TODO: make this not tunnel exclusive
 public class LayerSwitch : AboveInputActionProvider
 {
     [SerializeField] SpriteRenderer spriteRenderer;
@@ -17,7 +16,7 @@ public class LayerSwitch : AboveInputActionProvider
         {
             Text = "Enter",
             Target = transform,
-            ActionCallback = TryInteract,
+            ActionCallback = SwitchLayer,
             Stage = InputActionStage.WorldObject
         };
 
@@ -26,7 +25,7 @@ public class LayerSwitch : AboveInputActionProvider
             Input = ControlType.Use,
             Text = "Spy",
             Target = transform,
-            ActionCallback = TrySpy,
+            ActionCallback = SpyLayer,
             Stage = InputActionStage.WorldObject
         };
 
@@ -52,7 +51,7 @@ public class LayerSwitch : AboveInputActionProvider
         base.OnPlayerEnter();
 
     }
-    private void TryInteract()
+    protected virtual void SwitchLayer()
     {
         LayerHandler.Instance.SwitchLayer(layerLeadsTo);
         UpdatePlayerState(layerLeadsTo == Layers.Tunnels);
@@ -60,7 +59,7 @@ public class LayerSwitch : AboveInputActionProvider
         PlayerInputActionRegister.Instance.UnregisterInputAction(enterAction);
 
     }
-    private void TrySpy()
+    private void SpyLayer()
     {
         PlayerStateBase currentState = PlayerStateMachine.Instance.CurrentState;
         PlayerStateMachine.Instance.SetState(new SpyingState(currentState, LayerHandler.Instance.CurrentLayer, layerLeadsTo, enterAction));

@@ -118,6 +118,8 @@ public class PullUpState : ClimbStateBase
 
     public static void TryEnter(PlayerStateBase previous, PlayerContext context)
     {
+        if (!context.Input.Jump) return;
+
         CollisionCheck hangableCheck = context.CollisionChecks[CheckType.Hangable];
         float angle = Util.GetAngleFromHangable(hangableCheck, context);
 
@@ -237,6 +239,7 @@ public class GutterClimbState : ClimbStateBase
     public bool IsMoving;
     public float DistanceFromTop;
     public bool IsLeft => IsColliding(CheckType.ClimbableLeft);
+    public bool IsRight => IsColliding(CheckType.ClimbableRight);
 
     public GutterClimbState() : base() { }
 
@@ -271,8 +274,16 @@ public class GutterClimbState : ClimbStateBase
             }
         }
 
+        float wallPush = 0;
+
+        if (IsLeft)
+            wallPush = -1f;
+        
+        if (IsRight)
+            wallPush = 1f;
+
         //up down movement
-        context.Rigidbody.velocity = new Vector2(context.Rigidbody.velocity.x + (IsLeft ? -1f : 1f) * context.Values.WallPushVelocity, context.Input.Axis.y * context.Values.WallClimbYvelocity);
+        context.Rigidbody.velocity = new Vector2(context.Rigidbody.velocity.x + wallPush * context.Values.WallPushVelocity, context.Input.Axis.y * context.Values.WallClimbYvelocity);
 
         //transition to hanging
         HangingState.TryEnter(this, context);

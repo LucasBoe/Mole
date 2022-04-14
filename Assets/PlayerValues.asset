@@ -18,8 +18,8 @@ MonoBehaviour:
   StraveXVelocity:
     SprintValue: 10
     NotSprintValue: 6
-  WallClimbYvelocity: 6
-  EdgeHelperUpwardsImpulse: 5
+  WallClimbYvelocity: 3
+  EdgeHelperUpwardsImpulse: 3
   JumpForce:
     SprintValue: 50
     NotSprintValue: 30
