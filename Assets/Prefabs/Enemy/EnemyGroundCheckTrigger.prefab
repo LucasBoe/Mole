@@ -45,9 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0147f42bd609f8245886b20864a34215, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  validLayers: 0000000006000000
-  currentLayers: 
-  groundTime: 0
+  isGrounded: 1
+  debug: 0
 --- !u!61 &3598408139011781054
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -94,14 +93,14 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 28.51792
-      outSlope: 28.51792
+      inSlope: 47.08307
+      outSlope: 47.08307
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.04612342
+      outWeight: 0.039833862
     - serializedVersion: 3
-      time: 10
+      time: 5
       value: 100
       inSlope: 1.2921413
       outSlope: 1.2921413

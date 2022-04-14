@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7133193882489278484}
   - component: {fileID: 7133193882489278483}
-  - component: {fileID: 8342524499041518141}
   - component: {fileID: 4459441952473055404}
+  - component: {fileID: 8342524499041518141}
   m_Layer: 9
   m_Name: Bush_1
   m_TagString: Untagged
@@ -84,6 +84,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4459441952473055404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7133193882489278482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75ee5dc46807a2b4ead99d908bae9e02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HiddenAmount: 0
 --- !u!60 &8342524499041518141
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -118,16 +131,3 @@ PolygonCollider2D:
       - {x: 3.375, y: -1.8125}
       - {x: 2.7146096, y: 0.080140516}
       - {x: 1.0352808, y: 1.7024354}
---- !u!114 &4459441952473055404
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7133193882489278482}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75ee5dc46807a2b4ead99d908bae9e02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HiddenAmount: 0

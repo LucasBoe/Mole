@@ -10,7 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7191171300195409395}
   - component: {fileID: 7191171300195409392}
-  m_Layer: 29
+  - component: {fileID: -4583619490832188147}
+  - component: {fileID: 316889873979991472}
+  m_Layer: 9
   m_Name: Bush_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68,9 +70,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -112831827
+  m_SortingLayer: -3
+  m_SortingOrder: 1000
   m_Sprite: {fileID: 2269364174784503967, guid: 45625c8fed7a2d04699119a0858f4844, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -82,3 +84,49 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-4583619490832188147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7191171300195409393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75ee5dc46807a2b4ead99d908bae9e02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HiddenAmount: 0
+--- !u!60 &316889873979991472
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7191171300195409393}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.53333336}
+    oldSize: {x: 4, y: 1.875}
+    newSize: {x: 4, y: 1.875}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.76652545, y: 0.8887873}
+      - {x: -1.5716755, y: 0.06985019}
+      - {x: -1.8828062, y: -0.33870587}
+      - {x: -2, y: -1}
+      - {x: 2, y: -1}
+      - {x: 2, y: -0.25}
+      - {x: 1.2391953, y: -0.17780733}
+      - {x: 0.44069427, y: 0.875}
