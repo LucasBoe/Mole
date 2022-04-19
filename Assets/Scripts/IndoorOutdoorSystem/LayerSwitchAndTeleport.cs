@@ -6,9 +6,9 @@ public class LayerSwitchAndTeleport : LayerSwitch
 {
     [SerializeField] Vector3 localTeleportTarget;
 
-    protected override void SwitchLayer()
+    protected override void Interact()
     {
-        base.SwitchLayer();
+        base.Interact();
         PlayerController.Instance.Teleport(ToGlobal(localTeleportTarget));
     }
 

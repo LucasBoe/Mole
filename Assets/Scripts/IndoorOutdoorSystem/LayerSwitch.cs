@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,13 +11,17 @@ public class LayerSwitch : AboveInputActionProvider
     PlayerControlPromptUI prompt;
     InputAction enterAction, spyAction;
 
+    public LayerSwitchLock Lock;
+    public bool HasLock => Lock != null;
+    [ShowIfField("HasLock"), ShowNativeProperty] public bool LockStatus => Lock.IsLocked;
+
     protected override void OnEnable()
     {
         enterAction = new InputAction()
         {
             Text = "Enter",
             Target = transform,
-            ActionCallback = SwitchLayer,
+            ActionCallback = TryInteract,
             Stage = InputActionStage.WorldObject
         };
 
@@ -51,7 +56,15 @@ public class LayerSwitch : AboveInputActionProvider
         base.OnPlayerEnter();
 
     }
-    protected virtual void SwitchLayer()
+
+    private void TryInteract()
+    {
+        if (!HasLock || Lock.TryUnlock())
+        {
+            Interact();
+        }
+    }
+    protected virtual void Interact()
     {
         LayerHandler.Instance.SwitchLayer(layerLeadsTo);
         UpdatePlayerState(layerLeadsTo == Layers.Tunnels);
