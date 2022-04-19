@@ -10,4 +10,9 @@ public class MoveToPosition : MoveBaseNode
     {
         MoveTo(context.variable.Read(targetPosition));
     }
+
+    public override string ToString()
+    {
+        return "MoveToPosition: " + targetPosition.VarName;
+    }
 }

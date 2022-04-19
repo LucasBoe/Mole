@@ -14,6 +14,8 @@ namespace TheKiwiCoder {
 
         public Context Context => context;
 
+        [ReadOnly] public string LastNode = "";
+
         // Start is called before the first frame update
         void Start() {
             context = CreateBehaviourTreeContext();
