@@ -6,11 +6,11 @@ using UnityEngine;
 
 public class LightsourceController : AboveInputActionProvider
 {
-    [SerializeField] private ControllableLightsource lightsource;
+    [SerializeField] private List<ControllableLightsource> lightSources;
     [SerializeField] private PlayerItem requiredItem;
     protected override void OnPlayerEnter()
     {
-        inputActions[0].Text = lightsource.IsOn ? "Turn Off Light" : "Turn on Light";
+        inputActions[0].Text = lightSources[0].IsOn ? "Turn Off Light" : "Turn on Light";
         base.OnPlayerEnter();
     }
 
@@ -21,8 +21,6 @@ public class LightsourceController : AboveInputActionProvider
 
     public void TryInteract()
     {
-        Log("TryInteract (on: " + lightsource.IsOn + ")");
-
         if (requiredItem != null)
         {
             if (PlayerItemHolder.Instance.GetAmount(requiredItem) == 0)
@@ -36,12 +34,18 @@ public class LightsourceController : AboveInputActionProvider
             }
         }
 
+        foreach (ControllableLightsource lightsource in lightSources)
+        {
         lightsource.Switch();
+        }
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(transform.position, lightsource.transform.position);
+        foreach (ControllableLightsource lightsource in lightSources)
+        {
+            Gizmos.DrawLine(transform.position, lightsource.transform.position);
+        }
     }
 }
