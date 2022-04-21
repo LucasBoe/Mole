@@ -46,6 +46,8 @@ MonoBehaviour:
   animationOverride: {fileID: 0}
   children:
   - {fileID: 4880964243389557828}
+  - {fileID: 4880964243389557828}
+  - {fileID: 1003864112448624233}
   - {fileID: 1003864112448624233}
 --- !u!114 &-3392990131388929019
 MonoBehaviour:
@@ -116,29 +118,6 @@ MonoBehaviour:
   drawGizmos: 0
   animationOverride: {fileID: 0}
   child: {fileID: 5421345740670496205}
---- !u!114 &-1897428851468558057
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a5134d9de14153468b48928d3e7359a, type: 3}
-  m_Name: Wait
-  m_EditorClassIdentifier: 
-  state: 0
-  started: 0
-  guid: ead30ab1821dd5244b3da715690d9d8d
-  position: {x: 211, y: 561.50946}
-  blackboard:
-    moveToPosition: {x: 0, y: 0, z: 0}
-    variableModule: {fileID: 0}
-  description: 
-  drawGizmos: 0
-  animationOverride: {fileID: 7400000, guid: d3d73bd6ae384ee45a7c84a7cebe4c43, type: 2}
-  duration: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,13 +137,13 @@ MonoBehaviour:
   - {fileID: 6987580830103883313}
   - {fileID: 4880964243389557828}
   - {fileID: 5421345740670496205}
-  - {fileID: -1897428851468558057}
   - {fileID: -3392990131388929019}
   - {fileID: -3194326834731922102}
   - {fileID: 8550464930139864200}
   - {fileID: 1003864112448624233}
   - {fileID: 4269391640484790001}
   - {fileID: -4372773288962744594}
+  - {fileID: 5091132908090041744}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     variableModule: {fileID: 0}
@@ -240,7 +219,30 @@ MonoBehaviour:
   - {fileID: 8550464930139864200}
   - {fileID: 4269391640484790001}
   - {fileID: -3392990131388929019}
-  - {fileID: -1897428851468558057}
+  - {fileID: 5091132908090041744}
+--- !u!114 &5091132908090041744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ead0d09fdf220fa499dbfb9b8ae0258e, type: 3}
+  m_Name: UseOrIdle
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: d8d0bab49d59d7b40af71e0762b780ea
+  position: {x: 195.62271, y: 561.50946}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    variableModule: {fileID: 0}
+  description: 
+  drawGizmos: 0
+  animationOverride: {fileID: 0}
+  duration: 1
 --- !u!114 &5421345740670496205
 MonoBehaviour:
   m_ObjectHideFlags: 0

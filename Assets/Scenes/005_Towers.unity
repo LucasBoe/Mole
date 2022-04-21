@@ -101770,11 +101770,11 @@ MonoBehaviour:
   - Layer: 0
     GameObject: {fileID: 671799403}
     IsTunnel: 0
-    IsActive: 1
+    IsActive: 0
   - Layer: 1
     GameObject: {fileID: 1741348560}
     IsTunnel: 0
-    IsActive: 0
+    IsActive: 1
   - Layer: 2
     GameObject: {fileID: 1522547012}
     IsTunnel: 1
