@@ -24,6 +24,8 @@ namespace TheKiwiCoder
         public bool drawGizmos = false;
         public AnimationClip animationOverride;
 
+        public virtual bool CanUseObjects => false;
+
         public State Update()
         {
             bool init = false;
@@ -35,7 +37,7 @@ namespace TheKiwiCoder
                 init = true;
             }
 
-            if (context != null) context.runner.LastNode = ToString();
+            if (context != null) context.runner.LastNode = this;
             if (context != null) context.runner.SendWatch("node", name);
             state = OnUpdate();
 

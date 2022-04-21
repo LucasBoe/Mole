@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using NaughtyAttributes;
 
 namespace TheKiwiCoder {
     public class BehaviourTreeRunner : EnemyModule<BehaviourTreeRunner> {
@@ -14,7 +15,8 @@ namespace TheKiwiCoder {
 
         public Context Context => context;
 
-        [ReadOnly] public string LastNode = "";
+        [ReadOnly] public Node LastNode = null;
+        [ShowNativeProperty] string LastNodeName => (LastNode == null ? "Null" : LastNode.ToString());
 
         // Start is called before the first frame update
         void Start() {

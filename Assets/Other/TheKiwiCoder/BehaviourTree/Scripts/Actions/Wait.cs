@@ -7,6 +7,8 @@ namespace TheKiwiCoder {
         public float duration = 1;
         float startTime;
 
+        public override bool CanUseObjects => true;
+
         protected override void OnStart() {
             startTime = Time.time;
         }

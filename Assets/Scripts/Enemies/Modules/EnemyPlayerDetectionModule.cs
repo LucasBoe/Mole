@@ -3,18 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using TheKiwiCoder;
 using UnityEngine;
+using NaughtyAttributes;
 
 public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule>
 {
     [SerializeField] private EnemyPlayerTrigger trigger;
 
     [SerializeField, ReadOnly] private bool IsPlayerInRange;
+    [ShowNativeProperty] bool IsPlayerInObservationArea => EnemyObervationAreaTrigger.IsPlayerInside(obervationAreas);
     [SerializeField] private float alertRange = 5f;
     [SerializeField] private float viewRange = 7f;
     [ReadOnly] public bool IsChecking;
-    private EnemyMemoryModule memoryModule;
 
+    private EnemyMemoryModule memoryModule;
     private Coroutine checkBackOnPlayerRoutine, searchForPlayerRoutine;
+    [SerializeField, ReadOnly] private List<EnemyObervationAreaTrigger> obervationAreas = new List<EnemyObervationAreaTrigger>();
 
     private void Start()
     {
@@ -33,13 +36,15 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
         searchForPlayerRoutine = StartCoroutine(SearchForPlayerRoutine());
         IsChecking = true;
     }
+
+
     private void OnAlert()
     {
         if (IsChecking)
             StopChecking();
     }
 
-    internal void StopChecking()
+    public void StopChecking()
     {
         this.StopRunningCoroutine(searchForPlayerRoutine);
         IsChecking = false;
@@ -59,6 +64,19 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
         checkBackOnPlayerRoutine = StartCoroutine(CheckBackOnPlayer(player));
         IsPlayerInRange = true;
 
+    }
+    public void RegisterObvervationArea(EnemyObervationAreaTrigger obervationAreaTrigger)
+    {
+        obervationAreas.Add(obervationAreaTrigger);
+        obervationAreaTrigger.PlayerEnter += FoundPlayer;
+        obervationAreaTrigger.PlayerExit += LoosePlayer;
+    }
+
+    public void UnregisterObvervationArea(EnemyObervationAreaTrigger obervationAreaTrigger)
+    {
+        obervationAreas.Remove(obervationAreaTrigger);
+        obervationAreaTrigger.PlayerEnter -= FoundPlayer;
+        obervationAreaTrigger.PlayerExit -= LoosePlayer;
     }
 
     private void SetPlayerOutOfRange(Rigidbody2D player)
@@ -86,9 +104,10 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
 
     private bool CouldSee(Rigidbody2D player, float drawLineOfSightWith = -1)
     {
+        bool playerIsInObservationArea = EnemyObervationAreaTrigger.IsPlayerInside(obervationAreas);
         bool playerIsInRange = Vector2.Distance(transform.position, player.position) <= viewRange;
 
-        if (!playerIsInRange)
+        if (!playerIsInRange && !playerIsInObservationArea)
         {
             SetPlayerOutOfRange(player);
             return false;
@@ -100,7 +119,7 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
         bool visibleInPlainSight = playerHiddenValue > 0.6f && playerIsInLineOfSight;
         bool visibleInTwighlight = playerHiddenValue > 0.1f && playerIsInLineOfSight;
 
-        return (playerIsInRange && playerIsInFrontOfEnemy && (visibleInPlainSight || visibleInTwighlight));
+        return (playerIsInRange || playerIsInObservationArea) && playerIsInFrontOfEnemy && (visibleInPlainSight || visibleInTwighlight);
     }
 
     IEnumerator SearchForPlayerRoutine()
