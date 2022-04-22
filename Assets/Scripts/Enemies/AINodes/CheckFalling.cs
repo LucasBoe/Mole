@@ -12,7 +12,8 @@ public class CheckFalling : ActionNode
         if (!context.groundCheck.IsGrounded && !context.rigigbodyController.IsFallmodeActive)
         {
             context.itemEquipment.DropItem();
-            context.rigigbodyController.SetFallmodeActive(true);
+            context.ragdollModule.StartRagdolling();
+            //context.rigigbodyController.SetFallmodeActive(true);
         }
     }
 
@@ -20,8 +21,8 @@ public class CheckFalling : ActionNode
 
     protected override void OnStop()
     {
-        if (context.rigigbodyController.IsFallmodeActive)
-            context.rigigbodyController.SetFallmodeActive(false);
+        //if (context.rigigbodyController.IsFallmodeActive)
+        //    context.rigigbodyController.SetFallmodeActive(false);
     }
 
     protected override State OnUpdate()

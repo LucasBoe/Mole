@@ -47,6 +47,9 @@ TagManager:
   - name: Background
     uniqueID: 3879075787
     locked: 0
+  - name: Background_NoLight
+    uniqueID: 1796075343
+    locked: 0
   - name: TunnelBars
     uniqueID: 3485234455
     locked: 0

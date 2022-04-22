@@ -13,10 +13,12 @@ public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControll
     [SerializeField] Material defaultMat, fallMat;
     [SerializeField] Rigidbody2D rigidbody2D;
     [SerializeField] Animator animator;
+    [SerializeField] EnemyRagdoll ragdollPrefab;
 
     [SerializeField, ReadOnly] private bool isFallmodeActive = false;
     public bool IsFallmodeActive => isFallmodeActive;
     EnemyGroundCheckModule groundCheckModule;
+    EnemyRagdollModule ragdollModule;
 
     public bool IsStanding => rigidbody2D.rotation == 0 && !TriesStandingUp;
 
@@ -25,13 +27,15 @@ public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControll
     private void Start()
     {
         groundCheckModule = GetModule<EnemyGroundCheckModule>();
+        ragdollModule = GetModule<EnemyRagdollModule>();
         groundCheckModule.LeftGround += OnLeftGround;
     }
 
     public void Knock(Vector2 vector2)
     {
         GetModule<EnemyItemEquipmentModule>().DropItem();
-        SetFallmodeActive(true);
+        //SetFallmodeActive(true);
+        ragdollModule.StartRagdolling();
         groundCheckModule.ForceGroundedValue(false);
         rigidbody2D.AddForce(vector2, ForceMode2D.Impulse);
         Log($"receive kick rot( { rigidbody2D.rotation})");
@@ -75,20 +79,26 @@ public class EnemyRigidbodyControllerModule : EnemyModule<EnemyRigidbodyControll
 
     public void SetFallmodeActive(bool active)
     {
-        isFallmodeActive = active;
-        rigidbody2D.constraints = active ? RigidbodyConstraints2D.None : RigidbodyConstraints2D.FreezeRotation;
-        rigidbody2D.drag = active ? 2 : 10;
-        rigidbody2D.gravityScale = active ? 2 : 10;
-        animator.enabled = !active;
-        spriteRenderer.material = active ? fallMat : defaultMat;
-        if (active)
-        {
-            spriteRenderer.sprite = fall_spritesheet;
-        }
+        if (!active) return;
+
+        EnemyRagdoll ragdoll = Instantiate(ragdollPrefab, transform.position, Quaternion.identity, LayerHandler.Parent);
+        ragdoll.Connect(enemyBase);
+        gameObject.SetActive(false);
+
+        //isFallmodeActive = active;
+        //rigidbody2D.constraints = active ? RigidbodyConstraints2D.None : RigidbodyConstraints2D.FreezeRotation;
+        //rigidbody2D.drag = active ? 2 : 10;
+        //rigidbody2D.gravityScale = active ? 2 : 10;
+        //animator.enabled = !active;
+        //spriteRenderer.material = active ? fallMat : defaultMat;
+        //if (active)
+        //{
+        //    spriteRenderer.sprite = fall_spritesheet;
+        //}
     }
     internal void SetDeadMode(bool dead)
     {
-        SetFallmodeActive(false);
+        //SetFallmodeActive(false);
         rigidbody2D.rotation = 0;
     }
 

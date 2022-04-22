@@ -7,13 +7,14 @@ public class EnemyGroundCheckModule : EnemyModule<EnemyGroundCheckModule>
 {
 
     [SerializeField, ReadOnly] private bool isGrounded = true;
-    [SerializeField] bool debug;
+    [SerializeField] float debug;
     public bool IsGrounded => isGrounded;
 
     public System.Action EnteredGround;
     public System.Action LeftGround;
-    private void Start()
+    private void OnEnable()
     {
+        StopAllCoroutines();
         StartCoroutine(RaycastForGroundRoutine());
     }
 
@@ -22,6 +23,8 @@ public class EnemyGroundCheckModule : EnemyModule<EnemyGroundCheckModule>
         while (true)
         {
             yield return new WaitForSeconds(0.25f);
+
+            debug = Time.time;
 
             var pos1 = new Vector2(transform.position.x - 0.5f, transform.position.y);
             var pos2 = new Vector2(transform.position.x + 0.5f, transform.position.y);

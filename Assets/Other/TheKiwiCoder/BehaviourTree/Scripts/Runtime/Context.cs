@@ -24,6 +24,7 @@ namespace TheKiwiCoder
         public EnemyGroundCheckModule groundCheck;
         public EnemyRigidbodyControllerModule rigigbodyController;
         public EnemyLightModule lightModule;
+        public EnemyRagdollModule ragdollModule;
         public Vector2 PlayerPos => memory.PlayerPos;
         public System.Action<Node> EnteredState;
         public LampSource closestPotentialLamp;
@@ -46,6 +47,7 @@ namespace TheKiwiCoder
             context.groundCheck = gameObject.GetComponentInChildren<EnemyGroundCheckModule>();
             context.rigigbodyController = gameObject.GetComponent<EnemyRigidbodyControllerModule>();
             context.lightModule = gameObject.GetComponent<EnemyLightModule>();
+            context.ragdollModule = gameObject.GetComponent<EnemyRagdollModule>();
             context.itemEquipment = gameObject.GetComponent<EnemyItemEquipmentModule>();
 
             // Add whatever else you need here...

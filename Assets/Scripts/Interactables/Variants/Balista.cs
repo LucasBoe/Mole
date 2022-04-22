@@ -9,8 +9,9 @@ public class Balista : AboveInputActionProvider
     [SerializeField] Transform toRotate;
     [SerializeField] Transform clothlineSpawnPoint;
     [SerializeField] LineRenderer aimLineRenderer;
+    [SerializeField] PlayerItemResource rope;
 
-    private float targetAngle;
+    private float targetAngle = 90f;
     private IBalistaTarget currentTarget;
 
     private void Awake()
@@ -27,7 +28,14 @@ public class Balista : AboveInputActionProvider
     }
     private void Use()
     {
-        StartAiming();
+        if (PlayerItemHolder.Instance.GetAmount(rope) == 0)
+        {
+            WorldTextSpawner.Spawn("0/1 " + rope.name, transform.position);
+        }
+        else
+        {
+            StartAiming();
+        }
     }
 
     private void StartAiming()
@@ -69,6 +77,8 @@ public class Balista : AboveInputActionProvider
         {
             ClothlineSpawner.Instance.Spawn(clothlineSpawnPoint.position, currentTarget.Position);
         }
+
+        PlayerItemHolder.Instance.RemoveItem(rope);
         StopAiming();
     }
 

@@ -795,13 +795,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5950c69c758e22e4bb53e170e1e5306b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startItems:
-  - Item: {fileID: 11400000, guid: 423842dede65dce499a13036082fefa1, type: 2}
-    Amount: 1
-  - Item: {fileID: 11400000, guid: 57414c759f3bdaa48a15320a41112e98, type: 2}
-    Amount: 100
-  - Item: {fileID: 11400000, guid: d6f6298f03258bf48af39789468bf75b, type: 2}
-    Amount: 1
+  startItems: []
   items:
     playerItemAmountPairs:
       keys: []

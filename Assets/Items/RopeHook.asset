@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65138e4512561c74e9d2ebeb88d0b6d0, type: 3}
+  m_Name: RopeHook
+  m_EditorClassIdentifier: 
+  Sprite: {fileID: 21300000, guid: f1e9732a88eb42647904764d99ef7c15, type: 3}
+  Prefab: {fileID: 0}
+  NeedsConfirmation: 1
+  IsHeavy: 0
+  ThrowForce: 25
+  GravityScale: 3
+  ropeThrow:
+    Icon: {fileID: 21300000, guid: e95e39c1c7146134a93bef166ab36594, type: 3}
+    Name: throw Rope
+    IconImage: {fileID: 0}
+    SelectedImage: {fileID: 0}
+  hookPrefab: {fileID: -5677770464223142192, guid: dba5770e72c88fb4593f1f77d06e08e5, type: 3}
