@@ -57,6 +57,7 @@ MonoBehaviour:
   - {fileID: 1297007562822116095, guid: 76f49e98dc8cb194f835ea8e6870dd6b, type: 3}
   - {fileID: 9164936586159975609, guid: d8b3d5b9efdebf0449dab2605253626d, type: 3}
   - {fileID: 3525747168024818948, guid: ce25ae4b5aba9634d9a5c7f0f9a07436, type: 3}
+  - {fileID: 8120217119416411144, guid: 140a096be989762499d3bbec505aaccb, type: 3}
   playerSpawnHandler: {fileID: 2030969546147730455}
 --- !u!114 &2030969546147730455
 MonoBehaviour:

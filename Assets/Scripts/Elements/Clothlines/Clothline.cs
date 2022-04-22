@@ -14,6 +14,9 @@ public class Clothline : MonoBehaviour
     private Transform[] elements;
 
     public System.Action<Clothline> OnFinishInit;
+    public Transform StartTransform => start.transform;
+    public Transform EndTransform => end.transform;
+
 
     // Start is called before the first frame update
     void Start()

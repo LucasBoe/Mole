@@ -45,6 +45,13 @@ public class PlayerInputActionRegister : PlayerSingletonBehaviour<PlayerInputAct
             OnInputActionChangedForType?.Invoke(controlType);
         }
     }
+    internal void RegisterInputActions(InputAction[] inputActions)
+    {
+        foreach (var inputAction in inputActions)
+        {
+            RegisterInputAction(inputAction);
+        }
+    }
 
     public void UnregisterInputAction(InputAction oldAction)
     {
@@ -57,6 +64,14 @@ public class PlayerInputActionRegister : PlayerSingletonBehaviour<PlayerInputAct
         {
             register[controlType].Remove(oldAction);
             OnInputActionChangedForType?.Invoke(controlType);
+        }
+    }
+
+    internal void UnregisterInputActions(InputAction[] inputActions)
+    {
+        foreach (var inputAction in inputActions)
+        {
+            UnregisterInputAction(inputAction);
         }
     }
 

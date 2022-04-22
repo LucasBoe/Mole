@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class AboveInputActionProvider : AboveCooldownInteractable
 {
@@ -19,21 +20,19 @@ public class AboveInputActionProvider : AboveCooldownInteractable
         return null;
     }
 
+    protected void RemoveAllInputActionsFor(UnityEngine.Object target)
+    {
+        PlayerInputActionRegister.Instance.UnregisterAllInputActions(target);
+    }
+
     protected override void OnPlayerEnter()
     {
-        foreach (var inputAction in inputActions)
-        {
-            PlayerInputActionRegister.Instance.RegisterInputAction(inputAction);
-        }
-            
+        PlayerInputActionRegister.Instance.RegisterInputActions(inputActions);            
     }
 
     protected override void OnPlayerExit()
     {
-        foreach (var inputAction in inputActions)
-        {
-            PlayerInputActionRegister.Instance.UnregisterInputAction(inputAction);
-        }
+        PlayerInputActionRegister.Instance.UnregisterInputActions(inputActions);
     }
 
     private void OnDestroy()
