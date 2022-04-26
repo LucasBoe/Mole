@@ -16214,6 +16214,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1741348561}
     m_Modifications:
+    - target: {fileID: 2498167688740051206, guid: 5ed3adbfbc071394c91492fdb45b8913, type: 3}
+      propertyPath: loot.loot.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2498167688740051206, guid: 5ed3adbfbc071394c91492fdb45b8913, type: 3}
+      propertyPath: loot.loot.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 7fec0de125e3b604884a67d1fa111ced, type: 2}
     - target: {fileID: 4731774975552709312, guid: 5ed3adbfbc071394c91492fdb45b8913, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -101160,6 +101168,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1741348561}
     m_Modifications:
+    - target: {fileID: 2498167688740051206, guid: 5ed3adbfbc071394c91492fdb45b8913, type: 3}
+      propertyPath: loot.loot.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2498167688740051206, guid: 5ed3adbfbc071394c91492fdb45b8913, type: 3}
+      propertyPath: loot.loot.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 7a40643c9d779d549a5b0a677324da70, type: 2}
     - target: {fileID: 4731774975552709312, guid: 5ed3adbfbc071394c91492fdb45b8913, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -104734,6 +104750,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1741348561}
     m_Modifications:
+    - target: {fileID: 2498167688740051206, guid: 5ed3adbfbc071394c91492fdb45b8913, type: 3}
+      propertyPath: loot.loot.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2498167688740051206, guid: 5ed3adbfbc071394c91492fdb45b8913, type: 3}
+      propertyPath: loot.loot.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 4d51d4bac5a62674e86d52218c35d7ed, type: 2}
     - target: {fileID: 4731774975552709312, guid: 5ed3adbfbc071394c91492fdb45b8913, type: 3}
       propertyPath: m_RootOrder
       value: 11
@@ -105229,6 +105253,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1741348561}
     m_Modifications:
+    - target: {fileID: 2498167688740051206, guid: 5ed3adbfbc071394c91492fdb45b8913, type: 3}
+      propertyPath: loot.loot.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2498167688740051206, guid: 5ed3adbfbc071394c91492fdb45b8913, type: 3}
+      propertyPath: loot.loot.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 7a40643c9d779d549a5b0a677324da70, type: 2}
     - target: {fileID: 4731774975552709312, guid: 5ed3adbfbc071394c91492fdb45b8913, type: 3}
       propertyPath: m_RootOrder
       value: 7

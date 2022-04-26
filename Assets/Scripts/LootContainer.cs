@@ -30,4 +30,10 @@ public class LootContainer
 
         return true;
     }
+
+    internal string GetName()
+    {
+        if (!CanLoot) return "<EMPTY>";
+        return loot[0].name + (loot.Length > 1 ? ", ..." : "");
+    }
 }
