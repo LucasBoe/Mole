@@ -48,3 +48,11 @@ public class UIHandler : SingletonBehaviour<UIHandler>
         behaviour.Hide();
     }
 }
+
+public static class UIUtil
+{
+    public static PlayerActionProgressionVisualizerUI SpawnActionProgressionVisualizer()
+    {
+        return UIHandler.Temporary.Spawn<PlayerActionProgressionVisualizerUI>() as PlayerActionProgressionVisualizerUI;
+    }
+}

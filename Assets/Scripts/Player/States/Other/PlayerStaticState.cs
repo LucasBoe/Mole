@@ -23,7 +23,7 @@ public static class IStaticTargetProviderExtention
 
 public class PlayerStaticState : PlayerStateBase
 {
-    protected IStaticTargetProvider target;
+    protected IStaticTargetProvider Target;
     InputAction exitAction;
     Vector2 posBefore;
     float distance;
@@ -34,14 +34,14 @@ public class PlayerStaticState : PlayerStateBase
     {
         base.Enter();
 
-        if (target.GetTransform() != null)
+        if (Target.GetTransform() != null)
         {
             posBefore = context.PlayerPos;
-            distance = Vector2.Distance(posBefore, target.GetTransform().position);
+            distance = Vector2.Distance(posBefore, Target.GetTransform().position);
 
-            exitAction = target.ProvidesCustomActionCallback() ?
-                target.GetCustomExitAction() :
-                new InputAction() { ActionCallback = DefaultExitCallback, Input = ControlType.Back, Target = target.GetTransform(), Text = "Exit", Stage = InputActionStage.WorldObject };
+            exitAction = Target.ProvidesCustomActionCallback() ?
+                Target.GetCustomExitAction() :
+                new InputAction() { ActionCallback = DefaultExitCallback, Input = ControlType.Back, Target = Target.GetTransform(), Text = "Exit", Stage = InputActionStage.WorldObject };
 
             PlayerInputActionRegister.Instance.RegisterInputAction(exitAction);
 
@@ -55,8 +55,8 @@ public class PlayerStaticState : PlayerStateBase
 
     public override void Update()
     {
-        Transform targetTransform = target.GetTransform();
-        if (targetTransform == null || !target.IsActive)
+        Transform targetTransform = Target.GetTransform();
+        if (targetTransform == null || !Target.IsActive)
             DefaultExitCallback();
         else
         {
@@ -74,7 +74,6 @@ public class PlayerStaticState : PlayerStateBase
 
     private void DefaultExitCallback()
     {
-
         SetState(new IdleState());
     }
 }

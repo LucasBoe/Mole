@@ -86,6 +86,7 @@ public abstract class PlayerStateBase : PlayerStateObject
 
     public virtual bool StateAllowsCarryingHeavyObjects => true;
 
+
     protected void SetCollisionActive(bool active)
     {
         PlayerPhysicsModifier.Instance.SetCollisionActive(active);

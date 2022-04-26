@@ -9,6 +9,30 @@ public class EnemyRagdoll : MonoBehaviour
     [Foldout("References"), SerializeField] Rigidbody2D rigidbody;
     [Foldout("References"), SerializeField] SpriteRenderer spriteRenderer;
     [Foldout("References"), SerializeField] Sprite fall, idle;
+    [Foldout("References"), SerializeField] ParticleSystem unconciousEffect;
+    [Foldout("References"), SerializeField] Collider2D[] colliders;
+
+    internal void Hide(Vector3 position)
+    {
+        StopAllCoroutines();
+        StartCoroutine(MoveToPositonAndHide(position));
+    }
+
+    private IEnumerator MoveToPositonAndHide(Vector3 position)
+    {
+        foreach (Collider2D collider in colliders)
+        {
+            collider.enabled = false;
+        }
+
+        while (Vector2.Distance(transform.position, position) > 0.1f)
+        {
+            rigidbody.MovePosition(Vector2.MoveTowards(rigidbody.position, position, Time.deltaTime * 25f));
+            yield return null;
+        }
+
+        Destroy(gameObject);
+    }
 
     [SerializeField, ReadOnly] EnemyBase enemy;
     [SerializeField, ReadOnly, Range(0, 10)] float speed = 0f;
@@ -32,12 +56,18 @@ public class EnemyRagdoll : MonoBehaviour
         if (!unconscious)
         {
             if (speed > 10f)
-                unconscious = true;
+                SetUnconscious();
 
+            if (idleTime > 3)
+                StandUp();
         }
 
-        if (idleTime > 3)
-            StandUp();
+    }
+
+    private void SetUnconscious()
+    {
+        unconscious = true;
+        StartCoroutine(UnconsciousRoutine());
     }
 
     private void StandUp()
@@ -46,5 +76,14 @@ public class EnemyRagdoll : MonoBehaviour
         enemy.transform.rotation = transform.rotation;
         enemy.gameObject.SetActive(true);
         Destroy(gameObject);
+    }
+
+    private IEnumerator UnconsciousRoutine()
+    {
+        while (true)
+        {
+            EffectHandler.Spawn(new CustomEffect(unconciousEffect, 4), transform.position);
+            yield return new WaitForSeconds(2);
+        }
     }
 }

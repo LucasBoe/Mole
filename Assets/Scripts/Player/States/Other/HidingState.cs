@@ -11,7 +11,7 @@ public class HidingState : PlayerStaticState
     public virtual float HiddenValue => 0;
     public HidingState(IStaticTargetProvider targetProvider) : base()
     {
-        target = targetProvider;
+        Target = targetProvider;
     }
 
     public override void Enter()

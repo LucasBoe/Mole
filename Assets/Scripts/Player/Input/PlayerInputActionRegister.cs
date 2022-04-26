@@ -38,6 +38,8 @@ public class PlayerInputActionRegister : PlayerSingletonBehaviour<PlayerInputAct
 
     public void RegisterInputAction(InputAction newAction)
     {
+        Debug.Log("RegisterInputAction:" + newAction.Text);
+
         ControlType controlType = newAction.Input;
         if (!register[controlType].Contains(newAction))
         {

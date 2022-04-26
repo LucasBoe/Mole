@@ -151,7 +151,10 @@ GameObject:
   - component: {fileID: 4353886350160439781}
   - component: {fileID: 4353886350160439787}
   - component: {fileID: 4353886350160439786}
-  m_Layer: 0
+  - component: {fileID: 7653758865818489140}
+  - component: {fileID: 711713713692408281}
+  - component: {fileID: 8941251969374370088}
+  m_Layer: 11
   m_Name: EnemyRagdoll
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,6 +192,10 @@ MonoBehaviour:
   spriteRenderer: {fileID: 4353886350160439781}
   fall: {fileID: 21300000, guid: 3b9138d43abc27541ba3b4e58ae7deac, type: 3}
   idle: {fileID: 21300000, guid: 1b0844390de624946b7adbf142d127bc, type: 3}
+  unconciousEffect: {fileID: 7185723124908390233, guid: d3d105a8c5e10954897a5a5cabc18172, type: 3}
+  colliders:
+  - {fileID: 4353886350160439787}
+  - {fileID: 8941251969374370088}
   enemy: {fileID: 0}
   speed: 0
   idleTime: 0
@@ -281,3 +288,52 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &7653758865818489140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4353886350160439782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c732606d663ed46a3cb6808178e467, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Item: {fileID: 11400000, guid: e7253f891e3757f43bfdd10387b6bef2, type: 2}
+  distanceJoint2D: {fileID: 711713713692408281}
+--- !u!232 &711713713692408281
+DistanceJoint2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4353886350160439782}
+  m_Enabled: 0
+  serializedVersion: 4
+  m_EnableCollision: 0
+  m_ConnectedRigidBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_AutoConfigureConnectedAnchor: 0
+  m_Anchor: {x: 0, y: 0}
+  m_ConnectedAnchor: {x: 0, y: 0}
+  m_AutoConfigureDistance: 0
+  m_Distance: 0.005
+  m_MaxDistanceOnly: 0
+--- !u!58 &8941251969374370088
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4353886350160439782}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 1.2

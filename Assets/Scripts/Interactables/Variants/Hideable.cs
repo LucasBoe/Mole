@@ -12,6 +12,7 @@ public class Hideable : AboveInputActionProvider, IMoveableStaticTargetProvider
     [SerializeField] private Rigidbody2D movementBody;
 
     public bool IsActive => isActiveAndEnabled;
+    private bool isHiding = false;
 
     public InputAction GetCustomExitAction() { return null; }
     public Transform GetTransform() { return inputActionTransform; }
@@ -38,8 +39,24 @@ public class Hideable : AboveInputActionProvider, IMoveableStaticTargetProvider
         }};
     }
 
+    protected override void OnPlayerEnter()
+    {
+        if (!isHiding)
+            base.OnPlayerEnter();
+    }
+
     private void Hide()
     {
+        HidingState.ExitState += OnStopHiding;
+        OnPlayerExit();
+        isHiding = true;
         PlayerStateMachine.Instance.SetState(allowMovement ? new HidingCanMoveState(this) : new HidingState(this));
+    }
+
+    private void OnStopHiding()
+    {
+        HidingState.ExitState -= OnStopHiding;
+        OnPlayerEnter();
+        isHiding = false;
     }
 }

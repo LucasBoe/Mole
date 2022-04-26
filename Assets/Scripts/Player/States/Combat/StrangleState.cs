@@ -20,7 +20,7 @@ public class StrangleState : PlayerCombatState
             ExitCombat();
         else
         {
-            uiElement = UIHandler.Temporary.Spawn<PlayerActionProgressionVisualizerUI>() as PlayerActionProgressionVisualizerUI;
+            uiElement = UIUtil.SpawnActionProgressionVisualizer();
             playerMove = new PositionInterpolation(context.PlayerPos, target.Position, AnimationCurveHolder.Ease, speed: 10f);
         }
     }
