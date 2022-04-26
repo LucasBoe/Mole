@@ -6,6 +6,7 @@ using UnityEngine;
 public class CarriablePlayerItemWorldObject : InteractablePlayerItemWorldObject
 {
     public static System.Action<CarriablePlayerItemWorldObject> OnStartCarry, OnEndCarry;
+    public System.Action StartCarryThis, EndCarryThis;
 
     [SerializeField] DistanceJoint2D distanceJoint2D;
 
@@ -21,6 +22,7 @@ public class CarriablePlayerItemWorldObject : InteractablePlayerItemWorldObject
     {
         distanceJoint2D.enabled = carry;
         (carry ? OnStartCarry : OnEndCarry)?.Invoke(this);
+        (carry ? StartCarryThis : EndCarryThis)?.Invoke();
 
         foreach (Transform child in transform)
             child.gameObject.SetActive(!carry);

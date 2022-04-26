@@ -196,10 +196,12 @@ MonoBehaviour:
   colliders:
   - {fileID: 4353886350160439787}
   - {fileID: 8941251969374370088}
+  carry: {fileID: 7653758865818489140}
   enemy: {fileID: 0}
   speed: 0
   idleTime: 0
   unconscious: 0
+  lootModule: {fileID: 0}
 --- !u!212 &4353886350160439781
 SpriteRenderer:
   m_ObjectHideFlags: 0

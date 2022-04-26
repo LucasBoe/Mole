@@ -11,6 +11,23 @@ public class EnemyRagdoll : MonoBehaviour
     [Foldout("References"), SerializeField] Sprite fall, idle;
     [Foldout("References"), SerializeField] ParticleSystem unconciousEffect;
     [Foldout("References"), SerializeField] Collider2D[] colliders;
+    [Foldout("References"), SerializeField] CarriablePlayerItemWorldObject carry;
+
+    [SerializeField, ReadOnly] EnemyBase enemy;
+    [SerializeField, ReadOnly, Range(0, 10)] float speed = 0f;
+    [SerializeField, ReadOnly] float idleTime;
+    [SerializeField, ReadOnly] bool unconscious = false;
+    [SerializeField, ReadOnly] EnemyLootModule lootModule;
+
+    private void OnEnable()
+    {
+        carry.StartCarryThis += OnStartCarry;
+    }
+
+    private void OnStartCarry()
+    {
+        if (lootModule != null) lootModule.Loot.PlayerTryLoot();
+    }
 
     internal void Hide(Vector3 position)
     {
@@ -33,15 +50,10 @@ public class EnemyRagdoll : MonoBehaviour
 
         Destroy(gameObject);
     }
-
-    [SerializeField, ReadOnly] EnemyBase enemy;
-    [SerializeField, ReadOnly, Range(0, 10)] float speed = 0f;
-    [SerializeField, ReadOnly] float idleTime;
-    [SerializeField, ReadOnly] bool unconscious = false;
-
     public void Connect(EnemyBase enemy)
     {
         this.enemy = enemy;
+        lootModule = enemy.GetModule<EnemyLootModule>();
     }
 
     // Update is called once per frame

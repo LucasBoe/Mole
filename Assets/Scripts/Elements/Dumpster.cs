@@ -10,7 +10,7 @@ public class Dumpster : AboveInputActionProvider
     [Foldout("Settings"), SortingLayer, SerializeField] int behindPlayer, inFrontOfPlayer;
     [Foldout("Settings"), SerializeField] EdgeCollider2D hiddenEdgeCollider;
 
-    [SerializeField] PlayerItem content;
+    [SerializeField] LootContainer content;
     private bool isSearching = false;
 
     InputAction searchAction;
@@ -33,7 +33,7 @@ public class Dumpster : AboveInputActionProvider
 
     protected override void OnPlayerEnter()
     {
-        if (content != null && !isSearching) base.OnPlayerEnter();
+        if (content.CanLoot && !isSearching) base.OnPlayerEnter();
     }
 
     private IEnumerator SearchRoutine()
@@ -49,9 +49,7 @@ public class Dumpster : AboveInputActionProvider
         }
         isSearching = false;
         uiElement.Hide();
-
-        PlayerItemHolder.Instance.AddItem(content);
-        content = null;
+        content.PlayerTryLoot();
     }
 
     protected override void OnEnable()

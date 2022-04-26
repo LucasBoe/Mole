@@ -173,7 +173,9 @@ MonoBehaviour:
   behindPlayer: -415891509
   inFrontOfPlayer: 17191105
   hiddenEdgeCollider: {fileID: 5280820121809146476}
-  content: {fileID: 11400000, guid: 7fec0de125e3b604884a67d1fa111ced, type: 2}
+  content:
+    loot:
+    - {fileID: 11400000, guid: 7fec0de125e3b604884a67d1fa111ced, type: 2}
 --- !u!212 &5280820120630470638
 SpriteRenderer:
   m_ObjectHideFlags: 0
