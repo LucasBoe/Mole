@@ -14,7 +14,7 @@ public class PlayerActionProgressionVisualizerUI : TemporaryUIElement
         GetComponent<TransformTrackingUI>().ToTrack = FindObjectOfType<PlayerController>().transform;
     }
 
-    public void UpdaValue(float value)
+    public void UpdateValue(float value)
     {
         image.fillAmount = value;
     }

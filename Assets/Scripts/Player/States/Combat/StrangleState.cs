@@ -36,7 +36,7 @@ public class StrangleState : PlayerCombatState
         else
             SetState(new IdleState());
 
-        uiElement.UpdaValue(strangleProgression / strangleDuration);
+        uiElement.UpdateValue(strangleProgression / strangleDuration);
 
         if (strangleProgression >= strangleDuration)
         {

@@ -18,7 +18,7 @@ public class LootContainer
         return toReturn;
     }
 
-    public void PlayerTryLoot()
+    public bool PlayerTryLoot()
     {
         Debug.Log("PlayerTryLoot");
 
@@ -27,5 +27,7 @@ public class LootContainer
             WorldTextSpawner.Spawn("+1 " + item.name, PlayerItemHolder.Instance.transform.position + Vector3.up);
             PlayerItemHolder.Instance.AddItem(item);
         }
+
+        return true;
     }
 }

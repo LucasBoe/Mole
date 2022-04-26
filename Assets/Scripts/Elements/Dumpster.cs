@@ -45,7 +45,7 @@ public class Dumpster : AboveInputActionProvider
         while (t < searchDuration)
         {
             t += Time.deltaTime;
-            uiElement.UpdaValue(t / searchDuration);
+            uiElement.UpdateValue(t / searchDuration);
             yield return null;
         }
         isSearching = false;
