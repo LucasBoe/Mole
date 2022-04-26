@@ -8,6 +8,7 @@ public class Balista : AboveInputActionProvider
     [SerializeField] bool isAiming = false;
     [SerializeField] Transform toRotate;
     [SerializeField] Transform clothlineSpawnPoint;
+    [SerializeField] Transform cameraTarget;
     [SerializeField] LineRenderer aimLineRenderer;
     [SerializeField] PlayerItemResource rope;
 
@@ -58,6 +59,7 @@ public class Balista : AboveInputActionProvider
         });
 
         aimLineRenderer.enabled = true;
+        CameraSmartTarget.SetOverride(cameraTarget);
     }
 
     private void StopAiming()
@@ -68,6 +70,7 @@ public class Balista : AboveInputActionProvider
 
 
         aimLineRenderer.enabled = false;
+        CameraSmartTarget.SetOverride(null);
     }
 
     private void Shoot()
@@ -99,6 +102,8 @@ public class Balista : AboveInputActionProvider
         targetAngle = Mathf.MoveTowardsAngle(targetAngle, z, Time.deltaTime * 90f);
 
         Vector2 direction = rotation * Vector3.right;
+
+        cameraTarget.transform.position = (Vector2)transform.position + (direction * 10f);
 
         List<IBalistaTarget> targets = new List<IBalistaTarget>();
 

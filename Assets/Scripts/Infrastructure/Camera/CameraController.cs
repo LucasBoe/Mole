@@ -21,7 +21,8 @@ public class CameraController : SingletonBehaviour<CameraController>
 
     [SerializeField] public CameraSmartTarget SmartTarget;
 
-    [SerializeField] float orthographicSize = 7.875f;
+    public const float DEFAULT_CAMERA_SIZE = 7.875f;
+    [SerializeField] float orthographicSize = DEFAULT_CAMERA_SIZE;
 
     CinemachineVirtualCamera virtualCamera;
     CinemachineFramingTransposer transposer;
@@ -44,17 +45,6 @@ public class CameraController : SingletonBehaviour<CameraController>
 #endif
     }
 
-    public static Vector2 ScreenToWorldPoint(Vector2 vector2)
-    {
-        return Instance.ActiveCamera().ScreenToWorldPoint(vector2);
-    }
-
-    internal static Vector3 WorldToScreenPoint(Vector3 worldPos)
-    {
-        return Instance.ActiveCamera().WorldToScreenPoint(worldPos);
-    }
-
-
     private void Update()
     {
         if (Input.GetKeyUp(KeyCode.F3))
@@ -65,8 +55,6 @@ public class CameraController : SingletonBehaviour<CameraController>
 
             UpdateRenderMode(allRenderModes[renderModeIndex]);
         }
-
-        //transposer.m_TrackedObjectOffset = 
     }
 
     public Camera ActiveCamera()
@@ -76,7 +64,6 @@ public class CameraController : SingletonBehaviour<CameraController>
             return cameraRaw;
 
         return cameraHybrid;
-
     }
 
     private void UpdateRenderMode(RenderModes renderMode)
@@ -112,6 +99,12 @@ public class CameraController : SingletonBehaviour<CameraController>
         {
             transform.position = new Vector3(smooth ? camPosRounded.x : 0, smooth ? camPosRounded.y : 0, transform.position.z);
         }
+    }
+
+    public void SetCameraSize(float newSize)
+    {
+        orthographicSize = newSize;
+        UpdateCameraSize();
     }
 
     [ContextMenu("UpdateCameraSize")]

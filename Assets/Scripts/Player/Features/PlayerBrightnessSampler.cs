@@ -64,7 +64,7 @@ public class PlayerBrightnessSampler : PlayerBehaviour
 
     private Color SampleColorFromWorldPoint(Vector2 localPos, Texture2D tex)
     {
-        Vector2 pixelPos = CameraController.WorldToScreenPoint(transform.TransformPoint(localPos)) / new Vector2(Screen.width, Screen.height);
+        Vector2 pixelPos = CameraUtil.WorldToScreenPoint(transform.TransformPoint(localPos)) / new Vector2(Screen.width, Screen.height);
         Color c = tex.GetPixelBilinear(pixelPos.x, pixelPos.y);
         return c;
     }

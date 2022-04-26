@@ -8,6 +8,6 @@ public class TransformTrackingUI : MonoBehaviour
 
     private void Update()
     {
-        transform.position = CameraController.WorldToScreenPoint(ToTrack.position);
+        transform.position = CameraUtil.WorldToScreenPoint(ToTrack.position);
     }
 }
