@@ -129,6 +129,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5280820120630470637}
+  - component: {fileID: 7994191118850770163}
   - component: {fileID: 5280820120630470636}
   - component: {fileID: 5280820120630470638}
   - component: {fileID: 5280820120630470635}
@@ -155,6 +156,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7994191118850770163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5280820120630470639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d08aa8960bf1f3d4dbcb04a84bc47dde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hide: 1
 --- !u!114 &5280820120630470636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,6 +184,8 @@ MonoBehaviour:
   playerIsAbove: 0
   useCooldown: 1
   spriteRenderer: {fileID: 5280820120630470638}
+  openSprite: {fileID: 21300000, guid: cc1148dc526326648a2656a70a5467a0, type: 3}
+  closeSprite: {fileID: 21300000, guid: 49425c1e664614a4b90b60e935b95aee, type: 3}
   behindPlayer: -415891509
   inFrontOfPlayer: 17191105
   hiddenEdgeCollider: {fileID: 5280820121809146476}
@@ -301,8 +317,8 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: -1.725, y: 0.5}
-  - {x: 2, y: 0.5}
+  - {x: -1.725, y: 0.375}
+  - {x: 2, y: 0.375}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0

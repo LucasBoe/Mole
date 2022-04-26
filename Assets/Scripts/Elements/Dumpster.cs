@@ -7,6 +7,7 @@ using System;
 public class Dumpster : AboveInputActionProvider
 {
     [Foldout("Settings"), SerializeField] SpriteRenderer spriteRenderer;
+    [Foldout("Settings"), SerializeField] Sprite openSprite, closeSprite;
     [Foldout("Settings"), SortingLayer, SerializeField] int behindPlayer, inFrontOfPlayer;
     [Foldout("Settings"), SerializeField] EdgeCollider2D hiddenEdgeCollider;
 
@@ -67,10 +68,12 @@ public class Dumpster : AboveInputActionProvider
     private void OnEnterState()
     {
         spriteRenderer.sortingLayerID = inFrontOfPlayer;
+        spriteRenderer.sprite = closeSprite;
     }
     private void OnExitState()
     {
         spriteRenderer.sortingLayerID = behindPlayer;
+        spriteRenderer.sprite = openSprite;
     }
 
     private void OnValidate()
