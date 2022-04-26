@@ -22,6 +22,8 @@ public class LootContainer
     {
         Debug.Log("PlayerTryLoot");
 
+        if (!CanLoot) return false;
+
         foreach (PlayerItem item in Loot())
         {
             WorldTextSpawner.Spawn("+1 " + item.name, PlayerItemHolder.Instance.transform.position + Vector3.up);

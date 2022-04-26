@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerCombatCheckerDropKill : PlayerBehaviour
 {
-    [SerializeField] private float updateFrequency = 0.5f;
+    [SerializeField] private float updateFrequency = 0.1f;
     ICombatTarget target;
     InputAction dropKillAction;
 
@@ -35,14 +35,14 @@ public class PlayerCombatCheckerDropKill : PlayerBehaviour
     private void DoRaycast()
     {
         Vector2 start = transform.position + Vector3.down * 3;
-        RaycastHit2D[] hits = Physics2D.RaycastAll(start, Vector2.down, 10f, LayerMask.GetMask("Default", "Enemy"));
+        RaycastHit2D[] hits = Physics2D.RaycastAll(start, Vector2.down, 10f, LayerMask.GetMask("Enemy"));
 
         if (hits.Length > 0)
         {
             foreach (RaycastHit2D hit in hits)
             {
                 ICombatTarget newTarget = hit.rigidbody.GetComponent<ICombatTarget>();
-                if (newTarget != null && newTarget.IsAlive && Util.CheckLineOfSight(transform.position, hit.point, "Default"))
+                if (newTarget != null && newTarget.IsAlive && Util.CheckLineOfSight(transform.position, hit.point, CollisionCheckUtil.GetLineOfSightMask()))
                 {
                     Debug.DrawLine(start, hit.point, Color.green, updateFrequency);
 

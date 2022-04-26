@@ -77,3 +77,11 @@ public class CollisionCheck
         return elements.ToArray();
     }
 }
+
+public static class CollisionCheckUtil
+{
+    internal static string [] GetLineOfSightMask()
+    {
+        return new string[] { "Hangable", "HangableCollidable", "Default" };
+    }
+}
