@@ -19,13 +19,11 @@ public class CameraSmartTarget : SingletonBehaviour<CameraSmartTarget>
     private void OnEnable()
     {
         PlayerController.OnPlayerSpawned += RegisterPlayer;
-        Crosshair.ChangedCrosshairMode += OnChangedCrosshairMode;
     }
 
     private void OnDisable()
     {
         PlayerController.OnPlayerSpawned -= RegisterPlayer;
-        Crosshair.ChangedCrosshairMode -= OnChangedCrosshairMode;
     }
     private void RegisterPlayer(Transform player)
     {
@@ -46,11 +44,6 @@ public class CameraSmartTarget : SingletonBehaviour<CameraSmartTarget>
         Vector2 target = CalculateTargetPos();
         transform.position = target;
     }
-    private void OnChangedCrosshairMode(Crosshair.Mode crosshairMode)
-    {
-        mode = crosshairMode == Crosshair.Mode.Active ? SmartTargetMode.Override : SmartTargetMode.Default;
-    }
-
     private Vector2 CalculateTargetPos()
     {
         switch (mode)

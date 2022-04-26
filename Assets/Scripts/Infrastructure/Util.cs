@@ -389,10 +389,20 @@ public static class Util
             UnityEngine.Object.Destroy(transform.GetChild(i).gameObject);
     }
 
+
     public static void DestroyAllChildrenImmediate(this Transform transform)
     {
         for (int i = transform.childCount - 1; i >= 0; i--)
             UnityEngine.Object.DestroyImmediate(transform.GetChild(i).gameObject);
+    }
+    public static void DestroyAllChildrenExcept(this Transform transform, Transform exception)
+    {
+        for (int i = transform.childCount - 1; i >= 0; i--)
+        {
+            Transform child = transform.GetChild(i);
+            if (child.transform != exception)
+                UnityEngine.Object.Destroy(child.gameObject);
+        }
     }
 
     public static Gradient ToGradient(this Color color)

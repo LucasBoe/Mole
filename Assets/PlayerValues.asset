@@ -116,3 +116,4 @@ MonoBehaviour:
   SnapToHideablePositionDuration: 0.05
   LadderClimbVelocity: 5
   TunnelMoveVelocity: 0.1
+  CurrencyItem: {fileID: 11400000, guid: 7fec0de125e3b604884a67d1fa111ced, type: 2}

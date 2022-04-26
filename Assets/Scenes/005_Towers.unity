@@ -107322,6 +107322,54 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1916269068836895216, guid: 1eeb82875cbf27d46b5ed3e9ea23abb1, type: 3}
   m_PrefabInstance: {fileID: 1916269069029809191}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2034591099
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2034591101}
+  - component: {fileID: 2034591100}
+  m_Layer: 0
+  m_Name: Shop
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2034591100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2034591099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f44f480355df42b41874daf0a0e26b11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contents:
+  - item: {fileID: 11400000, guid: 7a40643c9d779d549a5b0a677324da70, type: 2}
+    Price: 3
+  - item: {fileID: 11400000, guid: 3cb62538e9de26c4992983ea75172c86, type: 2}
+    Price: 1
+--- !u!4 &2034591101
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2034591099}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2064612916
 GameObject:
   m_ObjectHideFlags: 0
