@@ -31,7 +31,7 @@ public class Balista : AboveInputActionProvider
     {
         if (PlayerItemHolder.Instance.GetAmount(rope) == 0)
         {
-            WorldTextSpawner.Spawn("0/1 " + rope.name, transform.position);
+            WorldTextSpawner.Spawn(rope.Sprite, "0/1 " + rope.name, transform.position);
         }
         else
         {

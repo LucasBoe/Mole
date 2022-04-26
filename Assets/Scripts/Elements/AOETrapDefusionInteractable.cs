@@ -20,7 +20,7 @@ public class AOETrapDefusionInteractable : AboveInputActionProvider
         {
             if (PlayerItemHolder.Instance.GetAmount(requiredItem) == 0)
             {
-                WorldTextSpawner.Spawn("0/1 " + requiredItem.name, transform.position);
+                WorldTextSpawner.Spawn(requiredItem.Sprite, "0/1 " + requiredItem.name, transform.position);
                 return;
             }
             else

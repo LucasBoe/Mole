@@ -10,4 +10,11 @@ public class WorldTextSpawner : SingletonBehaviour<WorldTextSpawner>
         worldText.Init(text);
         worldText.transform.position = position;
     }
+
+    public static void Spawn(Sprite icon, string text, Vector2 position)
+    {
+        IconWorldTextUI worldText = (UIHandler.Temporary.Spawn<IconWorldTextUI>(UISpace.World) as IconWorldTextUI);
+        worldText.Init(icon,text);
+        worldText.transform.position = position;
+    }
 }

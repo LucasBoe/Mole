@@ -1677,6 +1677,7 @@ MonoBehaviour:
   temporaryUIElements:
   - {fileID: 5316349196055213934, guid: 7b0b2a4994ba2f848a2d1cce757ab61b, type: 3}
   - {fileID: 5672751779849075823, guid: 0ea24c757f6aad74db7fa2b6a05e875b, type: 3}
+  - {fileID: 515237958227359370, guid: fec6b83dd85a89c46aae06b7e1fc2900, type: 3}
 --- !u!1 &6135942087833603616
 GameObject:
   m_ObjectHideFlags: 0

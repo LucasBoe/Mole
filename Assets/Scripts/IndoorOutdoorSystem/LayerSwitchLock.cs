@@ -34,12 +34,12 @@ public class LayerSwitchLock : MonoBehaviour
             {
                 PlayerItemHolder.Instance.RemoveItem(keyItem);
                 IsLocked = false;
-                WorldTextSpawner.Spawn("used " + keyItem.name, transform.position);
+                WorldTextSpawner.Spawn(keyItem.Sprite, "used " + keyItem.name, transform.position);
                 return true;
 
             } else
             {
-                WorldTextSpawner.Spawn("0 / 1 " + keyItem.name, transform.position);
+                WorldTextSpawner.Spawn(keyItem.Sprite ,"0 / 1 " + keyItem.name, transform.position);
                 return false;
             }
         }

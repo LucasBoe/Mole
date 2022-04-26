@@ -26,7 +26,7 @@ public class LootContainer
 
         foreach (PlayerItem item in Loot())
         {
-            WorldTextSpawner.Spawn("+1 " + item.name, PlayerItemHolder.Instance.transform.position + Vector3.up);
+            WorldTextSpawner.Spawn(item.Sprite ,"+1 " + item.name, PlayerItemHolder.Instance.transform.position + Vector3.up);
             PlayerItemHolder.Instance.AddItem(item);
         }
 
