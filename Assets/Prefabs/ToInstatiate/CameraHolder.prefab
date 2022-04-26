@@ -655,9 +655,15 @@ MonoBehaviour:
   - {fileID: 8810180176915880883}
   cameraRaw: {fileID: 398137407747538318}
   cameraHybrid: {fileID: 8812467290999873246}
+  additionalCameras:
+  - {fileID: 1150806908218164578}
+  - {fileID: 870501716261953488}
+  - {fileID: 4735746086164376159}
+  pixelPerfectCamera: {fileID: 8353308196661782060}
   renderModeDisplayText: {fileID: 2373445010982729660}
   smooth: 1
   SmartTarget: {fileID: 0}
+  orthographicSize: 7.875
 --- !u!1 &6300653845474029832
 GameObject:
   m_ObjectHideFlags: 0
@@ -989,7 +995,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AssetsPPU: 8
   m_RefResolutionX: 244
-  m_RefResolutionY: 1226
+  m_RefResolutionY: 126
   m_UpscaleRT: 1
   m_PixelSnapping: 1
   m_CropFrameX: 0

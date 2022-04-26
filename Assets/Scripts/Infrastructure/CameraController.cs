@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -13,10 +14,14 @@ public class CameraController : SingletonBehaviour<CameraController>
     [SerializeField] private Transform[] textureDisplayTransforms;
     [SerializeField] private Camera cameraRaw;
     [SerializeField] private Camera cameraHybrid;
+    [SerializeField] private Camera[] additionalCameras;
+    [SerializeField] private PixelPerfectCamera pixelPerfectCamera;
     [SerializeField] private TMP_Text renderModeDisplayText;
     [SerializeField] private bool smooth;
 
     [SerializeField] public CameraSmartTarget SmartTarget;
+
+    [SerializeField] float orthographicSize = 7.875f;
 
     CinemachineVirtualCamera virtualCamera;
     CinemachineFramingTransposer transposer;
@@ -109,10 +114,19 @@ public class CameraController : SingletonBehaviour<CameraController>
         }
     }
 
+    [ContextMenu("UpdateCameraSize")]
+    public void UpdateCameraSize()
+    {
+        virtualCamera.m_Lens.OrthographicSize = orthographicSize;
+        cameraHybrid.orthographicSize = orthographicSize;
+        foreach (Camera camera in additionalCameras) camera.orthographicSize = orthographicSize;
+        pixelPerfectCamera.assetsPPU = Mathf.RoundToInt(63f / orthographicSize);
+    }
+
     private float RoundTo8PixelPerUnit(float raw)
     {
 
-        float rounded = Mathf.Round(raw * 8f) / 8f;
+        float rounded = Mathf.Round(raw * pixelPerfectCamera.assetsPPU) / pixelPerfectCamera.assetsPPU;
         return rounded;
     }
 
