@@ -101153,6 +101153,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7814449404222092059, guid: 1eff7c2e2303f9f4eb30d9a655c8764c, type: 3}
+      propertyPath: Loot.loot.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: e20a85710ae8dfd44bbda1a4c36ca9fc, type: 2}
     m_RemovedComponents:
     - {fileID: 5852604328305542079, guid: 1eff7c2e2303f9f4eb30d9a655c8764c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1eff7c2e2303f9f4eb30d9a655c8764c, type: 3}
@@ -107761,6 +107765,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsLocked: 1
+  HasKeyItem: 1
+  keyItem: {fileID: 11400000, guid: e20a85710ae8dfd44bbda1a4c36ca9fc, type: 2}
 --- !u!4 &503938177862247362 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9084457831656158346, guid: b90b5a22c97383542afb14921c8b7487, type: 3}
