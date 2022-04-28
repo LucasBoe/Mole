@@ -10,7 +10,7 @@ public class Balista : AboveInputActionProvider
     [SerializeField] Transform clothlineSpawnPoint;
     [SerializeField] Transform cameraTarget;
     [SerializeField] LineRenderer aimLineRenderer;
-    [SerializeField] PlayerItemResource rope;
+    [SerializeField] PlayerItemResource bolt, rope;
 
     private float targetAngle = 90f;
     private IBalistaTarget currentTarget;
@@ -29,14 +29,19 @@ public class Balista : AboveInputActionProvider
     }
     private void Use()
     {
-        if (PlayerItemHolder.Instance.GetAmount(rope) == 0)
+        if (!PlayerHasItem(bolt))
         {
-            WorldTextSpawner.Spawn(rope.Sprite, "0/1 " + rope.name, transform.position);
+            WorldTextSpawner.Spawn(bolt.Sprite, "0/1 " + bolt.name, transform.position);
         }
         else
         {
             StartAiming();
         }
+    }
+
+    private bool PlayerHasItem(PlayerItemResource item)
+    {
+        return PlayerItemHolder.Instance.GetAmount(item) > 0;
     }
 
     private void StartAiming()
@@ -75,13 +80,26 @@ public class Balista : AboveInputActionProvider
 
     private void Shoot()
     {
-        WorldTextSpawner.Spawn("Shoot!", transform.position);
         if (currentTarget != null)
         {
-            ClothlineSpawner.Instance.Spawn(clothlineSpawnPoint.position, currentTarget.Position);
+            if (currentTarget.NeedsRope)
+            {
+                if (!PlayerHasItem(rope))
+                {
+                    WorldTextSpawner.Spawn(rope.Sprite, "0/1 " + rope.name, currentTarget.Position);
+                }
+                else
+                {
+                    WorldTextSpawner.Spawn("Shoot!", transform.position);
+                    ClothlineSpawner.Instance.Spawn(clothlineSpawnPoint.position, currentTarget.Position);
+                }
+            } else
+            {
+                WorldTextSpawner.Spawn("Shoot!", transform.position);
+            }
         }
 
-        PlayerItemHolder.Instance.RemoveItem(rope);
+        PlayerItemHolder.Instance.RemoveItem(bolt);
         StopAiming();
     }
 
