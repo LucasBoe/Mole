@@ -11,6 +11,7 @@ public class Balista : AboveInputActionProvider
     [SerializeField] Transform cameraTarget;
     [SerializeField] LineRenderer aimLineRenderer;
     [SerializeField] PlayerItemResource bolt, rope;
+    [SerializeField] Rigidbody2D balistaBolt;
 
     private float targetAngle = 90f;
     private IBalistaTarget currentTarget;
@@ -18,6 +19,7 @@ public class Balista : AboveInputActionProvider
     private void Awake()
     {
         aimLineRenderer.material = new Material(aimLineRenderer.material);
+        SetLineAlpha(false);
     }
 
     protected override InputAction[] CreateInputActions()
@@ -93,11 +95,15 @@ public class Balista : AboveInputActionProvider
                     WorldTextSpawner.Spawn("Shoot!", transform.position);
                     ClothlineSpawner.Instance.Spawn(clothlineSpawnPoint.position, currentTarget.Position);
                 }
-            } else
+            }
+            else
             {
                 WorldTextSpawner.Spawn("Shoot!", transform.position);
             }
         }
+
+        Rigidbody2D boltBody = Instantiate(balistaBolt, toRotate.position + toRotate.right, toRotate.rotation, LayerHandler.Parent);
+        boltBody.velocity = toRotate.right * 50f;
 
         PlayerItemHolder.Instance.RemoveItem(bolt);
         StopAiming();
@@ -146,9 +152,14 @@ public class Balista : AboveInputActionProvider
             if (newTarget != null)
                 newTarget.SetAimAt(true);
 
-            aimLineRenderer.material.color = new Color(1, 1, 1, newTarget != null ? 1f : 0.5f);
+            SetLineAlpha(newTarget != null);
 
             currentTarget = newTarget;
         }
+    }
+
+    private void SetLineAlpha(bool full)
+    {
+        aimLineRenderer.material.color = new Color(1, 1, 1, full ? 1f : 0.5f);
     }
 }
