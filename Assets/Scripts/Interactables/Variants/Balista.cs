@@ -131,7 +131,7 @@ public class Balista : AboveInputActionProvider
 
         List<IBalistaTarget> targets = new List<IBalistaTarget>();
 
-        foreach (RaycastHit2D hit in Physics2D.RaycastAll(tip, direction, 25f, LayerMask.GetMask("Trigger")))
+        foreach (RaycastHit2D hit in Physics2D.RaycastAll(tip, direction, 25f, LayerMask.GetMask("Trigger", "Enemy")))
         {
             if (hit.point != null && Vector2.Distance(hit.point, tip) > 1f)
             {

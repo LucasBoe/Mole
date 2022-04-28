@@ -9,7 +9,7 @@ internal interface IBalistaTarget
     void SetAimAt(bool isAiming);
     bool NeedsRope { get; }
 }
-public class BalistaTarget : MonoBehaviour , IBalistaTarget
+public class BalistaTarget : MonoBehaviour, IBalistaTarget
 {
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Sprite idleSprite, aimAtSprite;
@@ -21,6 +21,7 @@ public class BalistaTarget : MonoBehaviour , IBalistaTarget
 
     public void SetAimAt(bool isAiming)
     {
-        spriteRenderer.sprite = isAiming ? aimAtSprite : idleSprite;
+        if (spriteRenderer != null && idleSprite != null && aimAtSprite != null)
+            spriteRenderer.sprite = isAiming ? aimAtSprite : idleSprite;
     }
 }
