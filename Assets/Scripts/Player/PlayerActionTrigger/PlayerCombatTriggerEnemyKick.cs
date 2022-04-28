@@ -7,7 +7,7 @@ public class PlayerCombatTriggerEnemyKick : PlayerCombatStateTrigger<KickState>
 {
     protected override InputAction CreateInputAction()
     {
-        return new InputAction() { Input = ControlType.Interact, Stage = InputActionStage.WorldObject, Text = "Kick", ActionCallback = EnterCombatState };
+        return new InputAction() { Input = ControlType.Back, Stage = InputActionStage.WorldObject, Text = "Kick", ActionCallback = EnterCombatState };
     }
 
     protected override PlayerStateBase CreateStateInstance(ICombatTarget combatTarget)

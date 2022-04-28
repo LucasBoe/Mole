@@ -19,6 +19,8 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
     private Coroutine checkBackOnPlayerRoutine, searchForPlayerRoutine;
     [SerializeField, ReadOnly] private List<EnemyObervationAreaTrigger> obervationAreas = new List<EnemyObervationAreaTrigger>();
 
+    public static System.Action PlayerFound;
+
     private void Start()
     {
         memoryModule = GetModule<EnemyMemoryModule>();
@@ -94,6 +96,7 @@ public class EnemyPlayerDetectionModule : EnemyModule<EnemyPlayerDetectionModule
         memoryModule.CanSeePlayer = true;
         memoryModule.Alert();
         memoryModule.Player = player;
+        PlayerFound?.Invoke();
     }
 
     private void LoosePlayer(Rigidbody2D playerBody)

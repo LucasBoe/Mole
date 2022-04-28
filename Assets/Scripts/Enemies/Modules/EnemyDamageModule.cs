@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using NaughtyAttributes;
 
 public class EnemyDamageModule : EnemyModule<EnemyDamageModule>, IHealth
 {
@@ -12,6 +13,7 @@ public class EnemyDamageModule : EnemyModule<EnemyDamageModule>, IHealth
     public System.Action OutOfHealth;
     public System.Action<float> HealthChanged;
 
+    [ShowNativeProperty]
     public bool Dead => currentHealth <= 0f;
 
     protected override void Awake()
@@ -22,6 +24,8 @@ public class EnemyDamageModule : EnemyModule<EnemyDamageModule>, IHealth
         damageTrigger = Instantiate(damageTrigger, transform);
         damageTrigger.TriggerEntered += OnTriggerEntered;
 
+        currentHealth = maxHealth;
+
         base.Awake();
     }
 
@@ -30,10 +34,6 @@ public class EnemyDamageModule : EnemyModule<EnemyDamageModule>, IHealth
         DoDamage(int.MaxValue);
     }
 
-    private void Start()
-    {
-        currentHealth = maxHealth;
-    }
     public void DoDamage(int amount)
     {
         currentHealth -= amount;

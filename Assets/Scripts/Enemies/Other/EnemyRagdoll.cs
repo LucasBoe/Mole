@@ -19,6 +19,8 @@ public class EnemyRagdoll : MonoBehaviour
     [SerializeField, ReadOnly] bool unconscious = false;
     [SerializeField, ReadOnly] EnemyLootModule lootModule;
 
+    public static System.Action<EnemyRagdoll, bool> ChangedUnconcious;
+
     private void OnEnable()
     {
         carry.StartCarryThis += OnStartCarry;
@@ -79,7 +81,13 @@ public class EnemyRagdoll : MonoBehaviour
     private void SetUnconscious()
     {
         unconscious = true;
+        ChangedUnconcious?.Invoke(this, true);
         StartCoroutine(UnconsciousRoutine());
+    }
+
+    private void OnDestroy()
+    {
+        ChangedUnconcious?.Invoke(this, false);
     }
 
     private void StandUp()
