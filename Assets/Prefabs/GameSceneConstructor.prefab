@@ -58,6 +58,8 @@ MonoBehaviour:
   - {fileID: 9164936586159975609, guid: d8b3d5b9efdebf0449dab2605253626d, type: 3}
   - {fileID: 3525747168024818948, guid: ce25ae4b5aba9634d9a5c7f0f9a07436, type: 3}
   - {fileID: 8120217119416411144, guid: 140a096be989762499d3bbec505aaccb, type: 3}
+  - {fileID: 1727508165665093103, guid: 62f6b2080932a734a8df222b54c09f56, type: 3}
+  - {fileID: 6622608622410566079, guid: 515827c4838ab794d8a73c86aec4202e, type: 3}
   playerSpawnHandler: {fileID: 2030969546147730455}
 --- !u!114 &2030969546147730455
 MonoBehaviour:
