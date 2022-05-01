@@ -28,6 +28,8 @@ public class PlayerStateMachine : PlayerSingletonBehaviour<PlayerStateMachine>, 
 {
     public PlayerStateBase CurrentState;
 
+    [SerializeField, ReadOnly] string stateNameDenug = "";
+
     public System.Action<PlayerStateBase> OnStateChange;
     public System.Action<PlayerStateBase, PlayerStateBase> OnStateChangePrevious;
 
@@ -40,6 +42,7 @@ public class PlayerStateMachine : PlayerSingletonBehaviour<PlayerStateMachine>, 
     public void UpdatePlayerComponent(PlayerContext context)
     {
         UpdateState(CurrentState);
+        stateNameDenug = CurrentState.GetType().Name;
     }
 
     public void SetStateDelayed(PlayerStateBase newState, float delay)

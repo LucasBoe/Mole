@@ -32,7 +32,9 @@ public class KickState : PlayerCombatState
         float distance = context.Rigidbody.Distance(targetBody);
         if (distance < 0.1f)
         {
-            target.Knock(kickDirection.normalized * 25f);
+            Vector2 kick = kickDirection.normalized * 25f;
+            target.Knock(kick);
+            CameraShaker.Instance.Shake(targetPos, strength: 10f, frequency: 0.1f, duration: 0.5f);
             finished = true;
             SetStateDelayed(new IdleState(), 0.5f);
         }

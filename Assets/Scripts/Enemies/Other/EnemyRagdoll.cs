@@ -26,6 +26,11 @@ public class EnemyRagdoll : MonoBehaviour
         carry.StartCarryThis += OnStartCarry;
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        CameraShaker.Instance.Shake(transform.position, strength: collision.relativeVelocity.magnitude / 2f, frequency: 0.125f, duration: 0.25f);
+    }
+
     private void OnStartCarry()
     {
         if (lootModule != null) lootModule.Loot.PlayerTryLoot();

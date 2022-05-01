@@ -146,7 +146,8 @@ public class FallState : MoveBaseState
     bool enemyIsBelow;
     float startFallTime;
     InputAction attackEnemyBelowAction;
-    public FallState() : base() { }
+
+    public static System.Action<float> ExitFallState;
 
     public override void Enter()
     {
@@ -208,5 +209,11 @@ public class FallState : MoveBaseState
 
         if (IsColliding(CheckType.Ground))
             SetState(new IdleState());
+    }
+
+    public override void Exit()
+    {
+        ExitFallState?.Invoke(startFallTime);
+        base.Exit();
     }
 }

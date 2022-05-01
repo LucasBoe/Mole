@@ -92,16 +92,12 @@ public class Balista : AboveInputActionProvider
                 }
                 else
                 {
-                    WorldTextSpawner.Spawn("Shoot!", transform.position);
                     ClothlineSpawner.Instance.Spawn(clothlineSpawnPoint.position, currentTarget.Position);
                 }
             }
-            else
-            {
-                WorldTextSpawner.Spawn("Shoot!", transform.position);
-            }
         }
 
+        CameraShaker.Instance.Shake(transform.position, strength: 5f, duration: 0.4f);
         Rigidbody2D boltBody = Instantiate(balistaBolt, toRotate.position + toRotate.right, toRotate.rotation, LayerHandler.Parent);
         boltBody.velocity = toRotate.right * 50f;
 

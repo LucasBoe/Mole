@@ -40,6 +40,7 @@ public class ExplosionHandler : SingletonBehaviour<ExplosionHandler>
 
         EffectHandler.Spawn(new CustomEffect(explosionEffectPrefab, 5f), transform.position);
         NoiseHandler.Instance.MakeNoise(transform.position, 10);
+        CameraShaker.Instance.Shake(transform.position, strength: 15f);
     }
 
     private void ApplyExplosionForce(Rigidbody2D body, Vector2 origin)

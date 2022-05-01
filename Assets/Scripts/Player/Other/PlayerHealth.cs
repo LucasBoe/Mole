@@ -38,6 +38,7 @@ public class PlayerHealth : PlayerSingletonBehaviour<PlayerHealth>, IHealth
         current -= amount;
 
         OnHealthChange?.Invoke(relative);
+        CameraShaker.Instance.Shake(transform.position, strength: amount / 10f);
 
         if (current < 0)
         {

@@ -43,6 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e0302accdbf7dc4398004cd9b6a84e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mode: 0
 --- !u!1 &2735557951484444654
 GameObject:
   m_ObjectHideFlags: 0
@@ -459,6 +460,7 @@ GameObject:
   - component: {fileID: 5542582926091387129}
   - component: {fileID: 5542582926091387131}
   - component: {fileID: 5542582926091387128}
+  - component: {fileID: 1635132012549059878}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -535,6 +537,23 @@ MonoBehaviour:
   m_MaximumFOV: 60
   m_MinimumOrthoSize: 1
   m_MaximumOrthoSize: 5000
+--- !u!114 &1635132012549059878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5542582926091387126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 1
+  m_FrequencyGain: 1
+  mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &5542582926930144329
 GameObject:
   m_ObjectHideFlags: 0
@@ -582,6 +601,7 @@ GameObject:
   - component: {fileID: 5542582927066413801}
   - component: {fileID: 5542582927066413798}
   - component: {fileID: 5542582927066413800}
+  - component: {fileID: 6760624948289846145}
   m_Layer: 2
   m_Name: VirtualCamera
   m_TagString: Untagged
@@ -664,6 +684,56 @@ MonoBehaviour:
   smooth: 1
   SmartTarget: {fileID: 0}
   orthographicSize: 7.875
+--- !u!114 &6760624948289846145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5542582927066413799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d01329cf7d67dd844ab0bbcfeaf99771, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cinemachineVirtualCamera: {fileID: 5542582927066413798}
+  shakeCurves:
+  - Type: 0
+    Curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0.5
+        inSlope: 8.975517
+        outSlope: 8.975517
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.010482594
+      - serializedVersion: 3
+        time: 0.1913625
+        value: 0.90416986
+        inSlope: -2.398841
+        outSlope: -2.398841
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.24955349
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: -0.2655777
+        outSlope: -0.2655777
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.14068456
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  amplitude: 0
+  frequency: 0
 --- !u!1 &6300653845474029832
 GameObject:
   m_ObjectHideFlags: 0

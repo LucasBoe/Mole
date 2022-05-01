@@ -18,4 +18,6 @@ public class PlayerUtil : MonoBehaviour
             PlayerItemHolder.Instance.RemoveItem(currency);
         }
     }
+
+    public static Vector2 Position => PlayerController.Context.PlayerPos;
 }
