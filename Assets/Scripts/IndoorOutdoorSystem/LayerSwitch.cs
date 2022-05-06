@@ -13,7 +13,7 @@ public class LayerSwitch : AboveInputActionProvider
 
     public LayerSwitchLock Lock;
     public bool HasLock => Lock != null;
-    [ShowIfField("HasLock"), ShowNativeProperty] public bool LockStatus => Lock.IsLocked;
+    [ShowIfField("HasLock"), ShowNativeProperty] public bool LockStatus => HasLock && Lock.IsLocked;
 
     protected override void OnEnable()
     {

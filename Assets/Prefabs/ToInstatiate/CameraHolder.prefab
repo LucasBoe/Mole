@@ -683,7 +683,7 @@ MonoBehaviour:
   renderModeDisplayText: {fileID: 2373445010982729660}
   smooth: 1
   SmartTarget: {fileID: 0}
-  orthographicSize: 7.875
+  orthographicSize: 11.8125
 --- !u!114 &6760624948289846145
 MonoBehaviour:
   m_ObjectHideFlags: 0

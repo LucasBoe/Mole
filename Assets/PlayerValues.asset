@@ -19,7 +19,7 @@ MonoBehaviour:
     SprintValue: 10
     NotSprintValue: 6
   WallClimbYvelocity: 3
-  EdgeHelperUpwardsImpulse: 3
+  EdgeHelperUpwardsImpulse: 1
   JumpForce:
     SprintValue: 50
     NotSprintValue: 30

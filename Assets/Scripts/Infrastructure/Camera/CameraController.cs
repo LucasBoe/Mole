@@ -39,6 +39,7 @@ public class CameraController : SingletonBehaviour<CameraController>
             allRenderModes.Add(mode);
 
         UpdateRenderMode(allRenderModes[renderModeIndex]);
+        UpdateCameraSize();
 
 #if UNITY_EDITOR
         SceneVisibilityManager.instance.Hide(cameraHybrid.gameObject, true);
@@ -113,7 +114,7 @@ public class CameraController : SingletonBehaviour<CameraController>
         virtualCamera.m_Lens.OrthographicSize = orthographicSize;
         cameraHybrid.orthographicSize = orthographicSize;
         foreach (Camera camera in additionalCameras) camera.orthographicSize = orthographicSize;
-        pixelPerfectCamera.assetsPPU = Mathf.RoundToInt(63f / orthographicSize);
+        //pixelPerfectCamera.assetsPPU = Mathf.RoundToInt(63f / orthographicSize);
     }
 
     private float RoundTo8PixelPerUnit(float raw)
