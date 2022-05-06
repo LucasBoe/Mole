@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 6650807411414497710}
   - component: {fileID: 6650807411414497711}
   - component: {fileID: 6650807411414497708}
-  m_Layer: 28
+  m_Layer: 3
   m_Name: ChainVisualizer
   m_TagString: Untagged
   m_Icon: {fileID: 0}

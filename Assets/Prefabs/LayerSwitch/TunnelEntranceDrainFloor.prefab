@@ -123,7 +123,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerIsAbove: 0
-  useCooldown: 1
+  useCooldown: 0
   spriteRenderer: {fileID: 1917964835354932999}
   layerLeadsTo: 2
+  Lock: {fileID: 0}
   localTeleportTarget: {x: 0, y: -2, z: 0}

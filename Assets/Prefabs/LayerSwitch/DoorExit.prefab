@@ -46,9 +46,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerIsAbove: 0
-  useCooldown: 1
+  useCooldown: 0
   spriteRenderer: {fileID: 5684186313197451773}
   layerLeadsTo: 1
+  Lock: {fileID: 0}
 --- !u!212 &5684186313197451773
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -86,9 +87,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -415891509
+  m_SortingLayer: -6
+  m_SortingOrder: 15
   m_Sprite: {fileID: 21300000, guid: 5688c76a7e7d9bc49bba2e78be313f0e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

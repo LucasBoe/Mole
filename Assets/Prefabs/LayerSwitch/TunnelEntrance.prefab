@@ -46,9 +46,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerIsAbove: 0
-  useCooldown: 1
+  useCooldown: 0
   spriteRenderer: {fileID: 7066677040935135151}
   layerLeadsTo: 2
+  Lock: {fileID: 0}
 --- !u!212 &7066677040935135151
 SpriteRenderer:
   m_ObjectHideFlags: 0
