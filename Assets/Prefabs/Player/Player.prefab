@@ -1435,6 +1435,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  ropeLengthChangeMultiplier: 3
   playerRigidbody2D: {fileID: 7193096735565673040}
   currentElement: {fileID: 0}
 --- !u!1 &7848131558922127993

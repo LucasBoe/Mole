@@ -337,6 +337,9 @@ MonoBehaviour:
     - MoveState: LadderClimbState
       AnimationClip: {fileID: 7400000, guid: 12cd0f16e42aa434e9f2bce7bec75295, type: 2}
       showCoat: 0
+    - MoveState: RopeClimbState
+      AnimationClip: {fileID: 7400000, guid: 12cd0f16e42aa434e9f2bce7bec75295, type: 2}
+      showCoat: 0
     climbStateParamAnimationPairs:
     - ClimbState: GutterClimbState
       ParamAnimation: {fileID: 11400000, guid: 3afece717e8f78a45848be079c1a3a43, type: 2}

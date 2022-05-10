@@ -13,6 +13,7 @@ public class PlayerRopeUser : PlayerSingletonBehaviour<PlayerRopeUser>
 
     [SerializeField] RopeUserMode ropeUserMode;
     [SerializeField] AnimationCurve distanceToRopeToLengthChangeCurve;
+    [SerializeField] float ropeLengthChangeMultiplier = 1f;
 
     public RopeUserMode Mode
     {
@@ -95,7 +96,7 @@ public class PlayerRopeUser : PlayerSingletonBehaviour<PlayerRopeUser>
         PlayerInput input = PlayerInputHandler.PlayerInput;
 
         if (input.LT)
-            current.Elongate(-Time.deltaTime * input.LTAxis, distribution: playerConstrollsStart ? 1f : 0f);
+            current.Elongate(-Time.deltaTime * input.LTAxis * ropeLengthChangeMultiplier, distribution: playerConstrollsStart ? 1f : 0f);
     }
 
     private void OnDrawGizmos()

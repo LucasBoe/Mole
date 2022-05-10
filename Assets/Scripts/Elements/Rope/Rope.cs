@@ -36,33 +36,6 @@ public class Rope : Cable
         return instance;
     }
 
-
-    //public Rope(Rigidbody2D start, CableAnchor[] anchors, Rigidbody2D end, Vector2[] travelPoints)
-    //{
-    //    this.anchors = new List<CableAnchor>(anchors);
-    //    if (IsShortRope)
-    //    {
-    //        if (travelPoints == null)
-    //        {
-    //            totalLength = Vector2.Distance(start.position, end.position);
-    //            elements[0] = CableHandler.Instance.CreateRopeElement(start, end, totalLength);
-    //        }
-    //        else
-    //        {
-    //            totalLength = travelPoints.GetDistance();
-    //            elements[0] = CableHandler.Instance.CreateRopeElement(start, end, totalLength, travelPoints);
-    //        }
-    //        distribution = 0;
-    //    }
-    //    else
-    //    {
-    //        RecalulateLengthAndDistributionFromDistance(start, end, bufferLength: 1f);
-    //        elements[0] = CableHandler.Instance.CreateRopeElement(start, anchors[0].Rigidbody2D, smoothLength1.Value);
-    //        elements[1] = CableHandler.Instance.CreateRopeElement(end, anchors[anchors.Length - 1].Rigidbody2D, smoothLength2.Value);
-    //    }
-    //
-    //}
-
     public override void Update()
     {
         //work down player length changes

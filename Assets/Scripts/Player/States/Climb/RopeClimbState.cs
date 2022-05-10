@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RopeClimbState : PlayerStateBase
 {
+    PlayerPhysicsModifier.ColliderMode modeBefore;
     internal static bool TryEnter()
     {
         if (PlayerRopeUser.Instance.IsActive)
@@ -20,6 +21,8 @@ public class RopeClimbState : PlayerStateBase
         base.Enter();
         //PlayerRopeClimbListener.Instance.TrySetState(PlayerRopeClimbListener.States.Climb);
         PlayerRopeUser.Instance.SetPlayerDragActive(false);
+        modeBefore = PlayerPhysicsModifier.Instance.Mode;
+        PlayerPhysicsModifier.Instance.SetColliderMode(PlayerPhysicsModifier.ColliderMode.Tunnel);
     }
 
     public override void Update()
@@ -36,6 +39,12 @@ public class RopeClimbState : PlayerStateBase
             Rigidbody2D body = ropeUser.GetRopeElementBody();
             body.AddForce(context.Input.Axis * Time.deltaTime * context.Values.RopeSwingForceCurve.Evaluate(body.velocity.magnitude));
             body.velocity = body.velocity * (1 + Time.deltaTime);
+
+            //transition to hanging
+            HangingState.TryEnter(this, context);
+
+            //transition to pullup
+            PullUpState.TryEnter(this, context);
         }
         else
         {
@@ -49,5 +58,6 @@ public class RopeClimbState : PlayerStateBase
         base.Exit();
         PlayerRopeUser.Instance.DropCurrentRope();
         PlayerRopeUser.Instance.SetPlayerDragActive(true);
+        PlayerPhysicsModifier.Instance.SetColliderMode(modeBefore);
     }
 }
