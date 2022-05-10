@@ -11,8 +11,8 @@ public class RopeElement : CableElement, ISlideable
     [SerializeField] float debugLength, debugLength2;
     public FixedJoint2D Target => target;
 
-    private List<RopePhysicsSegment> elements = new List<RopePhysicsSegment>();
-    private RopePhysicsSegment Last => elements.Count == 0 ? null : elements[elements.Count - 1];
+    private List<RopePhysicsSegment> segments = new List<RopePhysicsSegment>();
+    private RopePhysicsSegment Last => segments.Count == 0 ? null : segments[segments.Count - 1];
 
     public float DistanceToAttachedObject => Vector2.Distance(transform.position, attachJoint.connectedBody.position);
 
@@ -61,7 +61,7 @@ public class RopeElement : CableElement, ISlideable
 
         StartCoroutine(Delay(delay, () =>
         {
-            foreach (RopePhysicsSegment segment in elements)
+            foreach (RopePhysicsSegment segment in segments)
                 segment.Rigidbody.constraints = RigidbodyConstraints2D.None;
         }));
 
@@ -92,7 +92,7 @@ public class RopeElement : CableElement, ISlideable
             Util.DebugDrawCircle(pos, Color.green, 0.5f, lifetime: 4);
 
             newElement.Connected(previousElementExists ? Last.Rigidbody : otherRigidbody);
-            elements.Add(newElement);
+            segments.Add(newElement);
             if (newLength >= 1)
                 newLength--;
             else
@@ -105,9 +105,10 @@ public class RopeElement : CableElement, ISlideable
         }
     }
 
+
     internal Vector2[] GetPoints()
     {
-        return elements.Select(e => e.Rigidbody.position).ToArray();
+        return segments.Select(e => e.Rigidbody.position).ToArray();
     }
 
     public override void SetJointDistance(float newLength)
@@ -146,9 +147,9 @@ public class RopeElement : CableElement, ISlideable
             while (toRemove > 0)
             {
                 toRemove--;
-                int index = elements.Count - 1;
-                RopePhysicsSegment element = elements[index];
-                elements.RemoveAt(index);
+                int index = segments.Count - 1;
+                RopePhysicsSegment element = segments[index];
+                segments.RemoveAt(index);
                 Destroy(element.gameObject);
             }
             SetLastElementLength(newLengt - Mathf.Floor(newLengt));
@@ -171,8 +172,8 @@ public class RopeElement : CableElement, ISlideable
 
     private void OnDestroy()
     {
-        for (int i = elements.Count - 1; i >= 0; i--)
-            Destroy(elements[i].gameObject);
+        for (int i = segments.Count - 1; i >= 0; i--)
+            Destroy(segments[i].gameObject);
     }
 
     private enum ModifationDirection
@@ -189,5 +190,21 @@ public class RopeElement : CableElement, ISlideable
     public Vector2 GetClosestPosition(Vector2 playerPos, Vector2 axis)
     {
         return transform.position;
+    }
+
+    public RopePhysicsSegment GetClosestRopeSegement(Vector2 position)
+    {
+        return segments.OrderBy(s => Vector2.Distance(s.transform.position, position)).First();
+    }
+
+    public Vector2 GetOtherEndPosition(Vector3 position)
+    {
+        Vector2 start = segments.First().transform.position;
+        Vector2 end = Last.transform.position;
+
+        if (Vector2.Distance(position, start) < Vector2.Distance(position, end))
+            return end;
+        else
+            return start;
     }
 }

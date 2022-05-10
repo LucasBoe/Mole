@@ -95,13 +95,16 @@ public class PlayerRopeUser : PlayerSingletonBehaviour<PlayerRopeUser>
 
         PlayerInput input = PlayerInputHandler.PlayerInput;
 
-        if (input.LT)
-            current.Elongate(-Time.deltaTime * input.LTAxis * ropeLengthChangeMultiplier, distribution: playerConstrollsStart ? 1f : 0f);
+        if (input.Axis != Vector2.zero)
+            current.Elongate(Time.deltaTime * CalculateElongationFactor(input) * ropeLengthChangeMultiplier, distribution: playerConstrollsStart ? 1f : 0f);
     }
 
-    private void OnDrawGizmos()
+    private float CalculateElongationFactor(PlayerInput playerInput)
     {
-        if (currentElement == null)
-            return;
+        Vector2 endPosition = currentElement.GetOtherEndPosition(transform.position);
+        Vector2 currentPosition = transform.position;
+        Vector2 movePosition = currentPosition + playerInput.Axis;
+
+        return Vector2.Distance(movePosition, endPosition) - Vector2.Distance(currentPosition, endPosition);
     }
 }
