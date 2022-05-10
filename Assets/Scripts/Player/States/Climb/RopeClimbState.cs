@@ -50,7 +50,6 @@ public class RopeClimbState : PlayerStateBase
         {
             SetState(new IdleState());
         }
-
     }
 
     public override void Exit()
