@@ -24,10 +24,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72527e59cbfe0e94e902be4c01aecd1b, type: 3}
-  m_Name: Explosion
+  m_Name: explosion
   m_EditorClassIdentifier: 
   _myLibrary: {fileID: 11400000}
-  _name: Explosion
   clip: {fileID: 8300000, guid: 2774387011a570c49a5614a230aa4074, type: 3}
   volume: 0.5
   pitch: 1

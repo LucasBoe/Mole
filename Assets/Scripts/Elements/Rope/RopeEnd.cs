@@ -2,30 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RopeEnd : AboveCooldownInteractable
+public class RopeEnd : AboveInputActionProvider
 {
     [SerializeField] new protected Rigidbody2D rigidbody2D;
     public Rigidbody2D Rigidbody2D => rigidbody2D;
 
     protected Rope rope;
+    protected float distribution;
 
 
-    public Rigidbody2D SetRope (Rope rope)
+    public Rigidbody2D SetRope(Rope rope, float distribution)
     {
         this.rope = rope;
+        this.distribution = distribution;
         return rigidbody2D;
     }
 
     protected override void OnPlayerEnter()
     {
-        //TODO: Replace with PlayerAboveInputActionProvider
-        if (ShouldShowPrompt()) 
-            PlayerInputActionRegister.Instance.RegisterInputAction(new InputAction() { Input = ControlType.Interact, Stage = InputActionStage.WorldObject, Target = transform, ActionCallback = PlayerTryInteract, Text="Take Rope" });
+        if (ShouldShowPrompt())
+            base.OnPlayerEnter();
     }
 
-    protected override void OnPlayerExit()
+    protected override InputAction[] CreateInputActions()
     {
-        PlayerInputActionRegister.Instance.UnregisterAllInputActions(transform);
+        return new InputAction[] { new InputAction() { Input = ControlType.Interact, Stage = InputActionStage.WorldObject, Target = transform, ActionCallback = PlayerTryInteract, Text = "Take Rope" }};
     }
 
     protected virtual bool ShouldShowPrompt()

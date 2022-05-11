@@ -12,8 +12,7 @@ namespace SoundSystem
     public class Sound : ScriptableObject
     {
         [SerializeField, ReadOnly] private SoundLibrary _myLibrary;
-        [SerializeField] private string _name;
-        [SerializeField] AudioClip clip;
+        [SerializeField, OnValueChanged("Rename")] AudioClip clip;
         [SerializeField, Range(0,1)] float volume = 0.5f;
 
         [SerializeField, Range(0, 3), HideIf("randomizePitch")] float pitch = 1f;
@@ -23,7 +22,7 @@ namespace SoundSystem
 
 
         public SoundLibrary MyLibrary { get => _myLibrary; }
-        public string Name { get => _name; }
+        public string Name { get => clip.name; }
 
         internal void Play()
         {
@@ -51,7 +50,7 @@ namespace SoundSystem
         [ContextMenu("Rename to name")]
         private void Rename()
         {
-            this.name = _name;
+            this.name = Name;
             AssetDatabase.SaveAssets();
             EditorUtility.SetDirty(this);
         }

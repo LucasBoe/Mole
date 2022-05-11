@@ -10,16 +10,19 @@ public class PlayerInputHandler : PlayerSingletonBehaviour<PlayerInputHandler>
 
     bool DPadLock = false;
 
+    public static System.Action<PlayerInput> OnPlayerInput;
+
     private void Update()
     {
         //Stick 1 / WASD
         PlayerInput.Axis = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        PlayerInput.AxisRight = new Vector2(Input.GetAxis("StickRight X"), Input.GetAxis("StickRight Y"));
 
         //Stick 2 / Mouse => virtual cursor
         if (new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0)
             PlayerInput.VirtualCursor = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
         else
-            PlayerInput.VirtualCursor = ModifyVirtualCursor(PlayerInput.VirtualCursor, new Vector2(Input.GetAxis("StickRight X"), Input.GetAxis("StickRight Y")));
+            PlayerInput.VirtualCursor = ModifyVirtualCursor(PlayerInput.VirtualCursor, PlayerInput.AxisRight);
 
         float dPadX = Input.GetAxis("Cross X");
         float dPadY = Input.GetAxis("Cross Y");
@@ -56,6 +59,7 @@ public class PlayerInputHandler : PlayerSingletonBehaviour<PlayerInputHandler>
         PlayerInput.Sprinting = Input.GetAxis("Sprint") > 0.5f || Input.GetButton("Sprint");
 
         debug = PlayerInput;
+        OnPlayerInput?.Invoke(PlayerInput);
     }
 
     private Vector2 ModifyVirtualCursor(Vector2 before, Vector2 mouseAxis)

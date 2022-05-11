@@ -44,13 +44,14 @@ public class RopeElement : CableElement, ISlideable
     private void StartSetup(Rigidbody2D start, Rigidbody2D end, float length)
     {
         BasicSetup(start, end);
+
         this.length = length;
     }
 
     private void FinishSetup(float length, Vector2[] pos)
     {
 
-        CreatePhysicsSegments(length, pos);
+        CreatePhysicsSegments(length, pos, frozen: true);
         UnfreezePhysicsSegments(0.1f);
         visualizerInstance.Init(this);
     }
@@ -72,7 +73,7 @@ public class RopeElement : CableElement, ISlideable
         }
     }
 
-    private void CreatePhysicsSegments(float newLength, Vector2[] positions = null)
+    private void CreatePhysicsSegments(float newLength, Vector2[] positions = null, bool frozen = false)
     {
         if (positions != null)
         {
@@ -89,6 +90,9 @@ public class RopeElement : CableElement, ISlideable
             Vector2 pos = (positions != null) ? positions[index] : (previousElementExists ? Last.transform.position.ToVector2() : transform.position.ToVector2());
 
             RopePhysicsSegment newElement = Instantiate(segmentPrefab, pos, Quaternion.identity, LayerHandler.Parent);
+
+            if (!frozen) newElement.Rigidbody.constraints = RigidbodyConstraints2D.None;
+
             Util.DebugDrawCircle(pos, Color.green, 0.5f, lifetime: 4);
 
             newElement.Connected(previousElementExists ? Last.Rigidbody : otherRigidbody);

@@ -9,7 +9,7 @@ public class PlayerController : PlayerSingletonBehaviour<PlayerController>
 {
     public static System.Action<Transform> OnPlayerSpawned;
 
-    internal void Teleport(Vector3 teleportPosition)
+    public void Teleport(Vector3 teleportPosition)
     {
         transform.position = teleportPosition;
     }

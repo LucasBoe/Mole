@@ -32,6 +32,7 @@ public class CableHandler : SingletonBehaviour<CableHandler>
     {
         Rope newRope = (pathPoints == null) ? new Rope(start, anchors, end) : new Rope(start, end, pathPoints);
         CheckAndPotentiallyConnectPlayer(newRope, start, end);
+        CheckAndPotentiallyConnectRopeEnds(newRope, start, end);
         cables.Add(newRope);
         return newRope;
     }
@@ -62,6 +63,15 @@ public class CableHandler : SingletonBehaviour<CableHandler>
             playerStart.ConnectToRope(newRope as Rope, playerIsAtStart: true);
         else if (playerEnd != null)
             playerStart.ConnectToRope(newRope as Rope, playerIsAtStart: false);
+    }
+
+    private void CheckAndPotentiallyConnectRopeEnds(Cable newRope, Rigidbody2D start, Rigidbody2D end)
+    {
+        RopeEnd startEnd = start.GetComponent<RopeEnd>();
+        RopeEnd endEnd = end.GetComponent<RopeEnd>();
+
+        if (startEnd != null) startEnd.SetRope(newRope as Rope, 0f);
+        if (endEnd != null) endEnd.SetRope(newRope as Rope, 1f);
     }
 
     internal void DestroyCable(Rigidbody2D rigidbody2D)

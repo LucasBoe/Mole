@@ -62,7 +62,7 @@ public class PlayerRopeUser : PlayerSingletonBehaviour<PlayerRopeUser>
             return;
 
         RopeEnd ropeEnd = CableHandler.Instance.CreateRopeEnd(playerRigidbody2D.position);
-        HandoverRopeTo(ropeEnd.SetRope(current));
+        HandoverRopeTo(ropeEnd.SetRope(current, playerConstrollsStart ? 0f : 1f));
     }
 
     public Rope HandoverRopeTo(Rigidbody2D newRigidbody)
