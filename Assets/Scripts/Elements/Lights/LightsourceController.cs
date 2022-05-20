@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class LightsourceController : AboveInputActionProvider
+public class LightsourceController : Interactable
 {
     [SerializeField] private List<ControllableLightsource> lightSources;
     [SerializeField] private PlayerItem requiredItem;

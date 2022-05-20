@@ -4,7 +4,7 @@ using UnityEngine;
 using NaughtyAttributes;
 using System;
 
-public class Dumpster : AboveInputActionProvider
+public class Dumpster : Interactable
 {
     [Foldout("Settings"), SerializeField] SpriteRenderer spriteRenderer;
     [Foldout("Settings"), SerializeField] Sprite openSprite, closeSprite;
@@ -17,9 +17,8 @@ public class Dumpster : AboveInputActionProvider
     InputAction searchAction;
     protected override void Start()
     {
-        searchAction = new InputAction() { ActionCallback = StartSearch, Input = ControlType.Interact, Stage = InputActionStage.WorldObject, Target = transform, Text = "Search" };
+        searchAction = new InputAction() { ActionCallback = StartSearch, Input = ControlType.Interact, Stage = InputActionStage.WorldObject, Target = interactionOrigin, Text = "Search" };
         base.Start();
-        HideEdge(false);
     }
     protected override InputAction[] CreateInputActions()
     {
@@ -74,18 +73,5 @@ public class Dumpster : AboveInputActionProvider
     {
         spriteRenderer.sortingLayerID = behindPlayer;
         spriteRenderer.sprite = openSprite;
-    }
-
-    private void OnValidate()
-    {
-        HideEdge(true);
-    }
-
-    private void HideEdge(bool hideEdge)
-    {
-        foreach (Transform item in transform)
-        {
-            item.gameObject.hideFlags = HideFlags.None;
-        }
     }
 }

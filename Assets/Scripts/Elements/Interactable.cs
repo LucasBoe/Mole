@@ -10,13 +10,6 @@ public class Interactable : AboveInputActionProvider
 
     public System.Action PlayerEnterEvent, PlayerExitEvent;
 
-    protected override void Start()
-    {
-        base.Start();
-        InteractableIndicatorUI indicatorUI = UIHandler.Temporary.Spawn<InteractableIndicatorUI>(UISpace.World) as InteractableIndicatorUI;
-        indicatorUI.transform.position = interactionOrigin.position;
-    }
-
     protected override void OnPlayerEnter()
     {
         PlayerEnterEvent?.Invoke();

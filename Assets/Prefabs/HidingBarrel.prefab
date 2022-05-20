@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 9084457831656158350}
   - component: {fileID: 9084457831656158345}
   - component: {fileID: 9084457831656158347}
+  - component: {fileID: 2716480238160257536}
   m_Layer: 9
   m_Name: HidingBarrel
   m_TagString: Untagged
@@ -57,7 +58,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9084457831656158341}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 7.5, y: 12, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -169,6 +170,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerIsAbove: 0
   useCooldown: 0
+  interactionOrigin: {fileID: 9084457831656158346}
   inputActionTransform: {fileID: 1128902230500374607}
   allowMovement: 0
   movementBody: {fileID: 0}
+--- !u!114 &2716480238160257536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9084457831656158341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a88ab21ac5bb4b74b9749d5f42cf2fb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineShader: {fileID: -6465566751694194690, guid: c52b97d153d6eab48ad5be0780d822f9, type: 3}
+  OutlineColor: {r: 1, g: 1, b: 1, a: 1}

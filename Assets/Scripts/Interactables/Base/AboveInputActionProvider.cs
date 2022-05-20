@@ -20,11 +20,6 @@ public class AboveInputActionProvider : AboveCooldownInteractable
         return null;
     }
 
-    protected void RemoveAllInputActionsFor(UnityEngine.Object target)
-    {
-        PlayerInputActionRegister.Instance.UnregisterAllInputActions(target);
-    }
-
     protected override void OnPlayerEnter()
     {
         PlayerInputActionRegister.Instance.RegisterInputActions(inputActions);            

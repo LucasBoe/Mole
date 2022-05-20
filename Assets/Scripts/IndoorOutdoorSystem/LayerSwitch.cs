@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LayerSwitch : AboveInputActionProvider
+public class LayerSwitch : Interactable
 {
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Layers layerLeadsTo;

@@ -632,7 +632,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiSpaceOffset: {x: -200, y: 200, z: 0}
-  worldSpaceOffset: {x: 3.75, y: 0, z: 0}
+  worldSpaceOffset: {x: 0, y: 0, z: 0}
   inputUIParentPrefab: {fileID: 2894191411437368956, guid: b472b20202ec5ea4e8f351b7423c7969, type: 3}
   inputUIPrefab: {fileID: 857312041124753315, guid: b41d44e0c3bde634fa8526daa9f31925, type: 3}
 --- !u!114 &6616867088160583822

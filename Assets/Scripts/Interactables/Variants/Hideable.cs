@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 
 //TODO: Generalize this to not need a separate layer but share it with other action providers
-public class Hideable : AboveInputActionProvider, IMoveableStaticTargetProvider
+public class Hideable : Interactable, IMoveableStaticTargetProvider
 {
     [SerializeField] Transform inputActionTransform;
     [SerializeField] private bool allowMovement = false;

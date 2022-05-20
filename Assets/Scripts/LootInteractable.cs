@@ -8,7 +8,7 @@ public class LootInteractable : Interactable
 
     protected override InputAction[] CreateInputActions()
     {
-        return new InputAction[] { new InputAction() { ActionCallback = Loot, Input = ControlType.Interact, Stage = InputActionStage.WorldObject, Target = interactionOrigin, Text = loot.GetName() } };
+        return new InputAction[] { new InputAction() { ActionCallback = Loot, Input = ControlType.Interact, Stage = InputActionStage.WorldObject, Target = interactionOrigin, Text = "Take " + loot.GetName() } };
     }
 
     protected override void OnPlayerEnter()
