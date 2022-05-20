@@ -631,8 +631,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25b7975d6fe690b4d999712a0618af7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiSpaceOffset: {x: 0, y: -100, z: 0}
-  worldSpaceOffset: {x: 6, y: 1, z: 0}
+  uiSpaceOffset: {x: -200, y: 200, z: 0}
+  worldSpaceOffset: {x: 3.75, y: 0, z: 0}
   inputUIParentPrefab: {fileID: 2894191411437368956, guid: b472b20202ec5ea4e8f351b7423c7969, type: 3}
   inputUIPrefab: {fileID: 857312041124753315, guid: b41d44e0c3bde634fa8526daa9f31925, type: 3}
 --- !u!114 &6616867088160583822
@@ -1081,8 +1081,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 251538369720100846}
   m_HandleRect: {fileID: 4800676293627467574}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.9033333
+  m_Value: 0.9999989
+  m_Size: 0.90333325
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3580,6 +3580,7 @@ MonoBehaviour:
   - {fileID: 5316349196055213934, guid: 7b0b2a4994ba2f848a2d1cce757ab61b, type: 3}
   - {fileID: 5672751779849075823, guid: 0ea24c757f6aad74db7fa2b6a05e875b, type: 3}
   - {fileID: 515237958227359370, guid: fec6b83dd85a89c46aae06b7e1fc2900, type: 3}
+  - {fileID: 4747360978174332502, guid: 2fecaa40ed777934ead107800f396be5, type: 3}
 --- !u!1 &5726644174868215027
 GameObject:
   m_ObjectHideFlags: 0
@@ -3700,8 +3701,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2969192087529448100}
   m_HandleRect: {fileID: 3263946776260264568}
   m_Direction: 0
-  m_Value: 1
-  m_Size: 1
+  m_Value: 0
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

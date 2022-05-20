@@ -79,7 +79,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2091334911619207105
 Transform:
   m_ObjectHideFlags: 0
@@ -1094,6 +1094,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debug:
     Axis: {x: 0, y: 0}
+    AxisRight: {x: 0, y: 0}
     VirtualCursor: {x: 0, y: 0}
     LT: 0
     LTAxis: 0

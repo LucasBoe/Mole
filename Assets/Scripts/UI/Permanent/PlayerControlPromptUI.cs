@@ -59,13 +59,33 @@ public class PlayerControlPromptUI : TemporaryUIElement
 {
     [SerializeField] Image image;
     [SerializeField] TMP_Text buttonText, interactionText;
+    [SerializeField] Sprite icon_xBox_x, icon_xBox_y, icon_xBox_a, icon_xBox_b; 
 
     public static System.Action<Transform> OnDeleteControPrompt;
     public void Init (ControlType type, Vector3 worldPos, string txt)
     {
-        image.color = type.ToColor();
-        buttonText.text = type.ToConsoleButtonName();
+        image.sprite = GetIconFromControlType(type);
         interactionText.text = txt;
+    }
+
+    private Sprite GetIconFromControlType(ControlType type)
+    {
+        switch (type)
+        {
+            case ControlType.Jump:
+                return icon_xBox_y;
+
+            case ControlType.Use:
+                return icon_xBox_x;
+
+            case ControlType.Interact:
+                return icon_xBox_a;
+
+            case ControlType.Back:
+                return icon_xBox_b;
+        }
+
+        return null;
     }
 
     private void OnDestroy()
